@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NTRANCE VOC 대시보드</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+    background: #f0f2f5;
+    color: #1a1a2e;
+    min-height: 100vh;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+  .header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+  .header .subtitle { font-size: 12px; color: #8892b0; margin-top: 3px; }
+  .header .updated { font-size: 11px; color: #8892b0; }
+  .main { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+
+  /* 게임 탭 */
+  .tab-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 10px 20px;
+    border: 2px solid #dde1e7;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #5f6368;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tab-btn:hover { border-color: #1a73e8; color: #1a73e8; }
+  .tab-btn.active { background: #1a73e8; border-color: #1a73e8; color: white; }
+  .tab-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* 카드 */
+  .panel-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  }
+
+  /* 서브탭 */
+  .subtab-nav { display: flex; gap: 6px; margin-bottom: 20px; }
+  .subtab-btn {
+    padding: 8px 18px;
+    border: 1.5px solid #dde1e7;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: #5f6368;
+    transition: all 0.2s;
+  }
+  .subtab-btn.active { background: #e8f0fe; border-color: #1a73e8; color: #1a73e8; }
+  .subtab-content { display: none; }
+  .subtab-content.active { display: block; }
+  .badge {
+    background: #e8f0fe;
+    color: #1a73e8;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 4px;
+  }
+  .subtab-btn.active .badge { background: white; }
+
+  /* 통계 카드 */
+  .stats-row { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .stat-card {
+    flex: 1;
+    min-width: 100px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    border: 1.5px solid #e8eaed;
+  }
+  .stat-card.neg-card { border-color: #fce8e6; background: #fef9f9; }
+  .stat-num { font-size: 26px; font-weight: 800; color: #1a73e8; }
+  .neg-card .stat-num { color: #d93025; }
+  .stat-label { font-size: 12px; color: #5f6368; margin-top: 4px; }
+
+  /* 섹션 */
+  .section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #3c4043;
+    margin: 20px 0 10px;
+    padding-left: 8px;
+    border-left: 3px solid #1a73e8;
+  }
+
+  /* 감성 바 */
+  .sentiment-bar-wrap { margin-bottom: 8px; }
+  .sentiment-bar {
+    display: flex;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f1f3f4;
+  }
+  .seg { transition: width 0.5s; }
+  .seg.pos { background: #34a853; }
+  .seg.neu { background: #fbbc04; }
+  .seg.neg { background: #ea4335; }
+  .sentiment-legend { display: flex; gap: 16px; font-size: 12px; color: #5f6368; margin-top: 8px; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+  .dot.pos { background: #34a853; }
+  .dot.neu { background: #fbbc04; }
+  .dot.neg { background: #ea4335; }
+
+  /* 키워드 클라우드 */
+  .keyword-cloud { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; background: #f8f9fa; border-radius: 8px; }
+  .keyword-badge {
+    background: white;
+    border: 1px solid #e8eaed;
+    border-radius: 6px;
+    padding: 4px 10px;
+    color: #1a73e8;
+    font-weight: 600;
+    cursor: default;
+    transition: background 0.15s;
+  }
+  .keyword-badge:hover { background: #e8f0fe; }
+  .keyword-badge small { color: #9aa0a6; font-size: 0.75em; }
+
+  /* 게시물 테이블 */
+  .posts-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .posts-table th {
+    background: #f1f3f4;
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 12px;
+    color: #5f6368;
+    border-bottom: 1.5px solid #e8eaed;
+  }
+  .posts-table td {
+    padding: 9px 10px;
+    border-bottom: 1px solid #f1f3f4;
+    vertical-align: middle;
+  }
+  .posts-table tr:hover td { background: #f8f9fa; }
+  .post-link { color: #1a1a2e; text-decoration: none; }
+  .post-link:hover { color: #1a73e8; text-decoration: underline; }
+  .num { text-align: right; color: #5f6368; font-variant-numeric: tabular-nums; }
+
+  /* 기타 */
+  .period-label { font-size: 12px; color: #5f6368; margin-bottom: 16px; background: #f8f9fa; padding: 8px 12px; border-radius: 6px; }
+  .updated-at { font-size: 11px; color: #9aa0a6; text-align: right; margin-top: 20px; }
+  .empty { color: #9aa0a6; font-size: 13px; padding: 20px; text-align: center; }
+  .no-data {
+    text-align: center;
+    padding: 60px 20px;
+    color: #5f6368;
+    background: #f8f9fa;
+    border-radius: 10px;
+  }
+  .no-data p { margin-bottom: 8px; }
+  .hint { font-size: 12px; color: #9aa0a6; }
+  code { background: #f1f3f4; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>📊 NTRANCE VOC 대시보드</h1>
+    <div class="subtitle">네이버 라운지 유저 동향 자동 수집 · 분석</div>
+  </div>
+  <div class="updated">생성: 2026-04-02 17:51 KST</div>
+</div>
+
+<div class="main">
+  <div class="tab-nav">
+    
+        <button class="tab-btn active" onclick="switchTab('DKR', this)">
+          <span class="tab-dot" style="background:#1a73e8"></span>
+          DK모바일:리본
+        </button>
+  </div>
+
+  <div class="panel-card">
+    
+        <div id="tab-DKR" class="tab-panel active">
+          
+    <div class="subtab-nav">
+      <button class="subtab-btn active" onclick="switchSubtab('dkr', 'daily', this)">
+        📅 일간 <span class="badge">2026-04-01</span>
+      </button>
+      <button class="subtab-btn" onclick="switchSubtab('dkr', 'weekly', this)">
+        📆 주간 <span class="badge">1일</span>
+      </button>
+    </div>
+
+    <!-- 일간 -->
+    <div id="dkr-daily" class="subtab-content active">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-num">16</div>
+          <div class="stat-label">게시물</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">0</div>
+          <div class="stat-label">댓글</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">12.5%</div>
+          <div class="stat-label">긍정 비율</div>
+        </div>
+        <div class="stat-card neg-card">
+          <div class="stat-num">0.0%</div>
+          <div class="stat-label">부정 비율</div>
+        </div>
+      </div>
+
+      <div class="section-title">감성 분포</div>
+      
+    <div class="sentiment-bar-wrap">
+      <div class="sentiment-bar">
+        <div class="seg pos" style="width:12.5%" title="긍정 12.5%"></div>
+        <div class="seg neu" style="width:87.5%" title="중립 87.5%"></div>
+        <div class="seg neg" style="width:0.0%" title="부정 0.0%"></div>
+      </div>
+      <div class="sentiment-legend">
+        <span class="dot pos"></span>긍정 12.5%
+        <span class="dot neu"></span>중립 87.5%
+        <span class="dot neg"></span>부정 0.0%
+      </div>
+    </div>
+
+      <div class="section-title">주요 키워드</div>
+      <div class="keyword-cloud"><span class="keyword-badge" style="font-size:26px;opacity:1.0">섭이전 <small>(2)</small></span><span class="keyword-badge" style="font-size:26px;opacity:1.0">상황 <small>(2)</small></span><span class="keyword-badge" style="font-size:26px;opacity:1.0">이전권 <small>(2)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">앤트런스 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">다시는 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">안한다 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">게임은 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">도대체가 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">발전이 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">없노 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">역시나네 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">서버이전 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">안내냐 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">지겨워라 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">지겨워 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">구썹이랑 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">하이퍼랑합쳐라 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">전체 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">한번 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">가시죠 <small>(1)</small></span></div>
+
+      <div class="section-title">인기 게시물 TOP 10</div>
+      
+    <table class="posts-table">
+      <thead>
+        <tr><th>제목</th><th>작성자</th><th>조회</th><th>댓글</th><th>날짜</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="post-link">32서버 상황 마지막</a></td>
+          <td>네이버최강 군주 2845</td>
+          <td class="num">462</td>
+          <td class="num">22</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490286" target="_blank" class="post-link">32서버 상황</a></td>
+          <td>네이버최강 군주 2845</td>
+          <td class="num">389</td>
+          <td class="num">16</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307" target="_blank" class="post-link">이 게임은 도대체가 발전이 없노 ㅋㅋㅋ역시나네</a></td>
+          <td>오늘만사는 만렙 2181</td>
+          <td class="num">220</td>
+          <td class="num">5</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460" target="_blank" class="post-link">섭이전. 구썹이랑 하이퍼랑합쳐라</a></td>
+          <td>Hhshdhhx</td>
+          <td class="num">208</td>
+          <td class="num">2</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="post-link">상점에서 뭐 사나요?</a></td>
+          <td>나는 사실 입문자 1646</td>
+          <td class="num">209</td>
+          <td class="num">0</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7494737" target="_blank" class="post-link">앤트런스 다시는 안한다 ㅅㄱ</a></td>
+          <td>천하태평 검사 5934</td>
+          <td class="num">182</td>
+          <td class="num">2</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490284" target="_blank" class="post-link">바로템에 케릭엄청올라옴</a></td>
+          <td>Hhshdhhx</td>
+          <td class="num">169</td>
+          <td class="num">0</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="post-link">보탐할때 아이템 길드로들어가지말고</a></td>
+          <td>Hhshdhhx</td>
+          <td class="num">147</td>
+          <td class="num">1</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="post-link">과금내놓고 한달만에 서비스종료함 과금안하는게답</a></td>
+          <td>연화경</td>
+          <td class="num">141</td>
+          <td class="num">0</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="post-link">신화스킬</a></td>
+          <td>워리어</td>
+          <td class="num">128</td>
+          <td class="num">2</td>
+          <td>-</td>
+        </tr></tbody>
+    </table>
+    </div>
+
+    <!-- 주간 -->
+    <div id="dkr-weekly" class="subtab-content">
+      <div class="period-label">📊 수집 기간: 2026-04-01</div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-num">16</div>
+          <div class="stat-label">게시물</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">0</div>
+          <div class="stat-label">댓글</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">12.5%</div>
+          <div class="stat-label">긍정 비율</div>
+        </div>
+        <div class="stat-card neg-card">
+          <div class="stat-num">0.0%</div>
+          <div class="stat-label">부정 비율</div>
+        </div>
+      </div>
+
+      <div class="section-title">감성 분포</div>
+      
+    <div class="sentiment-bar-wrap">
+      <div class="sentiment-bar">
+        <div class="seg pos" style="width:12.5%" title="긍정 12.5%"></div>
+        <div class="seg neu" style="width:87.5%" title="중립 87.5%"></div>
+        <div class="seg neg" style="width:0.0%" title="부정 0.0%"></div>
+      </div>
+      <div class="sentiment-legend">
+        <span class="dot pos"></span>긍정 12.5%
+        <span class="dot neu"></span>중립 87.5%
+        <span class="dot neg"></span>부정 0.0%
+      </div>
+    </div>
+
+      <div class="section-title">주요 키워드 (7일 누적)</div>
+      <div class="keyword-cloud"><span class="keyword-badge" style="font-size:26px;opacity:1.0">섭이전 <small>(2)</small></span><span class="keyword-badge" style="font-size:26px;opacity:1.0">상황 <small>(2)</small></span><span class="keyword-badge" style="font-size:26px;opacity:1.0">이전권 <small>(2)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">앤트런스 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">다시는 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">안한다 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">게임은 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">도대체가 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">발전이 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">없노 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">역시나네 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">서버이전 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">안내냐 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">지겨워라 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">지겨워 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">구썹이랑 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">하이퍼랑합쳐라 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">전체 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">한번 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">가시죠 <small>(1)</small></span></div>
+
+      <div class="section-title">인기 게시물 TOP 10 (7일)</div>
+      
+    <table class="posts-table">
+      <thead>
+        <tr><th>제목</th><th>작성자</th><th>조회</th><th>댓글</th><th>날짜</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="post-link">32서버 상황 마지막</a></td>
+          <td>네이버최강 군주 2845</td>
+          <td class="num">462</td>
+          <td class="num">22</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490286" target="_blank" class="post-link">32서버 상황</a></td>
+          <td>네이버최강 군주 2845</td>
+          <td class="num">389</td>
+          <td class="num">16</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307" target="_blank" class="post-link">이 게임은 도대체가 발전이 없노 ㅋㅋㅋ역시나네</a></td>
+          <td>오늘만사는 만렙 2181</td>
+          <td class="num">220</td>
+          <td class="num">5</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460" target="_blank" class="post-link">섭이전. 구썹이랑 하이퍼랑합쳐라</a></td>
+          <td>Hhshdhhx</td>
+          <td class="num">208</td>
+          <td class="num">2</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="post-link">상점에서 뭐 사나요?</a></td>
+          <td>나는 사실 입문자 1646</td>
+          <td class="num">209</td>
+          <td class="num">0</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7494737" target="_blank" class="post-link">앤트런스 다시는 안한다 ㅅㄱ</a></td>
+          <td>천하태평 검사 5934</td>
+          <td class="num">182</td>
+          <td class="num">2</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490284" target="_blank" class="post-link">바로템에 케릭엄청올라옴</a></td>
+          <td>Hhshdhhx</td>
+          <td class="num">169</td>
+          <td class="num">0</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="post-link">보탐할때 아이템 길드로들어가지말고</a></td>
+          <td>Hhshdhhx</td>
+          <td class="num">147</td>
+          <td class="num">1</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="post-link">과금내놓고 한달만에 서비스종료함 과금안하는게답</a></td>
+          <td>연화경</td>
+          <td class="num">141</td>
+          <td class="num">0</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="post-link">신화스킬</a></td>
+          <td>워리어</td>
+          <td class="num">128</td>
+          <td class="num">2</td>
+          <td>-</td>
+        </tr></tbody>
+    </table>
+    </div>
+
+    <div class="updated-at">마지막 업데이트: 2026-04-02 17:51 KST</div>
+    
+        </div>
+  </div>
+</div>
+
+<script>
+function switchTab(gameKey, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + gameKey).classList.add('active');
+}
+
+function switchSubtab(panelId, subtab, btn) {
+  const panel = btn.closest('.tab-panel');
+  panel.querySelectorAll('.subtab-btn').forEach(b => b.classList.remove('active'));
+  panel.querySelectorAll('.subtab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(panelId + '-' + subtab).classList.add('active');
+}
+</script>
+</body>
+</html>
