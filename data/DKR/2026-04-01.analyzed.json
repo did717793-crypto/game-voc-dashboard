@@ -1,0 +1,87 @@
+{
+  "date": "2026-04-01",
+  "major_issues": [
+    {
+      "board_name": "공지사항",
+      "title": "4월 2일(목) 정기 점검 안내 (점검 완료)",
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431",
+      "summary": "4월 2일(목) 정기 점검 완료 (10:00~13:30) — 신규 콘텐츠 6종 업데이트 및 레벨 캡 250 확장",
+      "bullets": [
+        "▷ 점검 일정: 2026년 4월 2일(목) 10:00 ~ 13:30 (3시간 30분)",
+        "▷ 점검 보상: 상급 에스텔라의 별빛 주문서(귀속) 20개",
+        "▷ 주요 업데이트: 인터 서버 그룹 변경 / 초월 탈리스만 3종 추가 / 루멘탑 10층 신설",
+        "▷ 레벨 확장: 캐릭터 최대 레벨 250으로 상향",
+        "▷ 기타: 잊혀진 탑 140층 확장 / 장비 연금술 확률 개편 / 칭호 보상 상향"
+      ]
+    },
+    {
+      "board_name": "업데이트",
+      "title": "4월 2일(목) 업데이트 내용 안내",
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433",
+      "summary": "구서버 인터 서버 그룹 전면 개편 — 성 정보 초기화 예정, 성주 길드 세금 사전 수령 필수",
+      "bullets": [
+        "▷ 인터 서버 그룹 변경: IGS1(엘퀴네스/SG3·SG4·SG5·SG6·SG30), IGS2(슈리엘/SG1·SG2·SG39)",
+        "▷ 성 정보 전체 초기화 — 점검 전 성주 길드 세금 수령 필수",
+        "▷ 초월 탈리스만 3종 추가 (발레포르·마르바스·가미긴, 고대 탈리스만 조각 50개 필요)",
+        "▷ 캐릭터 최대 레벨 250 확장 / 칭호 승급 미션 보상 상향 및 신규 등급 추가",
+        "▷ 경쟁전 로테이션: 용사의 전장 오픈, 투기장 종료"
+      ]
+    },
+    {
+      "board_name": "업데이트",
+      "title": "4월 2일(목) 하이퍼 서버 업데이트 안내",
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492435",
+      "summary": "하이퍼 서버 전용 — 초월 탈리스만 3종, 루멘탑 10층 추가 및 장비 연금술 확률 대규모 개편",
+      "bullets": [
+        "▷ 초월 탈리스만 3종 추가: 발레포르(근거리 회피·DR무시 증폭) / 마르바스(원거리·명중) / 가미긴(마법·치명타저항)",
+        "▷ 루멘탑 10층 신설: 전설 찬란한 장비 각인 상자 제작 레시피 추가",
+        "▷ 잊혀진 탑 최대 140층으로 확장",
+        "▷ 장비 연금술 확률 개편: 저단계(+0~+2) 확률 하향 → 중·고단계(+3 이상) 확률 상향"
+      ]
+    }
+  ],
+  "voc_groups": [
+    {
+      "category": "건의·요청",
+      "summary": "서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청",
+      "count": 7,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345",
+      "feed_ids": ["7492521", "7492460", "7492345", "7490333", "7490284", "7490256", "7490069"]
+    },
+    {
+      "category": "건의·요청",
+      "summary": "보스 탐험 드롭 아이템 길드 귀속 → 개인 인벤토리 수령 방식으로 개선 건의",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312",
+      "feed_ids": ["7490312"]
+    },
+    {
+      "category": "건의·요청",
+      "summary": "신화스킬 제작 시 전설스킬 추출 재료 사용 허용 건의",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423",
+      "feed_ids": ["7492423"]
+    },
+    {
+      "category": "게임 관련",
+      "summary": "32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유",
+      "count": 3,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850",
+      "feed_ids": ["7491850", "7490286", "7490014"]
+    },
+    {
+      "category": "게임 관련",
+      "summary": "초보 유저 상점 패키지 가성비 및 구매 우선순위 문의",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783",
+      "feed_ids": ["7491783"]
+    },
+    {
+      "category": "기타",
+      "summary": "게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명",
+      "count": 3,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784",
+      "feed_ids": ["7494737", "7493307", "7491784"]
+    }
+  ]
+}

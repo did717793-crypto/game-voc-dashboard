@@ -2,74 +2,64 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NTRANCE VOC 대시보드 — DKR</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NTRANCE VOC 대시보드</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;background:#f0f2f5;color:#1a1a2e;min-height:100vh}
+body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;background:#f0f2f5;color:#1a1a2e;min-height:100vh;font-size:13px}
 
-/* 헤더 */
-.header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);color:#fff;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.3)}
-.header h1{font-size:19px;font-weight:700}
-.header .sub{font-size:12px;color:#8892b0;margin-top:3px}
-.header .ts{font-size:11px;color:#8892b0}
+.header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.header h1{font-size:18px;font-weight:700}.header .sub{font-size:11px;color:#8892b0;margin-top:3px}.header .ts{font-size:11px;color:#8892b0}
 
-/* 게임 탭 */
 .main{max-width:1000px;margin:0 auto;padding:20px 14px}
-.tab-nav{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-.tab-btn{padding:9px 18px;border:2px solid #dde1e7;border-radius:7px;background:#fff;cursor:pointer;font-size:13px;font-weight:600;color:#5f6368;transition:all .2s;display:flex;align-items:center;gap:7px}
-.tab-btn:hover{border-color:#1a73e8;color:#1a73e8}
-.tab-btn.active{background:#1a73e8;border-color:#1a73e8;color:#fff}
+.tab-nav{display:flex;gap:8px;margin-bottom:14px}
+.tab-btn{padding:8px 16px;border:2px solid #dde1e7;border-radius:7px;background:#fff;cursor:pointer;font-size:13px;font-weight:600;color:#5f6368;transition:all .2s;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{border-color:#1a73e8;color:#1a73e8}.tab-btn.active{background:#1a73e8;border-color:#1a73e8;color:#fff}
 .tab-dot{width:8px;height:8px;border-radius:50%}
 .tab-panel{display:none}.tab-panel.active{display:block}
 
-/* 카드 */
 .panel-card{background:#fff;border-radius:12px;padding:22px;box-shadow:0 1px 6px rgba(0,0,0,.08)}
 
-/* 서브탭 */
 .subtab-nav{display:flex;gap:6px;margin-bottom:18px}
-.subtab-btn{padding:7px 16px;border:1.5px solid #dde1e7;border-radius:6px;background:#fff;cursor:pointer;font-size:12px;font-weight:600;color:#5f6368;transition:all .2s}
+.subtab-btn{padding:7px 15px;border:1.5px solid #dde1e7;border-radius:6px;background:#fff;cursor:pointer;font-size:12px;font-weight:600;color:#5f6368;transition:all .2s}
 .subtab-btn.active{background:#e8f0fe;border-color:#1a73e8;color:#1a73e8}
 .subtab-content{display:none}.subtab-content.active{display:block}
 .sbadge{background:#e8f0fe;color:#1a73e8;font-size:10px;padding:2px 5px;border-radius:3px;margin-left:3px}
 .subtab-btn.active .sbadge{background:#fff}
 
-/* 섹션 타이틀 */
+.stats-row{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.stat-card{flex:1;min-width:90px;background:#f8f9fa;border-radius:9px;padding:12px;text-align:center;border:1.5px solid #e8eaed}
+.neg-card{border-color:#fce8e6;background:#fef9f9}.warn-card{border-color:#fef3cd;background:#fffdf0}
+.stat-num{font-size:22px;font-weight:800;color:#1a73e8}.neg-card .stat-num{color:#d93025}.warn-card .stat-num{color:#f57c00}
+.stat-label{font-size:11px;color:#5f6368;margin-top:3px}
+
 .section-title{font-size:13px;font-weight:700;color:#3c4043;margin:20px 0 10px;padding-left:8px;border-left:3px solid #1a73e8}
 
 /* 주요 이슈 */
-.issue-list{list-style:none;display:flex;flex-direction:column;gap:7px;padding:2px 0}
-.issue-list li{display:flex;align-items:center;gap:8px;font-size:13px}
-.issue-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap;flex-shrink:0}
-.badge-notice{background:#e3f2fd;color:#1565c0}
-.badge-update{background:#e8f5e9;color:#2e7d32}
-.issue-link{color:#1a1a2e;text-decoration:none;flex:1}
-.issue-link:hover{color:#1a73e8;text-decoration:underline}
-.issue-date{font-size:11px;color:#9aa0a6;white-space:nowrap;flex-shrink:0}
-
-/* 통계 카드 */
-.stats-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-.stat-card{flex:1;min-width:90px;background:#f8f9fa;border-radius:9px;padding:14px;text-align:center;border:1.5px solid #e8eaed}
-.stat-card.neg-card{border-color:#fce8e6;background:#fef9f9}
-.stat-card.warn-card{border-color:#fef3cd;background:#fffdf0}
-.stat-num{font-size:24px;font-weight:800;color:#1a73e8}
-.neg-card .stat-num{color:#d93025}
-.warn-card .stat-num{color:#f57c00}
-.stat-label{font-size:11px;color:#5f6368;margin-top:3px}
+.issue-item{margin-bottom:14px;padding:12px 14px;background:#f8f9fa;border-radius:8px;border-left:3px solid #1a73e8}
+.issue-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.issue-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap}
+.badge-notice{background:#e3f2fd;color:#1565c0}.badge-update{background:#e8f5e9;color:#2e7d32}
+.issue-title-link{font-weight:600;color:#1a1a2e;text-decoration:none;font-size:13px}
+.issue-title-link:hover{color:#1a73e8;text-decoration:underline}
+.issue-summary{font-size:12px;color:#5f6368;margin:4px 0 6px;padding-left:2px}
+.issue-bullets{list-style:none;padding:0}
+.issue-bullets li{font-size:12px;color:#3c4043;padding:2px 0 2px 12px;position:relative}
+.issue-bullets li::before{content:"▷";position:absolute;left:0;color:#1a73e8;font-size:10px}
 
 /* VOC 테이블 */
-.voc-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.voc-table{width:100%;border-collapse:collapse}
 .voc-table th{background:#f1f3f4;padding:8px 10px;text-align:left;font-size:11px;color:#5f6368;border-bottom:1.5px solid #e8eaed;font-weight:600}
 .voc-table td{padding:8px 10px;border-bottom:1px solid #f1f3f4;vertical-align:middle}
 .voc-table tr:hover td{background:#f8f9fa}
 .cat-cell{font-weight:700;font-size:12px;color:#3c4043;background:#fafafa;border-right:2px solid #e8eaed;text-align:center;white-space:nowrap}
-.content-cell{line-height:1.5}
-.views-cell{text-align:right;color:#9aa0a6;font-size:11px;white-space:nowrap}
-.post-link{color:#1a1a2e;text-decoration:none}
-.post-link:hover{color:#1a73e8;text-decoration:underline}
-.cmt-badge{font-size:10px;color:#5f6368;margin-left:5px;background:#f1f3f4;padding:1px 5px;border-radius:3px}
+.content-cell{line-height:1.6;color:#3c4043}
+.post-link{color:#1a1a2e;text-decoration:none}.post-link:hover{color:#1a73e8;text-decoration:underline}
+.count-badge{font-size:11px;color:#9aa0a6;margin-left:4px}
+.ref-cell{text-align:center}
+.link-btn{color:#1a73e8;font-size:11px;text-decoration:none;font-weight:600}
+.link-btn:hover{text-decoration:underline}
 
-/* 기타 */
 .period-bar{font-size:12px;color:#5f6368;background:#f8f9fa;padding:7px 12px;border-radius:5px;margin-bottom:14px}
 .updated-at{font-size:11px;color:#9aa0a6;text-align:right;margin-top:18px}
 .empty{color:#9aa0a6;font-size:13px;padding:20px;text-align:center}
@@ -79,23 +69,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
 <div class="header">
   <div>
     <h1>📊 NTRANCE VOC 대시보드</h1>
-    <div class="sub">네이버 라운지 유저 동향 자동 수집</div>
+    <div class="sub">네이버 라운지 유저 동향 자동 수집·분석</div>
   </div>
-  <div class="ts">생성: 2026-04-02 19:34 KST</div>
+  <div class="ts">생성: 2026-04-02 19:55 KST</div>
 </div>
-
 <div class="main">
-  <!-- 게임 탭 -->
   <div class="tab-nav">
     <button class="tab-btn active" onclick="switchTab('DKR',this)">
       <span class="tab-dot" style="background:#1a73e8"></span>DK모바일:리본
     </button>
-    <!-- 추후: COCW, 베르시온 -->
   </div>
-
   <div class="panel-card">
     <div id="tab-DKR" class="tab-panel active">
-      
     <div class="subtab-nav">
       <button class="subtab-btn active" onclick="switchSub('daily', this)">
         📅 일간 <span class="sbadge">2026-04-01</span>
@@ -107,320 +92,219 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
 
     <!-- 일간 -->
     <div id="sub-daily" class="subtab-content active">
-      <div class="section-title">📢 주요 이슈</div>
-      <ul class='issue-list'>
-        <li>
-          <span class="issue-badge badge-notice">공지사항</span>
-          <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431" target="_blank" class="issue-link">4월 2일(목) 정기 점검 안내 (점검 완료)</a>
-          <span class="issue-date">2026-04-01</span>
-        </li>
-        <li>
-          <span class="issue-badge badge-update">업데이트</span>
-          <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492435" target="_blank" class="issue-link">4월 2일(목) 하이퍼 서버 업데이트 안내</a>
-          <span class="issue-date">2026-04-01</span>
-        </li>
-        <li>
-          <span class="issue-badge badge-update">업데이트</span>
-          <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433" target="_blank" class="issue-link">4월 2일(목) 업데이트 내용 안내</a>
-          <span class="issue-date">2026-04-01</span>
-        </li></ul>
-
-      <div class="section-title">👥 유저 동향</div>
       
     <div class="stats-row">
       <div class="stat-card">
-        <div class="stat-num">16</div>
-        <div class="stat-label">유저 게시물</div>
+        <div class="stat-num">3</div>
+        <div class="stat-label">공지/업데이트</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num">0</div>
-        <div class="stat-label">댓글</div>
+        <div class="stat-num">16</div>
+        <div class="stat-label">유저 게시물</div>
       </div>
       <div class="stat-card neg-card">
         <div class="stat-num">0</div>
         <div class="stat-label">버그·오류</div>
       </div>
       <div class="stat-card warn-card">
-        <div class="stat-num">2</div>
+        <div class="stat-num">9</div>
         <div class="stat-label">건의·요청</div>
       </div>
     </div>
+
+      <div class="section-title">📢 주요 이슈</div>
+      
+        <div class="issue-item">
+          <div class="issue-head">
+            <span class="issue-badge badge-notice">공지사항</span>
+            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431" target="_blank" class="issue-title-link">4월 2일(목) 정기 점검 안내 (점검 완료)</a>
+          </div>
+          <p class="issue-summary">4월 2일(목) 정기 점검 완료 (10:00~13:30) — 신규 콘텐츠 6종 업데이트 및 레벨 캡 250 확장</p>
+          <ul class="issue-bullets"><li>▷ 점검 일정: 2026년 4월 2일(목) 10:00 ~ 13:30 (3시간 30분)</li><li>▷ 점검 보상: 상급 에스텔라의 별빛 주문서(귀속) 20개</li><li>▷ 주요 업데이트: 인터 서버 그룹 변경 / 초월 탈리스만 3종 추가 / 루멘탑 10층 신설</li><li>▷ 레벨 확장: 캐릭터 최대 레벨 250으로 상향</li><li>▷ 기타: 잊혀진 탑 140층 확장 / 장비 연금술 확률 개편 / 칭호 보상 상향</li></ul>
+        </div>
+        <div class="issue-item">
+          <div class="issue-head">
+            <span class="issue-badge badge-update">업데이트</span>
+            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433" target="_blank" class="issue-title-link">4월 2일(목) 업데이트 내용 안내</a>
+          </div>
+          <p class="issue-summary">구서버 인터 서버 그룹 전면 개편 — 성 정보 초기화 예정, 성주 길드 세금 사전 수령 필수</p>
+          <ul class="issue-bullets"><li>▷ 인터 서버 그룹 변경: IGS1(엘퀴네스/SG3·SG4·SG5·SG6·SG30), IGS2(슈리엘/SG1·SG2·SG39)</li><li>▷ 성 정보 전체 초기화 — 점검 전 성주 길드 세금 수령 필수</li><li>▷ 초월 탈리스만 3종 추가 (발레포르·마르바스·가미긴, 고대 탈리스만 조각 50개 필요)</li><li>▷ 캐릭터 최대 레벨 250 확장 / 칭호 승급 미션 보상 상향 및 신규 등급 추가</li><li>▷ 경쟁전 로테이션: 용사의 전장 오픈, 투기장 종료</li></ul>
+        </div>
+        <div class="issue-item">
+          <div class="issue-head">
+            <span class="issue-badge badge-update">업데이트</span>
+            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492435" target="_blank" class="issue-title-link">4월 2일(목) 하이퍼 서버 업데이트 안내</a>
+          </div>
+          <p class="issue-summary">하이퍼 서버 전용 — 초월 탈리스만 3종, 루멘탑 10층 추가 및 장비 연금술 확률 대규모 개편</p>
+          <ul class="issue-bullets"><li>▷ 초월 탈리스만 3종 추가: 발레포르(근거리 회피·DR무시 증폭) / 마르바스(원거리·명중) / 가미긴(마법·치명타저항)</li><li>▷ 루멘탑 10층 신설: 전설 찬란한 장비 각인 상자 제작 레시피 추가</li><li>▷ 잊혀진 탑 최대 140층으로 확장</li><li>▷ 장비 연금술 확률 개편: 저단계(+0~+2) 확률 하향 → 중·고단계(+3 이상) 확률 상향</li></ul>
+        </div>
+
+      <div class="section-title">👥 공식 라운지 유저 동향</div>
       
     <table class="voc-table">
       <thead>
-        <tr><th style="width:90px">항목</th><th>내용</th><th style="width:60px">조회</th></tr>
+        <tr><th style="width:90px">항목</th><th>내용</th><th style="width:60px">비고</th></tr>
       </thead>
       <tbody>
         <tr>
-          <td class="cat-cell" rowspan="1">게임 관련</td>
+          <td class="cat-cell" rowspan="2">게임 관련</td>
           <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="post-link">상점에서 뭐 사나요?</a>
+            - <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="post-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</a>
+            <span class="count-badge">(3건)</span>
           </td>
-          <td class="views-cell">209</td>
-        </tr>
-        <tr>
-          <td class="cat-cell" rowspan="2">건의·요청</td>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="post-link">보탐할때 아이템 길드로들어가지말고</a><span class="cmt-badge">💬1</span>
-          </td>
-          <td class="views-cell">147</td>
+          <td class="ref-cell"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="link-btn">[링크]</a></td>
         </tr>
         <tr>
           <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="post-link">신화스킬</a><span class="cmt-badge">💬2</span>
+            - <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="post-link">초보 유저 상점 패키지 가성비 및 구매 우선순위 문의</a>
+            <span class="count-badge"></span>
           </td>
-          <td class="views-cell">128</td>
+          <td class="ref-cell"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="link-btn">[링크]</a></td>
         </tr>
         <tr>
-          <td class="cat-cell" rowspan="13">기타</td>
+          <td class="cat-cell" rowspan="3">건의·요청</td>
           <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7494737" target="_blank" class="post-link">앤트런스 다시는 안한다 ㅅㄱ</a><span class="cmt-badge">💬3</span>
+            - <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="post-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</a>
+            <span class="count-badge">(7건)</span>
           </td>
-          <td class="views-cell">191</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307" target="_blank" class="post-link">이 게임은 도대체가 발전이 없노 ㅋㅋㅋ역시나네</a><span class="cmt-badge">💬5</span>
-          </td>
-          <td class="views-cell">226</td>
+          <td class="ref-cell"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="link-btn">[링크]</a></td>
         </tr>
         <tr>
           <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492521" target="_blank" class="post-link">서버이전 왜 안내냐 지겨워라 지겨워</a>
+            - <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="post-link">보스 탐험 드롭 아이템 길드 귀속 → 개인 인벤토리 수령 방식으로 개선 건의</a>
+            <span class="count-badge"></span>
           </td>
-          <td class="views-cell">115</td>
+          <td class="ref-cell"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="link-btn">[링크]</a></td>
         </tr>
         <tr>
           <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460" target="_blank" class="post-link">섭이전. 구썹이랑 하이퍼랑합쳐라</a><span class="cmt-badge">💬2</span>
+            - <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="post-link">신화스킬 제작 시 전설스킬 추출 재료 사용 허용 건의</a>
+            <span class="count-badge"></span>
           </td>
-          <td class="views-cell">209</td>
+          <td class="ref-cell"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="link-btn">[링크]</a></td>
         </tr>
         <tr>
+          <td class="cat-cell" rowspan="1">기타</td>
           <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="post-link">전체 섭이전 한번 가시죠</a>
+            - <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="post-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</a>
+            <span class="count-badge">(3건)</span>
           </td>
-          <td class="views-cell">81</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="post-link">32서버 상황 마지막</a><span class="cmt-badge">💬22</span>
-          </td>
-          <td class="views-cell">463</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="post-link">과금내놓고 한달만에 서비스종료함 과금안하는게답</a>
-          </td>
-          <td class="views-cell">144</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490333" target="_blank" class="post-link">이전권 캐쉬로팔면 게임사도 돈벌고</a><span class="cmt-badge">💬2</span>
-          </td>
-          <td class="views-cell">108</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490286" target="_blank" class="post-link">32서버 상황</a><span class="cmt-badge">💬16</span>
-          </td>
-          <td class="views-cell">389</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490284" target="_blank" class="post-link">바로템에 케릭엄청올라옴</a>
-          </td>
-          <td class="views-cell">169</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490256" target="_blank" class="post-link">이전권 나와야될듯</a>
-          </td>
-          <td class="views-cell">36</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490014" target="_blank" class="post-link">현재 구섭 구도가 어떻게 되요?</a>
-          </td>
-          <td class="views-cell">77</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490069" target="_blank" class="post-link">Bj도 다 빠졌으니 구도 맞춰야 됩니다</a><span class="cmt-badge">💬2</span>
-          </td>
-          <td class="views-cell">119</td>
+          <td class="ref-cell"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="link-btn">[링크]</a></td>
         </tr></tbody>
     </table>
     </div>
 
     <!-- 주간 -->
     <div id="sub-weekly" class="subtab-content">
-      <div class="period-bar">📊 2026-04-01</div>
-      <div class="section-title">📢 주요 이슈</div>
-      <ul class='issue-list'>
-        <li>
-          <span class="issue-badge badge-notice">공지사항</span>
-          <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431" target="_blank" class="issue-link">4월 2일(목) 정기 점검 안내 (점검 완료)</a>
-          <span class="issue-date">2026-04-01</span>
-        </li>
-        <li>
-          <span class="issue-badge badge-update">업데이트</span>
-          <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492435" target="_blank" class="issue-link">4월 2일(목) 하이퍼 서버 업데이트 안내</a>
-          <span class="issue-date">2026-04-01</span>
-        </li>
-        <li>
-          <span class="issue-badge badge-update">업데이트</span>
-          <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433" target="_blank" class="issue-link">4월 2일(목) 업데이트 내용 안내</a>
-          <span class="issue-date">2026-04-01</span>
-        </li></ul>
-      <div class="section-title">👥 유저 동향</div>
+      <div class="period-bar">📊 수집 기간: 2026-04-01</div>
       
     <div class="stats-row">
       <div class="stat-card">
-        <div class="stat-num">16</div>
-        <div class="stat-label">유저 게시물</div>
+        <div class="stat-num">3</div>
+        <div class="stat-label">공지/업데이트</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num">0</div>
-        <div class="stat-label">댓글</div>
+        <div class="stat-num">16</div>
+        <div class="stat-label">유저 게시물</div>
       </div>
       <div class="stat-card neg-card">
         <div class="stat-num">0</div>
         <div class="stat-label">버그·오류</div>
       </div>
       <div class="stat-card warn-card">
-        <div class="stat-num">2</div>
+        <div class="stat-num">9</div>
         <div class="stat-label">건의·요청</div>
       </div>
     </div>
+
+      <div class="section-title">📢 주요 이슈</div>
+      
+        <div class="issue-item">
+          <div class="issue-head">
+            <span class="issue-badge badge-notice">공지사항</span>
+            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431" target="_blank" class="issue-title-link">4월 2일(목) 정기 점검 안내 (점검 완료)</a>
+          </div>
+          <p class="issue-summary">4월 2일(목) 정기 점검 완료 (10:00~13:30) — 신규 콘텐츠 6종 업데이트 및 레벨 캡 250 확장</p>
+          <ul class="issue-bullets"><li>▷ 점검 일정: 2026년 4월 2일(목) 10:00 ~ 13:30 (3시간 30분)</li><li>▷ 점검 보상: 상급 에스텔라의 별빛 주문서(귀속) 20개</li><li>▷ 주요 업데이트: 인터 서버 그룹 변경 / 초월 탈리스만 3종 추가 / 루멘탑 10층 신설</li><li>▷ 레벨 확장: 캐릭터 최대 레벨 250으로 상향</li><li>▷ 기타: 잊혀진 탑 140층 확장 / 장비 연금술 확률 개편 / 칭호 보상 상향</li></ul>
+        </div>
+        <div class="issue-item">
+          <div class="issue-head">
+            <span class="issue-badge badge-update">업데이트</span>
+            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433" target="_blank" class="issue-title-link">4월 2일(목) 업데이트 내용 안내</a>
+          </div>
+          <p class="issue-summary">구서버 인터 서버 그룹 전면 개편 — 성 정보 초기화 예정, 성주 길드 세금 사전 수령 필수</p>
+          <ul class="issue-bullets"><li>▷ 인터 서버 그룹 변경: IGS1(엘퀴네스/SG3·SG4·SG5·SG6·SG30), IGS2(슈리엘/SG1·SG2·SG39)</li><li>▷ 성 정보 전체 초기화 — 점검 전 성주 길드 세금 수령 필수</li><li>▷ 초월 탈리스만 3종 추가 (발레포르·마르바스·가미긴, 고대 탈리스만 조각 50개 필요)</li><li>▷ 캐릭터 최대 레벨 250 확장 / 칭호 승급 미션 보상 상향 및 신규 등급 추가</li><li>▷ 경쟁전 로테이션: 용사의 전장 오픈, 투기장 종료</li></ul>
+        </div>
+        <div class="issue-item">
+          <div class="issue-head">
+            <span class="issue-badge badge-update">업데이트</span>
+            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492435" target="_blank" class="issue-title-link">4월 2일(목) 하이퍼 서버 업데이트 안내</a>
+          </div>
+          <p class="issue-summary">하이퍼 서버 전용 — 초월 탈리스만 3종, 루멘탑 10층 추가 및 장비 연금술 확률 대규모 개편</p>
+          <ul class="issue-bullets"><li>▷ 초월 탈리스만 3종 추가: 발레포르(근거리 회피·DR무시 증폭) / 마르바스(원거리·명중) / 가미긴(마법·치명타저항)</li><li>▷ 루멘탑 10층 신설: 전설 찬란한 장비 각인 상자 제작 레시피 추가</li><li>▷ 잊혀진 탑 최대 140층으로 확장</li><li>▷ 장비 연금술 확률 개편: 저단계(+0~+2) 확률 하향 → 중·고단계(+3 이상) 확률 상향</li></ul>
+        </div>
+
+      <div class="section-title">👥 공식 라운지 유저 동향</div>
       
     <table class="voc-table">
       <thead>
-        <tr><th style="width:90px">항목</th><th>내용</th><th style="width:60px">조회</th></tr>
+        <tr><th style="width:90px">항목</th><th>내용</th><th style="width:60px">비고</th></tr>
       </thead>
       <tbody>
         <tr>
-          <td class="cat-cell" rowspan="1">게임 관련</td>
+          <td class="cat-cell" rowspan="2">게임 관련</td>
           <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="post-link">상점에서 뭐 사나요?</a>
+            - <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="post-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</a>
+            <span class="count-badge">(3건)</span>
           </td>
-          <td class="views-cell">209</td>
-        </tr>
-        <tr>
-          <td class="cat-cell" rowspan="2">건의·요청</td>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="post-link">보탐할때 아이템 길드로들어가지말고</a><span class="cmt-badge">💬1</span>
-          </td>
-          <td class="views-cell">147</td>
+          <td class="ref-cell"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="link-btn">[링크]</a></td>
         </tr>
         <tr>
           <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="post-link">신화스킬</a><span class="cmt-badge">💬2</span>
+            - <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="post-link">초보 유저 상점 패키지 가성비 및 구매 우선순위 문의</a>
+            <span class="count-badge"></span>
           </td>
-          <td class="views-cell">128</td>
+          <td class="ref-cell"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="link-btn">[링크]</a></td>
         </tr>
         <tr>
-          <td class="cat-cell" rowspan="13">기타</td>
+          <td class="cat-cell" rowspan="3">건의·요청</td>
           <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7494737" target="_blank" class="post-link">앤트런스 다시는 안한다 ㅅㄱ</a><span class="cmt-badge">💬3</span>
+            - <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="post-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</a>
+            <span class="count-badge">(7건)</span>
           </td>
-          <td class="views-cell">191</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307" target="_blank" class="post-link">이 게임은 도대체가 발전이 없노 ㅋㅋㅋ역시나네</a><span class="cmt-badge">💬5</span>
-          </td>
-          <td class="views-cell">226</td>
+          <td class="ref-cell"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="link-btn">[링크]</a></td>
         </tr>
         <tr>
           <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492521" target="_blank" class="post-link">서버이전 왜 안내냐 지겨워라 지겨워</a>
+            - <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="post-link">보스 탐험 드롭 아이템 길드 귀속 → 개인 인벤토리 수령 방식으로 개선 건의</a>
+            <span class="count-badge"></span>
           </td>
-          <td class="views-cell">115</td>
+          <td class="ref-cell"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="link-btn">[링크]</a></td>
         </tr>
         <tr>
           <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460" target="_blank" class="post-link">섭이전. 구썹이랑 하이퍼랑합쳐라</a><span class="cmt-badge">💬2</span>
+            - <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="post-link">신화스킬 제작 시 전설스킬 추출 재료 사용 허용 건의</a>
+            <span class="count-badge"></span>
           </td>
-          <td class="views-cell">209</td>
+          <td class="ref-cell"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="link-btn">[링크]</a></td>
         </tr>
         <tr>
+          <td class="cat-cell" rowspan="1">기타</td>
           <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="post-link">전체 섭이전 한번 가시죠</a>
+            - <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="post-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</a>
+            <span class="count-badge">(3건)</span>
           </td>
-          <td class="views-cell">81</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="post-link">32서버 상황 마지막</a><span class="cmt-badge">💬22</span>
-          </td>
-          <td class="views-cell">463</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="post-link">과금내놓고 한달만에 서비스종료함 과금안하는게답</a>
-          </td>
-          <td class="views-cell">144</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490333" target="_blank" class="post-link">이전권 캐쉬로팔면 게임사도 돈벌고</a><span class="cmt-badge">💬2</span>
-          </td>
-          <td class="views-cell">108</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490286" target="_blank" class="post-link">32서버 상황</a><span class="cmt-badge">💬16</span>
-          </td>
-          <td class="views-cell">389</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490284" target="_blank" class="post-link">바로템에 케릭엄청올라옴</a>
-          </td>
-          <td class="views-cell">169</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490256" target="_blank" class="post-link">이전권 나와야될듯</a>
-          </td>
-          <td class="views-cell">36</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490014" target="_blank" class="post-link">현재 구섭 구도가 어떻게 되요?</a>
-          </td>
-          <td class="views-cell">77</td>
-        </tr>
-        <tr>
-          <td class="content-cell">
-            <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490069" target="_blank" class="post-link">Bj도 다 빠졌으니 구도 맞춰야 됩니다</a><span class="cmt-badge">💬2</span>
-          </td>
-          <td class="views-cell">119</td>
+          <td class="ref-cell"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="link-btn">[링크]</a></td>
         </tr></tbody>
     </table>
     </div>
 
-    <div class="updated-at">마지막 업데이트: 2026-04-02 19:34 KST</div>
-
-    </div>
+    <div class="updated-at">마지막 업데이트: 2026-04-02 19:55 KST</div></div>
   </div>
 </div>
-
 <script>
-function switchTab(key, btn) {
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('tab-'+key).classList.add('active');
-}
-function switchSub(sub, btn) {
-  const panel = btn.closest('.tab-panel');
-  panel.querySelectorAll('.subtab-btn').forEach(b=>b.classList.remove('active'));
-  panel.querySelectorAll('.subtab-content').forEach(c=>c.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('sub-'+sub).classList.add('active');
-}
+function switchTab(k,b){document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById('tab-'+k).classList.add('active');}
+function switchSub(s,b){const p=b.closest('.tab-panel');p.querySelectorAll('.subtab-btn').forEach(x=>x.classList.remove('active'));p.querySelectorAll('.subtab-content').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById('sub-'+s).classList.add('active');}
 </script>
 </body>
 </html>
