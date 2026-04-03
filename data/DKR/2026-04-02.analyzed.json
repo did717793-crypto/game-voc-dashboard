@@ -1,0 +1,27 @@
+{
+  "date": "2026-04-02",
+  "major_issues": [],
+  "voc_groups": [
+    {
+      "category": "건의·요청",
+      "summary": "루멘탑 이동증표 봉인 해제 후 순간이동주문서 제작 확률(10%) 개선 건의",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499126",
+      "feed_ids": ["7499126"]
+    },
+    {
+      "category": "건의·요청",
+      "summary": "보스 소환 시간대 변경 건의 (접속자 패턴 고려 요청)",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7496011",
+      "feed_ids": ["7496011"]
+    },
+    {
+      "category": "기타",
+      "summary": "COC 서비스 종료에 이은 DKR 조기 종료 우려 및 회사 신뢰도 하락 표명",
+      "count": 2,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337",
+      "feed_ids": ["7499032", "7497337"]
+    }
+  ]
+}

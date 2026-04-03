@@ -1,0 +1,189 @@
+{
+  "meta": {
+    "date": "2026-04-02",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-04-02T09:00:00+09:00",
+    "window_end": "2026-04-03T09:00:00+09:00",
+    "crawled_at": "2026-04-03T10:58:51.139651+09:00",
+    "total_posts": 4,
+    "total_comments": 9,
+    "boards": {
+      "11": {
+        "name": "공지사항",
+        "count": 0
+      },
+      "13": {
+        "name": "업데이트",
+        "count": 0
+      },
+      "4": {
+        "name": "자유 게시판",
+        "count": 3
+      },
+      "9": {
+        "name": "건의 게시판",
+        "count": 1
+      },
+      "7": {
+        "name": "버그 제보",
+        "count": 0
+      },
+      "5": {
+        "name": "질문과 답변",
+        "count": 0
+      }
+    }
+  },
+  "official_posts": [],
+  "posts": [
+    {
+      "feed_id": "7499032",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "천안핵주먹 200 에팔림 실화? 섭종 ㅅㄱ",
+      "body": "천안핵주먹 본주 ㅈ같겟다 이제누가 쿠마랑겜하고 엔트러스겜하겟냐.. 무섭다 진짜 .. ㄷㄷ",
+      "author": "쌀별이형한것같아",
+      "created_at": "2026-04-03T06:20:12+09:00",
+      "view_count": 36,
+      "comment_count": 1,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499032",
+      "comments": [
+        {
+          "comment_id": "25646224",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "Hhshdhhx",
+          "text": "ㅋㅋㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7497337",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "조만간 서비스종료다 이글은성지가됨",
+      "body": "조만간이다 탈출은지능순 얘네 서버 유지할돈없어서 하나하나 서비스종료중",
+      "author": "연화경",
+      "created_at": "2026-04-02T17:55:52+09:00",
+      "view_count": 112,
+      "comment_count": 4,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337",
+      "comments": [
+        {
+          "comment_id": "25636932",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "네이버최강 휴먼 9613",
+          "text": "모르는 사람 없는데  성지같은 소리하고있네  이제까지 오픈해서 서버종료 안한게 없다",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25639110",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "럭키가이 겜돌이 6255",
+          "text": "성지는 병지나 ㅋㅋㅋ 니지능이 문제있는거같다",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25640745",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "버스타는 언데드 1594",
+          "text": "천안핵주먹 캐릭200에팔린거보면 섭종맞음",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25644314",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "학살중인 초보 6821",
+          "text": "돈 없으면 그냥 린클가서 폐지나 주워\nㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7496011",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "보스시간 안바꾸냐??",
+      "body": "개노잼",
+      "author": "라운지 초심자 a611278",
+      "created_at": "2026-04-02T12:53:20+09:00",
+      "view_count": 122,
+      "comment_count": 4,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7496011",
+      "comments": [
+        {
+          "comment_id": "25632088",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "학살중인 초보 6821",
+          "text": "왜 개 백수라서 새벽에 보탐 없어서 분배 못받아서 그래?\n나가서 일을 해",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25632142",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "라운지대표 오빠 266",
+          "text": "보탐시간 좋은데 일끝나고 하기... 백순가 진짜 ㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25633928",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요 용사님.\n\n게임 내 만족스럽지 못한 부분이 있어 개선을 요청하시고자 의견을 남겨주셨네요.\n\n말씀해 주신 내용은 담당 부서를 통해 논의를 진행하여\n보다 만족스러운 경험을 선사해 드릴 수 있도록 노력하겠습니다.\n\n이외에도 다른 문의 사항 혹은 건의 사항이 있다면 언제든 찾아주시기 바라며,\n보다 발전된 모습으로 보답해 드리기 위해 최선을 다하겠습니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25636844",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "연화경",
+          "text": "조만간이다 탈출은지능순 얘네 서버 유지할돈없어서 하나하나 서비스종료중",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7499126",
+      "board_id": 9,
+      "board_name": "건의 게시판",
+      "title": "봉인된 루멘탑 이동증표에 관하여",
+      "body": "안녕하세요 이동증표 관련해서 건의드릴께 있는데요 각 층 보스를 잡으면 랜덤으로 봉인된 루멘탑 이동증표가 나옵니다. 그리고 제작하는데 10프로의 확률로 그 층 순간이동주문서 500장과 현돌 100개가 소비됩니다. 엔트러스 게임 10프로는 다른게임 10프로와 틀려서 체감상 5프로 미만같은느낌을 많이 받고 있습니다. 만약 만들었다? 능력치를 보면  이동증표 만든 층을 무한으로 1분쿨타임으로 갈수 있는 메리트가 있고 경험치 10프로 , 드래곤 주화 10프로 , pve공격증폭 10프로 , pvp공격증폭 10프로 물약회복률 25프로 , 명중증폭 10프로 , pvp명중 +3000 7가지의 능력들이 추가 되므로 막상 좋아보이지만 따지고 보면 그렇게 썩 도움이 되는 능력은 없다고 보여집니다. 현시점 현돌100개는 뭐 그렇다치는데 루멘탑 이동주문서 수급도 어려울뿐더러 확률이 너무 낮고 이걸 왜 만들어야되지? 라는 의문이 듭니다. 이런것들은 솔직히 메인형들이 무조건 만들고 그 아래 그아래 이런식으로 줄을 서던지 해야되는데 이건뭐 만드는사람이 없어요...왜? 능력치가 그렇게 끌리지않거든.... 말이 너무 길었네요 그래서 보스를 무조건 잡아 이동증표를 만들어야하는 메리트 있는 능력치를 개편해주시면 감사하겠습니다.",
+      "author": "라운지 초심자 a852439",
+      "created_at": "2026-04-03T07:32:49+09:00",
+      "view_count": 35,
+      "comment_count": 0,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499126",
+      "comments": []
+    }
+  ]
+}
