@@ -195,7 +195,8 @@ def build_section_voc(voc_groups: list[dict], raw_map: dict, pfx: str = "v") -> 
             continue
         total_cnt = sum(x.get("count", 1) for x in items)
 
-        content = ""
+        content    = ""
+        note_links = []
         for i_item, item in enumerate(items):
             summ     = item.get("summary", "")
             url      = item.get("representative_url", "#")
@@ -230,24 +231,26 @@ def build_section_voc(voc_groups: list[dict], raw_map: dict, pfx: str = "v") -> 
             # 다중 항목 구분선 (첫 번째 항목은 제외)
             sep_class = " voc-sep" if i_item > 0 else ""
 
+            # 비고용 링크 버튼 수집
+            note_links.append(f'<a href="{url}" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a>')
+
             content += f"""
               <div class="voc-row-item{sep_class}"{oc_attr}>
                 <div class="voc-item-main">
-                  {arr}<a href="{url}" target="_blank" class="vitem-link"
-                     onclick="event.stopPropagation()">{summ}</a>
+                  {arr}<span class="vitem-link">{summ}</span>
                 </div>
-                <a href="{url}" target="_blank" class="link-btn"
-                   onclick="event.stopPropagation()">[링크]</a>
               </div>
               {exp_div}"""
             idx += 1
 
+        note_cell = "<br>".join(note_links)
         # cat-td: 색깔 없이, 텍스트 중앙정렬
         rows += f"""
         <tr>
           <td class="cat-td">{cat}</td>
           <td class="content-td">{content}</td>
           <td class="ref-td">{total_cnt}건</td>
+          <td class="note-td">{note_cell}</td>
         </tr>"""
 
     return f"""
@@ -257,6 +260,7 @@ def build_section_voc(voc_groups: list[dict], raw_map: dict, pfx: str = "v") -> 
           <th style="width:76px">항목</th>
           <th>내용</th>
           <th style="width:52px">건수</th>
+          <th style="width:70px">비고</th>
         </tr>
       </thead>
       <tbody>{rows}</tbody>
@@ -271,56 +275,139 @@ def build_section_cs(cs_inquiries: list[dict], cs_week_trend: list[dict] = None)
     """
     cs_inquiries schema:
     [{"category": "계정·결제", "count": 3, "summary": "결제 오류 관련", "items": ["...", ...]}, ...]
-    cs_week_trend: [{"date": "2026-04-02", "dkr": 0, "categories": {...}}, ...]
+    cs_week_trend: [{"date": "2026-04-02", "received": 0, "processed": 0, "dkr": 0, "categories": {...}}, ...]
+      - received: 인입량(접수), dkr 필드가 있으면 fallback으로 사용
+      - processed: 처리량(답변완료)
     """
     import json as _json
 
-    # ── 주간 추이 차트 ──
+    # ── 주간 추이 복합 차트 (인입량 바 + 처리량 바 + 처리율 꺾은선) ──
     trend_html = ""
     if cs_week_trend:
-        labels  = [t["date"][5:] for t in cs_week_trend]   # "04-02"
-        values  = [t.get("dkr", 0) for t in cs_week_trend]
-        total_w = sum(values)
-        step_cs, max_cs = _nice_axis(max(values) if values else 0)
-        chart_id = f"cs_trend_{labels[-1].replace('-','')}"
+        labels    = [t["date"][5:] for t in cs_week_trend]
+        received  = [t.get("received", t.get("dkr", 0)) for t in cs_week_trend]
+        processed = [t.get("processed", 0) for t in cs_week_trend]
+        rates     = [
+            round(processed[i] / received[i] * 100) if received[i] > 0 else 0
+            for i in range(len(received))
+        ]
+        total_recv = sum(received)
+        last_recv  = received[-1]
+        last_proc  = processed[-1]
+        last_rate  = rates[-1]
+
+        # Y축 (건수) 범위
+        step_cs, max_cs = _nice_axis(max(max(received), max(processed)) if received else 0)
+        # Y축 (처리율 %) 범위: 0~100 기본, 초과 시 여유
+        max_rate = max(rates) if rates else 0
+        rate_max = max(120, math.ceil(max_rate / 20) * 20 + 20) if max_rate > 100 else 120
+
+        chart_id = f"cs_combo_{labels[-1].replace('-','')}"
         trend_html = f"""
-        <div style="margin-bottom:12px">
-          <canvas id="{chart_id}" height="90"></canvas>
+        <div style="margin-bottom:8px">
+          <div style="position:relative;height:160px">
+            <canvas id="{chart_id}"></canvas>
+          </div>
         </div>
         <script>
         (function(){{
           var ctx = document.getElementById('{chart_id}').getContext('2d');
+          var barLabelPlugin = {{
+            id:'barLabel',
+            afterDraw: function(chart) {{
+              var c = chart.ctx;
+              chart.data.datasets.forEach(function(ds, di) {{
+                if (ds.type === 'line') return;
+                var meta = chart.getDatasetMeta(di);
+                if (meta.hidden) return;
+                meta.data.forEach(function(bar, i) {{
+                  var val = ds.data[i];
+                  if (!val) return;
+                  c.save();
+                  c.font = 'bold 10px sans-serif';
+                  c.fillStyle = '#333';
+                  c.textAlign = 'center';
+                  c.textBaseline = 'bottom';
+                  c.fillText(val, bar.x, bar.y - 2);
+                  c.restore();
+                }});
+              }});
+            }}
+          }};
           new Chart(ctx, {{
-            type: 'bar',
             data: {{
               labels: {_json.dumps(labels)},
-              datasets: [{{
-                label: '문의(DKR)',
-                data: {_json.dumps(values)},
-                backgroundColor: '#4a90d9',
-                borderRadius: 3
-              }}]
+              datasets: [
+                {{
+                  type: 'bar',
+                  label: '인입량',
+                  data: {_json.dumps(received)},
+                  backgroundColor: 'rgba(123,104,238,0.75)',
+                  borderRadius: 3,
+                  yAxisID: 'y'
+                }},
+                {{
+                  type: 'bar',
+                  label: '처리량',
+                  data: {_json.dumps(processed)},
+                  backgroundColor: 'rgba(160,160,160,0.75)',
+                  borderRadius: 3,
+                  yAxisID: 'y'
+                }},
+                {{
+                  type: 'line',
+                  label: '처리율',
+                  data: {_json.dumps(rates)},
+                  borderColor: 'rgba(220,50,50,0.85)',
+                  borderDash: [5,3],
+                  borderWidth: 1.5,
+                  pointBackgroundColor: 'rgba(220,50,50,0.85)',
+                  pointRadius: 3,
+                  tension: 0.2,
+                  yAxisID: 'y1'
+                }}
+              ]
             }},
             options: {{
               responsive: true,
+              maintainAspectRatio: false,
               plugins: {{
-                legend: {{ display: false }},
-                tooltip: {{ callbacks: {{ label: ctx => ctx.parsed.y + '건' }} }}
+                legend: {{
+                  position: 'bottom',
+                  labels: {{ font: {{size:11}}, boxWidth:12, padding:8 }}
+                }},
+                tooltip: {{
+                  mode: 'index',
+                  intersect: false,
+                  callbacks: {{
+                    label: function(c) {{
+                      if (c.dataset.label === '처리율') return c.dataset.label + ': ' + c.parsed.y + '%';
+                      return c.dataset.label + ': ' + c.parsed.y + '건';
+                    }}
+                  }}
+                }}
               }},
               scales: {{
                 y: {{
                   min: 0, max: {max_cs},
-                  ticks: {{ stepSize: {step_cs}, callback: v => v + '건' }},
-                  grid: {{ color: '#e8eaed' }}
+                  ticks: {{ stepSize: {step_cs}, callback: function(v){{ return v+'건'; }}, font:{{size:11}} }},
+                  grid: {{ color: '#eee' }}
                 }},
-                x: {{ grid: {{ display: false }} }}
+                y1: {{
+                  position: 'right',
+                  min: 0, max: {rate_max},
+                  ticks: {{ callback: function(v){{ return v+'%'; }}, font:{{size:11}} }},
+                  grid: {{ drawOnChartArea: false }}
+                }},
+                x: {{ ticks:{{font:{{size:11}}}}, grid:{{ display:false }} }}
               }}
-            }}
+            }},
+            plugins: [barLabelPlugin]
           }});
         }})();
         </script>
-        <div style="font-size:11px;color:#666;margin-bottom:8px">
-          7일 누적 {total_w}건 &nbsp;|&nbsp; 어제({labels[-1]}) {values[-1]}건
+        <div style="font-size:11px;color:#666;margin:4px 0 10px">
+          7일 누적 {total_recv}건 &nbsp;|&nbsp; 어제({labels[-1]}) 인입 {last_recv}건 · 처리 {last_proc}건 · 처리율 {last_rate}%
         </div>"""
 
     # ── 당일 문의 상세 ──
@@ -405,11 +492,11 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
             f'<span class="rpt-title">{label}</span>'
             f'<span class="rpt-ts">조회: {datetime.now(KST).strftime("%Y-%m-%d %H:%M")}</span></div>'
             + sec("01", "주요 이슈",        build_section_issues(analyzed))
-            + sec("02", "커뮤니티 지표",    build_section_chart(chart_dates, chart_id))
-            + sec("03", "공식 라운지 동향", build_section_voc(
+            + sec("02", "운영 지표",        build_section_chart(chart_dates, chart_id))
+            + sec("03", "1:1 문의 동향",    build_section_cs(analyzed.get("cs_inquiries", []), analyzed.get("cs_week_trend")))
+            + sec("04", "공식 라운지 동향", build_section_voc(
                 analyzed.get("voc_groups", []), raw_map,
                 pfx=f"D{date_str.replace('-','')}_"))
-            + sec("04", "1:1 문의 동향",    build_section_cs(analyzed.get("cs_inquiries", []), analyzed.get("cs_week_trend")))
         )
     else:  # weekly
         idx        = all_dates.index(date_str) if date_str in all_dates else 0
@@ -425,11 +512,11 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
             f'<span class="rpt-title">주간 서비스 현황</span>'
             f'<span class="rpt-ts">집계기간: {wrange}</span></div>'
             + sec("01", "주간 주요 이슈",   build_section_issues(analyzed))
-            + sec("02", "커뮤니티 지표",    build_section_chart(sorted_wd, chart_id))
-            + sec("03", "공식 라운지 동향", build_section_voc(
+            + sec("02", "운영 지표",        build_section_chart(sorted_wd, chart_id))
+            + sec("03", "1:1 문의 동향",    build_section_cs(analyzed.get("cs_inquiries", []), analyzed.get("cs_week_trend")))
+            + sec("04", "공식 라운지 동향", build_section_voc(
                 analyzed.get("voc_groups", []), raw_map,
                 pfx=f"W{date_str.replace('-','')}_"))
-            + sec("04", "1:1 문의 동향",    build_section_cs(analyzed.get("cs_inquiries", []), analyzed.get("cs_week_trend")))
         )
 
 
@@ -555,8 +642,10 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
 .vitem-link{{font-size:12.5px;color:#3c4043;text-decoration:none;line-height:1.5;flex:1}}
 .vitem-link:hover{{color:#1a73e8}}
 .link-btn{{font-size:11px;color:#1a73e8;text-decoration:none;font-weight:600;
-           white-space:nowrap;flex-shrink:0}}
+           white-space:nowrap;flex-shrink:0;display:inline-block;margin:2px 0}}
 .link-btn:hover{{text-decoration:underline}}
+.note-td{{padding:8px 6px;text-align:center;vertical-align:middle;
+          border-bottom:1px solid #f0f2f5;font-size:11px}}
 
 /* 아코디언 상세 */
 .det-group{{background:#f0f4ff;border-radius:6px;margin:2px 8px 8px;padding:10px 12px}}
