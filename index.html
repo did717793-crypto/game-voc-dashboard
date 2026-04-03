@@ -134,7 +134,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     <span class="brand">NTRANCE</span>
     <span class="brand-sub">VOC 대시보드</span>
   </div>
-  <span style="font-size:11px;color:#8892b0">생성: 2026-04-03 12:24 KST</span>
+  <span style="font-size:11px;color:#8892b0">생성: 2026-04-03 15:12 KST</span>
 </div>
 
 <div class="tab-bar">
@@ -160,7 +160,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
   <div class="rpt-card">
     
         <div id="panel-2026-04-02" class="date-panel" style="display:block">
-          <div id="D-2026-04-02" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-02 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-03 12:24</span></div>
+          <div id="D-2026-04-02" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-02 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-03 15:12</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="iss-link">COC 서비스 종료에 이은 DKR 조기 종료 우려 및 회사 신뢰도 하락 표명</a> <span class="cnt-s">(2건)</span></li></ul></div>
@@ -279,10 +279,44 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">04</span>1:1 문의 동향</div>
       <div class="rpt-sec-body">
-        <div class="cs-placeholder">
-          <p>📋 Hive 콘솔에서 당일 문의 데이터를 수동으로 업데이트해 주세요.</p>
-          <p class="cs-hint">→ console.withhive.com → 문의 목록 → 한국어 → 전체 검색</p>
-        </div></div>
+        <div style="margin-bottom:12px">
+          <canvas id="cs_trend_0402" height="90"></canvas>
+        </div>
+        <script>
+        (function(){
+          var ctx = document.getElementById('cs_trend_0402').getContext('2d');
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: ["03-27", "03-28", "03-29", "03-30", "03-31", "04-01", "04-02"],
+              datasets: [{
+                label: '문의(DKR)',
+                data: [3, 0, 4, 1, 3, 2, 0],
+                backgroundColor: '#4a90d9',
+                borderRadius: 3
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: ctx => ctx.parsed.y + '건' } }
+              },
+              scales: {
+                y: {
+                  min: 0, max: 20,
+                  ticks: { stepSize: 5, callback: v => v + '건' },
+                  grid: { color: '#e8eaed' }
+                },
+                x: { grid: { display: false } }
+              }
+            }
+          });
+        })();
+        </script>
+        <div style="font-size:11px;color:#666;margin-bottom:8px">
+          7일 누적 13건 &nbsp;|&nbsp; 어제(04-02) 0건
+        </div><p class='empty-s' style='color:#888;font-size:12px'>당일 DKR 문의 없음</p></div>
     </div></div>
           <div id="W-2026-04-02" class="period-panel" style="display:none"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">주간 서비스 현황</span><span class="rpt-ts">집계기간: 2026-04-01 ~ 2026-04-02</span></div>
     <div class="rpt-section">
@@ -469,7 +503,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-01" class="date-panel" style="display:none">
-          <div id="D-2026-04-01" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-01 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-03 12:24</span></div>
+          <div id="D-2026-04-01" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-01 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-03 15:12</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431" target="_blank" class="iss-link">4월 2일(목) 정기 점검 완료 (10:00~13:30) — 신규 콘텐츠 6종 업데이트 및 레벨 캡 250 확장</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433" target="_blank" class="iss-link">구서버 인터 서버 그룹 전면 개편 — 성 정보 초기화 예정, 성주 길드 세금 사전 수령 필수</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492435" target="_blank" class="iss-link">하이퍼 서버 전용 — 초월 탈리스만 3종, 루멘탑 10층 추가 및 장비 연금술 확률 대규모 개편</a></li><li><span class="tg tg-sug">건의·요청</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="iss-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</a> <span class="cnt-s">(7건)</span></li><li><span class="tg tg-game">게임 관련</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="iss-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</a> <span class="cnt-s">(3건)</span></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="iss-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</a> <span class="cnt-s">(3건)</span></li></ul></div>
@@ -782,7 +816,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
         </div></div>
     </div></div>
         </div>
-    <div class="updated">마지막 업데이트: 2026-04-03 12:24 KST</div>
+    <div class="updated">마지막 업데이트: 2026-04-03 15:12 KST</div>
   </div>
 </div>
 

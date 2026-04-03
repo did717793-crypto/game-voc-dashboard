@@ -1,6 +1,16 @@
 {
   "date": "2026-04-02",
   "major_issues": [],
+  "cs_inquiries": [],
+  "cs_week_trend": [
+    { "date": "2026-03-27", "dkr": 3, "categories": {"게임": 1, "버그·장애": 2} },
+    { "date": "2026-03-28", "dkr": 0, "categories": {} },
+    { "date": "2026-03-29", "dkr": 4, "categories": {"게임": 2, "버그·장애": 2} },
+    { "date": "2026-03-30", "dkr": 1, "categories": {"건의·요청": 1} },
+    { "date": "2026-03-31", "dkr": 3, "categories": {"게임": 2, "결제": 1} },
+    { "date": "2026-04-01", "dkr": 2, "categories": {"게임": 2} },
+    { "date": "2026-04-02", "dkr": 0, "categories": {} }
+  ],
   "voc_groups": [
     {
       "category": "건의·요청",

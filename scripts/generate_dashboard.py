@@ -267,60 +267,117 @@ def build_section_voc(voc_groups: list[dict], raw_map: dict, pfx: str = "v") -> 
 CS_CAT_ORDER = ["계정·결제", "게임 관련", "이벤트", "버그·오류", "건의사항", "기타·실행"]
 
 
-def build_section_cs(cs_inquiries: list[dict]) -> str:
+def build_section_cs(cs_inquiries: list[dict], cs_week_trend: list[dict] = None) -> str:
     """
     cs_inquiries schema:
     [{"category": "계정·결제", "count": 3, "summary": "결제 오류 관련", "items": ["...", ...]}, ...]
+    cs_week_trend: [{"date": "2026-04-02", "dkr": 0, "categories": {...}}, ...]
     """
+    import json as _json
+
+    # ── 주간 추이 차트 ──
+    trend_html = ""
+    if cs_week_trend:
+        labels  = [t["date"][5:] for t in cs_week_trend]   # "04-02"
+        values  = [t.get("dkr", 0) for t in cs_week_trend]
+        total_w = sum(values)
+        step_cs, max_cs = _nice_axis(max(values) if values else 0)
+        chart_id = f"cs_trend_{labels[-1].replace('-','')}"
+        trend_html = f"""
+        <div style="margin-bottom:12px">
+          <canvas id="{chart_id}" height="90"></canvas>
+        </div>
+        <script>
+        (function(){{
+          var ctx = document.getElementById('{chart_id}').getContext('2d');
+          new Chart(ctx, {{
+            type: 'bar',
+            data: {{
+              labels: {_json.dumps(labels)},
+              datasets: [{{
+                label: '문의(DKR)',
+                data: {_json.dumps(values)},
+                backgroundColor: '#4a90d9',
+                borderRadius: 3
+              }}]
+            }},
+            options: {{
+              responsive: true,
+              plugins: {{
+                legend: {{ display: false }},
+                tooltip: {{ callbacks: {{ label: ctx => ctx.parsed.y + '건' }} }}
+              }},
+              scales: {{
+                y: {{
+                  min: 0, max: {max_cs},
+                  ticks: {{ stepSize: {step_cs}, callback: v => v + '건' }},
+                  grid: {{ color: '#e8eaed' }}
+                }},
+                x: {{ grid: {{ display: false }} }}
+              }}
+            }}
+          }});
+        }})();
+        </script>
+        <div style="font-size:11px;color:#666;margin-bottom:8px">
+          7일 누적 {total_w}건 &nbsp;|&nbsp; 어제({labels[-1]}) {values[-1]}건
+        </div>"""
+
+    # ── 당일 문의 상세 ──
     if not cs_inquiries:
+        detail_html = "<p class='empty-s' style='color:#888;font-size:12px'>당일 DKR 문의 없음</p>"
+    else:
+        by_cat = {c: [] for c in CS_CAT_ORDER}
+        for item in cs_inquiries:
+            cat = item.get("category", "기타·실행")
+            by_cat.setdefault(cat, []).append(item)
+
+        rows = ""
+        for cat in CS_CAT_ORDER:
+            items = by_cat.get(cat, [])
+            if not items:
+                continue
+            total = sum(x.get("count", 1) for x in items)
+            content = ""
+            for item in items:
+                summ = item.get("summary", "")
+                cnt  = item.get("count", 1)
+                sub_items = item.get("items", [])
+                sub_html = ""
+                if sub_items:
+                    sub_html = "<ul class='cs-sub'>" + "".join(f"<li>{s}</li>" for s in sub_items) + "</ul>"
+                cnt_txt = f'<span class="cnt-s">({cnt}건)</span>' if cnt > 1 else ""
+                content += f'<div class="cs-item">{summ}{cnt_txt}{sub_html}</div>'
+            rows += f"""
+            <tr>
+              <td class="cat-td">{cat}</td>
+              <td class="content-td cs-content">{content}</td>
+              <td class="ref-td">{total}건</td>
+            </tr>"""
+
+        if not rows:
+            detail_html = "<p class='empty-s'>수집된 문의 없음</p>"
+        else:
+            detail_html = f"""
+            <table class="voc-tbl">
+              <thead>
+                <tr>
+                  <th style="width:76px">항목</th>
+                  <th>내용</th>
+                  <th style="width:52px">건수</th>
+                </tr>
+              </thead>
+              <tbody>{rows}</tbody>
+            </table>"""
+
+    if not trend_html and not cs_inquiries:
         return """
         <div class="cs-placeholder">
           <p>📋 Hive 콘솔에서 당일 문의 데이터를 수동으로 업데이트해 주세요.</p>
           <p class="cs-hint">→ console.withhive.com → 문의 목록 → 한국어 → 전체 검색</p>
         </div>"""
 
-    by_cat = {c: [] for c in CS_CAT_ORDER}
-    for item in cs_inquiries:
-        cat = item.get("category", "기타·실행")
-        by_cat.setdefault(cat, []).append(item)
-
-    rows = ""
-    for cat in CS_CAT_ORDER:
-        items = by_cat.get(cat, [])
-        if not items:
-            continue
-        total = sum(x.get("count", 1) for x in items)
-        content = ""
-        for item in items:
-            summ = item.get("summary", "")
-            cnt  = item.get("count", 1)
-            sub_items = item.get("items", [])
-            sub_html = ""
-            if sub_items:
-                sub_html = "<ul class='cs-sub'>" + "".join(f"<li>{s}</li>" for s in sub_items) + "</ul>"
-            cnt_txt = f'<span class="cnt-s">({cnt}건)</span>' if cnt > 1 else ""
-            content += f'<div class="cs-item">{summ}{cnt_txt}{sub_html}</div>'
-        rows += f"""
-        <tr>
-          <td class="cat-td">{cat}</td>
-          <td class="content-td cs-content">{content}</td>
-          <td class="ref-td">{total}건</td>
-        </tr>"""
-
-    if not rows:
-        return "<p class='empty-s'>수집된 문의 없음</p>"
-
-    return f"""
-    <table class="voc-tbl">
-      <thead>
-        <tr>
-          <th style="width:76px">항목</th>
-          <th>내용</th>
-          <th style="width:52px">건수</th>
-        </tr>
-      </thead>
-      <tbody>{rows}</tbody>
-    </table>"""
+    return trend_html + detail_html
 
 
 # ── 리포트 섹션 래퍼 ──────────────────────────────────────────
@@ -352,7 +409,7 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
             + sec("03", "공식 라운지 동향", build_section_voc(
                 analyzed.get("voc_groups", []), raw_map,
                 pfx=f"D{date_str.replace('-','')}_"))
-            + sec("04", "1:1 문의 동향",    build_section_cs(analyzed.get("cs_inquiries", [])))
+            + sec("04", "1:1 문의 동향",    build_section_cs(analyzed.get("cs_inquiries", []), analyzed.get("cs_week_trend")))
         )
     else:  # weekly
         idx        = all_dates.index(date_str) if date_str in all_dates else 0
@@ -372,7 +429,7 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
             + sec("03", "공식 라운지 동향", build_section_voc(
                 analyzed.get("voc_groups", []), raw_map,
                 pfx=f"W{date_str.replace('-','')}_"))
-            + sec("04", "1:1 문의 동향",    build_section_cs(analyzed.get("cs_inquiries", [])))
+            + sec("04", "1:1 문의 동향",    build_section_cs(analyzed.get("cs_inquiries", []), analyzed.get("cs_week_trend")))
         )
 
 
