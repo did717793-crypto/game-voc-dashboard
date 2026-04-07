@@ -2,478 +2,2526 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>NTRANCE VOC 대시보드</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
-    background: #f0f2f5;
-    color: #1a1a2e;
-    min-height: 100vh;
-  }
-  .header {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    color: white;
-    padding: 20px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
-  }
-  .header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
-  .header .subtitle { font-size: 12px; color: #8892b0; margin-top: 3px; }
-  .header .updated { font-size: 11px; color: #8892b0; }
-  .main { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+      background:#eef0f3;color:#1a1a2e;font-size:13px;min-height:100vh}
 
-  /* 게임 탭 */
-  .tab-nav {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
-  .tab-btn {
-    padding: 10px 20px;
-    border: 2px solid #dde1e7;
-    border-radius: 8px;
-    background: white;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    color: #5f6368;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .tab-btn:hover { border-color: #1a73e8; color: #1a73e8; }
-  .tab-btn.active { background: #1a73e8; border-color: #1a73e8; color: white; }
-  .tab-dot { width: 8px; height: 8px; border-radius: 50%; }
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
+/* ── 네비 ── */
+.top-nav{background:#1a1a2e;padding:0 20px;display:flex;align-items:center;
+          justify-content:space-between;height:48px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.brand{color:#fff;font-size:15px;font-weight:700;letter-spacing:-.3px}
+.brand-sub{color:#8892b0;font-size:11px}
 
-  /* 카드 */
-  .panel-card {
-    background: white;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
-  }
+.tab-bar{background:#fff;border-bottom:2px solid #e8eaed;padding:0 20px;
+          display:flex;align-items:center;justify-content:space-between;height:44px}
+.game-tabs{display:flex;gap:4px}
+.tab-btn{padding:8px 16px;border:none;border-bottom:3px solid transparent;background:none;
+          cursor:pointer;font-size:13px;font-weight:600;color:#5f6368;
+          display:flex;align-items:center;gap:6px;transition:all .2s}
+.tab-btn.active{color:#1a73e8;border-bottom-color:#1a73e8}
+.tab-dot{width:8px;height:8px;border-radius:50%;background:#1a73e8}
+.right-controls{display:flex;align-items:center;gap:8px}
+.date-select{padding:5px 10px;border:1.5px solid #dde1e7;border-radius:6px;
+              font-size:12px;color:#3c4043;background:#fff;cursor:pointer;outline:none}
+.date-select:focus{border-color:#1a73e8}
+.period-toggle{display:flex;border:1.5px solid #dde1e7;border-radius:6px;overflow:hidden}
+.ptgl{padding:5px 12px;border:none;background:#fff;font-size:12px;font-weight:600;
+       color:#5f6368;cursor:pointer;transition:all .15s}
+.ptgl.active{background:#1a73e8;color:#fff}
+.ptgl:not(:last-child){border-right:1px solid #dde1e7}
 
-  /* 서브탭 */
-  .subtab-nav { display: flex; gap: 6px; margin-bottom: 20px; }
-  .subtab-btn {
-    padding: 8px 18px;
-    border: 1.5px solid #dde1e7;
-    border-radius: 6px;
-    background: white;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
-    color: #5f6368;
-    transition: all 0.2s;
-  }
-  .subtab-btn.active { background: #e8f0fe; border-color: #1a73e8; color: #1a73e8; }
-  .subtab-content { display: none; }
-  .subtab-content.active { display: block; }
-  .badge {
-    background: #e8f0fe;
-    color: #1a73e8;
-    font-size: 11px;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-left: 4px;
-  }
-  .subtab-btn.active .badge { background: white; }
+/* ── 본문 ── */
+.main{max-width:980px;margin:20px auto;padding:0 14px 40px}
+.rpt-card{background:#fff;border-radius:10px;overflow:hidden;
+           box-shadow:0 1px 6px rgba(0,0,0,.09)}
 
-  /* 통계 카드 */
-  .stats-row { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
-  .stat-card {
-    flex: 1;
-    min-width: 100px;
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding: 16px;
-    text-align: center;
-    border: 1.5px solid #e8eaed;
-  }
-  .stat-card.neg-card { border-color: #fce8e6; background: #fef9f9; }
-  .stat-num { font-size: 26px; font-weight: 800; color: #1a73e8; }
-  .neg-card .stat-num { color: #d93025; }
-  .stat-label { font-size: 12px; color: #5f6368; margin-top: 4px; }
+/* 리포트 헤더 */
+.rpt-header{display:flex;align-items:center;gap:12px;padding:14px 20px;
+             background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;flex-wrap:wrap}
+.rpt-game{font-size:13px;font-weight:700;background:rgba(255,255,255,.15);
+           padding:3px 10px;border-radius:4px}
+.rpt-title{flex:1;font-size:15px;font-weight:700;letter-spacing:-.2px}
+.rpt-ts{font-size:11px;color:#8892b0;white-space:nowrap}
 
-  /* 섹션 */
-  .section-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #3c4043;
-    margin: 20px 0 10px;
-    padding-left: 8px;
-    border-left: 3px solid #1a73e8;
-  }
+/* 섹션 */
+.rpt-section{border-top:1px solid #f0f2f5}
+.rpt-sec-hd{display:flex;align-items:center;gap:10px;padding:12px 20px 10px;
+             background:#f8f9fa;border-bottom:1px solid #e8eaed;
+             font-size:13px;font-weight:700;color:#3c4043}
+.sec-num{background:#1a73e8;color:#fff;font-size:11px;font-weight:800;
+          padding:2px 7px;border-radius:3px;letter-spacing:.5px}
+.rpt-sec-body{padding:16px 20px}
 
-  /* 감성 바 */
-  .sentiment-bar-wrap { margin-bottom: 8px; }
-  .sentiment-bar {
-    display: flex;
-    height: 20px;
-    border-radius: 10px;
-    overflow: hidden;
-    background: #f1f3f4;
-  }
-  .seg { transition: width 0.5s; }
-  .seg.pos { background: #34a853; }
-  .seg.neu { background: #fbbc04; }
-  .seg.neg { background: #ea4335; }
-  .sentiment-legend { display: flex; gap: 16px; font-size: 12px; color: #5f6368; margin-top: 8px; }
-  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
-  .dot.pos { background: #34a853; }
-  .dot.neu { background: #fbbc04; }
-  .dot.neg { background: #ea4335; }
+/* 주요 이슈 */
+.iss-list{list-style:none;display:flex;flex-direction:column;gap:7px}
+.iss-list li{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;line-height:1.5}
+.tg{font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px;
+     white-space:nowrap;flex-shrink:0;margin-top:2px}
+.tg-notice{background:#e3f2fd;color:#1565c0}
+.tg-update{background:#e8f5e9;color:#2e7d32}
+.tg-bug{background:#fce8e6;color:#c62828}
+.tg-sug{background:#fff3cd;color:#b45309}
+.tg-game{background:#e8f0fe;color:#1a73e8}
+.tg-etc{background:#f1f3f4;color:#5f6368}
+.iss-link{color:#1a1a2e;text-decoration:none;font-weight:500}
+.iss-link:hover{color:#1a73e8;text-decoration:underline}
+.cnt-s{font-size:11px;color:#9aa0a6;margin-left:2px}
 
-  /* 키워드 클라우드 */
-  .keyword-cloud { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; background: #f8f9fa; border-radius: 8px; }
-  .keyword-badge {
-    background: white;
-    border: 1px solid #e8eaed;
-    border-radius: 6px;
-    padding: 4px 10px;
-    color: #1a73e8;
-    font-weight: 600;
-    cursor: default;
-    transition: background 0.15s;
-  }
-  .keyword-badge:hover { background: #e8f0fe; }
-  .keyword-badge small { color: #9aa0a6; font-size: 0.75em; }
+/* 차트 */
+.chart-label{font-size:12px;color:#5f6368;font-weight:600;margin-bottom:10px}
 
-  /* 게시물 테이블 */
-  .posts-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .posts-table th {
-    background: #f1f3f4;
-    padding: 8px 10px;
-    text-align: left;
-    font-size: 12px;
-    color: #5f6368;
-    border-bottom: 1.5px solid #e8eaed;
-  }
-  .posts-table td {
-    padding: 9px 10px;
-    border-bottom: 1px solid #f1f3f4;
-    vertical-align: middle;
-  }
-  .posts-table tr:hover td { background: #f8f9fa; }
-  .post-link { color: #1a1a2e; text-decoration: none; }
-  .post-link:hover { color: #1a73e8; text-decoration: underline; }
-  .num { text-align: right; color: #5f6368; font-variant-numeric: tabular-nums; }
+/* VOC 테이블 */
+.voc-tbl{width:100%;border-collapse:collapse}
+.voc-tbl th{background:#f1f3f4;padding:8px 10px;text-align:left;font-size:11px;
+             color:#5f6368;border-bottom:1.5px solid #e8eaed;font-weight:600}
+.voc-tbl td{border-bottom:1px solid #f0f2f5;vertical-align:middle}
+.cat-td{padding:10px 10px;font-weight:700;font-size:12px;color:#3c4043;
+         white-space:nowrap;width:76px;text-align:center}
+.content-td{padding:4px 0;vertical-align:middle}
+.ref-td{padding:10px 8px;text-align:center;font-size:12px;color:#5f6368;
+         white-space:nowrap;width:52px;font-weight:600}
 
-  /* 기타 */
-  .period-label { font-size: 12px; color: #5f6368; margin-bottom: 16px; background: #f8f9fa; padding: 8px 12px; border-radius: 6px; }
-  .updated-at { font-size: 11px; color: #9aa0a6; text-align: right; margin-top: 20px; }
-  .empty { color: #9aa0a6; font-size: 13px; padding: 20px; text-align: center; }
-  .no-data {
-    text-align: center;
-    padding: 60px 20px;
-    color: #5f6368;
-    background: #f8f9fa;
-    border-radius: 10px;
-  }
-  .no-data p { margin-bottom: 8px; }
-  .hint { font-size: 12px; color: #9aa0a6; }
-  code { background: #f1f3f4; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+/* VOC 아이템 */
+.voc-row-item{display:flex;align-items:center;justify-content:space-between;
+               padding:7px 10px;gap:8px;transition:background .15s}
+.voc-row-item[onclick]{cursor:pointer}
+.voc-row-item[onclick]:hover{background:#f8f9fa;border-radius:4px}
+.voc-sep{border-top:1px dashed #e8eaed}
+.voc-item-main{display:flex;align-items:center;gap:4px;flex:1;min-width:0}
+.arr{font-size:11px;color:#1a73e8;flex-shrink:0;width:13px}
+.arr-ph{width:13px;flex-shrink:0}
+.vitem-link{font-size:12.5px;color:#3c4043;text-decoration:none;line-height:1.5;flex:1}
+.vitem-link:hover{color:#1a73e8}
+.link-btn{font-size:11px;color:#1a73e8;text-decoration:none;font-weight:600;
+           white-space:nowrap;flex-shrink:0;display:inline-block;margin:2px 0}
+.link-btn:hover{text-decoration:underline}
+.note-td{padding:8px 6px;text-align:center;vertical-align:middle;
+          border-bottom:1px solid #f0f2f5;font-size:11px}
+
+/* 아코디언 상세 */
+.det-group{background:#f0f4ff;border-radius:6px;margin:2px 8px 8px;padding:10px 12px}
+.det-item{padding:6px 0;border-bottom:1px solid #dde6ff}
+.det-item:last-child{border-bottom:none;padding-bottom:0}
+.det-title{font-size:12px;font-weight:600;color:#1a1a2e;text-decoration:none;
+            display:block;margin-bottom:3px}
+.det-title:hover{color:#1a73e8;text-decoration:underline}
+.det-body{font-size:11px;color:#5f6368;line-height:1.6;padding-left:4px;margin-top:2px}
+
+/* CS 문의 */
+.cs-item{padding:6px 10px;font-size:12.5px;color:#3c4043;line-height:1.5}
+.cs-sep{border-top:1px dashed #e8eaed}
+.cs-sub{margin:4px 0 0 16px;list-style:disc;color:#5f6368;font-size:11.5px}
+.cs-sub li{padding:2px 0}
+.cs-placeholder{padding:16px;background:#fffbf0;border-radius:6px;
+                 border:1px dashed #fbbc04;text-align:center}
+.cs-placeholder p{font-size:12.5px;color:#5f6368;margin-bottom:4px}
+.cs-hint{font-size:11px;color:#9aa0a6 !important}
+.cs-content{vertical-align:middle}
+/* 05 CS 동향 배지 */
+.cs-det-row{display:flex;align-items:center;gap:5px;padding:3px 0;font-size:12px;line-height:1.4}
+.cs-badge{display:inline-block;padding:1px 6px;border-radius:10px;font-size:10.5px;font-weight:600;white-space:nowrap}
+.cs-badge-recv{background:#fff3e0;color:#e65100}
+.cs-badge-proc{background:#e3f2fd;color:#1565c0}
+.cs-badge-done{background:#e8f5e9;color:#2e7d32}
+.cs-badge-view{background:#f3e5f5;color:#6a1b9a}
+.cs-badge-del{background:#fafafa;color:#9e9e9e}
+.cs-badge-etc{background:#f5f5f5;color:#616161}
+.cs-date{font-size:10.5px;color:#9aa0a6;white-space:nowrap}
+.cs-ttl{color:#3c4043;font-size:12px}
+.cs-pending{color:#e53935;font-weight:600;font-size:11.5px}
+
+.period-bar{font-size:12px;color:#5f6368;background:#f8f9fa;padding:6px 12px;
+             border-radius:4px;margin-bottom:8px}
+.empty-s{color:#9aa0a6;font-size:12px;padding:16px;text-align:center}
+.updated{font-size:11px;color:#9aa0a6;text-align:right;padding:12px 20px;
+          border-top:1px solid #f0f2f5}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div>
-    <h1>📊 NTRANCE VOC 대시보드</h1>
-    <div class="subtitle">네이버 라운지 유저 동향 자동 수집 · 분석</div>
+<div class="top-nav">
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="brand">NTRANCE</span>
+    <span class="brand-sub">VOC 대시보드</span>
   </div>
-  <div class="updated">생성: 2026-04-02 17:51 KST</div>
+  <span style="font-size:11px;color:#8892b0">생성: 2026-04-07 15:48 KST</span>
+</div>
+
+<div class="tab-bar">
+  <div class="game-tabs">
+    <button class="tab-btn active">
+      <span class="tab-dot"></span>DK모바일:리본
+    </button>
+  </div>
+  <div class="right-controls">
+    <select class="date-select" id="date-sel" onchange="switchDate(this.value)">
+      <option value="2026-04-06" selected>2026-04-06</option>
+<option value="2026-04-05">2026-04-05</option>
+<option value="2026-04-04">2026-04-04</option>
+<option value="2026-04-03">2026-04-03</option>
+<option value="2026-04-02">2026-04-02</option>
+<option value="2026-04-01">2026-04-01</option>
+
+    </select>
+    <div class="period-toggle">
+      <button class="ptgl active" id="btn-daily"  onclick="switchPeriod('D',this)">일간</button>
+      <button class="ptgl"        id="btn-weekly" onclick="switchPeriod('W',this)">주간</button>
+    </div>
+  </div>
 </div>
 
 <div class="main">
-  <div class="tab-nav">
+  <div class="rpt-card">
     
-        <button class="tab-btn active" onclick="switchTab('DKR', this)">
-          <span class="tab-dot" style="background:#1a73e8"></span>
-          DK모바일:리본
-        </button>
-  </div>
-
-  <div class="panel-card">
-    
-        <div id="tab-DKR" class="tab-panel active">
-          
-    <div class="subtab-nav">
-      <button class="subtab-btn active" onclick="switchSubtab('dkr', 'daily', this)">
-        📅 일간 <span class="badge">2026-04-01</span>
-      </button>
-      <button class="subtab-btn" onclick="switchSubtab('dkr', 'weekly', this)">
-        📆 주간 <span class="badge">1일</span>
-      </button>
+        <div id="panel-2026-04-06" class="date-panel" style="display:block">
+          <div id="D-2026-04-06" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-06 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:48</span></div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
+      <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
     </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">02</span>운영 지표</div>
+      <div class="rpt-sec-body">
+    <p class="chart-label">커뮤니티 현황 (유저 게시물 추이 — 최근 7일)</p>
+    <div style="max-height:220px"><canvas id="ch-D20260406" height="180"></canvas></div>
+    <script>
+    (function(){
+      const c=document.getElementById('ch-D20260406');
+      if(!c||c._ok)return;c._ok=true;
 
-    <!-- 일간 -->
-    <div id="dkr-daily" class="subtab-content active">
-      <div class="stats-row">
-        <div class="stat-card">
-          <div class="stat-num">16</div>
-          <div class="stat-label">게시물</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num">0</div>
-          <div class="stat-label">댓글</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num">12.5%</div>
-          <div class="stat-label">긍정 비율</div>
-        </div>
-        <div class="stat-card neg-card">
-          <div class="stat-num">0.0%</div>
-          <div class="stat-label">부정 비율</div>
-        </div>
-      </div>
+      // 막대 위 합계 표시 인라인 플러그인
+      const stackTotalPlugin={
+        id:'stackTotal',
+        afterDatasetsDraw(chart){
+          const ctx=chart.ctx;
+          const totals=[0, 16, 4, 4, 3, 0, 1];
+          const lastMeta=chart.getDatasetMeta(chart.data.datasets.length-1);
+          totals.forEach((t,i)=>{
+            if(t===0)return;
+            const bar=lastMeta.data[i];
+            if(!bar)return;
+            ctx.save();
+            ctx.fillStyle='#3c4043';
+            ctx.font='bold 11px sans-serif';
+            ctx.textAlign='center';
+            ctx.textBaseline='bottom';
+            ctx.fillText(t,bar.x,bar.y-3);
+            ctx.restore();
+          });
+        }
+      };
 
-      <div class="section-title">감성 분포</div>
-      
-    <div class="sentiment-bar-wrap">
-      <div class="sentiment-bar">
-        <div class="seg pos" style="width:12.5%" title="긍정 12.5%"></div>
-        <div class="seg neu" style="width:87.5%" title="중립 87.5%"></div>
-        <div class="seg neg" style="width:0.0%" title="부정 0.0%"></div>
-      </div>
-      <div class="sentiment-legend">
-        <span class="dot pos"></span>긍정 12.5%
-        <span class="dot neu"></span>중립 87.5%
-        <span class="dot neg"></span>부정 0.0%
-      </div>
+      new Chart(c,{
+        type:'bar',
+        data:{
+          labels:["03-31", "04-01", "04-02", "04-03", "04-04", "04-05", "04-06"],
+          datasets:[
+            {label:'게임 관련',data:[0, 4, 0, 1, 2, 0, 0],backgroundColor:'rgba(66,133,244,.8)',stack:'s'},
+            {label:'버그·오류', data:[0, 0, 0, 0, 0, 0, 0],backgroundColor:'rgba(234,67,53,.8)', stack:'s'},
+            {label:'건의·요청',data:[0, 9, 2, 1, 0, 0, 1],backgroundColor:'rgba(251,188,4,.85)',stack:'s'},
+            {label:'기타',     data:[0, 3, 2, 2, 1, 0, 0],backgroundColor:'rgba(154,160,166,.7)',stack:'s'},
+          ]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{position:'top',labels:{font:{size:11},boxWidth:12,padding:8}},
+            tooltip:{mode:'index',intersect:false}
+          },
+          scales:{
+            x:{stacked:true,ticks:{font:{size:11}},grid:{display:false}},
+            y:{stacked:true,beginAtZero:true,max:20,
+                ticks:{stepSize:5,font:{size:11}},grid:{color:'#eee'}}
+          }
+        },
+        plugins:[stackTotalPlugin]
+      });
+    })();
+    </script></div>
     </div>
-
-      <div class="section-title">주요 키워드</div>
-      <div class="keyword-cloud"><span class="keyword-badge" style="font-size:26px;opacity:1.0">섭이전 <small>(2)</small></span><span class="keyword-badge" style="font-size:26px;opacity:1.0">상황 <small>(2)</small></span><span class="keyword-badge" style="font-size:26px;opacity:1.0">이전권 <small>(2)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">앤트런스 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">다시는 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">안한다 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">게임은 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">도대체가 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">발전이 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">없노 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">역시나네 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">서버이전 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">안내냐 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">지겨워라 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">지겨워 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">구썹이랑 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">하이퍼랑합쳐라 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">전체 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">한번 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">가시죠 <small>(1)</small></span></div>
-
-      <div class="section-title">인기 게시물 TOP 10</div>
-      
-    <table class="posts-table">
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">03</span>1:1 문의 동향</div>
+      <div class="rpt-sec-body">
+        <div style="margin-bottom:8px">
+          <div style="position:relative;height:160px">
+            <canvas id="cs_combo_0406"></canvas>
+          </div>
+        </div>
+        <script>
+        (function(){
+          var ctx = document.getElementById('cs_combo_0406').getContext('2d');
+          var barLabelPlugin = {
+            id:'barLabel',
+            afterDraw: function(chart) {
+              var c = chart.ctx;
+              chart.data.datasets.forEach(function(ds, di) {
+                if (ds.type === 'line') return;
+                var meta = chart.getDatasetMeta(di);
+                if (meta.hidden) return;
+                meta.data.forEach(function(bar, i) {
+                  var val = ds.data[i];
+                  if (!val) return;
+                  c.save();
+                  c.font = 'bold 10px sans-serif';
+                  c.fillStyle = '#333';
+                  c.textAlign = 'center';
+                  c.textBaseline = 'bottom';
+                  c.fillText(val, bar.x, bar.y - 2);
+                  c.restore();
+                });
+              });
+            }
+          };
+          new Chart(ctx, {
+            data: {
+              labels: ["03-31", "04-01", "04-02", "04-03", "04-04", "04-05", "04-06"],
+              datasets: [
+                {
+                  type: 'bar',
+                  label: '인입량',
+                  data: [0, 0, 0, 0, 0, 0, 0],
+                  backgroundColor: 'rgba(123,104,238,0.75)',
+                  borderRadius: 3,
+                  yAxisID: 'y'
+                },
+                {
+                  type: 'bar',
+                  label: '처리량',
+                  data: [0, 0, 0, 0, 0, 0, 0],
+                  backgroundColor: 'rgba(160,160,160,0.75)',
+                  borderRadius: 3,
+                  yAxisID: 'y'
+                },
+                {
+                  type: 'line',
+                  label: '처리율',
+                  data: [0, 0, 0, 0, 0, 0, 0],
+                  borderColor: 'rgba(220,50,50,0.85)',
+                  borderDash: [5,3],
+                  borderWidth: 1.5,
+                  pointBackgroundColor: 'rgba(220,50,50,0.85)',
+                  pointRadius: 3,
+                  tension: 0.2,
+                  yAxisID: 'y1'
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'bottom',
+                  labels: { font: {size:11}, boxWidth:12, padding:8 }
+                },
+                tooltip: {
+                  mode: 'index',
+                  intersect: false,
+                  callbacks: {
+                    label: function(c) {
+                      if (c.dataset.label === '처리율') return c.dataset.label + ': ' + c.parsed.y + '%';
+                      return c.dataset.label + ': ' + c.parsed.y + '건';
+                    }
+                  }
+                }
+              },
+              scales: {
+                y: {
+                  min: 0, max: 4,
+                  ticks: { stepSize: 1, callback: function(v){ return v+'건'; }, font:{size:11} },
+                  grid: { color: '#eee' }
+                },
+                y1: {
+                  position: 'right',
+                  min: 0, max: 120,
+                  ticks: { callback: function(v){ return v+'%'; }, font:{size:11} },
+                  grid: { drawOnChartArea: false }
+                },
+                x: { ticks:{font:{size:11}}, grid:{ display:false } }
+              }
+            },
+            plugins: [barLabelPlugin]
+          });
+        })();
+        </script>
+        <div style="font-size:11px;color:#666;margin:4px 0 10px">
+          7일 누적 0건 &nbsp;|&nbsp; 어제(04-06) 인입 0건 · 처리 0건 · 처리율 0%
+        </div><p class='empty-s' style='color:#888;font-size:12px'>당일 DKR 문의 없음</p></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">04</span>공식 라운지 동향</div>
+      <div class="rpt-sec-body">
+    <table class="voc-tbl">
       <thead>
-        <tr><th>제목</th><th>작성자</th><th>조회</th><th>댓글</th><th>날짜</th></tr>
+        <tr>
+          <th style="width:76px">항목</th>
+          <th>내용</th>
+          <th style="width:52px">건수</th>
+          <th style="width:70px">비고</th>
+        </tr>
       </thead>
       <tbody>
         <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="post-link">32서버 상황 마지막</a></td>
-          <td>네이버최강 군주 2845</td>
-          <td class="num">462</td>
-          <td class="num">22</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490286" target="_blank" class="post-link">32서버 상황</a></td>
-          <td>네이버최강 군주 2845</td>
-          <td class="num">389</td>
-          <td class="num">16</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307" target="_blank" class="post-link">이 게임은 도대체가 발전이 없노 ㅋㅋㅋ역시나네</a></td>
-          <td>오늘만사는 만렙 2181</td>
-          <td class="num">220</td>
-          <td class="num">5</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460" target="_blank" class="post-link">섭이전. 구썹이랑 하이퍼랑합쳐라</a></td>
-          <td>Hhshdhhx</td>
-          <td class="num">208</td>
-          <td class="num">2</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="post-link">상점에서 뭐 사나요?</a></td>
-          <td>나는 사실 입문자 1646</td>
-          <td class="num">209</td>
-          <td class="num">0</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7494737" target="_blank" class="post-link">앤트런스 다시는 안한다 ㅅㄱ</a></td>
-          <td>천하태평 검사 5934</td>
-          <td class="num">182</td>
-          <td class="num">2</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490284" target="_blank" class="post-link">바로템에 케릭엄청올라옴</a></td>
-          <td>Hhshdhhx</td>
-          <td class="num">169</td>
-          <td class="num">0</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="post-link">보탐할때 아이템 길드로들어가지말고</a></td>
-          <td>Hhshdhhx</td>
-          <td class="num">147</td>
-          <td class="num">1</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="post-link">과금내놓고 한달만에 서비스종료함 과금안하는게답</a></td>
-          <td>연화경</td>
-          <td class="num">141</td>
-          <td class="num">0</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="post-link">신화스킬</a></td>
-          <td>워리어</td>
-          <td class="num">128</td>
-          <td class="num">2</td>
-          <td>-</td>
+          <td class="cat-td">건의·요청</td>
+          <td class="content-td">
+              <div class="voc-row-item" onclick="toggleVoc('D20260406_0')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-D20260406_0" class="arr">▸</span><span class="vitem-link">이번 주 서버 점검 시 서버 그룹 재편성 강력 요청</span>
+                </div>
+              </div>
+              <div id="D20260406_0" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7510434" target="_blank" class="det-title">이번 주 서버 점검 때 반드시 서버 그룹 재편성 부탁드립니다!!</a><div class="det-body">지난 2주간의 그룹 매칭은 정말 최악이었고, 많은 유저들이 이 때문에 고통받으며 게임에 대한 흥미를 잃어가고 있습니다. 지금 게임 내 동접자(동시 접속자) 수 좀 보세요. 무서운 속도로 유저들이 빠져나가고 있습니다. 정말 잘 만든 게임인데 운영진 측의 미흡한 대처로 게임을 망치고 있다는 생각은 안 드시나요? 게임 콘텐츠 최적화에 힘써주시고, 제발 돈 벌 궁리만 하지 말고 유저들의 목소리에 귀를 기울여 주세요. 유저가 없으면 수익도 없습니다. 지…</div></div></div></td>
+          <td class="ref-td">1건</td>
+          <td class="note-td"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7510434" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
         </tr></tbody>
-    </table>
+    </table></div>
     </div>
-
-    <!-- 주간 -->
-    <div id="dkr-weekly" class="subtab-content">
-      <div class="period-label">📊 수집 기간: 2026-04-01</div>
-      <div class="stats-row">
-        <div class="stat-card">
-          <div class="stat-num">16</div>
-          <div class="stat-label">게시물</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num">0</div>
-          <div class="stat-label">댓글</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num">12.5%</div>
-          <div class="stat-label">긍정 비율</div>
-        </div>
-        <div class="stat-card neg-card">
-          <div class="stat-num">0.0%</div>
-          <div class="stat-label">부정 비율</div>
-        </div>
-      </div>
-
-      <div class="section-title">감성 분포</div>
-      
-    <div class="sentiment-bar-wrap">
-      <div class="sentiment-bar">
-        <div class="seg pos" style="width:12.5%" title="긍정 12.5%"></div>
-        <div class="seg neu" style="width:87.5%" title="중립 87.5%"></div>
-        <div class="seg neg" style="width:0.0%" title="부정 0.0%"></div>
-      </div>
-      <div class="sentiment-legend">
-        <span class="dot pos"></span>긍정 12.5%
-        <span class="dot neu"></span>중립 87.5%
-        <span class="dot neg"></span>부정 0.0%
-      </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">05</span>CS 동향</div>
+      <div class="rpt-sec-body"><p class='empty-s'>수집된 CS 문의 없음</p></div>
+    </div></div>
+          <div id="W-2026-04-06" class="period-panel" style="display:none"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">주간 서비스 현황</span><span class="rpt-ts">집계기간: 2026-04-01 ~ 2026-04-06</span></div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">01</span>주간 주요 이슈</div>
+      <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431" target="_blank" class="iss-link">4월 2일(목) 정기 점검 완료 (10:00~13:30) — 신규 콘텐츠 6종 업데이트 및 레벨 캡 250 확장</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433" target="_blank" class="iss-link">구서버 인터 서버 그룹 전면 개편 — 성 정보 초기화 예정, 성주 길드 세금 사전 수령 필수</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492435" target="_blank" class="iss-link">하이퍼 서버 전용 — 초월 탈리스만 3종, 루멘탑 10층 추가 및 장비 연금술 확률 대규모 개편</a></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/" target="_blank" class="iss-link">동접 감소 및 서비스 종료 임박 우려 (COC 섭종 여파로 DKR도 섭종 예상)</a> <span class="cnt-s">(2건)</span></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="iss-link">COC 서비스 종료에 이은 DKR 조기 종료 우려 및 회사 신뢰도 하락 표명</a> <span class="cnt-s">(2건)</span></li><li><span class="tg tg-sug">건의·요청</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="iss-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</a> <span class="cnt-s">(7건)</span></li><li><span class="tg tg-game">게임 관련</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="iss-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</a> <span class="cnt-s">(3건)</span></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="iss-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</a> <span class="cnt-s">(3건)</span></li></ul></div>
     </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">02</span>운영 지표</div>
+      <div class="rpt-sec-body">
+    <p class="chart-label">커뮤니티 현황 (유저 게시물 추이 — 최근 7일)</p>
+    <div style="max-height:220px"><canvas id="ch-W20260406" height="180"></canvas></div>
+    <script>
+    (function(){
+      const c=document.getElementById('ch-W20260406');
+      if(!c||c._ok)return;c._ok=true;
 
-      <div class="section-title">주요 키워드 (7일 누적)</div>
-      <div class="keyword-cloud"><span class="keyword-badge" style="font-size:26px;opacity:1.0">섭이전 <small>(2)</small></span><span class="keyword-badge" style="font-size:26px;opacity:1.0">상황 <small>(2)</small></span><span class="keyword-badge" style="font-size:26px;opacity:1.0">이전권 <small>(2)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">앤트런스 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">다시는 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">안한다 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">게임은 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">도대체가 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">발전이 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">없노 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">역시나네 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">서버이전 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">안내냐 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">지겨워라 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">지겨워 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">구썹이랑 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">하이퍼랑합쳐라 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">전체 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">한번 <small>(1)</small></span><span class="keyword-badge" style="font-size:19px;opacity:0.75">가시죠 <small>(1)</small></span></div>
+      // 막대 위 합계 표시 인라인 플러그인
+      const stackTotalPlugin={
+        id:'stackTotal',
+        afterDatasetsDraw(chart){
+          const ctx=chart.ctx;
+          const totals=[16, 4, 4, 3, 0, 1];
+          const lastMeta=chart.getDatasetMeta(chart.data.datasets.length-1);
+          totals.forEach((t,i)=>{
+            if(t===0)return;
+            const bar=lastMeta.data[i];
+            if(!bar)return;
+            ctx.save();
+            ctx.fillStyle='#3c4043';
+            ctx.font='bold 11px sans-serif';
+            ctx.textAlign='center';
+            ctx.textBaseline='bottom';
+            ctx.fillText(t,bar.x,bar.y-3);
+            ctx.restore();
+          });
+        }
+      };
 
-      <div class="section-title">인기 게시물 TOP 10 (7일)</div>
-      
-    <table class="posts-table">
+      new Chart(c,{
+        type:'bar',
+        data:{
+          labels:["04-01", "04-02", "04-03", "04-04", "04-05", "04-06"],
+          datasets:[
+            {label:'게임 관련',data:[4, 0, 1, 2, 0, 0],backgroundColor:'rgba(66,133,244,.8)',stack:'s'},
+            {label:'버그·오류', data:[0, 0, 0, 0, 0, 0],backgroundColor:'rgba(234,67,53,.8)', stack:'s'},
+            {label:'건의·요청',data:[9, 2, 1, 0, 0, 1],backgroundColor:'rgba(251,188,4,.85)',stack:'s'},
+            {label:'기타',     data:[3, 2, 2, 1, 0, 0],backgroundColor:'rgba(154,160,166,.7)',stack:'s'},
+          ]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{position:'top',labels:{font:{size:11},boxWidth:12,padding:8}},
+            tooltip:{mode:'index',intersect:false}
+          },
+          scales:{
+            x:{stacked:true,ticks:{font:{size:11}},grid:{display:false}},
+            y:{stacked:true,beginAtZero:true,max:20,
+                ticks:{stepSize:5,font:{size:11}},grid:{color:'#eee'}}
+          }
+        },
+        plugins:[stackTotalPlugin]
+      });
+    })();
+    </script></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">03</span>1:1 문의 동향</div>
+      <div class="rpt-sec-body">
+        <div class="cs-placeholder">
+          <p>📋 Hive 콘솔에서 당일 문의 데이터를 수동으로 업데이트해 주세요.</p>
+          <p class="cs-hint">→ console.withhive.com → 문의 목록 → 한국어 → 전체 검색</p>
+        </div></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">04</span>공식 라운지 동향</div>
+      <div class="rpt-sec-body">
+    <table class="voc-tbl">
       <thead>
-        <tr><th>제목</th><th>작성자</th><th>조회</th><th>댓글</th><th>날짜</th></tr>
+        <tr>
+          <th style="width:76px">항목</th>
+          <th>내용</th>
+          <th style="width:52px">건수</th>
+          <th style="width:70px">비고</th>
+        </tr>
       </thead>
       <tbody>
         <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="post-link">32서버 상황 마지막</a></td>
-          <td>네이버최강 군주 2845</td>
-          <td class="num">462</td>
-          <td class="num">22</td>
-          <td>-</td>
+          <td class="cat-td">게임 관련</td>
+          <td class="content-td">
+              <div class="voc-row-item">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">루멘탑 중심 콘텐츠 편중 불만 — 1년 내내 루멘탑만 반복된다는 비판</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">인터서버 그룹 재편 후 SG1·SG2·SG3 서버 배치 변경 내용 문의</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">보스 시간 미조정 불만 — 업데이트 후에도 보스 시간 변경 없음</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260406_3')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260406_3" class="arr">▸</span><span class="vitem-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</span>
+                </div>
+              </div>
+              <div id="W20260406_3" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="det-title">32서버 상황 마지막</a><div class="det-body">게임이든 현생이든 없는소리 하고 안하고 살아야하는데.. 선동을 한적 없습니다. 앞서 말씀 드렸드니 제가 무슨 정치질을 하려고 글쓴것도 아니구요 있는 그대로를 올려드렸습니다. 32서버 좀비 길드에 있던 송천동 케릭이 좀비케릭 죽이고 다니니까 자꾸 귓말오고 이상한 얘기 나오고 그래서 라운지에 글 올렸을 뿐입니다. 좀비 길드원들에게 선동하는건 애마님 아닐까 생각이 됩니다 애마님이 좀비 길드원들한테 언제 칼넣으라고 했냐고 그런적 없다고 했다는데 사진 …</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490286" target="_blank" class="det-title">32서버 상황</a><div class="det-body">관심이 없으신 분들도 계시고, 궁금해하시는 분들, “송천동이 미친 거 아닌가?”라고 생각하시는 분들도 계실 것 같아서 상황을 정리해서 올립니다. 고의였든 아니었든, 자사 중에 같은 길드원이던 블라디미로 형이 돈사장 형에게 죽었고 그 이후 길드를 나갔습니다. 길드를 나간 이유가 그것 하나만은 아니라고 생각하지만, 어쨌든 블라디미로 형은 좀비 길드를 나갔고 저도 같이 나오게 되었습니다. 길드가 맘에 안들면 길원이 나가면 되는거고 조용히 나가려고 했…</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490014" target="_blank" class="det-title">현재 구섭 구도가 어떻게 되요?</a><div class="det-body">구섭 구도좀 썰좀 풀어줘요.......</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260406_4')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260406_4" class="arr">▸</span><span class="vitem-link">초보 유저 상점 패키지 가성비 및 구매 우선순위 문의</span>
+                </div>
+              </div>
+              <div id="W20260406_4" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="det-title">상점에서 뭐 사나요?</a><div class="det-body">상점에 이벤트, 한정 상품, VIP 패키지 여러 가지가 있던데 뭐 먼저 사는 게 좋나요? 특권에서 광고 스킵 보이던데 이거 먼저 사나요? 오늘 지르는 건 아니고 내일 원스토어 출첵 쿠폰 받으면 그때 지르려고요</div></div></div></td>
+          <td class="ref-td">7건</td>
+          <td class="note-td"><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
         </tr>
         <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490286" target="_blank" class="post-link">32서버 상황</a></td>
-          <td>네이버최강 군주 2845</td>
-          <td class="num">389</td>
-          <td class="num">16</td>
-          <td>-</td>
+          <td class="cat-td">건의·요청</td>
+          <td class="content-td">
+              <div class="voc-row-item" onclick="toggleVoc('W20260406_5')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260406_5" class="arr">▸</span><span class="vitem-link">이번 주 서버 점검 시 서버 그룹 재편성 강력 요청</span>
+                </div>
+              </div>
+              <div id="W20260406_5" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7510434" target="_blank" class="det-title">이번 주 서버 점검 때 반드시 서버 그룹 재편성 부탁드립니다!!</a><div class="det-body">지난 2주간의 그룹 매칭은 정말 최악이었고, 많은 유저들이 이 때문에 고통받으며 게임에 대한 흥미를 잃어가고 있습니다. 지금 게임 내 동접자(동시 접속자) 수 좀 보세요. 무서운 속도로 유저들이 빠져나가고 있습니다. 정말 잘 만든 게임인데 운영진 측의 미흡한 대처로 게임을 망치고 있다는 생각은 안 드시나요? 게임 콘텐츠 최적화에 힘써주시고, 제발 돈 벌 궁리만 하지 말고 유저들의 목소리에 귀를 기울여 주세요. 유저가 없으면 수익도 없습니다. 지…</div></div></div>
+              <div class="voc-row-item voc-sep">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">봉인된 루멘탑 이동증표 개인 인벤토리 직접 지급 방식으로 전환 건의</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260406_7')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260406_7" class="arr">▸</span><span class="vitem-link">루멘탑 이동증표 봉인 해제 후 순간이동주문서 제작 확률(10%) 개선 건의</span>
+                </div>
+              </div>
+              <div id="W20260406_7" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499126" target="_blank" class="det-title">봉인된 루멘탑 이동증표에 관하여</a><div class="det-body">안녕하세요 이동증표 관련해서 건의드릴께 있는데요 각 층 보스를 잡으면 랜덤으로 봉인된 루멘탑 이동증표가 나옵니다. 그리고 제작하는데 10프로의 확률로 그 층 순간이동주문서 500장과 현돌 100개가 소비됩니다. 엔트러스 게임 10프로는 다른게임 10프로와 틀려서 체감상 5프로 미만같은느낌을 많이 받고 있습니다. 만약 만들었다? 능력치를 보면  이동증표 만든 층을 무한으로 1분쿨타임으로 갈수 있는 메리트가 있고 경험치 10프로 , 드래곤 주화 1…</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260406_8')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260406_8" class="arr">▸</span><span class="vitem-link">보스 소환 시간대 변경 건의 (접속자 패턴 고려 요청)</span>
+                </div>
+              </div>
+              <div id="W20260406_8" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7496011" target="_blank" class="det-title">보스시간 안바꾸냐??</a><div class="det-body">개노잼</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260406_9')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260406_9" class="arr">▸</span><span class="vitem-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</span>
+                </div>
+              </div>
+              <div id="W20260406_9" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492521" target="_blank" class="det-title">서버이전 왜 안내냐 지겨워라 지겨워</a><div class="det-body">퉤</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460" target="_blank" class="det-title">섭이전. 구썹이랑 하이퍼랑합쳐라</a><div class="det-body">다이아1개당 플로얼마 해서. 반대로 플로얼마당 다이아1개. 합치자 구썹이랑하이퍼랑</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="det-title">전체 섭이전 한번 가시죠</a><div class="det-body">사람도 얼마 안남았는데 모일수 있게 이전권 한번가시죠~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490333" target="_blank" class="det-title">이전권 캐쉬로팔면 게임사도 돈벌고</a><div class="det-body">좋자나요</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490284" target="_blank" class="det-title">바로템에 케릭엄청올라옴</a><div class="det-body">서버이전권이라도 생겨야 그케릭사서 하고싶은써버로가죠~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490256" target="_blank" class="det-title">이전권 나와야될듯</a><div class="det-body">다접고있어요</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490069" target="_blank" class="det-title">Bj도 다 빠졌으니 구도 맞춰야 됩니다</a><div class="det-body">남은사람 바보 만들지말고 서버이전권 내주세요</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260406_10')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260406_10" class="arr">▸</span><span class="vitem-link">보스 탐험 드롭 아이템 길드 귀속 → 개인 인벤토리 수령 방식으로 개선 건의</span>
+                </div>
+              </div>
+              <div id="W20260406_10" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="det-title">보탐할때 아이템 길드로들어가지말고</a><div class="det-body">개인으로 들어가게해주세요~ 라인이아니여도 보스치면 아이템먹을수있게요~</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260406_11')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260406_11" class="arr">▸</span><span class="vitem-link">신화스킬 제작 시 전설스킬 추출 재료 사용 허용 건의</span>
+                </div>
+              </div>
+              <div id="W20260406_11" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="det-title">신화스킬</a><div class="det-body">신화스킬 재료가 전설스킬이던데... 전설스킬 추출로 가능하게 해주세요. 제작좀 해보게...</div></div></div></td>
+          <td class="ref-td">13건</td>
+          <td class="note-td"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7510434" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499126" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7496011" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
         </tr>
         <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307" target="_blank" class="post-link">이 게임은 도대체가 발전이 없노 ㅋㅋㅋ역시나네</a></td>
-          <td>오늘만사는 만렙 2181</td>
-          <td class="num">220</td>
-          <td class="num">5</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460" target="_blank" class="post-link">섭이전. 구썹이랑 하이퍼랑합쳐라</a></td>
-          <td>Hhshdhhx</td>
-          <td class="num">208</td>
-          <td class="num">2</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="post-link">상점에서 뭐 사나요?</a></td>
-          <td>나는 사실 입문자 1646</td>
-          <td class="num">209</td>
-          <td class="num">0</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7494737" target="_blank" class="post-link">앤트런스 다시는 안한다 ㅅㄱ</a></td>
-          <td>천하태평 검사 5934</td>
-          <td class="num">182</td>
-          <td class="num">2</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490284" target="_blank" class="post-link">바로템에 케릭엄청올라옴</a></td>
-          <td>Hhshdhhx</td>
-          <td class="num">169</td>
-          <td class="num">0</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="post-link">보탐할때 아이템 길드로들어가지말고</a></td>
-          <td>Hhshdhhx</td>
-          <td class="num">147</td>
-          <td class="num">1</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="post-link">과금내놓고 한달만에 서비스종료함 과금안하는게답</a></td>
-          <td>연화경</td>
-          <td class="num">141</td>
-          <td class="num">0</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="post-link">신화스킬</a></td>
-          <td>워리어</td>
-          <td class="num">128</td>
-          <td class="num">2</td>
-          <td>-</td>
+          <td class="cat-td">기타</td>
+          <td class="content-td">
+              <div class="voc-row-item">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">과금 유저 이탈 우려 — 서비스 방향에 실망한 과금 유저 불만 표출</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">동접 감소 및 서비스 종료 임박 우려 (COC 섭종 여파로 DKR도 섭종 예상)</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260406_14')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260406_14" class="arr">▸</span><span class="vitem-link">COC 서비스 종료에 이은 DKR 조기 종료 우려 및 회사 신뢰도 하락 표명</span>
+                </div>
+              </div>
+              <div id="W20260406_14" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499032" target="_blank" class="det-title">천안핵주먹 200 에팔림 실화? 섭종 ㅅㄱ</a><div class="det-body">천안핵주먹 본주 ㅈ같겟다 이제누가 쿠마랑겜하고 엔트러스겜하겟냐.. 무섭다 진짜 .. ㄷㄷ</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="det-title">조만간 서비스종료다 이글은성지가됨</a><div class="det-body">조만간이다 탈출은지능순 얘네 서버 유지할돈없어서 하나하나 서비스종료중</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260406_15')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260406_15" class="arr">▸</span><span class="vitem-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</span>
+                </div>
+              </div>
+              <div id="W20260406_15" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7494737" target="_blank" class="det-title">앤트런스 다시는 안한다 ㅅㄱ</a><div class="det-body">유저들 소리 아예 쌩까버리는 겜서 첨본다 이제야 탈출하는군 빠빠이</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307" target="_blank" class="det-title">이 게임은 도대체가 발전이 없노 ㅋㅋㅋ역시나네</a><div class="det-body">노잼 접을란다 ~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="det-title">과금내놓고 한달만에 서비스종료함 과금안하는게답</a><div class="det-body">콜카봐라 설날바짝땡기고 바로서비스종료때림 믿고거르는 회사게임</div></div></div></td>
+          <td class="ref-td">8건</td>
+          <td class="note-td"><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
         </tr></tbody>
-    </table>
+    </table></div>
     </div>
-
-    <div class="updated-at">마지막 업데이트: 2026-04-02 17:51 KST</div>
-    
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">05</span>CS 동향</div>
+      <div class="rpt-sec-body"><p class='empty-s'>수집된 CS 문의 없음</p></div>
+    </div></div>
         </div>
+        <div id="panel-2026-04-05" class="date-panel" style="display:none">
+          <div id="D-2026-04-05" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-05 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:48</span></div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
+      <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">02</span>운영 지표</div>
+      <div class="rpt-sec-body">
+    <p class="chart-label">커뮤니티 현황 (유저 게시물 추이 — 최근 7일)</p>
+    <div style="max-height:220px"><canvas id="ch-D20260405" height="180"></canvas></div>
+    <script>
+    (function(){
+      const c=document.getElementById('ch-D20260405');
+      if(!c||c._ok)return;c._ok=true;
+
+      // 막대 위 합계 표시 인라인 플러그인
+      const stackTotalPlugin={
+        id:'stackTotal',
+        afterDatasetsDraw(chart){
+          const ctx=chart.ctx;
+          const totals=[0, 0, 16, 4, 4, 3, 0];
+          const lastMeta=chart.getDatasetMeta(chart.data.datasets.length-1);
+          totals.forEach((t,i)=>{
+            if(t===0)return;
+            const bar=lastMeta.data[i];
+            if(!bar)return;
+            ctx.save();
+            ctx.fillStyle='#3c4043';
+            ctx.font='bold 11px sans-serif';
+            ctx.textAlign='center';
+            ctx.textBaseline='bottom';
+            ctx.fillText(t,bar.x,bar.y-3);
+            ctx.restore();
+          });
+        }
+      };
+
+      new Chart(c,{
+        type:'bar',
+        data:{
+          labels:["03-30", "03-31", "04-01", "04-02", "04-03", "04-04", "04-05"],
+          datasets:[
+            {label:'게임 관련',data:[0, 0, 4, 0, 1, 2, 0],backgroundColor:'rgba(66,133,244,.8)',stack:'s'},
+            {label:'버그·오류', data:[0, 0, 0, 0, 0, 0, 0],backgroundColor:'rgba(234,67,53,.8)', stack:'s'},
+            {label:'건의·요청',data:[0, 0, 9, 2, 1, 0, 0],backgroundColor:'rgba(251,188,4,.85)',stack:'s'},
+            {label:'기타',     data:[0, 0, 3, 2, 2, 1, 0],backgroundColor:'rgba(154,160,166,.7)',stack:'s'},
+          ]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{position:'top',labels:{font:{size:11},boxWidth:12,padding:8}},
+            tooltip:{mode:'index',intersect:false}
+          },
+          scales:{
+            x:{stacked:true,ticks:{font:{size:11}},grid:{display:false}},
+            y:{stacked:true,beginAtZero:true,max:20,
+                ticks:{stepSize:5,font:{size:11}},grid:{color:'#eee'}}
+          }
+        },
+        plugins:[stackTotalPlugin]
+      });
+    })();
+    </script></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">03</span>1:1 문의 동향</div>
+      <div class="rpt-sec-body">
+        <div style="margin-bottom:8px">
+          <div style="position:relative;height:160px">
+            <canvas id="cs_combo_0405"></canvas>
+          </div>
+        </div>
+        <script>
+        (function(){
+          var ctx = document.getElementById('cs_combo_0405').getContext('2d');
+          var barLabelPlugin = {
+            id:'barLabel',
+            afterDraw: function(chart) {
+              var c = chart.ctx;
+              chart.data.datasets.forEach(function(ds, di) {
+                if (ds.type === 'line') return;
+                var meta = chart.getDatasetMeta(di);
+                if (meta.hidden) return;
+                meta.data.forEach(function(bar, i) {
+                  var val = ds.data[i];
+                  if (!val) return;
+                  c.save();
+                  c.font = 'bold 10px sans-serif';
+                  c.fillStyle = '#333';
+                  c.textAlign = 'center';
+                  c.textBaseline = 'bottom';
+                  c.fillText(val, bar.x, bar.y - 2);
+                  c.restore();
+                });
+              });
+            }
+          };
+          new Chart(ctx, {
+            data: {
+              labels: ["03-30", "03-31", "04-01", "04-02", "04-03", "04-04", "04-05"],
+              datasets: [
+                {
+                  type: 'bar',
+                  label: '인입량',
+                  data: [0, 0, 0, 0, 0, 0, 0],
+                  backgroundColor: 'rgba(123,104,238,0.75)',
+                  borderRadius: 3,
+                  yAxisID: 'y'
+                },
+                {
+                  type: 'bar',
+                  label: '처리량',
+                  data: [0, 0, 0, 0, 0, 0, 0],
+                  backgroundColor: 'rgba(160,160,160,0.75)',
+                  borderRadius: 3,
+                  yAxisID: 'y'
+                },
+                {
+                  type: 'line',
+                  label: '처리율',
+                  data: [0, 0, 0, 0, 0, 0, 0],
+                  borderColor: 'rgba(220,50,50,0.85)',
+                  borderDash: [5,3],
+                  borderWidth: 1.5,
+                  pointBackgroundColor: 'rgba(220,50,50,0.85)',
+                  pointRadius: 3,
+                  tension: 0.2,
+                  yAxisID: 'y1'
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'bottom',
+                  labels: { font: {size:11}, boxWidth:12, padding:8 }
+                },
+                tooltip: {
+                  mode: 'index',
+                  intersect: false,
+                  callbacks: {
+                    label: function(c) {
+                      if (c.dataset.label === '처리율') return c.dataset.label + ': ' + c.parsed.y + '%';
+                      return c.dataset.label + ': ' + c.parsed.y + '건';
+                    }
+                  }
+                }
+              },
+              scales: {
+                y: {
+                  min: 0, max: 4,
+                  ticks: { stepSize: 1, callback: function(v){ return v+'건'; }, font:{size:11} },
+                  grid: { color: '#eee' }
+                },
+                y1: {
+                  position: 'right',
+                  min: 0, max: 120,
+                  ticks: { callback: function(v){ return v+'%'; }, font:{size:11} },
+                  grid: { drawOnChartArea: false }
+                },
+                x: { ticks:{font:{size:11}}, grid:{ display:false } }
+              }
+            },
+            plugins: [barLabelPlugin]
+          });
+        })();
+        </script>
+        <div style="font-size:11px;color:#666;margin:4px 0 10px">
+          7일 누적 0건 &nbsp;|&nbsp; 어제(04-05) 인입 0건 · 처리 0건 · 처리율 0%
+        </div><p class='empty-s' style='color:#888;font-size:12px'>당일 DKR 문의 없음</p></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">04</span>공식 라운지 동향</div>
+      <div class="rpt-sec-body"><p class='empty-s'>수집된 VOC 없음</p></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">05</span>CS 동향</div>
+      <div class="rpt-sec-body"><p class='empty-s'>수집된 CS 문의 없음</p></div>
+    </div></div>
+          <div id="W-2026-04-05" class="period-panel" style="display:none"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">주간 서비스 현황</span><span class="rpt-ts">집계기간: 2026-04-01 ~ 2026-04-05</span></div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">01</span>주간 주요 이슈</div>
+      <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431" target="_blank" class="iss-link">4월 2일(목) 정기 점검 완료 (10:00~13:30) — 신규 콘텐츠 6종 업데이트 및 레벨 캡 250 확장</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433" target="_blank" class="iss-link">구서버 인터 서버 그룹 전면 개편 — 성 정보 초기화 예정, 성주 길드 세금 사전 수령 필수</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492435" target="_blank" class="iss-link">하이퍼 서버 전용 — 초월 탈리스만 3종, 루멘탑 10층 추가 및 장비 연금술 확률 대규모 개편</a></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/" target="_blank" class="iss-link">동접 감소 및 서비스 종료 임박 우려 (COC 섭종 여파로 DKR도 섭종 예상)</a> <span class="cnt-s">(2건)</span></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="iss-link">COC 서비스 종료에 이은 DKR 조기 종료 우려 및 회사 신뢰도 하락 표명</a> <span class="cnt-s">(2건)</span></li><li><span class="tg tg-sug">건의·요청</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="iss-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</a> <span class="cnt-s">(7건)</span></li><li><span class="tg tg-game">게임 관련</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="iss-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</a> <span class="cnt-s">(3건)</span></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="iss-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</a> <span class="cnt-s">(3건)</span></li></ul></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">02</span>운영 지표</div>
+      <div class="rpt-sec-body">
+    <p class="chart-label">커뮤니티 현황 (유저 게시물 추이 — 최근 7일)</p>
+    <div style="max-height:220px"><canvas id="ch-W20260405" height="180"></canvas></div>
+    <script>
+    (function(){
+      const c=document.getElementById('ch-W20260405');
+      if(!c||c._ok)return;c._ok=true;
+
+      // 막대 위 합계 표시 인라인 플러그인
+      const stackTotalPlugin={
+        id:'stackTotal',
+        afterDatasetsDraw(chart){
+          const ctx=chart.ctx;
+          const totals=[16, 4, 4, 3, 0];
+          const lastMeta=chart.getDatasetMeta(chart.data.datasets.length-1);
+          totals.forEach((t,i)=>{
+            if(t===0)return;
+            const bar=lastMeta.data[i];
+            if(!bar)return;
+            ctx.save();
+            ctx.fillStyle='#3c4043';
+            ctx.font='bold 11px sans-serif';
+            ctx.textAlign='center';
+            ctx.textBaseline='bottom';
+            ctx.fillText(t,bar.x,bar.y-3);
+            ctx.restore();
+          });
+        }
+      };
+
+      new Chart(c,{
+        type:'bar',
+        data:{
+          labels:["04-01", "04-02", "04-03", "04-04", "04-05"],
+          datasets:[
+            {label:'게임 관련',data:[4, 0, 1, 2, 0],backgroundColor:'rgba(66,133,244,.8)',stack:'s'},
+            {label:'버그·오류', data:[0, 0, 0, 0, 0],backgroundColor:'rgba(234,67,53,.8)', stack:'s'},
+            {label:'건의·요청',data:[9, 2, 1, 0, 0],backgroundColor:'rgba(251,188,4,.85)',stack:'s'},
+            {label:'기타',     data:[3, 2, 2, 1, 0],backgroundColor:'rgba(154,160,166,.7)',stack:'s'},
+          ]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{position:'top',labels:{font:{size:11},boxWidth:12,padding:8}},
+            tooltip:{mode:'index',intersect:false}
+          },
+          scales:{
+            x:{stacked:true,ticks:{font:{size:11}},grid:{display:false}},
+            y:{stacked:true,beginAtZero:true,max:20,
+                ticks:{stepSize:5,font:{size:11}},grid:{color:'#eee'}}
+          }
+        },
+        plugins:[stackTotalPlugin]
+      });
+    })();
+    </script></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">03</span>1:1 문의 동향</div>
+      <div class="rpt-sec-body">
+        <div class="cs-placeholder">
+          <p>📋 Hive 콘솔에서 당일 문의 데이터를 수동으로 업데이트해 주세요.</p>
+          <p class="cs-hint">→ console.withhive.com → 문의 목록 → 한국어 → 전체 검색</p>
+        </div></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">04</span>공식 라운지 동향</div>
+      <div class="rpt-sec-body">
+    <table class="voc-tbl">
+      <thead>
+        <tr>
+          <th style="width:76px">항목</th>
+          <th>내용</th>
+          <th style="width:52px">건수</th>
+          <th style="width:70px">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cat-td">게임 관련</td>
+          <td class="content-td">
+              <div class="voc-row-item">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">루멘탑 중심 콘텐츠 편중 불만 — 1년 내내 루멘탑만 반복된다는 비판</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">인터서버 그룹 재편 후 SG1·SG2·SG3 서버 배치 변경 내용 문의</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">보스 시간 미조정 불만 — 업데이트 후에도 보스 시간 변경 없음</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260405_3')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260405_3" class="arr">▸</span><span class="vitem-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</span>
+                </div>
+              </div>
+              <div id="W20260405_3" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="det-title">32서버 상황 마지막</a><div class="det-body">게임이든 현생이든 없는소리 하고 안하고 살아야하는데.. 선동을 한적 없습니다. 앞서 말씀 드렸드니 제가 무슨 정치질을 하려고 글쓴것도 아니구요 있는 그대로를 올려드렸습니다. 32서버 좀비 길드에 있던 송천동 케릭이 좀비케릭 죽이고 다니니까 자꾸 귓말오고 이상한 얘기 나오고 그래서 라운지에 글 올렸을 뿐입니다. 좀비 길드원들에게 선동하는건 애마님 아닐까 생각이 됩니다 애마님이 좀비 길드원들한테 언제 칼넣으라고 했냐고 그런적 없다고 했다는데 사진 …</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490286" target="_blank" class="det-title">32서버 상황</a><div class="det-body">관심이 없으신 분들도 계시고, 궁금해하시는 분들, “송천동이 미친 거 아닌가?”라고 생각하시는 분들도 계실 것 같아서 상황을 정리해서 올립니다. 고의였든 아니었든, 자사 중에 같은 길드원이던 블라디미로 형이 돈사장 형에게 죽었고 그 이후 길드를 나갔습니다. 길드를 나간 이유가 그것 하나만은 아니라고 생각하지만, 어쨌든 블라디미로 형은 좀비 길드를 나갔고 저도 같이 나오게 되었습니다. 길드가 맘에 안들면 길원이 나가면 되는거고 조용히 나가려고 했…</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490014" target="_blank" class="det-title">현재 구섭 구도가 어떻게 되요?</a><div class="det-body">구섭 구도좀 썰좀 풀어줘요.......</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260405_4')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260405_4" class="arr">▸</span><span class="vitem-link">초보 유저 상점 패키지 가성비 및 구매 우선순위 문의</span>
+                </div>
+              </div>
+              <div id="W20260405_4" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="det-title">상점에서 뭐 사나요?</a><div class="det-body">상점에 이벤트, 한정 상품, VIP 패키지 여러 가지가 있던데 뭐 먼저 사는 게 좋나요? 특권에서 광고 스킵 보이던데 이거 먼저 사나요? 오늘 지르는 건 아니고 내일 원스토어 출첵 쿠폰 받으면 그때 지르려고요</div></div></div></td>
+          <td class="ref-td">7건</td>
+          <td class="note-td"><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr>
+        <tr>
+          <td class="cat-td">건의·요청</td>
+          <td class="content-td">
+              <div class="voc-row-item">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">봉인된 루멘탑 이동증표 개인 인벤토리 직접 지급 방식으로 전환 건의</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260405_6')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260405_6" class="arr">▸</span><span class="vitem-link">루멘탑 이동증표 봉인 해제 후 순간이동주문서 제작 확률(10%) 개선 건의</span>
+                </div>
+              </div>
+              <div id="W20260405_6" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499126" target="_blank" class="det-title">봉인된 루멘탑 이동증표에 관하여</a><div class="det-body">안녕하세요 이동증표 관련해서 건의드릴께 있는데요 각 층 보스를 잡으면 랜덤으로 봉인된 루멘탑 이동증표가 나옵니다. 그리고 제작하는데 10프로의 확률로 그 층 순간이동주문서 500장과 현돌 100개가 소비됩니다. 엔트러스 게임 10프로는 다른게임 10프로와 틀려서 체감상 5프로 미만같은느낌을 많이 받고 있습니다. 만약 만들었다? 능력치를 보면  이동증표 만든 층을 무한으로 1분쿨타임으로 갈수 있는 메리트가 있고 경험치 10프로 , 드래곤 주화 1…</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260405_7')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260405_7" class="arr">▸</span><span class="vitem-link">보스 소환 시간대 변경 건의 (접속자 패턴 고려 요청)</span>
+                </div>
+              </div>
+              <div id="W20260405_7" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7496011" target="_blank" class="det-title">보스시간 안바꾸냐??</a><div class="det-body">개노잼</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260405_8')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260405_8" class="arr">▸</span><span class="vitem-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</span>
+                </div>
+              </div>
+              <div id="W20260405_8" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492521" target="_blank" class="det-title">서버이전 왜 안내냐 지겨워라 지겨워</a><div class="det-body">퉤</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460" target="_blank" class="det-title">섭이전. 구썹이랑 하이퍼랑합쳐라</a><div class="det-body">다이아1개당 플로얼마 해서. 반대로 플로얼마당 다이아1개. 합치자 구썹이랑하이퍼랑</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="det-title">전체 섭이전 한번 가시죠</a><div class="det-body">사람도 얼마 안남았는데 모일수 있게 이전권 한번가시죠~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490333" target="_blank" class="det-title">이전권 캐쉬로팔면 게임사도 돈벌고</a><div class="det-body">좋자나요</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490284" target="_blank" class="det-title">바로템에 케릭엄청올라옴</a><div class="det-body">서버이전권이라도 생겨야 그케릭사서 하고싶은써버로가죠~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490256" target="_blank" class="det-title">이전권 나와야될듯</a><div class="det-body">다접고있어요</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490069" target="_blank" class="det-title">Bj도 다 빠졌으니 구도 맞춰야 됩니다</a><div class="det-body">남은사람 바보 만들지말고 서버이전권 내주세요</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260405_9')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260405_9" class="arr">▸</span><span class="vitem-link">보스 탐험 드롭 아이템 길드 귀속 → 개인 인벤토리 수령 방식으로 개선 건의</span>
+                </div>
+              </div>
+              <div id="W20260405_9" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="det-title">보탐할때 아이템 길드로들어가지말고</a><div class="det-body">개인으로 들어가게해주세요~ 라인이아니여도 보스치면 아이템먹을수있게요~</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260405_10')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260405_10" class="arr">▸</span><span class="vitem-link">신화스킬 제작 시 전설스킬 추출 재료 사용 허용 건의</span>
+                </div>
+              </div>
+              <div id="W20260405_10" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="det-title">신화스킬</a><div class="det-body">신화스킬 재료가 전설스킬이던데... 전설스킬 추출로 가능하게 해주세요. 제작좀 해보게...</div></div></div></td>
+          <td class="ref-td">12건</td>
+          <td class="note-td"><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499126" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7496011" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr>
+        <tr>
+          <td class="cat-td">기타</td>
+          <td class="content-td">
+              <div class="voc-row-item">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">과금 유저 이탈 우려 — 서비스 방향에 실망한 과금 유저 불만 표출</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">동접 감소 및 서비스 종료 임박 우려 (COC 섭종 여파로 DKR도 섭종 예상)</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260405_13')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260405_13" class="arr">▸</span><span class="vitem-link">COC 서비스 종료에 이은 DKR 조기 종료 우려 및 회사 신뢰도 하락 표명</span>
+                </div>
+              </div>
+              <div id="W20260405_13" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499032" target="_blank" class="det-title">천안핵주먹 200 에팔림 실화? 섭종 ㅅㄱ</a><div class="det-body">천안핵주먹 본주 ㅈ같겟다 이제누가 쿠마랑겜하고 엔트러스겜하겟냐.. 무섭다 진짜 .. ㄷㄷ</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="det-title">조만간 서비스종료다 이글은성지가됨</a><div class="det-body">조만간이다 탈출은지능순 얘네 서버 유지할돈없어서 하나하나 서비스종료중</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260405_14')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260405_14" class="arr">▸</span><span class="vitem-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</span>
+                </div>
+              </div>
+              <div id="W20260405_14" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7494737" target="_blank" class="det-title">앤트런스 다시는 안한다 ㅅㄱ</a><div class="det-body">유저들 소리 아예 쌩까버리는 겜서 첨본다 이제야 탈출하는군 빠빠이</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307" target="_blank" class="det-title">이 게임은 도대체가 발전이 없노 ㅋㅋㅋ역시나네</a><div class="det-body">노잼 접을란다 ~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="det-title">과금내놓고 한달만에 서비스종료함 과금안하는게답</a><div class="det-body">콜카봐라 설날바짝땡기고 바로서비스종료때림 믿고거르는 회사게임</div></div></div></td>
+          <td class="ref-td">8건</td>
+          <td class="note-td"><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr></tbody>
+    </table></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">05</span>CS 동향</div>
+      <div class="rpt-sec-body"><p class='empty-s'>수집된 CS 문의 없음</p></div>
+    </div></div>
+        </div>
+        <div id="panel-2026-04-04" class="date-panel" style="display:none">
+          <div id="D-2026-04-04" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-04 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:48</span></div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
+      <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">02</span>운영 지표</div>
+      <div class="rpt-sec-body">
+    <p class="chart-label">커뮤니티 현황 (유저 게시물 추이 — 최근 7일)</p>
+    <div style="max-height:220px"><canvas id="ch-D20260404" height="180"></canvas></div>
+    <script>
+    (function(){
+      const c=document.getElementById('ch-D20260404');
+      if(!c||c._ok)return;c._ok=true;
+
+      // 막대 위 합계 표시 인라인 플러그인
+      const stackTotalPlugin={
+        id:'stackTotal',
+        afterDatasetsDraw(chart){
+          const ctx=chart.ctx;
+          const totals=[0, 0, 0, 16, 4, 4, 3];
+          const lastMeta=chart.getDatasetMeta(chart.data.datasets.length-1);
+          totals.forEach((t,i)=>{
+            if(t===0)return;
+            const bar=lastMeta.data[i];
+            if(!bar)return;
+            ctx.save();
+            ctx.fillStyle='#3c4043';
+            ctx.font='bold 11px sans-serif';
+            ctx.textAlign='center';
+            ctx.textBaseline='bottom';
+            ctx.fillText(t,bar.x,bar.y-3);
+            ctx.restore();
+          });
+        }
+      };
+
+      new Chart(c,{
+        type:'bar',
+        data:{
+          labels:["03-29", "03-30", "03-31", "04-01", "04-02", "04-03", "04-04"],
+          datasets:[
+            {label:'게임 관련',data:[0, 0, 0, 4, 0, 1, 2],backgroundColor:'rgba(66,133,244,.8)',stack:'s'},
+            {label:'버그·오류', data:[0, 0, 0, 0, 0, 0, 0],backgroundColor:'rgba(234,67,53,.8)', stack:'s'},
+            {label:'건의·요청',data:[0, 0, 0, 9, 2, 1, 0],backgroundColor:'rgba(251,188,4,.85)',stack:'s'},
+            {label:'기타',     data:[0, 0, 0, 3, 2, 2, 1],backgroundColor:'rgba(154,160,166,.7)',stack:'s'},
+          ]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{position:'top',labels:{font:{size:11},boxWidth:12,padding:8}},
+            tooltip:{mode:'index',intersect:false}
+          },
+          scales:{
+            x:{stacked:true,ticks:{font:{size:11}},grid:{display:false}},
+            y:{stacked:true,beginAtZero:true,max:20,
+                ticks:{stepSize:5,font:{size:11}},grid:{color:'#eee'}}
+          }
+        },
+        plugins:[stackTotalPlugin]
+      });
+    })();
+    </script></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">03</span>1:1 문의 동향</div>
+      <div class="rpt-sec-body">
+        <div style="margin-bottom:8px">
+          <div style="position:relative;height:160px">
+            <canvas id="cs_combo_0404"></canvas>
+          </div>
+        </div>
+        <script>
+        (function(){
+          var ctx = document.getElementById('cs_combo_0404').getContext('2d');
+          var barLabelPlugin = {
+            id:'barLabel',
+            afterDraw: function(chart) {
+              var c = chart.ctx;
+              chart.data.datasets.forEach(function(ds, di) {
+                if (ds.type === 'line') return;
+                var meta = chart.getDatasetMeta(di);
+                if (meta.hidden) return;
+                meta.data.forEach(function(bar, i) {
+                  var val = ds.data[i];
+                  if (!val) return;
+                  c.save();
+                  c.font = 'bold 10px sans-serif';
+                  c.fillStyle = '#333';
+                  c.textAlign = 'center';
+                  c.textBaseline = 'bottom';
+                  c.fillText(val, bar.x, bar.y - 2);
+                  c.restore();
+                });
+              });
+            }
+          };
+          new Chart(ctx, {
+            data: {
+              labels: ["03-29", "03-30", "03-31", "04-01", "04-02", "04-03", "04-04"],
+              datasets: [
+                {
+                  type: 'bar',
+                  label: '인입량',
+                  data: [0, 0, 0, 0, 0, 0, 0],
+                  backgroundColor: 'rgba(123,104,238,0.75)',
+                  borderRadius: 3,
+                  yAxisID: 'y'
+                },
+                {
+                  type: 'bar',
+                  label: '처리량',
+                  data: [0, 0, 0, 0, 0, 0, 0],
+                  backgroundColor: 'rgba(160,160,160,0.75)',
+                  borderRadius: 3,
+                  yAxisID: 'y'
+                },
+                {
+                  type: 'line',
+                  label: '처리율',
+                  data: [0, 0, 0, 0, 0, 0, 0],
+                  borderColor: 'rgba(220,50,50,0.85)',
+                  borderDash: [5,3],
+                  borderWidth: 1.5,
+                  pointBackgroundColor: 'rgba(220,50,50,0.85)',
+                  pointRadius: 3,
+                  tension: 0.2,
+                  yAxisID: 'y1'
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'bottom',
+                  labels: { font: {size:11}, boxWidth:12, padding:8 }
+                },
+                tooltip: {
+                  mode: 'index',
+                  intersect: false,
+                  callbacks: {
+                    label: function(c) {
+                      if (c.dataset.label === '처리율') return c.dataset.label + ': ' + c.parsed.y + '%';
+                      return c.dataset.label + ': ' + c.parsed.y + '건';
+                    }
+                  }
+                }
+              },
+              scales: {
+                y: {
+                  min: 0, max: 4,
+                  ticks: { stepSize: 1, callback: function(v){ return v+'건'; }, font:{size:11} },
+                  grid: { color: '#eee' }
+                },
+                y1: {
+                  position: 'right',
+                  min: 0, max: 120,
+                  ticks: { callback: function(v){ return v+'%'; }, font:{size:11} },
+                  grid: { drawOnChartArea: false }
+                },
+                x: { ticks:{font:{size:11}}, grid:{ display:false } }
+              }
+            },
+            plugins: [barLabelPlugin]
+          });
+        })();
+        </script>
+        <div style="font-size:11px;color:#666;margin:4px 0 10px">
+          7일 누적 0건 &nbsp;|&nbsp; 어제(04-04) 인입 0건 · 처리 0건 · 처리율 0%
+        </div><p class='empty-s' style='color:#888;font-size:12px'>당일 DKR 문의 없음</p></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">04</span>공식 라운지 동향</div>
+      <div class="rpt-sec-body">
+    <table class="voc-tbl">
+      <thead>
+        <tr>
+          <th style="width:76px">항목</th>
+          <th>내용</th>
+          <th style="width:52px">건수</th>
+          <th style="width:70px">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cat-td">게임 관련</td>
+          <td class="content-td">
+              <div class="voc-row-item">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">루멘탑 중심 콘텐츠 편중 불만 — 1년 내내 루멘탑만 반복된다는 비판</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">인터서버 그룹 재편 후 SG1·SG2·SG3 서버 배치 변경 내용 문의</span>
+                </div>
+              </div>
+              </td>
+          <td class="ref-td">2건</td>
+          <td class="note-td"><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr>
+        <tr>
+          <td class="cat-td">기타</td>
+          <td class="content-td">
+              <div class="voc-row-item">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">과금 유저 이탈 우려 — 서비스 방향에 실망한 과금 유저 불만 표출</span>
+                </div>
+              </div>
+              </td>
+          <td class="ref-td">1건</td>
+          <td class="note-td"><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr></tbody>
+    </table></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">05</span>CS 동향</div>
+      <div class="rpt-sec-body"><p class='empty-s'>수집된 CS 문의 없음</p></div>
+    </div></div>
+          <div id="W-2026-04-04" class="period-panel" style="display:none"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">주간 서비스 현황</span><span class="rpt-ts">집계기간: 2026-04-01 ~ 2026-04-04</span></div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">01</span>주간 주요 이슈</div>
+      <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431" target="_blank" class="iss-link">4월 2일(목) 정기 점검 완료 (10:00~13:30) — 신규 콘텐츠 6종 업데이트 및 레벨 캡 250 확장</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433" target="_blank" class="iss-link">구서버 인터 서버 그룹 전면 개편 — 성 정보 초기화 예정, 성주 길드 세금 사전 수령 필수</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492435" target="_blank" class="iss-link">하이퍼 서버 전용 — 초월 탈리스만 3종, 루멘탑 10층 추가 및 장비 연금술 확률 대규모 개편</a></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/" target="_blank" class="iss-link">동접 감소 및 서비스 종료 임박 우려 (COC 섭종 여파로 DKR도 섭종 예상)</a> <span class="cnt-s">(2건)</span></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="iss-link">COC 서비스 종료에 이은 DKR 조기 종료 우려 및 회사 신뢰도 하락 표명</a> <span class="cnt-s">(2건)</span></li><li><span class="tg tg-sug">건의·요청</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="iss-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</a> <span class="cnt-s">(7건)</span></li><li><span class="tg tg-game">게임 관련</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="iss-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</a> <span class="cnt-s">(3건)</span></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="iss-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</a> <span class="cnt-s">(3건)</span></li></ul></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">02</span>운영 지표</div>
+      <div class="rpt-sec-body">
+    <p class="chart-label">커뮤니티 현황 (유저 게시물 추이 — 최근 7일)</p>
+    <div style="max-height:220px"><canvas id="ch-W20260404" height="180"></canvas></div>
+    <script>
+    (function(){
+      const c=document.getElementById('ch-W20260404');
+      if(!c||c._ok)return;c._ok=true;
+
+      // 막대 위 합계 표시 인라인 플러그인
+      const stackTotalPlugin={
+        id:'stackTotal',
+        afterDatasetsDraw(chart){
+          const ctx=chart.ctx;
+          const totals=[16, 4, 4, 3];
+          const lastMeta=chart.getDatasetMeta(chart.data.datasets.length-1);
+          totals.forEach((t,i)=>{
+            if(t===0)return;
+            const bar=lastMeta.data[i];
+            if(!bar)return;
+            ctx.save();
+            ctx.fillStyle='#3c4043';
+            ctx.font='bold 11px sans-serif';
+            ctx.textAlign='center';
+            ctx.textBaseline='bottom';
+            ctx.fillText(t,bar.x,bar.y-3);
+            ctx.restore();
+          });
+        }
+      };
+
+      new Chart(c,{
+        type:'bar',
+        data:{
+          labels:["04-01", "04-02", "04-03", "04-04"],
+          datasets:[
+            {label:'게임 관련',data:[4, 0, 1, 2],backgroundColor:'rgba(66,133,244,.8)',stack:'s'},
+            {label:'버그·오류', data:[0, 0, 0, 0],backgroundColor:'rgba(234,67,53,.8)', stack:'s'},
+            {label:'건의·요청',data:[9, 2, 1, 0],backgroundColor:'rgba(251,188,4,.85)',stack:'s'},
+            {label:'기타',     data:[3, 2, 2, 1],backgroundColor:'rgba(154,160,166,.7)',stack:'s'},
+          ]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{position:'top',labels:{font:{size:11},boxWidth:12,padding:8}},
+            tooltip:{mode:'index',intersect:false}
+          },
+          scales:{
+            x:{stacked:true,ticks:{font:{size:11}},grid:{display:false}},
+            y:{stacked:true,beginAtZero:true,max:20,
+                ticks:{stepSize:5,font:{size:11}},grid:{color:'#eee'}}
+          }
+        },
+        plugins:[stackTotalPlugin]
+      });
+    })();
+    </script></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">03</span>1:1 문의 동향</div>
+      <div class="rpt-sec-body">
+        <div class="cs-placeholder">
+          <p>📋 Hive 콘솔에서 당일 문의 데이터를 수동으로 업데이트해 주세요.</p>
+          <p class="cs-hint">→ console.withhive.com → 문의 목록 → 한국어 → 전체 검색</p>
+        </div></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">04</span>공식 라운지 동향</div>
+      <div class="rpt-sec-body">
+    <table class="voc-tbl">
+      <thead>
+        <tr>
+          <th style="width:76px">항목</th>
+          <th>내용</th>
+          <th style="width:52px">건수</th>
+          <th style="width:70px">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cat-td">게임 관련</td>
+          <td class="content-td">
+              <div class="voc-row-item">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">루멘탑 중심 콘텐츠 편중 불만 — 1년 내내 루멘탑만 반복된다는 비판</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">인터서버 그룹 재편 후 SG1·SG2·SG3 서버 배치 변경 내용 문의</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">보스 시간 미조정 불만 — 업데이트 후에도 보스 시간 변경 없음</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260404_3')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260404_3" class="arr">▸</span><span class="vitem-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</span>
+                </div>
+              </div>
+              <div id="W20260404_3" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="det-title">32서버 상황 마지막</a><div class="det-body">게임이든 현생이든 없는소리 하고 안하고 살아야하는데.. 선동을 한적 없습니다. 앞서 말씀 드렸드니 제가 무슨 정치질을 하려고 글쓴것도 아니구요 있는 그대로를 올려드렸습니다. 32서버 좀비 길드에 있던 송천동 케릭이 좀비케릭 죽이고 다니니까 자꾸 귓말오고 이상한 얘기 나오고 그래서 라운지에 글 올렸을 뿐입니다. 좀비 길드원들에게 선동하는건 애마님 아닐까 생각이 됩니다 애마님이 좀비 길드원들한테 언제 칼넣으라고 했냐고 그런적 없다고 했다는데 사진 …</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490286" target="_blank" class="det-title">32서버 상황</a><div class="det-body">관심이 없으신 분들도 계시고, 궁금해하시는 분들, “송천동이 미친 거 아닌가?”라고 생각하시는 분들도 계실 것 같아서 상황을 정리해서 올립니다. 고의였든 아니었든, 자사 중에 같은 길드원이던 블라디미로 형이 돈사장 형에게 죽었고 그 이후 길드를 나갔습니다. 길드를 나간 이유가 그것 하나만은 아니라고 생각하지만, 어쨌든 블라디미로 형은 좀비 길드를 나갔고 저도 같이 나오게 되었습니다. 길드가 맘에 안들면 길원이 나가면 되는거고 조용히 나가려고 했…</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490014" target="_blank" class="det-title">현재 구섭 구도가 어떻게 되요?</a><div class="det-body">구섭 구도좀 썰좀 풀어줘요.......</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260404_4')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260404_4" class="arr">▸</span><span class="vitem-link">초보 유저 상점 패키지 가성비 및 구매 우선순위 문의</span>
+                </div>
+              </div>
+              <div id="W20260404_4" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="det-title">상점에서 뭐 사나요?</a><div class="det-body">상점에 이벤트, 한정 상품, VIP 패키지 여러 가지가 있던데 뭐 먼저 사는 게 좋나요? 특권에서 광고 스킵 보이던데 이거 먼저 사나요? 오늘 지르는 건 아니고 내일 원스토어 출첵 쿠폰 받으면 그때 지르려고요</div></div></div></td>
+          <td class="ref-td">7건</td>
+          <td class="note-td"><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr>
+        <tr>
+          <td class="cat-td">건의·요청</td>
+          <td class="content-td">
+              <div class="voc-row-item">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">봉인된 루멘탑 이동증표 개인 인벤토리 직접 지급 방식으로 전환 건의</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260404_6')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260404_6" class="arr">▸</span><span class="vitem-link">루멘탑 이동증표 봉인 해제 후 순간이동주문서 제작 확률(10%) 개선 건의</span>
+                </div>
+              </div>
+              <div id="W20260404_6" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499126" target="_blank" class="det-title">봉인된 루멘탑 이동증표에 관하여</a><div class="det-body">안녕하세요 이동증표 관련해서 건의드릴께 있는데요 각 층 보스를 잡으면 랜덤으로 봉인된 루멘탑 이동증표가 나옵니다. 그리고 제작하는데 10프로의 확률로 그 층 순간이동주문서 500장과 현돌 100개가 소비됩니다. 엔트러스 게임 10프로는 다른게임 10프로와 틀려서 체감상 5프로 미만같은느낌을 많이 받고 있습니다. 만약 만들었다? 능력치를 보면  이동증표 만든 층을 무한으로 1분쿨타임으로 갈수 있는 메리트가 있고 경험치 10프로 , 드래곤 주화 1…</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260404_7')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260404_7" class="arr">▸</span><span class="vitem-link">보스 소환 시간대 변경 건의 (접속자 패턴 고려 요청)</span>
+                </div>
+              </div>
+              <div id="W20260404_7" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7496011" target="_blank" class="det-title">보스시간 안바꾸냐??</a><div class="det-body">개노잼</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260404_8')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260404_8" class="arr">▸</span><span class="vitem-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</span>
+                </div>
+              </div>
+              <div id="W20260404_8" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492521" target="_blank" class="det-title">서버이전 왜 안내냐 지겨워라 지겨워</a><div class="det-body">퉤</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460" target="_blank" class="det-title">섭이전. 구썹이랑 하이퍼랑합쳐라</a><div class="det-body">다이아1개당 플로얼마 해서. 반대로 플로얼마당 다이아1개. 합치자 구썹이랑하이퍼랑</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="det-title">전체 섭이전 한번 가시죠</a><div class="det-body">사람도 얼마 안남았는데 모일수 있게 이전권 한번가시죠~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490333" target="_blank" class="det-title">이전권 캐쉬로팔면 게임사도 돈벌고</a><div class="det-body">좋자나요</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490284" target="_blank" class="det-title">바로템에 케릭엄청올라옴</a><div class="det-body">서버이전권이라도 생겨야 그케릭사서 하고싶은써버로가죠~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490256" target="_blank" class="det-title">이전권 나와야될듯</a><div class="det-body">다접고있어요</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490069" target="_blank" class="det-title">Bj도 다 빠졌으니 구도 맞춰야 됩니다</a><div class="det-body">남은사람 바보 만들지말고 서버이전권 내주세요</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260404_9')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260404_9" class="arr">▸</span><span class="vitem-link">보스 탐험 드롭 아이템 길드 귀속 → 개인 인벤토리 수령 방식으로 개선 건의</span>
+                </div>
+              </div>
+              <div id="W20260404_9" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="det-title">보탐할때 아이템 길드로들어가지말고</a><div class="det-body">개인으로 들어가게해주세요~ 라인이아니여도 보스치면 아이템먹을수있게요~</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260404_10')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260404_10" class="arr">▸</span><span class="vitem-link">신화스킬 제작 시 전설스킬 추출 재료 사용 허용 건의</span>
+                </div>
+              </div>
+              <div id="W20260404_10" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="det-title">신화스킬</a><div class="det-body">신화스킬 재료가 전설스킬이던데... 전설스킬 추출로 가능하게 해주세요. 제작좀 해보게...</div></div></div></td>
+          <td class="ref-td">12건</td>
+          <td class="note-td"><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499126" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7496011" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr>
+        <tr>
+          <td class="cat-td">기타</td>
+          <td class="content-td">
+              <div class="voc-row-item">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">과금 유저 이탈 우려 — 서비스 방향에 실망한 과금 유저 불만 표출</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">동접 감소 및 서비스 종료 임박 우려 (COC 섭종 여파로 DKR도 섭종 예상)</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260404_13')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260404_13" class="arr">▸</span><span class="vitem-link">COC 서비스 종료에 이은 DKR 조기 종료 우려 및 회사 신뢰도 하락 표명</span>
+                </div>
+              </div>
+              <div id="W20260404_13" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499032" target="_blank" class="det-title">천안핵주먹 200 에팔림 실화? 섭종 ㅅㄱ</a><div class="det-body">천안핵주먹 본주 ㅈ같겟다 이제누가 쿠마랑겜하고 엔트러스겜하겟냐.. 무섭다 진짜 .. ㄷㄷ</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="det-title">조만간 서비스종료다 이글은성지가됨</a><div class="det-body">조만간이다 탈출은지능순 얘네 서버 유지할돈없어서 하나하나 서비스종료중</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260404_14')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260404_14" class="arr">▸</span><span class="vitem-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</span>
+                </div>
+              </div>
+              <div id="W20260404_14" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7494737" target="_blank" class="det-title">앤트런스 다시는 안한다 ㅅㄱ</a><div class="det-body">유저들 소리 아예 쌩까버리는 겜서 첨본다 이제야 탈출하는군 빠빠이</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307" target="_blank" class="det-title">이 게임은 도대체가 발전이 없노 ㅋㅋㅋ역시나네</a><div class="det-body">노잼 접을란다 ~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="det-title">과금내놓고 한달만에 서비스종료함 과금안하는게답</a><div class="det-body">콜카봐라 설날바짝땡기고 바로서비스종료때림 믿고거르는 회사게임</div></div></div></td>
+          <td class="ref-td">8건</td>
+          <td class="note-td"><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr></tbody>
+    </table></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">05</span>CS 동향</div>
+      <div class="rpt-sec-body"><p class='empty-s'>수집된 CS 문의 없음</p></div>
+    </div></div>
+        </div>
+        <div id="panel-2026-04-03" class="date-panel" style="display:none">
+          <div id="D-2026-04-03" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-03 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:48</span></div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
+      <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/" target="_blank" class="iss-link">동접 감소 및 서비스 종료 임박 우려 (COC 섭종 여파로 DKR도 섭종 예상)</a> <span class="cnt-s">(2건)</span></li></ul></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">02</span>운영 지표</div>
+      <div class="rpt-sec-body">
+    <p class="chart-label">커뮤니티 현황 (유저 게시물 추이 — 최근 7일)</p>
+    <div style="max-height:220px"><canvas id="ch-D20260403" height="180"></canvas></div>
+    <script>
+    (function(){
+      const c=document.getElementById('ch-D20260403');
+      if(!c||c._ok)return;c._ok=true;
+
+      // 막대 위 합계 표시 인라인 플러그인
+      const stackTotalPlugin={
+        id:'stackTotal',
+        afterDatasetsDraw(chart){
+          const ctx=chart.ctx;
+          const totals=[0, 0, 0, 0, 16, 4, 4];
+          const lastMeta=chart.getDatasetMeta(chart.data.datasets.length-1);
+          totals.forEach((t,i)=>{
+            if(t===0)return;
+            const bar=lastMeta.data[i];
+            if(!bar)return;
+            ctx.save();
+            ctx.fillStyle='#3c4043';
+            ctx.font='bold 11px sans-serif';
+            ctx.textAlign='center';
+            ctx.textBaseline='bottom';
+            ctx.fillText(t,bar.x,bar.y-3);
+            ctx.restore();
+          });
+        }
+      };
+
+      new Chart(c,{
+        type:'bar',
+        data:{
+          labels:["03-28", "03-29", "03-30", "03-31", "04-01", "04-02", "04-03"],
+          datasets:[
+            {label:'게임 관련',data:[0, 0, 0, 0, 4, 0, 1],backgroundColor:'rgba(66,133,244,.8)',stack:'s'},
+            {label:'버그·오류', data:[0, 0, 0, 0, 0, 0, 0],backgroundColor:'rgba(234,67,53,.8)', stack:'s'},
+            {label:'건의·요청',data:[0, 0, 0, 0, 9, 2, 1],backgroundColor:'rgba(251,188,4,.85)',stack:'s'},
+            {label:'기타',     data:[0, 0, 0, 0, 3, 2, 2],backgroundColor:'rgba(154,160,166,.7)',stack:'s'},
+          ]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{position:'top',labels:{font:{size:11},boxWidth:12,padding:8}},
+            tooltip:{mode:'index',intersect:false}
+          },
+          scales:{
+            x:{stacked:true,ticks:{font:{size:11}},grid:{display:false}},
+            y:{stacked:true,beginAtZero:true,max:20,
+                ticks:{stepSize:5,font:{size:11}},grid:{color:'#eee'}}
+          }
+        },
+        plugins:[stackTotalPlugin]
+      });
+    })();
+    </script></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">03</span>1:1 문의 동향</div>
+      <div class="rpt-sec-body">
+        <div style="margin-bottom:8px">
+          <div style="position:relative;height:160px">
+            <canvas id="cs_combo_0403"></canvas>
+          </div>
+        </div>
+        <script>
+        (function(){
+          var ctx = document.getElementById('cs_combo_0403').getContext('2d');
+          var barLabelPlugin = {
+            id:'barLabel',
+            afterDraw: function(chart) {
+              var c = chart.ctx;
+              chart.data.datasets.forEach(function(ds, di) {
+                if (ds.type === 'line') return;
+                var meta = chart.getDatasetMeta(di);
+                if (meta.hidden) return;
+                meta.data.forEach(function(bar, i) {
+                  var val = ds.data[i];
+                  if (!val) return;
+                  c.save();
+                  c.font = 'bold 10px sans-serif';
+                  c.fillStyle = '#333';
+                  c.textAlign = 'center';
+                  c.textBaseline = 'bottom';
+                  c.fillText(val, bar.x, bar.y - 2);
+                  c.restore();
+                });
+              });
+            }
+          };
+          new Chart(ctx, {
+            data: {
+              labels: ["03-28", "03-29", "03-30", "03-31", "04-01", "04-02", "04-03"],
+              datasets: [
+                {
+                  type: 'bar',
+                  label: '인입량',
+                  data: [0, 0, 0, 0, 0, 0, 0],
+                  backgroundColor: 'rgba(123,104,238,0.75)',
+                  borderRadius: 3,
+                  yAxisID: 'y'
+                },
+                {
+                  type: 'bar',
+                  label: '처리량',
+                  data: [0, 0, 0, 0, 0, 0, 0],
+                  backgroundColor: 'rgba(160,160,160,0.75)',
+                  borderRadius: 3,
+                  yAxisID: 'y'
+                },
+                {
+                  type: 'line',
+                  label: '처리율',
+                  data: [0, 0, 0, 0, 0, 0, 0],
+                  borderColor: 'rgba(220,50,50,0.85)',
+                  borderDash: [5,3],
+                  borderWidth: 1.5,
+                  pointBackgroundColor: 'rgba(220,50,50,0.85)',
+                  pointRadius: 3,
+                  tension: 0.2,
+                  yAxisID: 'y1'
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'bottom',
+                  labels: { font: {size:11}, boxWidth:12, padding:8 }
+                },
+                tooltip: {
+                  mode: 'index',
+                  intersect: false,
+                  callbacks: {
+                    label: function(c) {
+                      if (c.dataset.label === '처리율') return c.dataset.label + ': ' + c.parsed.y + '%';
+                      return c.dataset.label + ': ' + c.parsed.y + '건';
+                    }
+                  }
+                }
+              },
+              scales: {
+                y: {
+                  min: 0, max: 4,
+                  ticks: { stepSize: 1, callback: function(v){ return v+'건'; }, font:{size:11} },
+                  grid: { color: '#eee' }
+                },
+                y1: {
+                  position: 'right',
+                  min: 0, max: 120,
+                  ticks: { callback: function(v){ return v+'%'; }, font:{size:11} },
+                  grid: { drawOnChartArea: false }
+                },
+                x: { ticks:{font:{size:11}}, grid:{ display:false } }
+              }
+            },
+            plugins: [barLabelPlugin]
+          });
+        })();
+        </script>
+        <div style="font-size:11px;color:#666;margin:4px 0 10px">
+          7일 누적 0건 &nbsp;|&nbsp; 어제(04-03) 인입 0건 · 처리 0건 · 처리율 0%
+        </div><p class='empty-s' style='color:#888;font-size:12px'>당일 DKR 문의 없음</p></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">04</span>공식 라운지 동향</div>
+      <div class="rpt-sec-body">
+    <table class="voc-tbl">
+      <thead>
+        <tr>
+          <th style="width:76px">항목</th>
+          <th>내용</th>
+          <th style="width:52px">건수</th>
+          <th style="width:70px">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cat-td">게임 관련</td>
+          <td class="content-td">
+              <div class="voc-row-item">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">보스 시간 미조정 불만 — 업데이트 후에도 보스 시간 변경 없음</span>
+                </div>
+              </div>
+              </td>
+          <td class="ref-td">1건</td>
+          <td class="note-td"><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr>
+        <tr>
+          <td class="cat-td">건의·요청</td>
+          <td class="content-td">
+              <div class="voc-row-item">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">봉인된 루멘탑 이동증표 개인 인벤토리 직접 지급 방식으로 전환 건의</span>
+                </div>
+              </div>
+              </td>
+          <td class="ref-td">1건</td>
+          <td class="note-td"><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr>
+        <tr>
+          <td class="cat-td">기타</td>
+          <td class="content-td">
+              <div class="voc-row-item">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">동접 감소 및 서비스 종료 임박 우려 (COC 섭종 여파로 DKR도 섭종 예상)</span>
+                </div>
+              </div>
+              </td>
+          <td class="ref-td">2건</td>
+          <td class="note-td"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr></tbody>
+    </table></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">05</span>CS 동향</div>
+      <div class="rpt-sec-body"><p class='empty-s'>수집된 CS 문의 없음</p></div>
+    </div></div>
+          <div id="W-2026-04-03" class="period-panel" style="display:none"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">주간 서비스 현황</span><span class="rpt-ts">집계기간: 2026-04-01 ~ 2026-04-03</span></div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">01</span>주간 주요 이슈</div>
+      <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431" target="_blank" class="iss-link">4월 2일(목) 정기 점검 완료 (10:00~13:30) — 신규 콘텐츠 6종 업데이트 및 레벨 캡 250 확장</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433" target="_blank" class="iss-link">구서버 인터 서버 그룹 전면 개편 — 성 정보 초기화 예정, 성주 길드 세금 사전 수령 필수</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492435" target="_blank" class="iss-link">하이퍼 서버 전용 — 초월 탈리스만 3종, 루멘탑 10층 추가 및 장비 연금술 확률 대규모 개편</a></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/" target="_blank" class="iss-link">동접 감소 및 서비스 종료 임박 우려 (COC 섭종 여파로 DKR도 섭종 예상)</a> <span class="cnt-s">(2건)</span></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="iss-link">COC 서비스 종료에 이은 DKR 조기 종료 우려 및 회사 신뢰도 하락 표명</a> <span class="cnt-s">(2건)</span></li><li><span class="tg tg-sug">건의·요청</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="iss-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</a> <span class="cnt-s">(7건)</span></li><li><span class="tg tg-game">게임 관련</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="iss-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</a> <span class="cnt-s">(3건)</span></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="iss-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</a> <span class="cnt-s">(3건)</span></li></ul></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">02</span>운영 지표</div>
+      <div class="rpt-sec-body">
+    <p class="chart-label">커뮤니티 현황 (유저 게시물 추이 — 최근 7일)</p>
+    <div style="max-height:220px"><canvas id="ch-W20260403" height="180"></canvas></div>
+    <script>
+    (function(){
+      const c=document.getElementById('ch-W20260403');
+      if(!c||c._ok)return;c._ok=true;
+
+      // 막대 위 합계 표시 인라인 플러그인
+      const stackTotalPlugin={
+        id:'stackTotal',
+        afterDatasetsDraw(chart){
+          const ctx=chart.ctx;
+          const totals=[16, 4, 4];
+          const lastMeta=chart.getDatasetMeta(chart.data.datasets.length-1);
+          totals.forEach((t,i)=>{
+            if(t===0)return;
+            const bar=lastMeta.data[i];
+            if(!bar)return;
+            ctx.save();
+            ctx.fillStyle='#3c4043';
+            ctx.font='bold 11px sans-serif';
+            ctx.textAlign='center';
+            ctx.textBaseline='bottom';
+            ctx.fillText(t,bar.x,bar.y-3);
+            ctx.restore();
+          });
+        }
+      };
+
+      new Chart(c,{
+        type:'bar',
+        data:{
+          labels:["04-01", "04-02", "04-03"],
+          datasets:[
+            {label:'게임 관련',data:[4, 0, 1],backgroundColor:'rgba(66,133,244,.8)',stack:'s'},
+            {label:'버그·오류', data:[0, 0, 0],backgroundColor:'rgba(234,67,53,.8)', stack:'s'},
+            {label:'건의·요청',data:[9, 2, 1],backgroundColor:'rgba(251,188,4,.85)',stack:'s'},
+            {label:'기타',     data:[3, 2, 2],backgroundColor:'rgba(154,160,166,.7)',stack:'s'},
+          ]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{position:'top',labels:{font:{size:11},boxWidth:12,padding:8}},
+            tooltip:{mode:'index',intersect:false}
+          },
+          scales:{
+            x:{stacked:true,ticks:{font:{size:11}},grid:{display:false}},
+            y:{stacked:true,beginAtZero:true,max:20,
+                ticks:{stepSize:5,font:{size:11}},grid:{color:'#eee'}}
+          }
+        },
+        plugins:[stackTotalPlugin]
+      });
+    })();
+    </script></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">03</span>1:1 문의 동향</div>
+      <div class="rpt-sec-body">
+        <div class="cs-placeholder">
+          <p>📋 Hive 콘솔에서 당일 문의 데이터를 수동으로 업데이트해 주세요.</p>
+          <p class="cs-hint">→ console.withhive.com → 문의 목록 → 한국어 → 전체 검색</p>
+        </div></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">04</span>공식 라운지 동향</div>
+      <div class="rpt-sec-body">
+    <table class="voc-tbl">
+      <thead>
+        <tr>
+          <th style="width:76px">항목</th>
+          <th>내용</th>
+          <th style="width:52px">건수</th>
+          <th style="width:70px">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cat-td">게임 관련</td>
+          <td class="content-td">
+              <div class="voc-row-item">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">보스 시간 미조정 불만 — 업데이트 후에도 보스 시간 변경 없음</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260403_1')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260403_1" class="arr">▸</span><span class="vitem-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</span>
+                </div>
+              </div>
+              <div id="W20260403_1" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="det-title">32서버 상황 마지막</a><div class="det-body">게임이든 현생이든 없는소리 하고 안하고 살아야하는데.. 선동을 한적 없습니다. 앞서 말씀 드렸드니 제가 무슨 정치질을 하려고 글쓴것도 아니구요 있는 그대로를 올려드렸습니다. 32서버 좀비 길드에 있던 송천동 케릭이 좀비케릭 죽이고 다니니까 자꾸 귓말오고 이상한 얘기 나오고 그래서 라운지에 글 올렸을 뿐입니다. 좀비 길드원들에게 선동하는건 애마님 아닐까 생각이 됩니다 애마님이 좀비 길드원들한테 언제 칼넣으라고 했냐고 그런적 없다고 했다는데 사진 …</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490286" target="_blank" class="det-title">32서버 상황</a><div class="det-body">관심이 없으신 분들도 계시고, 궁금해하시는 분들, “송천동이 미친 거 아닌가?”라고 생각하시는 분들도 계실 것 같아서 상황을 정리해서 올립니다. 고의였든 아니었든, 자사 중에 같은 길드원이던 블라디미로 형이 돈사장 형에게 죽었고 그 이후 길드를 나갔습니다. 길드를 나간 이유가 그것 하나만은 아니라고 생각하지만, 어쨌든 블라디미로 형은 좀비 길드를 나갔고 저도 같이 나오게 되었습니다. 길드가 맘에 안들면 길원이 나가면 되는거고 조용히 나가려고 했…</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490014" target="_blank" class="det-title">현재 구섭 구도가 어떻게 되요?</a><div class="det-body">구섭 구도좀 썰좀 풀어줘요.......</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260403_2')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260403_2" class="arr">▸</span><span class="vitem-link">초보 유저 상점 패키지 가성비 및 구매 우선순위 문의</span>
+                </div>
+              </div>
+              <div id="W20260403_2" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="det-title">상점에서 뭐 사나요?</a><div class="det-body">상점에 이벤트, 한정 상품, VIP 패키지 여러 가지가 있던데 뭐 먼저 사는 게 좋나요? 특권에서 광고 스킵 보이던데 이거 먼저 사나요? 오늘 지르는 건 아니고 내일 원스토어 출첵 쿠폰 받으면 그때 지르려고요</div></div></div></td>
+          <td class="ref-td">5건</td>
+          <td class="note-td"><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr>
+        <tr>
+          <td class="cat-td">건의·요청</td>
+          <td class="content-td">
+              <div class="voc-row-item">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">봉인된 루멘탑 이동증표 개인 인벤토리 직접 지급 방식으로 전환 건의</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260403_4')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260403_4" class="arr">▸</span><span class="vitem-link">루멘탑 이동증표 봉인 해제 후 순간이동주문서 제작 확률(10%) 개선 건의</span>
+                </div>
+              </div>
+              <div id="W20260403_4" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499126" target="_blank" class="det-title">봉인된 루멘탑 이동증표에 관하여</a><div class="det-body">안녕하세요 이동증표 관련해서 건의드릴께 있는데요 각 층 보스를 잡으면 랜덤으로 봉인된 루멘탑 이동증표가 나옵니다. 그리고 제작하는데 10프로의 확률로 그 층 순간이동주문서 500장과 현돌 100개가 소비됩니다. 엔트러스 게임 10프로는 다른게임 10프로와 틀려서 체감상 5프로 미만같은느낌을 많이 받고 있습니다. 만약 만들었다? 능력치를 보면  이동증표 만든 층을 무한으로 1분쿨타임으로 갈수 있는 메리트가 있고 경험치 10프로 , 드래곤 주화 1…</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260403_5')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260403_5" class="arr">▸</span><span class="vitem-link">보스 소환 시간대 변경 건의 (접속자 패턴 고려 요청)</span>
+                </div>
+              </div>
+              <div id="W20260403_5" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7496011" target="_blank" class="det-title">보스시간 안바꾸냐??</a><div class="det-body">개노잼</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260403_6')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260403_6" class="arr">▸</span><span class="vitem-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</span>
+                </div>
+              </div>
+              <div id="W20260403_6" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492521" target="_blank" class="det-title">서버이전 왜 안내냐 지겨워라 지겨워</a><div class="det-body">퉤</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460" target="_blank" class="det-title">섭이전. 구썹이랑 하이퍼랑합쳐라</a><div class="det-body">다이아1개당 플로얼마 해서. 반대로 플로얼마당 다이아1개. 합치자 구썹이랑하이퍼랑</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="det-title">전체 섭이전 한번 가시죠</a><div class="det-body">사람도 얼마 안남았는데 모일수 있게 이전권 한번가시죠~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490333" target="_blank" class="det-title">이전권 캐쉬로팔면 게임사도 돈벌고</a><div class="det-body">좋자나요</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490284" target="_blank" class="det-title">바로템에 케릭엄청올라옴</a><div class="det-body">서버이전권이라도 생겨야 그케릭사서 하고싶은써버로가죠~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490256" target="_blank" class="det-title">이전권 나와야될듯</a><div class="det-body">다접고있어요</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490069" target="_blank" class="det-title">Bj도 다 빠졌으니 구도 맞춰야 됩니다</a><div class="det-body">남은사람 바보 만들지말고 서버이전권 내주세요</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260403_7')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260403_7" class="arr">▸</span><span class="vitem-link">보스 탐험 드롭 아이템 길드 귀속 → 개인 인벤토리 수령 방식으로 개선 건의</span>
+                </div>
+              </div>
+              <div id="W20260403_7" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="det-title">보탐할때 아이템 길드로들어가지말고</a><div class="det-body">개인으로 들어가게해주세요~ 라인이아니여도 보스치면 아이템먹을수있게요~</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260403_8')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260403_8" class="arr">▸</span><span class="vitem-link">신화스킬 제작 시 전설스킬 추출 재료 사용 허용 건의</span>
+                </div>
+              </div>
+              <div id="W20260403_8" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="det-title">신화스킬</a><div class="det-body">신화스킬 재료가 전설스킬이던데... 전설스킬 추출로 가능하게 해주세요. 제작좀 해보게...</div></div></div></td>
+          <td class="ref-td">12건</td>
+          <td class="note-td"><a href="" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499126" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7496011" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr>
+        <tr>
+          <td class="cat-td">기타</td>
+          <td class="content-td">
+              <div class="voc-row-item">
+                <div class="voc-item-main">
+                  <span class="arr-ph"></span><span class="vitem-link">동접 감소 및 서비스 종료 임박 우려 (COC 섭종 여파로 DKR도 섭종 예상)</span>
+                </div>
+              </div>
+              
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260403_10')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260403_10" class="arr">▸</span><span class="vitem-link">COC 서비스 종료에 이은 DKR 조기 종료 우려 및 회사 신뢰도 하락 표명</span>
+                </div>
+              </div>
+              <div id="W20260403_10" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499032" target="_blank" class="det-title">천안핵주먹 200 에팔림 실화? 섭종 ㅅㄱ</a><div class="det-body">천안핵주먹 본주 ㅈ같겟다 이제누가 쿠마랑겜하고 엔트러스겜하겟냐.. 무섭다 진짜 .. ㄷㄷ</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="det-title">조만간 서비스종료다 이글은성지가됨</a><div class="det-body">조만간이다 탈출은지능순 얘네 서버 유지할돈없어서 하나하나 서비스종료중</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260403_11')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260403_11" class="arr">▸</span><span class="vitem-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</span>
+                </div>
+              </div>
+              <div id="W20260403_11" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7494737" target="_blank" class="det-title">앤트런스 다시는 안한다 ㅅㄱ</a><div class="det-body">유저들 소리 아예 쌩까버리는 겜서 첨본다 이제야 탈출하는군 빠빠이</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307" target="_blank" class="det-title">이 게임은 도대체가 발전이 없노 ㅋㅋㅋ역시나네</a><div class="det-body">노잼 접을란다 ~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="det-title">과금내놓고 한달만에 서비스종료함 과금안하는게답</a><div class="det-body">콜카봐라 설날바짝땡기고 바로서비스종료때림 믿고거르는 회사게임</div></div></div></td>
+          <td class="ref-td">7건</td>
+          <td class="note-td"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr></tbody>
+    </table></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">05</span>CS 동향</div>
+      <div class="rpt-sec-body"><p class='empty-s'>수집된 CS 문의 없음</p></div>
+    </div></div>
+        </div>
+        <div id="panel-2026-04-02" class="date-panel" style="display:none">
+          <div id="D-2026-04-02" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-02 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:48</span></div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
+      <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="iss-link">COC 서비스 종료에 이은 DKR 조기 종료 우려 및 회사 신뢰도 하락 표명</a> <span class="cnt-s">(2건)</span></li></ul></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">02</span>운영 지표</div>
+      <div class="rpt-sec-body">
+    <p class="chart-label">커뮤니티 현황 (유저 게시물 추이 — 최근 7일)</p>
+    <div style="max-height:220px"><canvas id="ch-D20260402" height="180"></canvas></div>
+    <script>
+    (function(){
+      const c=document.getElementById('ch-D20260402');
+      if(!c||c._ok)return;c._ok=true;
+
+      // 막대 위 합계 표시 인라인 플러그인
+      const stackTotalPlugin={
+        id:'stackTotal',
+        afterDatasetsDraw(chart){
+          const ctx=chart.ctx;
+          const totals=[0, 0, 0, 0, 0, 16, 4];
+          const lastMeta=chart.getDatasetMeta(chart.data.datasets.length-1);
+          totals.forEach((t,i)=>{
+            if(t===0)return;
+            const bar=lastMeta.data[i];
+            if(!bar)return;
+            ctx.save();
+            ctx.fillStyle='#3c4043';
+            ctx.font='bold 11px sans-serif';
+            ctx.textAlign='center';
+            ctx.textBaseline='bottom';
+            ctx.fillText(t,bar.x,bar.y-3);
+            ctx.restore();
+          });
+        }
+      };
+
+      new Chart(c,{
+        type:'bar',
+        data:{
+          labels:["03-27", "03-28", "03-29", "03-30", "03-31", "04-01", "04-02"],
+          datasets:[
+            {label:'게임 관련',data:[0, 0, 0, 0, 0, 4, 0],backgroundColor:'rgba(66,133,244,.8)',stack:'s'},
+            {label:'버그·오류', data:[0, 0, 0, 0, 0, 0, 0],backgroundColor:'rgba(234,67,53,.8)', stack:'s'},
+            {label:'건의·요청',data:[0, 0, 0, 0, 0, 9, 2],backgroundColor:'rgba(251,188,4,.85)',stack:'s'},
+            {label:'기타',     data:[0, 0, 0, 0, 0, 3, 2],backgroundColor:'rgba(154,160,166,.7)',stack:'s'},
+          ]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{position:'top',labels:{font:{size:11},boxWidth:12,padding:8}},
+            tooltip:{mode:'index',intersect:false}
+          },
+          scales:{
+            x:{stacked:true,ticks:{font:{size:11}},grid:{display:false}},
+            y:{stacked:true,beginAtZero:true,max:20,
+                ticks:{stepSize:5,font:{size:11}},grid:{color:'#eee'}}
+          }
+        },
+        plugins:[stackTotalPlugin]
+      });
+    })();
+    </script></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">03</span>1:1 문의 동향</div>
+      <div class="rpt-sec-body">
+        <div style="margin-bottom:8px">
+          <div style="position:relative;height:160px">
+            <canvas id="cs_combo_0402"></canvas>
+          </div>
+        </div>
+        <script>
+        (function(){
+          var ctx = document.getElementById('cs_combo_0402').getContext('2d');
+          var barLabelPlugin = {
+            id:'barLabel',
+            afterDraw: function(chart) {
+              var c = chart.ctx;
+              chart.data.datasets.forEach(function(ds, di) {
+                if (ds.type === 'line') return;
+                var meta = chart.getDatasetMeta(di);
+                if (meta.hidden) return;
+                meta.data.forEach(function(bar, i) {
+                  var val = ds.data[i];
+                  if (!val) return;
+                  c.save();
+                  c.font = 'bold 10px sans-serif';
+                  c.fillStyle = '#333';
+                  c.textAlign = 'center';
+                  c.textBaseline = 'bottom';
+                  c.fillText(val, bar.x, bar.y - 2);
+                  c.restore();
+                });
+              });
+            }
+          };
+          new Chart(ctx, {
+            data: {
+              labels: ["03-27", "03-28", "03-29", "03-30", "03-31", "04-01", "04-02"],
+              datasets: [
+                {
+                  type: 'bar',
+                  label: '인입량',
+                  data: [2, 1, 4, 1, 2, 2, 0],
+                  backgroundColor: 'rgba(123,104,238,0.75)',
+                  borderRadius: 3,
+                  yAxisID: 'y'
+                },
+                {
+                  type: 'bar',
+                  label: '처리량',
+                  data: [1, 0, 0, 6, 3, 1, 1],
+                  backgroundColor: 'rgba(160,160,160,0.75)',
+                  borderRadius: 3,
+                  yAxisID: 'y'
+                },
+                {
+                  type: 'line',
+                  label: '처리율',
+                  data: [50, 0, 0, 600, 150, 50, 0],
+                  borderColor: 'rgba(220,50,50,0.85)',
+                  borderDash: [5,3],
+                  borderWidth: 1.5,
+                  pointBackgroundColor: 'rgba(220,50,50,0.85)',
+                  pointRadius: 3,
+                  tension: 0.2,
+                  yAxisID: 'y1'
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'bottom',
+                  labels: { font: {size:11}, boxWidth:12, padding:8 }
+                },
+                tooltip: {
+                  mode: 'index',
+                  intersect: false,
+                  callbacks: {
+                    label: function(c) {
+                      if (c.dataset.label === '처리율') return c.dataset.label + ': ' + c.parsed.y + '%';
+                      return c.dataset.label + ': ' + c.parsed.y + '건';
+                    }
+                  }
+                }
+              },
+              scales: {
+                y: {
+                  min: 0, max: 20,
+                  ticks: { stepSize: 5, callback: function(v){ return v+'건'; }, font:{size:11} },
+                  grid: { color: '#eee' }
+                },
+                y1: {
+                  position: 'right',
+                  min: 0, max: 620,
+                  ticks: { callback: function(v){ return v+'%'; }, font:{size:11} },
+                  grid: { drawOnChartArea: false }
+                },
+                x: { ticks:{font:{size:11}}, grid:{ display:false } }
+              }
+            },
+            plugins: [barLabelPlugin]
+          });
+        })();
+        </script>
+        <div style="font-size:11px;color:#666;margin:4px 0 10px">
+          7일 누적 12건 &nbsp;|&nbsp; 어제(04-02) 인입 0건 · 처리 1건 · 처리율 0%
+        </div><p class='empty-s' style='color:#888;font-size:12px'>당일 DKR 문의 없음</p></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">04</span>공식 라운지 동향</div>
+      <div class="rpt-sec-body">
+    <table class="voc-tbl">
+      <thead>
+        <tr>
+          <th style="width:76px">항목</th>
+          <th>내용</th>
+          <th style="width:52px">건수</th>
+          <th style="width:70px">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cat-td">건의·요청</td>
+          <td class="content-td">
+              <div class="voc-row-item" onclick="toggleVoc('D20260402_0')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-D20260402_0" class="arr">▸</span><span class="vitem-link">루멘탑 이동증표 봉인 해제 후 순간이동주문서 제작 확률(10%) 개선 건의</span>
+                </div>
+              </div>
+              <div id="D20260402_0" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499126" target="_blank" class="det-title">봉인된 루멘탑 이동증표에 관하여</a><div class="det-body">안녕하세요 이동증표 관련해서 건의드릴께 있는데요 각 층 보스를 잡으면 랜덤으로 봉인된 루멘탑 이동증표가 나옵니다. 그리고 제작하는데 10프로의 확률로 그 층 순간이동주문서 500장과 현돌 100개가 소비됩니다. 엔트러스 게임 10프로는 다른게임 10프로와 틀려서 체감상 5프로 미만같은느낌을 많이 받고 있습니다. 만약 만들었다? 능력치를 보면  이동증표 만든 층을 무한으로 1분쿨타임으로 갈수 있는 메리트가 있고 경험치 10프로 , 드래곤 주화 1…</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('D20260402_1')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-D20260402_1" class="arr">▸</span><span class="vitem-link">보스 소환 시간대 변경 건의 (접속자 패턴 고려 요청)</span>
+                </div>
+              </div>
+              <div id="D20260402_1" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7496011" target="_blank" class="det-title">보스시간 안바꾸냐??</a><div class="det-body">개노잼</div></div></div></td>
+          <td class="ref-td">2건</td>
+          <td class="note-td"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499126" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7496011" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr>
+        <tr>
+          <td class="cat-td">기타</td>
+          <td class="content-td">
+              <div class="voc-row-item" onclick="toggleVoc('D20260402_2')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-D20260402_2" class="arr">▸</span><span class="vitem-link">COC 서비스 종료에 이은 DKR 조기 종료 우려 및 회사 신뢰도 하락 표명</span>
+                </div>
+              </div>
+              <div id="D20260402_2" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499032" target="_blank" class="det-title">천안핵주먹 200 에팔림 실화? 섭종 ㅅㄱ</a><div class="det-body">천안핵주먹 본주 ㅈ같겟다 이제누가 쿠마랑겜하고 엔트러스겜하겟냐.. 무섭다 진짜 .. ㄷㄷ</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="det-title">조만간 서비스종료다 이글은성지가됨</a><div class="det-body">조만간이다 탈출은지능순 얘네 서버 유지할돈없어서 하나하나 서비스종료중</div></div></div></td>
+          <td class="ref-td">2건</td>
+          <td class="note-td"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr></tbody>
+    </table></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">05</span>CS 동향</div>
+      <div class="rpt-sec-body"><p class='empty-s'>수집된 CS 문의 없음</p></div>
+    </div></div>
+          <div id="W-2026-04-02" class="period-panel" style="display:none"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">주간 서비스 현황</span><span class="rpt-ts">집계기간: 2026-04-01 ~ 2026-04-02</span></div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">01</span>주간 주요 이슈</div>
+      <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431" target="_blank" class="iss-link">4월 2일(목) 정기 점검 완료 (10:00~13:30) — 신규 콘텐츠 6종 업데이트 및 레벨 캡 250 확장</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433" target="_blank" class="iss-link">구서버 인터 서버 그룹 전면 개편 — 성 정보 초기화 예정, 성주 길드 세금 사전 수령 필수</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492435" target="_blank" class="iss-link">하이퍼 서버 전용 — 초월 탈리스만 3종, 루멘탑 10층 추가 및 장비 연금술 확률 대규모 개편</a></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="iss-link">COC 서비스 종료에 이은 DKR 조기 종료 우려 및 회사 신뢰도 하락 표명</a> <span class="cnt-s">(2건)</span></li><li><span class="tg tg-sug">건의·요청</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="iss-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</a> <span class="cnt-s">(7건)</span></li><li><span class="tg tg-game">게임 관련</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="iss-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</a> <span class="cnt-s">(3건)</span></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="iss-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</a> <span class="cnt-s">(3건)</span></li></ul></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">02</span>운영 지표</div>
+      <div class="rpt-sec-body">
+    <p class="chart-label">커뮤니티 현황 (유저 게시물 추이 — 최근 7일)</p>
+    <div style="max-height:220px"><canvas id="ch-W20260402" height="180"></canvas></div>
+    <script>
+    (function(){
+      const c=document.getElementById('ch-W20260402');
+      if(!c||c._ok)return;c._ok=true;
+
+      // 막대 위 합계 표시 인라인 플러그인
+      const stackTotalPlugin={
+        id:'stackTotal',
+        afterDatasetsDraw(chart){
+          const ctx=chart.ctx;
+          const totals=[16, 4];
+          const lastMeta=chart.getDatasetMeta(chart.data.datasets.length-1);
+          totals.forEach((t,i)=>{
+            if(t===0)return;
+            const bar=lastMeta.data[i];
+            if(!bar)return;
+            ctx.save();
+            ctx.fillStyle='#3c4043';
+            ctx.font='bold 11px sans-serif';
+            ctx.textAlign='center';
+            ctx.textBaseline='bottom';
+            ctx.fillText(t,bar.x,bar.y-3);
+            ctx.restore();
+          });
+        }
+      };
+
+      new Chart(c,{
+        type:'bar',
+        data:{
+          labels:["04-01", "04-02"],
+          datasets:[
+            {label:'게임 관련',data:[4, 0],backgroundColor:'rgba(66,133,244,.8)',stack:'s'},
+            {label:'버그·오류', data:[0, 0],backgroundColor:'rgba(234,67,53,.8)', stack:'s'},
+            {label:'건의·요청',data:[9, 2],backgroundColor:'rgba(251,188,4,.85)',stack:'s'},
+            {label:'기타',     data:[3, 2],backgroundColor:'rgba(154,160,166,.7)',stack:'s'},
+          ]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{position:'top',labels:{font:{size:11},boxWidth:12,padding:8}},
+            tooltip:{mode:'index',intersect:false}
+          },
+          scales:{
+            x:{stacked:true,ticks:{font:{size:11}},grid:{display:false}},
+            y:{stacked:true,beginAtZero:true,max:20,
+                ticks:{stepSize:5,font:{size:11}},grid:{color:'#eee'}}
+          }
+        },
+        plugins:[stackTotalPlugin]
+      });
+    })();
+    </script></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">03</span>1:1 문의 동향</div>
+      <div class="rpt-sec-body">
+        <div class="cs-placeholder">
+          <p>📋 Hive 콘솔에서 당일 문의 데이터를 수동으로 업데이트해 주세요.</p>
+          <p class="cs-hint">→ console.withhive.com → 문의 목록 → 한국어 → 전체 검색</p>
+        </div></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">04</span>공식 라운지 동향</div>
+      <div class="rpt-sec-body">
+    <table class="voc-tbl">
+      <thead>
+        <tr>
+          <th style="width:76px">항목</th>
+          <th>내용</th>
+          <th style="width:52px">건수</th>
+          <th style="width:70px">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cat-td">게임 관련</td>
+          <td class="content-td">
+              <div class="voc-row-item" onclick="toggleVoc('W20260402_0')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260402_0" class="arr">▸</span><span class="vitem-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</span>
+                </div>
+              </div>
+              <div id="W20260402_0" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="det-title">32서버 상황 마지막</a><div class="det-body">게임이든 현생이든 없는소리 하고 안하고 살아야하는데.. 선동을 한적 없습니다. 앞서 말씀 드렸드니 제가 무슨 정치질을 하려고 글쓴것도 아니구요 있는 그대로를 올려드렸습니다. 32서버 좀비 길드에 있던 송천동 케릭이 좀비케릭 죽이고 다니니까 자꾸 귓말오고 이상한 얘기 나오고 그래서 라운지에 글 올렸을 뿐입니다. 좀비 길드원들에게 선동하는건 애마님 아닐까 생각이 됩니다 애마님이 좀비 길드원들한테 언제 칼넣으라고 했냐고 그런적 없다고 했다는데 사진 …</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490286" target="_blank" class="det-title">32서버 상황</a><div class="det-body">관심이 없으신 분들도 계시고, 궁금해하시는 분들, “송천동이 미친 거 아닌가?”라고 생각하시는 분들도 계실 것 같아서 상황을 정리해서 올립니다. 고의였든 아니었든, 자사 중에 같은 길드원이던 블라디미로 형이 돈사장 형에게 죽었고 그 이후 길드를 나갔습니다. 길드를 나간 이유가 그것 하나만은 아니라고 생각하지만, 어쨌든 블라디미로 형은 좀비 길드를 나갔고 저도 같이 나오게 되었습니다. 길드가 맘에 안들면 길원이 나가면 되는거고 조용히 나가려고 했…</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490014" target="_blank" class="det-title">현재 구섭 구도가 어떻게 되요?</a><div class="det-body">구섭 구도좀 썰좀 풀어줘요.......</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260402_1')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260402_1" class="arr">▸</span><span class="vitem-link">초보 유저 상점 패키지 가성비 및 구매 우선순위 문의</span>
+                </div>
+              </div>
+              <div id="W20260402_1" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="det-title">상점에서 뭐 사나요?</a><div class="det-body">상점에 이벤트, 한정 상품, VIP 패키지 여러 가지가 있던데 뭐 먼저 사는 게 좋나요? 특권에서 광고 스킵 보이던데 이거 먼저 사나요? 오늘 지르는 건 아니고 내일 원스토어 출첵 쿠폰 받으면 그때 지르려고요</div></div></div></td>
+          <td class="ref-td">4건</td>
+          <td class="note-td"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr>
+        <tr>
+          <td class="cat-td">건의·요청</td>
+          <td class="content-td">
+              <div class="voc-row-item" onclick="toggleVoc('W20260402_2')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260402_2" class="arr">▸</span><span class="vitem-link">루멘탑 이동증표 봉인 해제 후 순간이동주문서 제작 확률(10%) 개선 건의</span>
+                </div>
+              </div>
+              <div id="W20260402_2" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499126" target="_blank" class="det-title">봉인된 루멘탑 이동증표에 관하여</a><div class="det-body">안녕하세요 이동증표 관련해서 건의드릴께 있는데요 각 층 보스를 잡으면 랜덤으로 봉인된 루멘탑 이동증표가 나옵니다. 그리고 제작하는데 10프로의 확률로 그 층 순간이동주문서 500장과 현돌 100개가 소비됩니다. 엔트러스 게임 10프로는 다른게임 10프로와 틀려서 체감상 5프로 미만같은느낌을 많이 받고 있습니다. 만약 만들었다? 능력치를 보면  이동증표 만든 층을 무한으로 1분쿨타임으로 갈수 있는 메리트가 있고 경험치 10프로 , 드래곤 주화 1…</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260402_3')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260402_3" class="arr">▸</span><span class="vitem-link">보스 소환 시간대 변경 건의 (접속자 패턴 고려 요청)</span>
+                </div>
+              </div>
+              <div id="W20260402_3" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7496011" target="_blank" class="det-title">보스시간 안바꾸냐??</a><div class="det-body">개노잼</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260402_4')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260402_4" class="arr">▸</span><span class="vitem-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</span>
+                </div>
+              </div>
+              <div id="W20260402_4" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492521" target="_blank" class="det-title">서버이전 왜 안내냐 지겨워라 지겨워</a><div class="det-body">퉤</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460" target="_blank" class="det-title">섭이전. 구썹이랑 하이퍼랑합쳐라</a><div class="det-body">다이아1개당 플로얼마 해서. 반대로 플로얼마당 다이아1개. 합치자 구썹이랑하이퍼랑</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="det-title">전체 섭이전 한번 가시죠</a><div class="det-body">사람도 얼마 안남았는데 모일수 있게 이전권 한번가시죠~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490333" target="_blank" class="det-title">이전권 캐쉬로팔면 게임사도 돈벌고</a><div class="det-body">좋자나요</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490284" target="_blank" class="det-title">바로템에 케릭엄청올라옴</a><div class="det-body">서버이전권이라도 생겨야 그케릭사서 하고싶은써버로가죠~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490256" target="_blank" class="det-title">이전권 나와야될듯</a><div class="det-body">다접고있어요</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490069" target="_blank" class="det-title">Bj도 다 빠졌으니 구도 맞춰야 됩니다</a><div class="det-body">남은사람 바보 만들지말고 서버이전권 내주세요</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260402_5')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260402_5" class="arr">▸</span><span class="vitem-link">보스 탐험 드롭 아이템 길드 귀속 → 개인 인벤토리 수령 방식으로 개선 건의</span>
+                </div>
+              </div>
+              <div id="W20260402_5" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="det-title">보탐할때 아이템 길드로들어가지말고</a><div class="det-body">개인으로 들어가게해주세요~ 라인이아니여도 보스치면 아이템먹을수있게요~</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260402_6')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260402_6" class="arr">▸</span><span class="vitem-link">신화스킬 제작 시 전설스킬 추출 재료 사용 허용 건의</span>
+                </div>
+              </div>
+              <div id="W20260402_6" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="det-title">신화스킬</a><div class="det-body">신화스킬 재료가 전설스킬이던데... 전설스킬 추출로 가능하게 해주세요. 제작좀 해보게...</div></div></div></td>
+          <td class="ref-td">11건</td>
+          <td class="note-td"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499126" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7496011" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr>
+        <tr>
+          <td class="cat-td">기타</td>
+          <td class="content-td">
+              <div class="voc-row-item" onclick="toggleVoc('W20260402_7')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260402_7" class="arr">▸</span><span class="vitem-link">COC 서비스 종료에 이은 DKR 조기 종료 우려 및 회사 신뢰도 하락 표명</span>
+                </div>
+              </div>
+              <div id="W20260402_7" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499032" target="_blank" class="det-title">천안핵주먹 200 에팔림 실화? 섭종 ㅅㄱ</a><div class="det-body">천안핵주먹 본주 ㅈ같겟다 이제누가 쿠마랑겜하고 엔트러스겜하겟냐.. 무섭다 진짜 .. ㄷㄷ</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="det-title">조만간 서비스종료다 이글은성지가됨</a><div class="det-body">조만간이다 탈출은지능순 얘네 서버 유지할돈없어서 하나하나 서비스종료중</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260402_8')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260402_8" class="arr">▸</span><span class="vitem-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</span>
+                </div>
+              </div>
+              <div id="W20260402_8" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7494737" target="_blank" class="det-title">앤트런스 다시는 안한다 ㅅㄱ</a><div class="det-body">유저들 소리 아예 쌩까버리는 겜서 첨본다 이제야 탈출하는군 빠빠이</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307" target="_blank" class="det-title">이 게임은 도대체가 발전이 없노 ㅋㅋㅋ역시나네</a><div class="det-body">노잼 접을란다 ~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="det-title">과금내놓고 한달만에 서비스종료함 과금안하는게답</a><div class="det-body">콜카봐라 설날바짝땡기고 바로서비스종료때림 믿고거르는 회사게임</div></div></div></td>
+          <td class="ref-td">5건</td>
+          <td class="note-td"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr></tbody>
+    </table></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">05</span>CS 동향</div>
+      <div class="rpt-sec-body"><p class='empty-s'>수집된 CS 문의 없음</p></div>
+    </div></div>
+        </div>
+        <div id="panel-2026-04-01" class="date-panel" style="display:none">
+          <div id="D-2026-04-01" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-01 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:48</span></div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
+      <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431" target="_blank" class="iss-link">4월 2일(목) 정기 점검 완료 (10:00~13:30) — 신규 콘텐츠 6종 업데이트 및 레벨 캡 250 확장</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433" target="_blank" class="iss-link">구서버 인터 서버 그룹 전면 개편 — 성 정보 초기화 예정, 성주 길드 세금 사전 수령 필수</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492435" target="_blank" class="iss-link">하이퍼 서버 전용 — 초월 탈리스만 3종, 루멘탑 10층 추가 및 장비 연금술 확률 대규모 개편</a></li><li><span class="tg tg-sug">건의·요청</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="iss-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</a> <span class="cnt-s">(7건)</span></li><li><span class="tg tg-game">게임 관련</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="iss-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</a> <span class="cnt-s">(3건)</span></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="iss-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</a> <span class="cnt-s">(3건)</span></li></ul></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">02</span>운영 지표</div>
+      <div class="rpt-sec-body">
+    <p class="chart-label">커뮤니티 현황 (유저 게시물 추이 — 최근 7일)</p>
+    <div style="max-height:220px"><canvas id="ch-D20260401" height="180"></canvas></div>
+    <script>
+    (function(){
+      const c=document.getElementById('ch-D20260401');
+      if(!c||c._ok)return;c._ok=true;
+
+      // 막대 위 합계 표시 인라인 플러그인
+      const stackTotalPlugin={
+        id:'stackTotal',
+        afterDatasetsDraw(chart){
+          const ctx=chart.ctx;
+          const totals=[0, 0, 0, 0, 0, 0, 16];
+          const lastMeta=chart.getDatasetMeta(chart.data.datasets.length-1);
+          totals.forEach((t,i)=>{
+            if(t===0)return;
+            const bar=lastMeta.data[i];
+            if(!bar)return;
+            ctx.save();
+            ctx.fillStyle='#3c4043';
+            ctx.font='bold 11px sans-serif';
+            ctx.textAlign='center';
+            ctx.textBaseline='bottom';
+            ctx.fillText(t,bar.x,bar.y-3);
+            ctx.restore();
+          });
+        }
+      };
+
+      new Chart(c,{
+        type:'bar',
+        data:{
+          labels:["03-26", "03-27", "03-28", "03-29", "03-30", "03-31", "04-01"],
+          datasets:[
+            {label:'게임 관련',data:[0, 0, 0, 0, 0, 0, 4],backgroundColor:'rgba(66,133,244,.8)',stack:'s'},
+            {label:'버그·오류', data:[0, 0, 0, 0, 0, 0, 0],backgroundColor:'rgba(234,67,53,.8)', stack:'s'},
+            {label:'건의·요청',data:[0, 0, 0, 0, 0, 0, 9],backgroundColor:'rgba(251,188,4,.85)',stack:'s'},
+            {label:'기타',     data:[0, 0, 0, 0, 0, 0, 3],backgroundColor:'rgba(154,160,166,.7)',stack:'s'},
+          ]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{position:'top',labels:{font:{size:11},boxWidth:12,padding:8}},
+            tooltip:{mode:'index',intersect:false}
+          },
+          scales:{
+            x:{stacked:true,ticks:{font:{size:11}},grid:{display:false}},
+            y:{stacked:true,beginAtZero:true,max:20,
+                ticks:{stepSize:5,font:{size:11}},grid:{color:'#eee'}}
+          }
+        },
+        plugins:[stackTotalPlugin]
+      });
+    })();
+    </script></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">03</span>1:1 문의 동향</div>
+      <div class="rpt-sec-body">
+        <div class="cs-placeholder">
+          <p>📋 Hive 콘솔에서 당일 문의 데이터를 수동으로 업데이트해 주세요.</p>
+          <p class="cs-hint">→ console.withhive.com → 문의 목록 → 한국어 → 전체 검색</p>
+        </div></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">04</span>공식 라운지 동향</div>
+      <div class="rpt-sec-body">
+    <table class="voc-tbl">
+      <thead>
+        <tr>
+          <th style="width:76px">항목</th>
+          <th>내용</th>
+          <th style="width:52px">건수</th>
+          <th style="width:70px">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cat-td">게임 관련</td>
+          <td class="content-td">
+              <div class="voc-row-item" onclick="toggleVoc('D20260401_0')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-D20260401_0" class="arr">▸</span><span class="vitem-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</span>
+                </div>
+              </div>
+              <div id="D20260401_0" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="det-title">32서버 상황 마지막</a><div class="det-body">게임이든 현생이든 없는소리 하고 안하고 살아야하는데.. 선동을 한적 없습니다. 앞서 말씀 드렸드니 제가 무슨 정치질을 하려고 글쓴것도 아니구요 있는 그대로를 올려드렸습니다. 32서버 좀비 길드에 있던 송천동 케릭이 좀비케릭 죽이고 다니니까 자꾸 귓말오고 이상한 얘기 나오고 그래서 라운지에 글 올렸을 뿐입니다. 좀비 길드원들에게 선동하는건 애마님 아닐까 생각이 됩니다 애마님이 좀비 길드원들한테 언제 칼넣으라고 했냐고 그런적 없다고 했다는데 사진 …</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490286" target="_blank" class="det-title">32서버 상황</a><div class="det-body">관심이 없으신 분들도 계시고, 궁금해하시는 분들, “송천동이 미친 거 아닌가?”라고 생각하시는 분들도 계실 것 같아서 상황을 정리해서 올립니다. 고의였든 아니었든, 자사 중에 같은 길드원이던 블라디미로 형이 돈사장 형에게 죽었고 그 이후 길드를 나갔습니다. 길드를 나간 이유가 그것 하나만은 아니라고 생각하지만, 어쨌든 블라디미로 형은 좀비 길드를 나갔고 저도 같이 나오게 되었습니다. 길드가 맘에 안들면 길원이 나가면 되는거고 조용히 나가려고 했…</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490014" target="_blank" class="det-title">현재 구섭 구도가 어떻게 되요?</a><div class="det-body">구섭 구도좀 썰좀 풀어줘요.......</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('D20260401_1')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-D20260401_1" class="arr">▸</span><span class="vitem-link">초보 유저 상점 패키지 가성비 및 구매 우선순위 문의</span>
+                </div>
+              </div>
+              <div id="D20260401_1" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="det-title">상점에서 뭐 사나요?</a><div class="det-body">상점에 이벤트, 한정 상품, VIP 패키지 여러 가지가 있던데 뭐 먼저 사는 게 좋나요? 특권에서 광고 스킵 보이던데 이거 먼저 사나요? 오늘 지르는 건 아니고 내일 원스토어 출첵 쿠폰 받으면 그때 지르려고요</div></div></div></td>
+          <td class="ref-td">4건</td>
+          <td class="note-td"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr>
+        <tr>
+          <td class="cat-td">건의·요청</td>
+          <td class="content-td">
+              <div class="voc-row-item" onclick="toggleVoc('D20260401_2')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-D20260401_2" class="arr">▸</span><span class="vitem-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</span>
+                </div>
+              </div>
+              <div id="D20260401_2" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492521" target="_blank" class="det-title">서버이전 왜 안내냐 지겨워라 지겨워</a><div class="det-body">퉤</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460" target="_blank" class="det-title">섭이전. 구썹이랑 하이퍼랑합쳐라</a><div class="det-body">다이아1개당 플로얼마 해서. 반대로 플로얼마당 다이아1개. 합치자 구썹이랑하이퍼랑</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="det-title">전체 섭이전 한번 가시죠</a><div class="det-body">사람도 얼마 안남았는데 모일수 있게 이전권 한번가시죠~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490333" target="_blank" class="det-title">이전권 캐쉬로팔면 게임사도 돈벌고</a><div class="det-body">좋자나요</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490284" target="_blank" class="det-title">바로템에 케릭엄청올라옴</a><div class="det-body">서버이전권이라도 생겨야 그케릭사서 하고싶은써버로가죠~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490256" target="_blank" class="det-title">이전권 나와야될듯</a><div class="det-body">다접고있어요</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490069" target="_blank" class="det-title">Bj도 다 빠졌으니 구도 맞춰야 됩니다</a><div class="det-body">남은사람 바보 만들지말고 서버이전권 내주세요</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('D20260401_3')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-D20260401_3" class="arr">▸</span><span class="vitem-link">보스 탐험 드롭 아이템 길드 귀속 → 개인 인벤토리 수령 방식으로 개선 건의</span>
+                </div>
+              </div>
+              <div id="D20260401_3" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="det-title">보탐할때 아이템 길드로들어가지말고</a><div class="det-body">개인으로 들어가게해주세요~ 라인이아니여도 보스치면 아이템먹을수있게요~</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('D20260401_4')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-D20260401_4" class="arr">▸</span><span class="vitem-link">신화스킬 제작 시 전설스킬 추출 재료 사용 허용 건의</span>
+                </div>
+              </div>
+              <div id="D20260401_4" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="det-title">신화스킬</a><div class="det-body">신화스킬 재료가 전설스킬이던데... 전설스킬 추출로 가능하게 해주세요. 제작좀 해보게...</div></div></div></td>
+          <td class="ref-td">9건</td>
+          <td class="note-td"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr>
+        <tr>
+          <td class="cat-td">기타</td>
+          <td class="content-td">
+              <div class="voc-row-item" onclick="toggleVoc('D20260401_5')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-D20260401_5" class="arr">▸</span><span class="vitem-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</span>
+                </div>
+              </div>
+              <div id="D20260401_5" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7494737" target="_blank" class="det-title">앤트런스 다시는 안한다 ㅅㄱ</a><div class="det-body">유저들 소리 아예 쌩까버리는 겜서 첨본다 이제야 탈출하는군 빠빠이</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307" target="_blank" class="det-title">이 게임은 도대체가 발전이 없노 ㅋㅋㅋ역시나네</a><div class="det-body">노잼 접을란다 ~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="det-title">과금내놓고 한달만에 서비스종료함 과금안하는게답</a><div class="det-body">콜카봐라 설날바짝땡기고 바로서비스종료때림 믿고거르는 회사게임</div></div></div></td>
+          <td class="ref-td">3건</td>
+          <td class="note-td"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr></tbody>
+    </table></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">05</span>CS 동향</div>
+      <div class="rpt-sec-body"><p class='empty-s'>수집된 CS 문의 없음</p></div>
+    </div></div>
+          <div id="W-2026-04-01" class="period-panel" style="display:none"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">주간 서비스 현황</span><span class="rpt-ts">집계기간: 2026-04-01</span></div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">01</span>주간 주요 이슈</div>
+      <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431" target="_blank" class="iss-link">4월 2일(목) 정기 점검 완료 (10:00~13:30) — 신규 콘텐츠 6종 업데이트 및 레벨 캡 250 확장</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433" target="_blank" class="iss-link">구서버 인터 서버 그룹 전면 개편 — 성 정보 초기화 예정, 성주 길드 세금 사전 수령 필수</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492435" target="_blank" class="iss-link">하이퍼 서버 전용 — 초월 탈리스만 3종, 루멘탑 10층 추가 및 장비 연금술 확률 대규모 개편</a></li><li><span class="tg tg-sug">건의·요청</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="iss-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</a> <span class="cnt-s">(7건)</span></li><li><span class="tg tg-game">게임 관련</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="iss-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</a> <span class="cnt-s">(3건)</span></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="iss-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</a> <span class="cnt-s">(3건)</span></li></ul></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">02</span>운영 지표</div>
+      <div class="rpt-sec-body">
+    <p class="chart-label">커뮤니티 현황 (유저 게시물 추이 — 최근 7일)</p>
+    <div style="max-height:220px"><canvas id="ch-W20260401" height="180"></canvas></div>
+    <script>
+    (function(){
+      const c=document.getElementById('ch-W20260401');
+      if(!c||c._ok)return;c._ok=true;
+
+      // 막대 위 합계 표시 인라인 플러그인
+      const stackTotalPlugin={
+        id:'stackTotal',
+        afterDatasetsDraw(chart){
+          const ctx=chart.ctx;
+          const totals=[16];
+          const lastMeta=chart.getDatasetMeta(chart.data.datasets.length-1);
+          totals.forEach((t,i)=>{
+            if(t===0)return;
+            const bar=lastMeta.data[i];
+            if(!bar)return;
+            ctx.save();
+            ctx.fillStyle='#3c4043';
+            ctx.font='bold 11px sans-serif';
+            ctx.textAlign='center';
+            ctx.textBaseline='bottom';
+            ctx.fillText(t,bar.x,bar.y-3);
+            ctx.restore();
+          });
+        }
+      };
+
+      new Chart(c,{
+        type:'bar',
+        data:{
+          labels:["04-01"],
+          datasets:[
+            {label:'게임 관련',data:[4],backgroundColor:'rgba(66,133,244,.8)',stack:'s'},
+            {label:'버그·오류', data:[0],backgroundColor:'rgba(234,67,53,.8)', stack:'s'},
+            {label:'건의·요청',data:[9],backgroundColor:'rgba(251,188,4,.85)',stack:'s'},
+            {label:'기타',     data:[3],backgroundColor:'rgba(154,160,166,.7)',stack:'s'},
+          ]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{position:'top',labels:{font:{size:11},boxWidth:12,padding:8}},
+            tooltip:{mode:'index',intersect:false}
+          },
+          scales:{
+            x:{stacked:true,ticks:{font:{size:11}},grid:{display:false}},
+            y:{stacked:true,beginAtZero:true,max:20,
+                ticks:{stepSize:5,font:{size:11}},grid:{color:'#eee'}}
+          }
+        },
+        plugins:[stackTotalPlugin]
+      });
+    })();
+    </script></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">03</span>1:1 문의 동향</div>
+      <div class="rpt-sec-body">
+        <div class="cs-placeholder">
+          <p>📋 Hive 콘솔에서 당일 문의 데이터를 수동으로 업데이트해 주세요.</p>
+          <p class="cs-hint">→ console.withhive.com → 문의 목록 → 한국어 → 전체 검색</p>
+        </div></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">04</span>공식 라운지 동향</div>
+      <div class="rpt-sec-body">
+    <table class="voc-tbl">
+      <thead>
+        <tr>
+          <th style="width:76px">항목</th>
+          <th>내용</th>
+          <th style="width:52px">건수</th>
+          <th style="width:70px">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cat-td">게임 관련</td>
+          <td class="content-td">
+              <div class="voc-row-item" onclick="toggleVoc('W20260401_0')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260401_0" class="arr">▸</span><span class="vitem-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</span>
+                </div>
+              </div>
+              <div id="W20260401_0" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="det-title">32서버 상황 마지막</a><div class="det-body">게임이든 현생이든 없는소리 하고 안하고 살아야하는데.. 선동을 한적 없습니다. 앞서 말씀 드렸드니 제가 무슨 정치질을 하려고 글쓴것도 아니구요 있는 그대로를 올려드렸습니다. 32서버 좀비 길드에 있던 송천동 케릭이 좀비케릭 죽이고 다니니까 자꾸 귓말오고 이상한 얘기 나오고 그래서 라운지에 글 올렸을 뿐입니다. 좀비 길드원들에게 선동하는건 애마님 아닐까 생각이 됩니다 애마님이 좀비 길드원들한테 언제 칼넣으라고 했냐고 그런적 없다고 했다는데 사진 …</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490286" target="_blank" class="det-title">32서버 상황</a><div class="det-body">관심이 없으신 분들도 계시고, 궁금해하시는 분들, “송천동이 미친 거 아닌가?”라고 생각하시는 분들도 계실 것 같아서 상황을 정리해서 올립니다. 고의였든 아니었든, 자사 중에 같은 길드원이던 블라디미로 형이 돈사장 형에게 죽었고 그 이후 길드를 나갔습니다. 길드를 나간 이유가 그것 하나만은 아니라고 생각하지만, 어쨌든 블라디미로 형은 좀비 길드를 나갔고 저도 같이 나오게 되었습니다. 길드가 맘에 안들면 길원이 나가면 되는거고 조용히 나가려고 했…</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490014" target="_blank" class="det-title">현재 구섭 구도가 어떻게 되요?</a><div class="det-body">구섭 구도좀 썰좀 풀어줘요.......</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260401_1')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260401_1" class="arr">▸</span><span class="vitem-link">초보 유저 상점 패키지 가성비 및 구매 우선순위 문의</span>
+                </div>
+              </div>
+              <div id="W20260401_1" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="det-title">상점에서 뭐 사나요?</a><div class="det-body">상점에 이벤트, 한정 상품, VIP 패키지 여러 가지가 있던데 뭐 먼저 사는 게 좋나요? 특권에서 광고 스킵 보이던데 이거 먼저 사나요? 오늘 지르는 건 아니고 내일 원스토어 출첵 쿠폰 받으면 그때 지르려고요</div></div></div></td>
+          <td class="ref-td">4건</td>
+          <td class="note-td"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491783" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr>
+        <tr>
+          <td class="cat-td">건의·요청</td>
+          <td class="content-td">
+              <div class="voc-row-item" onclick="toggleVoc('W20260401_2')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260401_2" class="arr">▸</span><span class="vitem-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</span>
+                </div>
+              </div>
+              <div id="W20260401_2" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492521" target="_blank" class="det-title">서버이전 왜 안내냐 지겨워라 지겨워</a><div class="det-body">퉤</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460" target="_blank" class="det-title">섭이전. 구썹이랑 하이퍼랑합쳐라</a><div class="det-body">다이아1개당 플로얼마 해서. 반대로 플로얼마당 다이아1개. 합치자 구썹이랑하이퍼랑</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="det-title">전체 섭이전 한번 가시죠</a><div class="det-body">사람도 얼마 안남았는데 모일수 있게 이전권 한번가시죠~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490333" target="_blank" class="det-title">이전권 캐쉬로팔면 게임사도 돈벌고</a><div class="det-body">좋자나요</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490284" target="_blank" class="det-title">바로템에 케릭엄청올라옴</a><div class="det-body">서버이전권이라도 생겨야 그케릭사서 하고싶은써버로가죠~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490256" target="_blank" class="det-title">이전권 나와야될듯</a><div class="det-body">다접고있어요</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490069" target="_blank" class="det-title">Bj도 다 빠졌으니 구도 맞춰야 됩니다</a><div class="det-body">남은사람 바보 만들지말고 서버이전권 내주세요</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260401_3')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260401_3" class="arr">▸</span><span class="vitem-link">보스 탐험 드롭 아이템 길드 귀속 → 개인 인벤토리 수령 방식으로 개선 건의</span>
+                </div>
+              </div>
+              <div id="W20260401_3" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="det-title">보탐할때 아이템 길드로들어가지말고</a><div class="det-body">개인으로 들어가게해주세요~ 라인이아니여도 보스치면 아이템먹을수있게요~</div></div></div>
+              <div class="voc-row-item voc-sep" onclick="toggleVoc('W20260401_4')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260401_4" class="arr">▸</span><span class="vitem-link">신화스킬 제작 시 전설스킬 추출 재료 사용 허용 건의</span>
+                </div>
+              </div>
+              <div id="W20260401_4" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="det-title">신화스킬</a><div class="det-body">신화스킬 재료가 전설스킬이던데... 전설스킬 추출로 가능하게 해주세요. 제작좀 해보게...</div></div></div></td>
+          <td class="ref-td">9건</td>
+          <td class="note-td"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490312" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a><br><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr>
+        <tr>
+          <td class="cat-td">기타</td>
+          <td class="content-td">
+              <div class="voc-row-item" onclick="toggleVoc('W20260401_5')" style="cursor:pointer">
+                <div class="voc-item-main">
+                  <span id="ar-W20260401_5" class="arr">▸</span><span class="vitem-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</span>
+                </div>
+              </div>
+              <div id="W20260401_5" class="det-group" style="display:none"><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7494737" target="_blank" class="det-title">앤트런스 다시는 안한다 ㅅㄱ</a><div class="det-body">유저들 소리 아예 쌩까버리는 겜서 첨본다 이제야 탈출하는군 빠빠이</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307" target="_blank" class="det-title">이 게임은 도대체가 발전이 없노 ㅋㅋㅋ역시나네</a><div class="det-body">노잼 접을란다 ~</div></div><div class="det-item"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="det-title">과금내놓고 한달만에 서비스종료함 과금안하는게답</a><div class="det-body">콜카봐라 설날바짝땡기고 바로서비스종료때림 믿고거르는 회사게임</div></div></div></td>
+          <td class="ref-td">3건</td>
+          <td class="note-td"><a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a></td>
+        </tr></tbody>
+    </table></div>
+    </div>
+    <div class="rpt-section">
+      <div class="rpt-sec-hd"><span class="sec-num">05</span>CS 동향</div>
+      <div class="rpt-sec-body"><p class='empty-s'>수집된 CS 문의 없음</p></div>
+    </div></div>
+        </div>
+    <div class="updated">마지막 업데이트: 2026-04-07 15:48 KST</div>
   </div>
 </div>
 
 <script>
-function switchTab(gameKey, btn) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('tab-' + gameKey).classList.add('active');
+var _date='2026-04-06', _period='D';
+function switchDate(d){
+  document.getElementById('panel-'+_date).style.display='none';
+  _date=d;
+  document.getElementById('panel-'+d).style.display='block';
+  document.getElementById(_period+'-'+d).style.display='block';
+  var o=_period==='D'?'W':'D';
+  document.getElementById(o+'-'+d).style.display='none';
 }
-
-function switchSubtab(panelId, subtab, btn) {
-  const panel = btn.closest('.tab-panel');
-  panel.querySelectorAll('.subtab-btn').forEach(b => b.classList.remove('active'));
-  panel.querySelectorAll('.subtab-content').forEach(c => c.classList.remove('active'));
+function switchPeriod(p,btn){
+  document.querySelectorAll('.ptgl').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById(panelId + '-' + subtab).classList.add('active');
+  document.getElementById(_period+'-'+_date).style.display='none';
+  _period=p;
+  document.getElementById(_period+'-'+_date).style.display='block';
+}
+function toggleVoc(id){
+  var d=document.getElementById(id),a=document.getElementById('ar-'+id);
+  if(!d)return;
+  var open=d.style.display!=='none';
+  d.style.display=open?'none':'block';
+  if(a)a.textContent=open?'▸':'▾';
 }
 </script>
 </body>
