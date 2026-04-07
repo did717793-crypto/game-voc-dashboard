@@ -148,7 +148,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     <span class="brand">NTRANCE</span>
     <span class="brand-sub">VOC 대시보드</span>
   </div>
-  <span style="font-size:11px;color:#8892b0">생성: 2026-04-07 15:48 KST</span>
+  <span style="font-size:11px;color:#8892b0">생성: 2026-04-07 15:52 KST</span>
 </div>
 
 <div class="tab-bar">
@@ -178,7 +178,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
   <div class="rpt-card">
     
         <div id="panel-2026-04-06" class="date-panel" style="display:block">
-          <div id="D-2026-04-06" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-06 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:48</span></div>
+          <div id="D-2026-04-06" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-06 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:52</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -283,7 +283,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
                 {
                   type: 'bar',
                   label: '인입량',
-                  data: [0, 0, 0, 0, 0, 0, 0],
+                  data: [2, 2, 0, 1, 2, 1, 4],
                   backgroundColor: 'rgba(123,104,238,0.75)',
                   borderRadius: 3,
                   yAxisID: 'y'
@@ -291,7 +291,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
                 {
                   type: 'bar',
                   label: '처리량',
-                  data: [0, 0, 0, 0, 0, 0, 0],
+                  data: [3, 1, 1, 1, 0, 0, 5],
                   backgroundColor: 'rgba(160,160,160,0.75)',
                   borderRadius: 3,
                   yAxisID: 'y'
@@ -299,7 +299,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
                 {
                   type: 'line',
                   label: '처리율',
-                  data: [0, 0, 0, 0, 0, 0, 0],
+                  data: [150, 50, 0, 100, 0, 0, 125],
                   borderColor: 'rgba(220,50,50,0.85)',
                   borderDash: [5,3],
                   borderWidth: 1.5,
@@ -331,13 +331,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
               },
               scales: {
                 y: {
-                  min: 0, max: 4,
-                  ticks: { stepSize: 1, callback: function(v){ return v+'건'; }, font:{size:11} },
+                  min: 0, max: 20,
+                  ticks: { stepSize: 5, callback: function(v){ return v+'건'; }, font:{size:11} },
                   grid: { color: '#eee' }
                 },
                 y1: {
                   position: 'right',
-                  min: 0, max: 120,
+                  min: 0, max: 180,
                   ticks: { callback: function(v){ return v+'%'; }, font:{size:11} },
                   grid: { drawOnChartArea: false }
                 },
@@ -349,8 +349,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
         })();
         </script>
         <div style="font-size:11px;color:#666;margin:4px 0 10px">
-          7일 누적 0건 &nbsp;|&nbsp; 어제(04-06) 인입 0건 · 처리 0건 · 처리율 0%
-        </div><p class='empty-s' style='color:#888;font-size:12px'>당일 DKR 문의 없음</p></div>
+          7일 누적 12건 &nbsp;|&nbsp; 어제(04-06) 인입 4건 · 처리 5건 · 처리율 125%
+        </div><p class='empty-s'>수집된 문의 없음</p></div>
     </div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">04</span>공식 라운지 동향</div>
@@ -381,7 +381,36 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">05</span>CS 동향</div>
-      <div class="rpt-sec-body"><p class='empty-s'>수집된 CS 문의 없음</p></div>
+      <div class="rpt-sec-body">
+    <table class="voc-tbl">
+      <thead>
+        <tr>
+          <th style="width:76px">항목</th>
+          <th>내용</th>
+          <th style="width:52px">건수</th>
+          <th style="width:70px">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cat-td">버그·장애</td>
+          <td class="content-td"><div class="cs-det-row"><span class="cs-badge cs-badge-recv">접수 완료</span><span class="cs-date">04-06</span><span class="cs-ttl">룬정수버그</span></div><div class="cs-det-row"><span class="cs-badge cs-badge-recv">접수 완료</span><span class="cs-date">04-06</span><span class="cs-ttl">재문의:버그인기 원래그런건지</span></div><div class="cs-det-row"><span class="cs-badge cs-badge-done">답변 완료</span><span class="cs-date">04-04</span><span class="cs-ttl">파이썬의요람 랭킹 오류</span></div><div class="cs-det-row"><span class="cs-badge cs-badge-done">답변 완료</span><span class="cs-date">04-03</span><span class="cs-ttl">아이템사라짐</span></div></td>
+          <td class="ref-td">6건</td>
+          <td class="note-td"><span class="cs-pending">미처리 2건</span></td>
+        </tr>
+        <tr>
+          <td class="cat-td">게임</td>
+          <td class="content-td"><div class="cs-det-row"><span class="cs-badge cs-badge-done">답변 완료</span><span class="cs-date">04-05</span><span class="cs-ttl">게임내 상품구매 오류</span></div><div class="cs-det-row"><span class="cs-badge cs-badge-done">답변 완료</span><span class="cs-date">04-01</span><span class="cs-ttl">이전권 미지급 문의</span></div><div class="cs-det-row"><span class="cs-badge cs-badge-view">조회 완료</span><span class="cs-date">04-01</span><span class="cs-ttl">서버이전권 시급합니다</span></div></td>
+          <td class="ref-td">3건</td>
+          <td class="note-td">처리 완료</td>
+        </tr>
+        <tr>
+          <td class="cat-td">제안·건의하기</td>
+          <td class="content-td"><div class="cs-det-row"><span class="cs-badge cs-badge-done">답변 완료</span><span class="cs-date">04-04</span><span class="cs-ttl">전설스킬 추출 기능 요청</span></div></td>
+          <td class="ref-td">1건</td>
+          <td class="note-td">처리 완료</td>
+        </tr></tbody>
+    </table></div>
     </div></div>
           <div id="W-2026-04-06" class="period-panel" style="display:none"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">주간 서비스 현황</span><span class="rpt-ts">집계기간: 2026-04-01 ~ 2026-04-06</span></div>
     <div class="rpt-section">
@@ -450,11 +479,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">03</span>1:1 문의 동향</div>
-      <div class="rpt-sec-body">
-        <div class="cs-placeholder">
-          <p>📋 Hive 콘솔에서 당일 문의 데이터를 수동으로 업데이트해 주세요.</p>
-          <p class="cs-hint">→ console.withhive.com → 문의 목록 → 한국어 → 전체 검색</p>
-        </div></div>
+      <div class="rpt-sec-body"><p class='empty-s'>수집된 문의 없음</p></div>
     </div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">04</span>공식 라운지 동향</div>
@@ -587,11 +612,40 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">05</span>CS 동향</div>
-      <div class="rpt-sec-body"><p class='empty-s'>수집된 CS 문의 없음</p></div>
+      <div class="rpt-sec-body">
+    <table class="voc-tbl">
+      <thead>
+        <tr>
+          <th style="width:76px">항목</th>
+          <th>내용</th>
+          <th style="width:52px">건수</th>
+          <th style="width:70px">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cat-td">버그·장애</td>
+          <td class="content-td"><div class="cs-det-row"><span class="cs-badge cs-badge-recv">접수 완료</span><span class="cs-date">04-06</span><span class="cs-ttl">룬정수버그</span></div><div class="cs-det-row"><span class="cs-badge cs-badge-recv">접수 완료</span><span class="cs-date">04-06</span><span class="cs-ttl">재문의:버그인기 원래그런건지</span></div><div class="cs-det-row"><span class="cs-badge cs-badge-done">답변 완료</span><span class="cs-date">04-04</span><span class="cs-ttl">파이썬의요람 랭킹 오류</span></div><div class="cs-det-row"><span class="cs-badge cs-badge-done">답변 완료</span><span class="cs-date">04-03</span><span class="cs-ttl">아이템사라짐</span></div></td>
+          <td class="ref-td">6건</td>
+          <td class="note-td"><span class="cs-pending">미처리 2건</span></td>
+        </tr>
+        <tr>
+          <td class="cat-td">게임</td>
+          <td class="content-td"><div class="cs-det-row"><span class="cs-badge cs-badge-done">답변 완료</span><span class="cs-date">04-05</span><span class="cs-ttl">게임내 상품구매 오류</span></div><div class="cs-det-row"><span class="cs-badge cs-badge-done">답변 완료</span><span class="cs-date">04-01</span><span class="cs-ttl">이전권 미지급 문의</span></div><div class="cs-det-row"><span class="cs-badge cs-badge-view">조회 완료</span><span class="cs-date">04-01</span><span class="cs-ttl">서버이전권 시급합니다</span></div></td>
+          <td class="ref-td">3건</td>
+          <td class="note-td">처리 완료</td>
+        </tr>
+        <tr>
+          <td class="cat-td">제안·건의하기</td>
+          <td class="content-td"><div class="cs-det-row"><span class="cs-badge cs-badge-done">답변 완료</span><span class="cs-date">04-04</span><span class="cs-ttl">전설스킬 추출 기능 요청</span></div></td>
+          <td class="ref-td">1건</td>
+          <td class="note-td">처리 완료</td>
+        </tr></tbody>
+    </table></div>
     </div></div>
         </div>
         <div id="panel-2026-04-05" class="date-panel" style="display:none">
-          <div id="D-2026-04-05" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-05 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:48</span></div>
+          <div id="D-2026-04-05" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-05 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:52</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -975,7 +1029,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-04" class="date-panel" style="display:none">
-          <div id="D-2026-04-04" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-04 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:48</span></div>
+          <div id="D-2026-04-04" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-04 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:52</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -1400,7 +1454,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-03" class="date-panel" style="display:none">
-          <div id="D-2026-04-03" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-03 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:48</span></div>
+          <div id="D-2026-04-03" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-03 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:52</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/" target="_blank" class="iss-link">동접 감소 및 서비스 종료 임박 우려 (COC 섭종 여파로 DKR도 섭종 예상)</a> <span class="cnt-s">(2건)</span></li></ul></div>
@@ -1813,7 +1867,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-02" class="date-panel" style="display:none">
-          <div id="D-2026-04-02" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-02 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:48</span></div>
+          <div id="D-2026-04-02" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-02 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:52</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337" target="_blank" class="iss-link">COC 서비스 종료에 이은 DKR 조기 종료 우려 및 회사 신뢰도 하락 표명</a> <span class="cnt-s">(2건)</span></li></ul></div>
@@ -2202,7 +2256,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-01" class="date-panel" style="display:none">
-          <div id="D-2026-04-01" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-01 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:48</span></div>
+          <div id="D-2026-04-01" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-01 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-04-07 15:52</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431" target="_blank" class="iss-link">4월 2일(목) 정기 점검 완료 (10:00~13:30) — 신규 콘텐츠 6종 업데이트 및 레벨 캡 250 확장</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433" target="_blank" class="iss-link">구서버 인터 서버 그룹 전면 개편 — 성 정보 초기화 예정, 성주 길드 세금 사전 수령 필수</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492435" target="_blank" class="iss-link">하이퍼 서버 전용 — 초월 탈리스만 3종, 루멘탑 10층 추가 및 장비 연금술 확률 대규모 개편</a></li><li><span class="tg tg-sug">건의·요청</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345" target="_blank" class="iss-link">서버 인구 감소로 서버 이전권 출시 및 구서버·하이퍼 서버 통합 강력 요청</a> <span class="cnt-s">(7건)</span></li><li><span class="tg tg-game">게임 관련</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850" target="_blank" class="iss-link">32서버 길드 간 분쟁 상황 및 구서버 세력 구도 공유</a> <span class="cnt-s">(3건)</span></li><li><span class="tg tg-etc">기타</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784" target="_blank" class="iss-link">게임 발전 부재 및 콜 오브 카오스 서비스 종료 사례 인용한 회사 신뢰도 하락·이탈 의사 표명</a> <span class="cnt-s">(3건)</span></li></ul></div>
@@ -2495,7 +2549,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
       <div class="rpt-sec-body"><p class='empty-s'>수집된 CS 문의 없음</p></div>
     </div></div>
         </div>
-    <div class="updated">마지막 업데이트: 2026-04-07 15:48 KST</div>
+    <div class="updated">마지막 업데이트: 2026-04-07 15:52 KST</div>
   </div>
 </div>
 
