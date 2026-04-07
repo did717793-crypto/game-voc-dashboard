@@ -11,3 +11,7 @@ __pycache__/
 # OS
 .DS_Store
 Thumbs.db
+
+# 하이브 콘솔 자동화
+scripts/hive_cookies.json
+scripts/raw/
