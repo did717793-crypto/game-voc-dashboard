@@ -1,0 +1,15 @@
+{
+  "date": "2026-04-07",
+  "major_issues": [],
+  "cs_inquiries": [],
+  "cs_week_trend": [
+    { "date": "2026-04-01", "received": 2, "processed": 1, "categories": {"게임": 2} },
+    { "date": "2026-04-02", "received": 0, "processed": 1, "categories": {} },
+    { "date": "2026-04-03", "received": 1, "processed": 1, "categories": {"버그·장애": 1} },
+    { "date": "2026-04-04", "received": 2, "processed": 0, "categories": {"버그·장애": 2} },
+    { "date": "2026-04-05", "received": 1, "processed": 0, "categories": {"게임": 1} },
+    { "date": "2026-04-06", "received": 4, "processed": 5, "categories": {"버그·장애": 3, "게임": 1} },
+    { "date": "2026-04-07", "received": 0, "processed": 0, "categories": {} }
+  ],
+  "voc_groups": []
+}
