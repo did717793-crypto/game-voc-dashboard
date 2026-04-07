@@ -25,7 +25,7 @@ from datetime import datetime, timezone, timedelta
 
 KST     = timezone(timedelta(hours=9))
 SCRIPTS = Path(__file__).parent
-GIT_DIR = Path("/sessions/peaceful-epic-darwin/voc-git")
+GIT_DIR = SCRIPTS.parent          # mnt/voc/ (스크립트 위치 기준 상위 경로, 세션 독립적)
 RAW_DIR = SCRIPTS / "raw"
 
 GITHUB_USER = "did717793-crypto"
