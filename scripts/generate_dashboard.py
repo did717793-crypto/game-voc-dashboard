@@ -10,10 +10,11 @@ import math
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-KST      = timezone(timedelta(hours=9))
-GIT_DIR  = Path(__file__).parent.parent
-DATA_DIR = GIT_DIR / "data" / "DKR"
-OUTPUT   = GIT_DIR / "index.html"
+KST         = timezone(timedelta(hours=9))
+GIT_DIR     = Path(__file__).parent.parent
+DATA_DIR    = GIT_DIR / "data" / "DKR"
+METRICS_DIR = GIT_DIR / "data" / "metrics"
+OUTPUT      = GIT_DIR / "index.html"
 
 
 # ── 데이터 로드 ───────────────────────────────────────────────
@@ -51,6 +52,51 @@ def merge_analyzed(dates: list[str]) -> dict:
             out["voc_groups"].extend(ad.get("voc_groups", []))
             out["cs_inquiries"].extend(ad.get("cs_inquiries", []))
     return out
+
+
+# ── 지표 데이터 로드 ──────────────────────────────────────────────
+def load_metrics(d: str) -> dict | None:
+    p = METRICS_DIR / f"{d}.json"
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else None
+
+def available_metric_dates() -> list[str]:
+    if not METRICS_DIR.exists():
+        return []
+    return sorted(
+        [f.stem for f in METRICS_DIR.glob("*.json") if not f.stem.startswith(".")],
+        reverse=True,
+    )
+
+def all_dates_union() -> list[str]:
+    """VOC raw 날짜 + 지표 날짜 합집합 (내림차순)"""
+    s = set(available_dates()) | set(available_metric_dates())
+    return sorted(s, reverse=True)
+
+def build_metrics_js_data() -> str:
+    """모든 metrics JSON → JavaScript 객체 문자열"""
+    import sys
+    sys.path.insert(0, str(Path(__file__).parent))
+    try:
+        from collect_metrics import aggregate_pkg_totals
+        pkg_totals = aggregate_pkg_totals()
+    except Exception:
+        pkg_totals = {"old": [], "hyper": [], "global": []}
+
+    all_m: dict = {}
+    if METRICS_DIR.exists():
+        for f in sorted(METRICS_DIR.glob("*.json")):
+            if f.stem.startswith("."):
+                continue
+            try:
+                d = json.loads(f.read_text(encoding="utf-8"))
+                all_m[f.stem] = d
+            except Exception:
+                pass
+
+    return (
+        f"const METRICS_DATA={json.dumps(all_m, ensure_ascii=False)};\n"
+        f"const PKG_TOTALS={json.dumps(pkg_totals, ensure_ascii=False)};\n"
+    )
 
 
 # ── 01 주요 이슈 ──────────────────────────────────────────────
@@ -590,38 +636,42 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
 
 # ── HTML 전체 생성 ────────────────────────────────────────────
 def generate():
-    dates  = available_dates()
-    now    = datetime.now(KST).strftime("%Y-%m-%d %H:%M KST")
-    latest = dates[0] if dates else ""
+    voc_dates = available_dates()
+    all_d     = all_dates_union()
+    now       = datetime.now(KST).strftime("%Y-%m-%d %H:%M KST")
+    latest    = all_d[0] if all_d else ""
 
     date_opts = "".join(
         f'<option value="{d}"{" selected" if i==0 else ""}>{d}</option>\n'
-        for i, d in enumerate(dates)
+        for i, d in enumerate(all_d)
     )
 
     panels_html = ""
-    for date_str in dates:
+    for date_str in voc_dates:
         is_first = (date_str == latest)
         panels_html += f"""
         <div id="panel-{date_str}" class="date-panel" style="display:{'block' if is_first else 'none'}">
-          <div id="D-{date_str}" class="period-panel" style="display:block">{build_report(date_str,"daily",dates)}</div>
-          <div id="W-{date_str}" class="period-panel" style="display:none">{build_report(date_str,"weekly",dates)}</div>
+          <div id="D-{date_str}" class="period-panel" style="display:block">{build_report(date_str,"daily",voc_dates)}</div>
+          <div id="W-{date_str}" class="period-panel" style="display:none">{build_report(date_str,"weekly",voc_dates)}</div>
         </div>"""
 
     if not panels_html:
-        panels_html = "<p class='empty-s'>데이터 없음 — 내일 09:00 스케줄 실행 후 생성됩니다</p>"
+        panels_html = "<p class='empty-s'>VOC 데이터 없음</p>"
+
+    metrics_js = build_metrics_js_data()
 
     html = f"""<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>NTRANCE VOC 대시보드</title>
+<title>NTRANCE 대시보드 — DK모바일:리본</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
 *{{box-sizing:border-box;margin:0;padding:0}}
 body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;
       background:#eef0f3;color:#1a1a2e;font-size:13px;min-height:100vh}}
+:root{{--green:#1e8449;--red:#c0392b;--blue:#1a73e8;--gray:#5f6368}}
 
 /* ── 네비 ── */
 .top-nav{{background:#1a1a2e;padding:0 20px;display:flex;align-items:center;
@@ -629,14 +679,24 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
 .brand{{color:#fff;font-size:15px;font-weight:700;letter-spacing:-.3px}}
 .brand-sub{{color:#8892b0;font-size:11px}}
 
-.tab-bar{{background:#fff;border-bottom:2px solid #e8eaed;padding:0 20px;
-          display:flex;align-items:center;justify-content:space-between;height:44px}}
+/* ── 탭바 (2단) ── */
+.tab-bar-top{{background:#fff;border-bottom:1px solid #e8eaed;padding:0 20px;
+              display:flex;align-items:center;justify-content:space-between;height:44px}}
 .game-tabs{{display:flex;gap:4px}}
 .tab-btn{{padding:8px 16px;border:none;border-bottom:3px solid transparent;background:none;
           cursor:pointer;font-size:13px;font-weight:600;color:#5f6368;
           display:flex;align-items:center;gap:6px;transition:all .2s}}
 .tab-btn.active{{color:#1a73e8;border-bottom-color:#1a73e8}}
 .tab-dot{{width:8px;height:8px;border-radius:50%;background:#1a73e8}}
+
+/* VOC/지표 섹션 탭 */
+.stab-bar{{background:#f8f9fa;border-bottom:2px solid #e8eaed;padding:0 20px;
+           display:flex;align-items:center;justify-content:space-between;height:38px}}
+.stab-group{{display:flex;gap:2px}}
+.stab{{padding:6px 18px;border:none;border-radius:4px 4px 0 0;
+       background:none;cursor:pointer;font-size:12.5px;font-weight:700;
+       color:#5f6368;transition:all .15s;border-bottom:2px solid transparent;margin-bottom:-2px}}
+.stab.active{{background:#fff;color:#1a73e8;border-color:#1a73e8}}
 .right-controls{{display:flex;align-items:center;gap:8px}}
 .date-select{{padding:5px 10px;border:1.5px solid #dde1e7;border-radius:6px;
               font-size:12px;color:#3c4043;background:#fff;cursor:pointer;outline:none}}
@@ -647,8 +707,75 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
 .ptgl.active{{background:#1a73e8;color:#fff}}
 .ptgl:not(:last-child){{border-right:1px solid #dde1e7}}
 
+/* ── 지표 서브탭 ── */
+.mnav-bar{{display:flex;gap:4px;padding:12px 20px 0;background:#fff;
+           border-bottom:1px solid #e8eaed;margin-bottom:16px}}
+.mnav{{padding:8px 20px;border:none;border-bottom:2.5px solid transparent;
+       background:none;cursor:pointer;font-size:12.5px;font-weight:700;
+       color:#5f6368;transition:all .15s}}
+.mnav.active{{color:#1a73e8;border-bottom-color:#1a73e8}}
+
+/* ── 지표 KPI 카드 ── */
+.kpi-row{{display:flex;gap:12px;flex-wrap:wrap;padding:16px 20px 0}}
+.kpi-card{{flex:1;min-width:200px;background:#f8f9fa;border:1px solid #e8eaed;
+           border-radius:8px;padding:14px 18px}}
+.kpi-card-label{{font-size:11px;color:#5f6368;font-weight:600;margin-bottom:4px}}
+.kpi-card-value{{font-size:22px;font-weight:800;color:#1a1a2e;line-height:1.2}}
+.kpi-card-delta{{font-size:11.5px;margin-top:3px}}
+.kpi-pills{{display:flex;gap:8px;flex-wrap:wrap;padding:12px 20px}}
+.kpi-pill{{background:#fff;border:1px solid #e8eaed;border-radius:6px;
+           padding:8px 14px;min-width:90px;text-align:center}}
+.kpi-pill-label{{font-size:10px;color:#5f6368;font-weight:600;margin-bottom:2px}}
+.kpi-pill-value{{font-size:15px;font-weight:800;color:#1a1a2e}}
+.kpi-pill-delta{{font-size:10px;margin-top:2px}}
+
+/* ── 지표 서버 테이블 ── */
+.m-tbl{{width:100%;border-collapse:collapse;font-size:12.5px}}
+.m-tbl th{{background:#f1f3f4;padding:8px 12px;text-align:center;font-size:11px;
+           color:#5f6368;border-bottom:1.5px solid #e8eaed;font-weight:600}}
+.m-tbl td{{padding:9px 12px;border-bottom:1px solid #f0f2f5;text-align:center}}
+.m-tbl tr:last-child td{{font-weight:700;background:#f8f9fa}}
+.m-tbl td:first-child{{text-align:left;font-weight:600;color:#3c4043}}
+.m-na{{color:#bdbdbd;font-style:italic}}
+.m-global{{color:#9aa0a6;font-style:italic}}
+
+/* ── 패키지 테이블 ── */
+.pkg-cols{{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px 20px}}
+.pkg-col{{background:#fff;border:1px solid #e8eaed;border-radius:8px;overflow:hidden}}
+.pkg-col-hd{{background:#f1f3f4;padding:10px 14px;font-size:12px;font-weight:700;
+             color:#3c4043;border-bottom:1px solid #e8eaed}}
+.pkg-inner{{display:grid;grid-template-columns:1fr 1fr;}}
+.pkg-sub-hd{{padding:6px 10px;font-size:10.5px;font-weight:700;color:#5f6368;
+             background:#fafafa;border-bottom:1px solid #f0f2f5;text-align:center}}
+.pkg-row{{display:flex;align-items:center;padding:5px 10px;border-bottom:1px solid #f9f9f9;
+          font-size:11.5px;gap:6px}}
+.pkg-rank{{font-size:10px;font-weight:800;color:#fff;background:#9aa0a6;
+           border-radius:3px;padding:1px 5px;min-width:22px;text-align:center}}
+.pkg-rank-1{{background:#f9a825}}.pkg-rank-2{{background:#bdbdbd}}.pkg-rank-3{{background:#a1887f}}
+.pkg-name{{flex:1;color:#3c4043;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+.pkg-qty{{font-weight:700;color:#1a73e8;white-space:nowrap}}
+.pkg-empty{{padding:20px;text-align:center;color:#9aa0a6;font-size:12px;font-style:italic}}
+
+/* ── 지표 차트 레이아웃 ── */
+.m-chart-grid{{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 20px}}
+.m-chart-box{{background:#f8f9fa;border:1px solid #e8eaed;border-radius:8px;padding:12px}}
+.m-chart-title{{font-size:11.5px;font-weight:700;color:#3c4043;margin-bottom:8px}}
+.m-chart-wrap{{position:relative;height:130px}}
+.m-bar-pair{{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px 16px}}
+.m-bar-box{{background:#f8f9fa;border:1px solid #e8eaed;border-radius:8px;padding:12px}}
+
+/* 플랫폼 파이 */
+.plat-row{{display:flex;gap:12px;padding:0 20px 16px;flex-wrap:wrap}}
+.plat-box{{flex:1;min-width:160px;background:#f8f9fa;border:1px solid #e8eaed;
+           border-radius:8px;padding:12px;text-align:center}}
+.plat-title{{font-size:11px;font-weight:700;color:#5f6368;margin-bottom:8px}}
+.plat-chart-wrap{{position:relative;height:110px;max-width:150px;margin:0 auto}}
+
+/* 증감 색상 */
+.dg{{color:var(--green)}} .dr{{color:var(--red)}} .dn{{color:var(--gray)}}
+
 /* ── 본문 ── */
-.main{{max-width:980px;margin:20px auto;padding:0 14px 40px}}
+.main{{max-width:1100px;margin:20px auto;padding:0 14px 40px}}
 .rpt-card{{background:#fff;border-radius:10px;overflow:hidden;
            box-shadow:0 1px 6px rgba(0,0,0,.09)}}
 
@@ -756,54 +883,136 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
 </head>
 <body>
 
+<!-- ── 상단 네비 ── -->
 <div class="top-nav">
   <div style="display:flex;align-items:center;gap:10px">
     <span class="brand">NTRANCE</span>
-    <span class="brand-sub">VOC 대시보드</span>
+    <span class="brand-sub">게임 대시보드</span>
   </div>
   <span style="font-size:11px;color:#8892b0">생성: {now}</span>
 </div>
 
-<div class="tab-bar">
+<!-- ── 게임 탭 + VOC/지표 섹션 탭 ── -->
+<div class="tab-bar-top">
   <div class="game-tabs">
     <button class="tab-btn active">
       <span class="tab-dot"></span>DK모바일:리본
     </button>
   </div>
+  <div class="stab-group">
+    <button class="stab active" id="stab-voc"     onclick="switchSection('voc')">VOC</button>
+    <button class="stab"        id="stab-metrics"  onclick="switchSection('metrics')">지표</button>
+  </div>
   <div class="right-controls">
-    <select class="date-select" id="date-sel" onchange="switchDate(this.value)">
+    <select class="date-select" id="date-sel" onchange="onDateChange(this.value)">
       {date_opts}
     </select>
     <div class="period-toggle">
-      <button class="ptgl active" id="btn-daily"  onclick="switchPeriod('D',this)">일간</button>
-      <button class="ptgl"        id="btn-weekly" onclick="switchPeriod('W',this)">주간</button>
+      <button class="ptgl active" id="btn-D" onclick="switchPeriod('D',this)">일간</button>
+      <button class="ptgl"        id="btn-W" onclick="switchPeriod('W',this)">주간</button>
+      <button class="ptgl"        id="btn-M" onclick="switchPeriod('M',this)" style="display:none">월간</button>
     </div>
   </div>
 </div>
 
-<div class="main">
+<!-- ══════════════════════════════════════════════════════
+     VOC 섹션
+══════════════════════════════════════════════════════ -->
+<div id="sect-voc" class="main">
   <div class="rpt-card">
     {panels_html}
     <div class="updated">마지막 업데이트: {now}</div>
   </div>
 </div>
 
+<!-- ══════════════════════════════════════════════════════
+     지표 섹션
+══════════════════════════════════════════════════════ -->
+<div id="sect-metrics" class="main" style="display:none">
+  <div class="rpt-card">
+    <!-- 지표 서브탭 -->
+    <div class="mnav-bar">
+      <button class="mnav active" id="mnav-revenue"  onclick="switchMetricsSub('revenue')">매출</button>
+      <button class="mnav"        id="mnav-packages"  onclick="switchMetricsSub('packages')">패키지</button>
+      <button class="mnav"        id="mnav-users"     onclick="switchMetricsSub('users')">유저지표</button>
+    </div>
+    <div id="m-content" style="padding-bottom:20px">
+      <p class="empty-s" style="padding:40px">날짜를 선택하거나 지표 데이터를 업데이트하세요.</p>
+    </div>
+    <div class="updated">마지막 업데이트: {now}</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     JavaScript
+══════════════════════════════════════════════════════ -->
 <script>
-var _date='{latest}', _period='D';
-function switchDate(d){{
-  document.getElementById('panel-'+_date).style.display='none';
-  _date=d;
-  document.getElementById('panel-'+d).style.display='block';
-  document.getElementById(_period+'-'+d).style.display='block';
-  var o=_period==='D'?'W':'D';
-  document.getElementById(o+'-'+d).style.display='none';
+// ── 지표 데이터 (Python 임베드) ──────────────────────────────────
+{metrics_js}
+
+// ── 전역 상태 ────────────────────────────────────────────────────
+var _section='voc', _sub='revenue', _date='{latest}', _period='D';
+var _charts={{}};
+
+// ── 섹션 전환 (VOC ↔ 지표) ──────────────────────────────────────
+function switchSection(sec){{
+  _section=sec;
+  document.querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('stab-'+sec).classList.add('active');
+  document.getElementById('sect-voc').style.display    = sec==='voc'     ? '' : 'none';
+  document.getElementById('sect-metrics').style.display = sec==='metrics' ? '' : 'none';
+  var btnM = document.getElementById('btn-M');
+  if(sec==='metrics'){{
+    btnM.style.display='';
+  }}else{{
+    btnM.style.display='none';
+    if(_period==='M'){{switchPeriod('D',document.getElementById('btn-D'));return;}}
+  }}
+  if(sec==='metrics') renderCurrentMetrics();
 }}
+
+// ── 날짜 변경 ─────────────────────────────────────────────────
+function onDateChange(d){{
+  _date=d;
+  if(_section==='voc'){{
+    vocSwitchDate(d);
+  }}else{{
+    renderCurrentMetrics();
+  }}
+}}
+
+// ── 기간 전환 ─────────────────────────────────────────────────
 function switchPeriod(p,btn){{
   document.querySelectorAll('.ptgl').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById(_period+'-'+_date).style.display='none';
-  _period=p;
-  document.getElementById(_period+'-'+_date).style.display='block';
+  if(_section==='voc'){{
+    var oldId=_period+'-'+_date;
+    var el=document.getElementById(oldId);
+    if(el)el.style.display='none';
+    _period=p;
+    var newEl=document.getElementById(_period+'-'+_date);
+    if(newEl)newEl.style.display='block';
+  }}else{{
+    _period=p;
+    renderCurrentMetrics();
+  }}
+}}
+
+// ── VOC 기존 로직 ──────────────────────────────────────────────
+function vocSwitchDate(d){{
+  var old=document.getElementById('panel-'+_date);
+  if(old)old.style.display='none';
+  _date=d;
+  var np=document.getElementById('panel-'+d);
+  if(np){{
+    np.style.display='block';
+    var pp=_period==='M'?'D':_period;
+    var pp_el=document.getElementById(pp+'-'+d);
+    if(pp_el)pp_el.style.display='block';
+    var other=pp==='D'?'W':'D';
+    var ot_el=document.getElementById(other+'-'+d);
+    if(ot_el)ot_el.style.display='none';
+  }}
 }}
 function toggleVoc(id){{
   var d=document.getElementById(id),a=document.getElementById('ar-'+id);
@@ -811,6 +1020,460 @@ function toggleVoc(id){{
   var open=d.style.display!=='none';
   d.style.display=open?'none':'block';
   if(a)a.textContent=open?'▸':'▾';
+}}
+
+// ── 지표 서브탭 ────────────────────────────────────────────────
+function switchMetricsSub(sub){{
+  _sub=sub;
+  document.querySelectorAll('.mnav').forEach(b=>b.classList.remove('active'));
+  document.getElementById('mnav-'+sub).classList.add('active');
+  renderCurrentMetrics();
+}}
+
+// ── 헬퍼: 날짜 계산 ───────────────────────────────────────────
+function addDays(ds,n){{
+  var d=new Date(ds+'T00:00:00');d.setDate(d.getDate()+n);
+  return d.toISOString().slice(0,10);
+}}
+function prevDate(ds){{return addDays(ds,-1);}}
+function getWeekRange(ds){{
+  var d=new Date(ds+'T00:00:00');
+  var dow=d.getDay(); // 0=Sun … 6=Sat
+  // Thu=4 기준. dow→days since Thu: (dow-4+7)%7
+  var sinceT=(dow-4+7)%7;
+  var ws=addDays(ds,-sinceT);
+  var we=addDays(ws,6);
+  return [ws,we];
+}}
+function getPrevWeekRange(ds){{
+  var [ws,]=getWeekRange(ds);
+  var pws=addDays(ws,-7);
+  return [pws,addDays(pws,6)];
+}}
+function getMonthRange(ds){{
+  var ms=ds.slice(0,7)+'-01';
+  var d=new Date(ds.slice(0,7)+'-01T00:00:00');
+  d.setMonth(d.getMonth()+1);d.setDate(0);
+  return [ms, d.toISOString().slice(0,10)];
+}}
+function getPrevMonthRange(ds){{
+  var [ms,]=getMonthRange(ds);
+  var d=new Date(ms+'T00:00:00');d.setMonth(d.getMonth()-1);
+  var pms=d.toISOString().slice(0,7)+'-01';
+  return getMonthRange(pms);
+}}
+function datesInRange(start,end){{
+  var arr=[], cur=start;
+  while(cur<=end){{arr.push(cur);cur=addDays(cur,1);}}
+  return arr;
+}}
+function getLast7(ds){{
+  var arr=[];for(var i=6;i>=0;i--)arr.push(addDays(ds,-i));
+  return arr;
+}}
+
+// ── 헬퍼: 포맷 ────────────────────────────────────────────────
+function fmtKRW(n){{
+  if(n===null||n===undefined||isNaN(n))return '-';
+  if(Math.abs(n)>=1e8)return (n/1e8).toFixed(1)+'억';
+  if(Math.abs(n)>=1e4)return Math.round(n/1e4).toLocaleString()+'만';
+  return n.toLocaleString();
+}}
+function fmtKRWFull(n){{
+  if(n===null||n===undefined||isNaN(n))return '-';
+  return n.toLocaleString()+'원';
+}}
+function fmtNum(n){{
+  if(n===null||n===undefined||isNaN(n))return '-';
+  if(Math.abs(n)>=1e4)return Math.round(n/1e4).toFixed(1)+'만';
+  return n.toLocaleString();
+}}
+function fmtPct(n){{
+  if(n===null||n===undefined||isNaN(n))return '-';
+  return (n*100).toFixed(1)+'%';
+}}
+function fmtDelta(cur,prev,posGood){{
+  if(cur===null||cur===undefined||prev===null||prev===undefined||prev===0) return '';
+  var diff=cur-prev, pct=(diff/Math.abs(prev))*100;
+  var pos=diff>=0;
+  var sym=pos?'▲':'▼';
+  var cls=(pos===posGood)?'dg':'dr';
+  var absDiff=Math.abs(diff);
+  var dStr=absDiff>=1e8?(absDiff/1e8).toFixed(1)+'억':
+           absDiff>=1e4?Math.round(absDiff/1e4)+'만':
+           absDiff.toLocaleString();
+  return '<span class="'+cls+'">'+sym+dStr+' ('+pct.toFixed(1)+'%)</span>';
+}}
+
+// ── 집계: 날짜 범위 합산 ──────────────────────────────────────
+function aggregateDates(start,end){{
+  var r={{
+    old:{{rev_total:0,rev_pure:0,dau:0,nu:0,pu:0,npu:0,platform:{{}},_days:[]}},
+    hyper:{{rev_total:0,rev_pure:0,dau:0,nu:0,pu:0,npu:0,platform:{{}},_days:[]}},
+  }};
+  datesInRange(start,end).forEach(function(ds){{
+    var d=METRICS_DATA[ds];
+    if(!d) return;
+    ['old','hyper'].forEach(function(srv){{
+      if(!d[srv]) return;
+      var s=r[srv],m=d[srv];
+      s.rev_total+=m.rev_total||0;
+      s.rev_pure +=m.rev_pure||0;
+      s.dau+=m.dau||0; s.nu+=m.nu||0;
+      s.pu+=m.pu||0;   s.npu+=m.npu||0;
+      // 플랫폼 누적
+      var pl=m.platform||{{}};
+      Object.keys(pl).forEach(function(k){{s.platform[k]=(s.platform[k]||0)+pl[k];}});
+      s._days.push({{date:ds,dau:m.dau||0,pu:m.pu||0,npu:m.npu||0,
+                     arpu:m.arpu||0,arppu:m.arppu||0,
+                     rev_total:m.rev_total||0,rev_pure:m.rev_pure||0}});
+    }});
+  }});
+  // 파생 지표
+  ['old','hyper'].forEach(function(srv){{
+    var s=r[srv];
+    s.pur  = s.dau>0 ? s.pu/s.dau : 0;
+    s.arpu = s.dau>0 ? Math.round(s.rev_total/s.dau) : 0;
+    s.arppu= s.pu>0  ? Math.round(s.rev_total/s.pu)  : 0;
+  }});
+  // 주/월 고유 유저 (WAU/MAU) → 주 시작일 데이터 참조
+  var thuData=METRICS_DATA[start];
+  if(thuData&&thuData.week&&thuData.week.week_start===start){{
+    if(thuData.week.old) {{r.old.wau=thuData.week.old.wau;r.old.wnu=thuData.week.old.wnu;r.old.wpu=thuData.week.old.wpu;r.old.wnpu=thuData.week.old.wnpu;r.old.wpur=thuData.week.old.wpur;r.old.warpu=thuData.week.old.warpu;r.old.warppu=thuData.week.old.warppu;}}
+    if(thuData.week.hyper){{r.hyper.wau=thuData.week.hyper.wau;r.hyper.wnu=thuData.week.hyper.wnu;r.hyper.wpu=thuData.week.hyper.wpu;r.hyper.wnpu=thuData.week.hyper.wnpu;r.hyper.wpur=thuData.week.hyper.wpur;r.hyper.warpu=thuData.week.hyper.warpu;r.hyper.warppu=thuData.week.hyper.warppu;}}
+  }}
+  var firstData=METRICS_DATA[start];
+  if(firstData&&firstData.month&&firstData.month.month===start.slice(0,7)){{
+    if(firstData.month.old) {{r.old.mau=firstData.month.old.mau;r.old.mnu=firstData.month.old.mnu;r.old.mpu=firstData.month.old.mpu;r.old.mnpu=firstData.month.old.mnpu;r.old.mpur=firstData.month.old.mpur;r.old.marpu=firstData.month.old.marpu;r.old.marppu=firstData.month.old.marppu;}}
+    if(firstData.month.hyper){{r.hyper.mau=firstData.month.hyper.mau;r.hyper.mnu=firstData.month.hyper.mnu;r.hyper.mpu=firstData.month.hyper.mpu;r.hyper.mnpu=firstData.month.hyper.mnpu;r.hyper.mpur=firstData.month.hyper.mpur;r.hyper.marpu=firstData.month.hyper.marpu;r.hyper.marppu=firstData.month.hyper.marppu;}}
+  }}
+  r.total={{
+    rev_total:(r.old.rev_total||0)+(r.hyper.rev_total||0),
+    rev_pure :(r.old.rev_pure||0)+(r.hyper.rev_pure||0),
+    dau:(r.old.dau||0)+(r.hyper.dau||0),
+    nu :(r.old.nu||0)+(r.hyper.nu||0),
+    pu :(r.old.pu||0)+(r.hyper.pu||0),
+    npu:(r.old.npu||0)+(r.hyper.npu||0),
+  }};
+  var t=r.total;
+  t.pur  = t.dau>0 ? t.pu/t.dau : 0;
+  t.arpu = t.dau>0 ? Math.round(t.rev_total/t.dau) : 0;
+  t.arppu= t.pu>0  ? Math.round(t.rev_total/t.pu)  : 0;
+  return r;
+}}
+
+// ── 지표 가져오기 (기간에 맞게) ────────────────────────────────
+function getMetrics(dateStr,period){{
+  var m, prev, chartDates, label;
+  if(period==='D'){{
+    var day=METRICS_DATA[dateStr];
+    if(!day)return null;
+    m={{old:day.old||{{}},hyper:day.hyper||{{}},global:null}};
+    m.total={{
+      rev_total:(m.old.rev_total||0)+(m.hyper.rev_total||0),
+      rev_pure :(m.old.rev_pure||0)+(m.hyper.rev_pure||0),
+      dau:(m.old.dau||0)+(m.hyper.dau||0),
+      nu :(m.old.nu||0)+(m.hyper.nu||0),
+      pu :(m.old.pu||0)+(m.hyper.pu||0),
+      npu:(m.old.npu||0)+(m.hyper.npu||0),
+    }};
+    var t=m.total;
+    t.pur=t.dau>0?t.pu/t.dau:0;t.arpu=t.dau>0?Math.round(t.rev_total/t.dau):0;t.arppu=t.pu>0?Math.round(t.rev_total/t.pu):0;
+    var pd=METRICS_DATA[prevDate(dateStr)];
+    prev={{old:pd?.old||null,hyper:pd?.hyper||null}};
+    chartDates=getLast7(dateStr); label=dateStr;
+  }} else if(period==='W'){{
+    var [ws,we]=getWeekRange(dateStr);
+    m=aggregateDates(ws,we);
+    var [pws,pwe]=getPrevWeekRange(dateStr);
+    prev=aggregateDates(pws,pwe);
+    chartDates=datesInRange(ws,we);
+    label=ws.slice(5)+'~'+we.slice(5)+' (주간)';
+  }} else {{
+    var [ms,me]=getMonthRange(dateStr);
+    m=aggregateDates(ms,me);
+    var [pms,pme]=getPrevMonthRange(dateStr);
+    prev=aggregateDates(pms,pme);
+    chartDates=datesInRange(ms,me);
+    label=dateStr.slice(0,7)+' (월간)';
+  }}
+  return {{m:m,prev:prev,chartDates:chartDates,label:label}};
+}}
+
+// ── 차트 관리 ────────────────────────────────────────────────
+function destroyChart(id){{
+  if(_charts[id]){{_charts[id].destroy();delete _charts[id];}}
+}}
+function makeChart(id,type,labels,datasets,opts){{
+  destroyChart(id);
+  var ctx=document.getElementById(id);
+  if(!ctx)return;
+  _charts[id]=new Chart(ctx,{{
+    type:type,
+    data:{{labels:labels,datasets:datasets}},
+    options:Object.assign({{responsive:true,maintainAspectRatio:false}},opts)
+  }});
+}}
+
+// ── 매출 렌더 ───────────────────────────────────────────────
+function renderRevenue(dateStr,period){{
+  var res=getMetrics(dateStr,period);
+  var el=document.getElementById('m-content');
+  if(!res){{el.innerHTML='<p class="empty-s" style="padding:40px">해당 날짜 지표 데이터 없음</p>';return;}}
+  var {{m,prev,chartDates,label}}=res;
+  var isD=period==='D', isW=period==='W';
+
+  // KPI 키 선택
+  var dKey=isD?'dau':isW?'wau':'mau';
+  var nKey=isD?'nu':isW?'wnu':'mnu';
+  var pKey=isD?'pu':isW?'wpu':'mpu';
+  var npKey=isD?'npu':isW?'wnpu':'mnpu';
+  var purKey=isD?'pur':isW?'wpur':'mpur';
+  var arpuKey=isD?'arpu':isW?'warpu':'marpu';
+  var arppuKey=isD?'arppu':isW?'warppu':'marppu';
+
+  var o=m.old||{{}}, h=m.hyper||{{}}, tot=m.total||{{}};
+  var po=prev?.old||{{}}, ph=prev?.hyper||{{}};
+
+  var revT=tot.rev_total||0, revP=tot.rev_pure||0;
+  var prevRevT=(po.rev_total||0)+(ph.rev_total||0);
+  var prevRevP=(po.rev_pure||0)+(ph.rev_pure||0);
+
+  var dau=tot[dKey]||tot.dau||0, nu=tot[nKey]||tot.nu||0;
+  var pu=tot[pKey]||tot.pu||0,   npu=tot[npKey]||tot.npu||0;
+  var pur=tot[purKey]||tot.pur||0;
+  var arpu=tot[arpuKey]||tot.arpu||0;
+  var arppu=tot[arppuKey]||tot.arppu||0;
+  var prevDau=(po[dKey]||po.dau||0)+(ph[dKey]||ph.dau||0);
+  var prevPu=(po[pKey]||po.pu||0)+(ph[pKey]||ph.pu||0);
+
+  var html='<div style="padding:10px 20px 4px"><span style="font-size:12px;color:#5f6368;font-weight:700">📅 '+label+'</span></div>';
+
+  // 대형 KPI 카드 (총매출 / 순수유저매출)
+  html+='<div class="kpi-row">';
+  html+='<div class="kpi-card"><div class="kpi-card-label">총 매출</div>';
+  html+='<div class="kpi-card-value">'+fmtKRW(revT)+'원</div>';
+  html+='<div class="kpi-card-delta">'+fmtDelta(revT,prevRevT,true)+'</div></div>';
+  html+='<div class="kpi-card"><div class="kpi-card-label">순수 유저 매출</div>';
+  html+='<div class="kpi-card-value">'+fmtKRW(revP)+'원</div>';
+  html+='<div class="kpi-card-delta">'+fmtDelta(revP,prevRevP,true)+'</div></div>';
+  html+='</div>';
+
+  // KPI Pills (DAU/NU/PU/NPU/PUR/ARPU/ARPPU)
+  html+='<div class="kpi-pills">';
+  var pills=[
+    ['DAU', dau, prevDau, fmtNum, true],
+    ['NU',  nu,  (po.nu||0)+(ph.nu||0), fmtNum, true],
+    ['PU',  pu,  prevPu, fmtNum, true],
+    ['NPU', npu, (po.npu||0)+(ph.npu||0), fmtNum, true],
+    ['PUR', pur, tot.pur||0, fmtPct, true],  // rough prev
+    ['ARPU', arpu, (prevDau>0?Math.round(prevRevT/prevDau):0), fmtKRW, true],
+    ['ARPPU',arppu,(prevPu>0?Math.round(prevRevT/prevPu):0),   fmtKRW, true],
+  ];
+  pills.forEach(function(p){{
+    html+='<div class="kpi-pill">';
+    html+='<div class="kpi-pill-label">'+p[0]+'</div>';
+    html+='<div class="kpi-pill-value">'+p[3](p[1])+'</div>';
+    html+='<div class="kpi-pill-delta">'+fmtDelta(p[1],p[2],p[4])+'</div>';
+    html+='</div>';
+  }});
+  html+='</div>';
+
+  // 매출 차트 (총매출 | 순수매출)
+  html+='<div class="m-bar-pair">';
+  html+='<div class="m-bar-box"><div class="m-chart-title">총 매출 추이</div><div class="m-chart-wrap"><canvas id="ch-rev-total"></canvas></div></div>';
+  html+='<div class="m-bar-box"><div class="m-chart-title">순수 유저 매출 추이</div><div class="m-chart-wrap"><canvas id="ch-rev-pure"></canvas></div></div>';
+  html+='</div>';
+
+  // 플랫폼 비중 파이
+  html+='<div style="padding:0 20px 6px;font-size:12px;font-weight:700;color:#3c4043">플랫폼별 매출 비중</div>';
+  html+='<div class="plat-row">';
+  html+=buildPlatBox('구서버', o.platform||{{}});
+  html+=buildPlatBox('하이퍼서버', h.platform||{{}});
+  html+=buildPlatBox('글로벌서버 (미오픈)', null);
+  html+='</div>';
+
+  // 서버별 매출 테이블
+  html+='<div style="padding:0 20px 16px">';
+  html+='<div style="font-size:12px;font-weight:700;color:#3c4043;margin-bottom:8px">서버별 매출 집계</div>';
+  html+='<table class="m-tbl"><thead><tr><th style="text-align:left">구분</th><th>구서버</th><th>하이퍼서버</th><th>글로벌서버</th><th>합계</th></tr></thead><tbody>';
+  html+='<tr><td>총매출</td><td>'+fmtKRW(o.rev_total)+'원</td><td>'+fmtKRW(h.rev_total)+'원</td><td class="m-global">미오픈</td><td>'+ fmtKRW(revT)+'원</td></tr>';
+  html+='<tr><td>순수유저매출</td><td>'+fmtKRW(o.rev_pure)+'원</td><td>'+fmtKRW(h.rev_pure)+'원</td><td class="m-global">미오픈</td><td>'+fmtKRW(revP)+'원</td></tr>';
+  html+='</tbody></table></div>';
+
+  el.innerHTML=html;
+
+  // 차트 렌더
+  var labels=chartDates.map(function(d){{return d.slice(5);}});
+  var revTData=chartDates.map(function(d){{var x=METRICS_DATA[d];return x?((x.old?.rev_total||0)+(x.hyper?.rev_total||0)):0;}});
+  var revPData=chartDates.map(function(d){{var x=METRICS_DATA[d];return x?((x.old?.rev_pure||0)+(x.hyper?.rev_pure||0)):0;}});
+
+  makeChart('ch-rev-total','bar',labels,[
+    {{label:'구서버',   data:chartDates.map(function(d){{return METRICS_DATA[d]?.old?.rev_total||0;}}), backgroundColor:'rgba(26,115,232,.75)',stack:'s'}},
+    {{label:'하이퍼서버',data:chartDates.map(function(d){{return METRICS_DATA[d]?.hyper?.rev_total||0;}}),backgroundColor:'rgba(52,168,83,.75)',stack:'s'}},
+  ],{{plugins:{{legend:{{position:'top',labels:{{font:{{size:10}},boxWidth:10}}}},tooltip:{{mode:'index',intersect:false}}}},scales:{{x:{{stacked:true,ticks:{{font:{{size:10}}}},grid:{{display:false}}}},y:{{stacked:true,beginAtZero:true,ticks:{{font:{{size:10}},callback:function(v){{return v>=1e8?(v/1e8).toFixed(0)+'억':v>=1e4?(v/1e4).toFixed(0)+'만':v;}}}}}}}}}});
+
+  makeChart('ch-rev-pure','bar',labels,[
+    {{label:'구서버',    data:chartDates.map(function(d){{return METRICS_DATA[d]?.old?.rev_pure||0;}}),   backgroundColor:'rgba(26,115,232,.65)',stack:'s'}},
+    {{label:'하이퍼서버',data:chartDates.map(function(d){{return METRICS_DATA[d]?.hyper?.rev_pure||0;}}), backgroundColor:'rgba(52,168,83,.65)', stack:'s'}},
+  ],{{plugins:{{legend:{{position:'top',labels:{{font:{{size:10}},boxWidth:10}}}},tooltip:{{mode:'index',intersect:false}}}},scales:{{x:{{stacked:true,ticks:{{font:{{size:10}}}},grid:{{display:false}}}},y:{{stacked:true,beginAtZero:true,ticks:{{font:{{size:10}},callback:function(v){{return v>=1e8?(v/1e8).toFixed(0)+'억':v>=1e4?(v/1e4).toFixed(0)+'만':v;}}}}}}}}}});
+
+  // 파이 차트 렌더
+  renderPieChart('pie-old',  o.platform||{{}});
+  renderPieChart('pie-hyper',h.platform||{{}});
+}}
+
+function buildPlatBox(title, platform){{
+  var inner;
+  if(!platform){{
+    inner='<div style="padding:20px;font-size:11px;color:#9aa0a6;font-style:italic">미오픈</div>';
+  }}else{{
+    inner='<div class="plat-chart-wrap"><canvas id="pie-'+title.slice(0,4)+'"></canvas></div>';
+  }}
+  return '<div class="plat-box"><div class="plat-title">'+title+'</div>'+inner+'</div>';
+}}
+function renderPieChart(id,platform){{
+  destroyChart(id);
+  var ctx=document.getElementById(id);
+  if(!ctx||!platform) return;
+  var keys=Object.keys(platform).filter(function(k){{return platform[k]>0;}});
+  if(!keys.length) return;
+  var colors=['#4285f4','#34a853','#fbbc04','#ea4335','#9aa0a6','#46bdc6'];
+  _charts[id]=new Chart(ctx,{{
+    type:'doughnut',
+    data:{{
+      labels:keys,
+      datasets:[{{data:keys.map(function(k){{return platform[k]||0;}}),backgroundColor:colors.slice(0,keys.length),borderWidth:1}}]
+    }},
+    options:{{responsive:true,maintainAspectRatio:false,
+              plugins:{{legend:{{position:'bottom',labels:{{font:{{size:9}},boxWidth:8,padding:4}}}},
+                        tooltip:{{callbacks:{{label:function(c){{
+                          var total=c.dataset.data.reduce(function(a,b){{return a+b;}},0);
+                          return c.label+': '+(c.parsed/total*100).toFixed(1)+'%';
+                        }}}}}}}}}}
+  }});
+}}
+
+// ── 패키지 렌더 ─────────────────────────────────────────────
+function renderPackages(dateStr,period){{
+  var el=document.getElementById('m-content');
+  var day=METRICS_DATA[dateStr];
+
+  // 전체기간 TOP10
+  var todayOld   = day?.pkg_old   || [];
+  var todayHyper = day?.pkg_hyper || [];
+  var totalOld   = PKG_TOTALS.old   || [];
+  var totalHyper = PKG_TOTALS.hyper || [];
+
+  var label=period==='D'?dateStr:period==='W'?'주간':dateStr.slice(0,7)+' 월간';
+
+  var html='<div style="padding:10px 20px 4px"><span style="font-size:12px;color:#5f6368;font-weight:700">📦 패키지 판매 현황 — '+label+'</span></div>';
+  html+='<div class="pkg-cols">';
+  html+=buildPkgCol('구서버',    totalOld,   todayOld);
+  html+=buildPkgCol('하이퍼서버',totalHyper, todayHyper);
+  html+=buildPkgCol('글로벌서버 (미오픈)', null, null);
+  html+='</div>';
+
+  el.innerHTML=html;
+}}
+function buildPkgCol(title,totalList,todayList){{
+  var hd='<div class="pkg-col-hd">'+title+'</div>';
+  if(!totalList && !todayList){{
+    return '<div class="pkg-col">'+hd+'<div class="pkg-empty">서비스 미오픈</div></div>';
+  }}
+  var inner='<div class="pkg-inner">';
+  inner+='<div><div class="pkg-sub-hd">전체기간 TOP</div>'+buildPkgList(totalList||[])+'</div>';
+  inner+='<div><div class="pkg-sub-hd">당일 TOP</div>'+buildPkgList(todayList||[])+'</div>';
+  inner+='</div>';
+  return '<div class="pkg-col">'+hd+inner+'</div>';
+}}
+function buildPkgList(list){{
+  if(!list.length) return '<div class="pkg-empty">데이터 없음</div>';
+  return list.slice(0,10).map(function(item,i){{
+    var rankCls='pkg-rank'+(i<3?' pkg-rank-'+(i+1):'');
+    return '<div class="pkg-row"><span class="'+rankCls+'">'+(i+1)+'</span><span class="pkg-name" title="'+item.name+'">'+item.name+'</span><span class="pkg-qty">'+item.qty.toLocaleString()+'</span></div>';
+  }}).join('');
+}}
+
+// ── 유저지표 렌더 ───────────────────────────────────────────
+function renderUsers(dateStr,period){{
+  var res=getMetrics(dateStr,period);
+  var el=document.getElementById('m-content');
+  if(!res){{el.innerHTML='<p class="empty-s" style="padding:40px">해당 날짜 지표 데이터 없음</p>';return;}}
+  var {{m,prev,chartDates,label}}=res;
+  var isD=period==='D', isW=period==='W';
+  var dKey=isD?'dau':isW?'wau':'mau';
+  var nKey=isD?'nu':isW?'wnu':'mnu';
+  var pKey=isD?'pu':isW?'wpu':'mpu';
+  var npKey=isD?'npu':isW?'wnpu':'mnpu';
+  var purKey=isD?'pur':isW?'wpur':'mpur';
+  var arpuKey=isD?'arpu':isW?'warpu':'marpu';
+  var arppuKey=isD?'arppu':isW?'warppu':'marppu';
+
+  var html='<div style="padding:10px 20px 4px"><span style="font-size:12px;color:#5f6368;font-weight:700">👤 유저 지표 — '+label+'</span></div>';
+
+  // 4개 라인 차트
+  html+='<div class="m-chart-grid">';
+  html+='<div class="m-chart-box"><div class="m-chart-title">DAU</div><div class="m-chart-wrap"><canvas id="ch-dau"></canvas></div></div>';
+  html+='<div class="m-chart-box"><div class="m-chart-title">PU</div><div class="m-chart-wrap"><canvas id="ch-pu"></canvas></div></div>';
+  html+='<div class="m-chart-box"><div class="m-chart-title">NPU</div><div class="m-chart-wrap"><canvas id="ch-npu"></canvas></div></div>';
+  html+='<div class="m-chart-box"><div class="m-chart-title">ARPPU</div><div class="m-chart-wrap"><canvas id="ch-arppu"></canvas></div></div>';
+  html+='</div>';
+
+  // 서버별 지표 테이블
+  function row(srvLabel, srv, na){{
+    if(na) return '<tr><td>'+srvLabel+'</td><td colspan="7" class="m-global">미오픈</td></tr>';
+    if(!srv) return '<tr><td>'+srvLabel+'</td><td colspan="7" class="m-na">-</td></tr>';
+    return '<tr><td>'+srvLabel+'</td>'+
+      '<td>'+fmtNum(srv[dKey]||srv.dau)+'</td>'+
+      '<td>'+fmtNum(srv[nKey]||srv.nu)+'</td>'+
+      '<td>'+fmtNum(srv[pKey]||srv.pu)+'</td>'+
+      '<td>'+fmtNum(srv[npKey]||srv.npu)+'</td>'+
+      '<td>'+fmtPct(srv[purKey]||srv.pur)+'</td>'+
+      '<td>'+fmtKRW(srv[arpuKey]||srv.arpu)+'</td>'+
+      '<td>'+fmtKRW(srv[arppuKey]||srv.arppu)+'</td>'+
+      '</tr>';
+  }}
+  html+='<div style="padding:0 20px 16px">';
+  html+='<div style="font-size:12px;font-weight:700;color:#3c4043;margin-bottom:8px">서버별 유저 지표</div>';
+  html+='<table class="m-tbl"><thead><tr>';
+  html+='<th style="text-align:left">구분</th><th>DAU</th><th>NU</th><th>PU</th><th>NPU</th><th>PUR</th><th>ARPU</th><th>ARPPU</th>';
+  html+='</tr></thead><tbody>';
+  html+=row('구서버',    m.old,   false);
+  html+=row('하이퍼서버',m.hyper, false);
+  html+=row('글로벌서버',null,    true);
+  html+=row('합계',      m.total, false);
+  html+='</tbody></table></div>';
+
+  el.innerHTML=html;
+
+  // 차트 렌더
+  var labels=chartDates.map(function(d){{return d.slice(5);}});
+  var chartCfg={{responsive:true,maintainAspectRatio:false,plugins:{{legend:{{position:'top',labels:{{font:{{size:10}},boxWidth:10}}}}}},scales:{{x:{{ticks:{{font:{{size:10}}}},grid:{{display:false}}}},y:{{beginAtZero:true,ticks:{{font:{{size:10}}}}}}}}}};
+
+  makeChart('ch-dau','line',labels,[
+    {{label:'구서버',   data:chartDates.map(function(d){{return METRICS_DATA[d]?.old?.dau||0;}}),   borderColor:'#4285f4',backgroundColor:'rgba(66,133,244,.1)',tension:.3,fill:true}},
+    {{label:'하이퍼서버',data:chartDates.map(function(d){{return METRICS_DATA[d]?.hyper?.dau||0;}}),borderColor:'#34a853',backgroundColor:'rgba(52,168,83,.1)', tension:.3,fill:true}},
+  ],chartCfg);
+  makeChart('ch-pu','line',labels,[
+    {{label:'구서버',   data:chartDates.map(function(d){{return METRICS_DATA[d]?.old?.pu||0;}}),    borderColor:'#4285f4',backgroundColor:'rgba(66,133,244,.1)',tension:.3,fill:true}},
+    {{label:'하이퍼서버',data:chartDates.map(function(d){{return METRICS_DATA[d]?.hyper?.pu||0;}}),borderColor:'#34a853',backgroundColor:'rgba(52,168,83,.1)', tension:.3,fill:true}},
+  ],chartCfg);
+  makeChart('ch-npu','line',labels,[
+    {{label:'구서버',   data:chartDates.map(function(d){{return METRICS_DATA[d]?.old?.npu||0;}}),    borderColor:'#fbbc04',backgroundColor:'rgba(251,188,4,.1)',tension:.3,fill:true}},
+    {{label:'하이퍼서버',data:chartDates.map(function(d){{return METRICS_DATA[d]?.hyper?.npu||0;}}),borderColor:'#ea4335',backgroundColor:'rgba(234,67,53,.1)',tension:.3,fill:true}},
+  ],chartCfg);
+  makeChart('ch-arppu','line',labels,[
+    {{label:'구서버',   data:chartDates.map(function(d){{return METRICS_DATA[d]?.old?.arppu||0;}}),    borderColor:'#4285f4',backgroundColor:'rgba(66,133,244,.1)',tension:.3,fill:true}},
+    {{label:'하이퍼서버',data:chartDates.map(function(d){{return METRICS_DATA[d]?.hyper?.arppu||0;}}),borderColor:'#34a853',backgroundColor:'rgba(52,168,83,.1)', tension:.3,fill:true}},
+  ],chartCfg);
+}}
+
+// ── 메인 렌더 진입점 ─────────────────────────────────────────
+function renderCurrentMetrics(){{
+  if(_sub==='revenue')  renderRevenue(_date,_period);
+  else if(_sub==='packages') renderPackages(_date,_period);
+  else                  renderUsers(_date,_period);
 }}
 </script>
 </body>
