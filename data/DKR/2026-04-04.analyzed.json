@@ -1,0 +1,64 @@
+{
+  "date": "2026-04-04",
+  "major_issues": [],
+  "voc_groups": [
+    {
+      "category": "게임 관련",
+      "summary": "루멘탑 중심 콘텐츠 편중 불만 — 1년 내내 루멘탑만 반복된다는 비판",
+      "count": 1,
+      "representative_url": "",
+      "feed_ids": []
+    },
+    {
+      "category": "기타",
+      "summary": "과금 유저 이탈 우려 — 서비스 방향에 실망한 과금 유저 불만 표출",
+      "count": 1,
+      "representative_url": "",
+      "feed_ids": []
+    },
+    {
+      "category": "게임 관련",
+      "summary": "인터서버 그룹 재편 후 SG1·SG2·SG3 서버 배치 변경 내용 문의",
+      "count": 1,
+      "representative_url": "",
+      "feed_ids": []
+    }
+  ],
+  "cs_week_trend": [
+    {
+      "date": "2026-03-29",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-03-30",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-03-31",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-01",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-02",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-03",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-04",
+      "received": 0,
+      "processed": 0
+    }
+  ]
+}

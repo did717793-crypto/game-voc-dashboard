@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "date": "2026-04-04",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-04-03T09:00:00+09:00",
+    "window_end": "2026-04-04T09:00:00+09:00",
+    "crawled_at": "2026-04-07T15:22:56.073407+09:00",
+    "total_posts": 3,
+    "total_comments": 5
+  },
+  "official_posts": [],
+  "posts": [
+    {
+      "feed_id": "7501810",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "진짜 1년 내내 루멘만 나올거라고 예상을 못했다.",
+      "body": "솔직히 루멘 층 하나 만드는건 내가 소스코드 깨짝 거려도 2주면 만들겠다.",
+      "author": "꿀꽈배기",
+      "created_at": "2026-04-03T20:28:49+09:00",
+      "view_count": 230,
+      "comment_count": 1,
+      "like_count": 2,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7501810",
+      "comments": [
+        {
+          "comment_id": "25678026",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "학살중인 초보 6821",
+          "text": "야 이 빡. 뒈가리야 리니지도 오만탑에서 전투만 오지게 한다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7500716",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "돈쓴사람들우짜냐",
+      "body": "에오스블랙나온다는데 이게임 살아남을수있것나.. 재밌었는데나름",
+      "author": "Hhshdhhx",
+      "created_at": "2026-04-03T16:20:31+09:00",
+      "view_count": 295,
+      "comment_count": 3,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7500716",
+      "comments": [
+        {
+          "comment_id": "25655932",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "럭키가이 겜돌이 6255",
+          "text": "어휴 날더워지니까 여기저기 ㅂㅓㄹㅓ  ㅈㅣ들이 나오네",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25678032",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "학살중인 초보 6821",
+          "text": "돈 없니?\n왜그러고 사냐 그냥 그거 해 여기서 기웃 거리지 말고",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25693474",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "폭주하는 누나 7629",
+          "text": "네 다음찡찡이",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7499792",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "SG1레디세/SG2크로노브/SG39엘키넴 서버가 어떻게 되는건가요?",
+      "body": "그룹으로 되어있던데 포함된 서버이름은 어디서 확인할수있나요?",
+      "author": "열렙 중인 사령관 8753",
+      "created_at": "2026-04-03T12:00:48+09:00",
+      "view_count": 185,
+      "comment_count": 1,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499792",
+      "comments": [
+        {
+          "comment_id": "25648337",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요, 용사님.\n\n서버 그룹 및 소속 서버 확인 방법은 아래와 같습니다.\n\n[게임 접속] - [우측 하단 서버 메뉴 옆 화살표] - [서버 그룹]\n\n안내해 드린 내용이 도움 되었길 기원하며,\n다른 도움이 필요하신 사항이 있다면 언제든 찾아주시기 바랍니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    }
+  ]
+}

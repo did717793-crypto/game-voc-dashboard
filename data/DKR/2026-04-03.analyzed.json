@@ -1,0 +1,64 @@
+{
+  "date": "2026-04-03",
+  "major_issues": [],
+  "voc_groups": [
+    {
+      "category": "기타",
+      "summary": "동접 감소 및 서비스 종료 임박 우려 (COC 섭종 여파로 DKR도 섭종 예상)",
+      "count": 2,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/",
+      "feed_ids": []
+    },
+    {
+      "category": "게임 관련",
+      "summary": "보스 시간 미조정 불만 — 업데이트 후에도 보스 시간 변경 없음",
+      "count": 1,
+      "representative_url": "",
+      "feed_ids": []
+    },
+    {
+      "category": "건의·요청",
+      "summary": "봉인된 루멘탑 이동증표 개인 인벤토리 직접 지급 방식으로 전환 건의",
+      "count": 1,
+      "representative_url": "",
+      "feed_ids": []
+    }
+  ],
+  "cs_week_trend": [
+    {
+      "date": "2026-03-28",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-03-29",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-03-30",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-03-31",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-01",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-02",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-03",
+      "received": 0,
+      "processed": 0
+    }
+  ]
+}
