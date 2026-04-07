@@ -467,6 +467,72 @@ def build_section_cs(cs_inquiries: list[dict], cs_week_trend: list[dict] = None)
     return trend_html + detail_html
 
 
+# ── 05 CS 동향 (04 공식 라운지 동향과 동일 양식) ──────────────
+def build_section_cs_detail(cs_inquiries: list[dict]) -> str:
+    """
+    cs_inquiries schema (analyzed.json):
+    [{"category": "버그·장애", "count": 6, "pending": 2,
+      "representative": [{"title": "...", "status": "...", "date": "..."}]}, ...]
+    → 04 공식 라운지 동향과 동일한 테이블 (항목/내용/건수/비고)로 렌더링
+    """
+    STATUS_CLS = {
+        "접수 완료": "cs-badge-recv",
+        "접수완료":  "cs-badge-recv",
+        "처리 중":   "cs-badge-proc",
+        "처리중":    "cs-badge-proc",
+        "답변 완료": "cs-badge-done",
+        "조회 완료": "cs-badge-view",
+        "삭제":      "cs-badge-del",
+    }
+
+    if not cs_inquiries:
+        return "<p class='empty-s'>수집된 CS 문의 없음</p>"
+
+    rows = ""
+    for item in cs_inquiries:
+        cat     = item.get("category", "기타")
+        count   = item.get("count", 0)
+        pending = item.get("pending", 0)
+        reps    = item.get("representative", [])
+
+        content = ""
+        for rep in reps:
+            title  = rep.get("title", "")
+            status = rep.get("status", "")
+            date   = rep.get("date", "")
+            badge_cls = STATUS_CLS.get(status, "cs-badge-etc")
+            date_s = f'<span class="cs-date">{date[5:]}</span>' if date else ""
+            content += (
+                f'<div class="cs-det-row">'
+                f'<span class="cs-badge {badge_cls}">{status}</span>'
+                f'{date_s}'
+                f'<span class="cs-ttl">{title}</span>'
+                f'</div>'
+            )
+
+        note = f'<span class="cs-pending">미처리 {pending}건</span>' if pending > 0 else "처리 완료"
+        rows += f"""
+        <tr>
+          <td class="cat-td">{cat}</td>
+          <td class="content-td">{content}</td>
+          <td class="ref-td">{count}건</td>
+          <td class="note-td">{note}</td>
+        </tr>"""
+
+    return f"""
+    <table class="voc-tbl">
+      <thead>
+        <tr>
+          <th style="width:76px">항목</th>
+          <th>내용</th>
+          <th style="width:52px">건수</th>
+          <th style="width:70px">비고</th>
+        </tr>
+      </thead>
+      <tbody>{rows}</tbody>
+    </table>"""
+
+
 # ── 리포트 섹션 래퍼 ──────────────────────────────────────────
 def sec(num: str, title: str, body: str) -> str:
     return f"""
@@ -497,6 +563,7 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
             + sec("04", "공식 라운지 동향", build_section_voc(
                 analyzed.get("voc_groups", []), raw_map,
                 pfx=f"D{date_str.replace('-','')}_"))
+            + sec("05", "CS 동향",          build_section_cs_detail(analyzed.get("cs_inquiries", [])))
         )
     else:  # weekly
         idx        = all_dates.index(date_str) if date_str in all_dates else 0
@@ -517,6 +584,7 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
             + sec("04", "공식 라운지 동향", build_section_voc(
                 analyzed.get("voc_groups", []), raw_map,
                 pfx=f"W{date_str.replace('-','')}_"))
+            + sec("05", "CS 동향",          build_section_cs_detail(analyzed.get("cs_inquiries", [])))
         )
 
 
@@ -666,6 +734,18 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
 .cs-placeholder p{{font-size:12.5px;color:#5f6368;margin-bottom:4px}}
 .cs-hint{{font-size:11px;color:#9aa0a6 !important}}
 .cs-content{{vertical-align:middle}}
+/* 05 CS 동향 배지 */
+.cs-det-row{{display:flex;align-items:center;gap:5px;padding:3px 0;font-size:12px;line-height:1.4}}
+.cs-badge{{display:inline-block;padding:1px 6px;border-radius:10px;font-size:10.5px;font-weight:600;white-space:nowrap}}
+.cs-badge-recv{{background:#fff3e0;color:#e65100}}
+.cs-badge-proc{{background:#e3f2fd;color:#1565c0}}
+.cs-badge-done{{background:#e8f5e9;color:#2e7d32}}
+.cs-badge-view{{background:#f3e5f5;color:#6a1b9a}}
+.cs-badge-del{{background:#fafafa;color:#9e9e9e}}
+.cs-badge-etc{{background:#f5f5f5;color:#616161}}
+.cs-date{{font-size:10.5px;color:#9aa0a6;white-space:nowrap}}
+.cs-ttl{{color:#3c4043;font-size:12px}}
+.cs-pending{{color:#e53935;font-weight:600;font-size:11.5px}}
 
 .period-bar{{font-size:12px;color:#5f6368;background:#f8f9fa;padding:6px 12px;
              border-radius:4px;margin-bottom:8px}}
