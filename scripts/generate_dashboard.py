@@ -1,8 +1,16 @@
 #!/usr/bin/env python3
 """
-VOC 대시보드 HTML 생성기 v5.1
-변경: 차트 Y축 4분할 + 총건수 라벨 / VOC 색깔·대시 제거 / 건수 비고만 표시
-     동일 카테고리 다중항목 구분선 / 04 1:1 문의 동향 섹션 추가
+VOC 대시보드 HTML 생성기 v5.2
+변경(v5.1→v5.2):
+  [FIX-1] available_dates(): analyzed.json만 있는 날짜도 드롭다운·패널 생성
+  [FIX-2] JS onDateChange(): _date 갱신 순서 버그 수정 → 날짜 전환 시 선택 날짜만 노출
+  [FIX-3] build_section_chart(): 커뮤니티 현황 범례 top→bottom
+  [FIX-4] build_section_cs(): 처리율 꺾은선 % 레이블 표시
+  [FIX-5] build_section_cs(): 우측 보조 Y축 숫자 제거 (display:false)
+  [FIX-6] build_section_cs(): 하단 "7일 누적" 텍스트 → CS표(전일/금일/증감) + 유형별 도넛 차트
+  [FIX-7] build_section_voc(): 항목 단위 집계 → 각 내용별 개별 행 + 개별 링크
+  [FIX-8] build_section_cs_detail(): 04번과 동일하게 개별 티켓 행 분리
+  [FIX-9] build_report(): 전일 cs_inquiries 로드 → 도넛 전일/증감 비교 지원
 """
 
 import json
@@ -19,10 +27,16 @@ OUTPUT      = GIT_DIR / "index.html"
 
 # ── 데이터 로드 ───────────────────────────────────────────────
 def available_dates() -> list[str]:
-    return sorted(
-        [f.stem for f in DATA_DIR.glob("*.json") if not f.stem.endswith(".analyzed")],
-        reverse=True,
+    # [FIX-1] raw JSON 날짜 + analyzed.json만 있는 날짜 모두 포함
+    raw_dates = set(
+        f.stem for f in DATA_DIR.glob("*.json")
+        if not f.stem.endswith(".analyzed")
     )
+    analyzed_dates = set(
+        f.stem.replace(".analyzed", "")
+        for f in DATA_DIR.glob("*.analyzed.json")
+    )
+    return sorted(raw_dates | analyzed_dates, reverse=True)
 
 def load_raw(d: str) -> dict | None:
     p = DATA_DIR / f"{d}.json"
@@ -137,14 +151,13 @@ def _nice_axis(max_val: int):
     if max_val <= 0:
         return 1, 4
     raw_step = max(1, math.ceil(max_val / 4))
-    # 5의 배수로 올림
     step = max(1, math.ceil(raw_step / 5) * 5)
     nice_max = step * 4
     return step, nice_max
 
 
 def build_section_chart(chart_dates: list[str], chart_id: str) -> str:
-    labels = [d[5:] for d in chart_dates]   # MM-DD
+    labels = [d[5:] for d in chart_dates]
     gd, bd, sd, od = [], [], [], []
     for d in chart_dates:
         ad = load_analyzed(d)
@@ -169,7 +182,6 @@ def build_section_chart(chart_dates: list[str], chart_id: str) -> str:
       const c=document.getElementById('ch-{chart_id}');
       if(!c||c._ok)return;c._ok=true;
 
-      // 막대 위 합계 표시 인라인 플러그인
       const stackTotalPlugin={{
         id:'stackTotal',
         afterDatasetsDraw(chart){{
@@ -205,7 +217,7 @@ def build_section_chart(chart_dates: list[str], chart_id: str) -> str:
         options:{{
           responsive:true,maintainAspectRatio:false,
           plugins:{{
-            legend:{{position:'top',labels:{{font:{{size:11}},boxWidth:12,padding:8}}}},
+            legend:{{position:'bottom',labels:{{font:{{size:11}},boxWidth:12,padding:8}}}},
             tooltip:{{mode:'index',intersect:false}}
           }},
           scales:{{
@@ -225,6 +237,7 @@ CAT_ORDER = ["게임 관련", "버그·오류", "건의·요청", "기타"]
 
 
 def build_section_voc(voc_groups: list[dict], raw_map: dict, pfx: str = "v") -> str:
+    # [FIX-7] 항목(카테고리) 단위 집계 → 각 내용(item) 개별 행 + 개별 링크 + rowspan
     if not voc_groups:
         return "<p class='empty-s'>수집된 VOC 없음</p>"
 
@@ -239,16 +252,16 @@ def build_section_voc(voc_groups: list[dict], raw_map: dict, pfx: str = "v") -> 
         items = by_cat.get(cat, [])
         if not items:
             continue
-        total_cnt = sum(x.get("count", 1) for x in items)
 
-        content    = ""
-        note_links = []
+        row_count = len(items)  # rowspan 계산
+
         for i_item, item in enumerate(items):
+            item_cnt = item.get("count", 1)
             summ     = item.get("summary", "")
             url      = item.get("representative_url", "#")
             feed_ids = [str(f) for f in item.get("feed_ids", [])]
 
-            # 아코디언 상세
+            # 아코디언 상세 (기존 로직 유지)
             det_parts = []
             for fid in feed_ids:
                 post = raw_map.get(fid)
@@ -274,30 +287,29 @@ def build_section_voc(voc_groups: list[dict], raw_map: dict, pfx: str = "v") -> 
                 f'<div id="{vid}" class="det-group" style="display:none">{"".join(det_parts)}</div>'
             ) if has_exp else ""
 
-            # 다중 항목 구분선 (첫 번째 항목은 제외)
-            sep_class = " voc-sep" if i_item > 0 else ""
+            # [FIX-7] 첫 번째 item에만 cat-td (rowspan), 이후 행은 생략
+            cat_cell = ""
+            if i_item == 0:
+                cat_cell = f'<td class="cat-td" rowspan="{row_count}">{cat}</td>'
 
-            # 비고용 링크 버튼 수집
-            note_links.append(f'<a href="{url}" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a>')
+            # [FIX-7] 개별 item 링크
+            note_cell = f'<a href="{url}" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a>'
 
-            content += f"""
-              <div class="voc-row-item{sep_class}"{oc_attr}>
-                <div class="voc-item-main">
-                  {arr}<span class="vitem-link">{summ}</span>
-                </div>
-              </div>
-              {exp_div}"""
-            idx += 1
-
-        note_cell = "<br>".join(note_links)
-        # cat-td: 색깔 없이, 텍스트 중앙정렬
-        rows += f"""
+            rows += f"""
         <tr>
-          <td class="cat-td">{cat}</td>
-          <td class="content-td">{content}</td>
-          <td class="ref-td">{total_cnt}건</td>
+          {cat_cell}
+          <td class="content-td">
+            <div class="voc-row-item"{oc_attr}>
+              <div class="voc-item-main">
+                {arr}<span class="vitem-link">{summ}</span>
+              </div>
+            </div>
+            {exp_div}
+          </td>
+          <td class="ref-td">{item_cnt}건</td>
           <td class="note-td">{note_cell}</td>
         </tr>"""
+            idx += 1
 
     return f"""
     <table class="voc-tbl">
@@ -317,17 +329,14 @@ def build_section_voc(voc_groups: list[dict], raw_map: dict, pfx: str = "v") -> 
 CS_CAT_ORDER = ["계정·결제", "게임 관련", "이벤트", "버그·오류", "건의사항", "기타·실행"]
 
 
-def build_section_cs(cs_inquiries: list[dict], cs_week_trend: list[dict] = None) -> str:
-    """
-    cs_inquiries schema:
-    [{"category": "계정·결제", "count": 3, "summary": "결제 오류 관련", "items": ["...", ...]}, ...]
-    cs_week_trend: [{"date": "2026-04-02", "received": 0, "processed": 0, "dkr": 0, "categories": {...}}, ...]
-      - received: 인입량(접수), dkr 필드가 있으면 fallback으로 사용
-      - processed: 처리량(답변완료)
-    """
+def build_section_cs(
+    cs_inquiries: list[dict],
+    cs_week_trend: list[dict] = None,
+    prev_cs_inquiries: list[dict] = None,   # [FIX-9] 전일 CS 데이터
+) -> str:
     import json as _json
 
-    # ── 주간 추이 복합 차트 (인입량 바 + 처리량 바 + 처리율 꺾은선) ──
+    # ── 주간 추이 복합 차트 ──
     trend_html = ""
     if cs_week_trend:
         labels    = [t["date"][5:] for t in cs_week_trend]
@@ -337,18 +346,113 @@ def build_section_cs(cs_inquiries: list[dict], cs_week_trend: list[dict] = None)
             round(processed[i] / received[i] * 100) if received[i] > 0 else 0
             for i in range(len(received))
         ]
-        total_recv = sum(received)
-        last_recv  = received[-1]
-        last_proc  = processed[-1]
-        last_rate  = rates[-1]
 
-        # Y축 (건수) 범위
         step_cs, max_cs = _nice_axis(max(max(received), max(processed)) if received else 0)
-        # Y축 (처리율 %) 범위: 0~100 기본, 초과 시 여유
         max_rate = max(rates) if rates else 0
         rate_max = max(120, math.ceil(max_rate / 20) * 20 + 20) if max_rate > 100 else 120
 
         chart_id = f"cs_combo_{labels[-1].replace('-','')}"
+
+        # ── [FIX-6] 하단 CS 표 데이터 계산 ──
+        today_recv  = received[-1] if received else 0
+        today_proc  = processed[-1] if processed else 0
+        today_rate_v = rates[-1] if rates else 0
+        today_miss  = max(0, today_recv - today_proc)
+        yest_recv   = received[-2]  if len(received)  >= 2 else 0
+        yest_proc   = processed[-2] if len(processed) >= 2 else 0
+        yest_rate_v = rates[-2]     if len(rates)     >= 2 else 0
+        yest_miss   = max(0, yest_recv - yest_proc)
+        yest_label  = labels[-2]    if len(labels)    >= 2 else "-"
+
+        def _delta(v, sfx="건"):
+            if v > 0: return f'<span style="color:#c0392b;font-weight:bold">▲{v}{sfx}</span>'
+            if v < 0: return f'<span style="color:#1a73e8;font-weight:bold">▼{abs(v)}{sfx}</span>'
+            return f'<span style="color:#9aa0a6">■0{sfx}</span>'
+
+        # ── [FIX-6] 유형별 도넛 데이터 ──
+        dnt_id     = f"cs_dnt_{labels[-1].replace('-','')}"
+        _dnt_colors = [
+            "rgba(220,50,50,0.75)", "rgba(26,115,232,0.75)",
+            "rgba(251,188,4,0.75)", "rgba(52,168,83,0.75)",
+            "rgba(154,160,166,0.7)", "rgba(70,157,198,0.75)",
+        ]
+        prev_map = {}
+        if prev_cs_inquiries:
+            for _pi in prev_cs_inquiries:
+                prev_map[_pi.get("category", "")] = _pi.get("count", 0)
+
+        dnt_labels_list = [x.get("category", "") for x in cs_inquiries] if cs_inquiries else []
+        dnt_data_list   = [x.get("count", 0)     for x in cs_inquiries] if cs_inquiries else []
+
+        dnt_rows = ""
+        if cs_inquiries:
+            for _item in cs_inquiries:
+                _cat = _item.get("category", "")
+                _cur = _item.get("count", 0)
+                _prv = prev_map.get(_cat, 0)
+                _dlt = _cur - _prv
+                _prv_s = str(_prv) if prev_cs_inquiries is not None else "-"
+                dnt_rows += (
+                    f'<tr>'
+                    f'<td style="font-size:11px;text-align:left;padding:4px 6px;border-bottom:1px solid #f0f2f5">{_cat}</td>'
+                    f'<td style="font-size:11px;padding:4px 6px;text-align:center;border-bottom:1px solid #f0f2f5">{_prv_s}</td>'
+                    f'<td style="font-size:11px;padding:4px 6px;text-align:center;font-weight:bold;border-bottom:1px solid #f0f2f5">{_cur}</td>'
+                    f'<td style="font-size:11px;padding:4px 6px;text-align:center;border-bottom:1px solid #f0f2f5">{_delta(_dlt)}</td>'
+                    f'</tr>'
+                )
+
+        # 도넛 섹션 HTML (cs_inquiries가 있을 때만)
+        if cs_inquiries and dnt_labels_list:
+            dnt_section_html = f"""
+      <div>
+        <p style="font-size:11px;font-weight:700;color:#5f6368;margin-bottom:6px">유형별 문의 접수 현황</p>
+        <div style="display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:start">
+          <div style="position:relative;height:120px"><canvas id="{dnt_id}"></canvas></div>
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr>
+                <th style="font-size:10px;padding:4px 6px;background:#f1f3f4;color:#5f6368;font-weight:600;text-align:left;border-bottom:1.5px solid #e8eaed">분류</th>
+                <th style="font-size:10px;padding:4px 6px;background:#f1f3f4;color:#5f6368;font-weight:600;text-align:center;border-bottom:1.5px solid #e8eaed">전일</th>
+                <th style="font-size:10px;padding:4px 6px;background:#f1f3f4;color:#5f6368;font-weight:600;text-align:center;border-bottom:1.5px solid #e8eaed">금일</th>
+                <th style="font-size:10px;padding:4px 6px;background:#f1f3f4;color:#5f6368;font-weight:600;text-align:center;border-bottom:1.5px solid #e8eaed">증감</th>
+              </tr>
+            </thead>
+            <tbody>{dnt_rows}</tbody>
+          </table>
+        </div>
+      </div>"""
+            dnt_js = f"""
+    <script>
+    (function(){{
+      var c=document.getElementById('{dnt_id}');
+      if(!c||c._ok)return;c._ok=true;
+      new Chart(c,{{
+        type:'doughnut',
+        data:{{
+          labels:{_json.dumps(dnt_labels_list, ensure_ascii=False)},
+          datasets:[{{
+            data:{_json.dumps(dnt_data_list)},
+            backgroundColor:{_json.dumps(_dnt_colors[:len(dnt_labels_list)])},
+            borderWidth:2,borderColor:'#fff'
+          }}]
+        }},
+        options:{{
+          responsive:true,maintainAspectRatio:false,cutout:'55%',
+          plugins:{{
+            legend:{{display:false}},
+            tooltip:{{callbacks:{{label:function(c){{
+              var t=c.dataset.data.reduce(function(a,b){{return a+b;}},0);
+              return c.label+': '+c.parsed+'건 ('+Math.round(c.parsed/t*100)+'%)';
+            }}}}}}
+          }}
+        }}
+      }});
+    }})();
+    </script>"""
+        else:
+            dnt_section_html = ""
+            dnt_js = ""
+
         trend_html = f"""
         <div style="margin-bottom:8px">
           <div style="position:relative;height:160px">
@@ -363,9 +467,24 @@ def build_section_cs(cs_inquiries: list[dict], cs_week_trend: list[dict] = None)
             afterDraw: function(chart) {{
               var c = chart.ctx;
               chart.data.datasets.forEach(function(ds, di) {{
-                if (ds.type === 'line') return;
                 var meta = chart.getDatasetMeta(di);
                 if (meta.hidden) return;
+                if (ds.type === 'line') {{
+                  // [FIX-4] 처리율 꺾은선 각 포인트에 % 레이블 표시
+                  meta.data.forEach(function(pt, i) {{
+                    var val = ds.data[i];
+                    if (!val && val !== 0) return;
+                    c.save();
+                    c.font = 'bold 10px sans-serif';
+                    c.fillStyle = 'rgba(220,50,50,0.9)';
+                    c.textAlign = 'center';
+                    c.textBaseline = 'bottom';
+                    c.fillText(val + '%', pt.x, pt.y - 5);
+                    c.restore();
+                  }});
+                  return;
+                }}
+                // 막대 레이블
                 meta.data.forEach(function(bar, i) {{
                   var val = ds.data[i];
                   if (!val) return;
@@ -440,9 +559,9 @@ def build_section_cs(cs_inquiries: list[dict], cs_week_trend: list[dict] = None)
                   grid: {{ color: '#eee' }}
                 }},
                 y1: {{
+                  display: false,
                   position: 'right',
                   min: 0, max: {rate_max},
-                  ticks: {{ callback: function(v){{ return v+'%'; }}, font:{{size:11}} }},
                   grid: {{ drawOnChartArea: false }}
                 }},
                 x: {{ ticks:{{font:{{size:11}}}}, grid:{{ display:false }} }}
@@ -452,11 +571,49 @@ def build_section_cs(cs_inquiries: list[dict], cs_week_trend: list[dict] = None)
           }});
         }})();
         </script>
-        <div style="font-size:11px;color:#666;margin:4px 0 10px">
-          7일 누적 {total_recv}건 &nbsp;|&nbsp; 어제({labels[-1]}) 인입 {last_recv}건 · 처리 {last_proc}건 · 처리율 {last_rate}%
-        </div>"""
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;padding-bottom:4px">
+          <div>
+            <p style="font-size:11px;font-weight:700;color:#5f6368;margin-bottom:6px">CS 접수/처리 현황</p>
+            <table style="width:100%;border-collapse:collapse;font-size:12px">
+              <thead>
+                <tr>
+                  <th style="background:#f1f3f4;padding:7px 8px;color:#5f6368;font-size:11px;font-weight:600;border-bottom:1.5px solid #e8eaed;text-align:center">일자</th>
+                  <th style="background:#f1f3f4;padding:7px 8px;color:#5f6368;font-size:11px;font-weight:600;border-bottom:1.5px solid #e8eaed;text-align:center">접수</th>
+                  <th style="background:#f1f3f4;padding:7px 8px;color:#5f6368;font-size:11px;font-weight:600;border-bottom:1.5px solid #e8eaed;text-align:center">처리</th>
+                  <th style="background:#f1f3f4;padding:7px 8px;color:#5f6368;font-size:11px;font-weight:600;border-bottom:1.5px solid #e8eaed;text-align:center">미처리</th>
+                  <th style="background:#f1f3f4;padding:7px 8px;color:#5f6368;font-size:11px;font-weight:600;border-bottom:1.5px solid #e8eaed;text-align:center">처리율</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="padding:7px 8px;border-bottom:1px solid #f0f2f5;text-align:center;font-size:11px">{yest_label}<br><span style="color:#9aa0a6;font-size:10px">(전일)</span></td>
+                  <td style="padding:7px 8px;border-bottom:1px solid #f0f2f5;text-align:center">{yest_recv}</td>
+                  <td style="padding:7px 8px;border-bottom:1px solid #f0f2f5;text-align:center">{yest_proc}</td>
+                  <td style="padding:7px 8px;border-bottom:1px solid #f0f2f5;text-align:center">{yest_miss}</td>
+                  <td style="padding:7px 8px;border-bottom:1px solid #f0f2f5;text-align:center">{yest_rate_v}%</td>
+                </tr>
+                <tr>
+                  <td style="padding:7px 8px;border-bottom:1px solid #f0f2f5;text-align:center;font-size:11px;font-weight:bold">{labels[-1]}<br><span style="color:#1a73e8;font-size:10px">(금일)</span></td>
+                  <td style="padding:7px 8px;border-bottom:1px solid #f0f2f5;text-align:center;font-weight:bold">{today_recv}</td>
+                  <td style="padding:7px 8px;border-bottom:1px solid #f0f2f5;text-align:center;font-weight:bold">{today_proc}</td>
+                  <td style="padding:7px 8px;border-bottom:1px solid #f0f2f5;text-align:center;font-weight:bold">{today_miss}</td>
+                  <td style="padding:7px 8px;border-bottom:1px solid #f0f2f5;text-align:center;font-weight:bold">{today_rate_v}%</td>
+                </tr>
+                <tr style="background:#f0f4ff">
+                  <td style="padding:7px 8px;text-align:center;font-weight:bold;color:#5f6368;font-size:11px">증감</td>
+                  <td style="padding:7px 8px;text-align:center">{_delta(today_recv - yest_recv)}</td>
+                  <td style="padding:7px 8px;text-align:center">{_delta(today_proc - yest_proc)}</td>
+                  <td style="padding:7px 8px;text-align:center">{_delta(today_miss - yest_miss)}</td>
+                  <td style="padding:7px 8px;text-align:center">{_delta(today_rate_v - yest_rate_v, '%')}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          {dnt_section_html}
+        </div>
+        {dnt_js}"""
 
-    # ── 당일 문의 상세 ──
+    # ── 당일 문의 상세 (기존 로직 유지) ──
     if not cs_inquiries:
         detail_html = "<p class='empty-s' style='color:#888;font-size:12px'>당일 DKR 문의 없음</p>"
     else:
@@ -513,14 +670,9 @@ def build_section_cs(cs_inquiries: list[dict], cs_week_trend: list[dict] = None)
     return trend_html + detail_html
 
 
-# ── 05 CS 동향 (04 공식 라운지 동향과 동일 양식) ──────────────
+# ── 05 CS 동향 ──────────────────────────────────────────────
 def build_section_cs_detail(cs_inquiries: list[dict]) -> str:
-    """
-    cs_inquiries schema (analyzed.json):
-    [{"category": "버그·장애", "count": 6, "pending": 2,
-      "representative": [{"title": "...", "status": "...", "date": "..."}]}, ...]
-    → 04 공식 라운지 동향과 동일한 테이블 (항목/내용/건수/비고)로 렌더링
-    """
+    # [FIX-8] 04번과 동일하게 개별 티켓을 각 행으로 분리 (rowspan 적용)
     STATUS_CLS = {
         "접수 완료": "cs-badge-recv",
         "접수완료":  "cs-badge-recv",
@@ -540,15 +692,26 @@ def build_section_cs_detail(cs_inquiries: list[dict]) -> str:
         count   = item.get("count", 0)
         pending = item.get("pending", 0)
         reps    = item.get("representative", [])
+        row_count = max(1, len(reps))
+        note    = f'<span class="cs-pending">미처리 {pending}건</span>' if pending > 0 else "처리 완료"
 
-        content = ""
-        for rep in reps:
-            title  = rep.get("title", "")
-            status = rep.get("status", "")
-            date   = rep.get("date", "")
+        if not reps:
+            rows += f"""
+        <tr>
+          <td class="cat-td">{cat}</td>
+          <td class="content-td" style="color:#9aa0a6;padding:10px 14px">데이터 없음</td>
+          <td class="ref-td">{count}건</td>
+          <td class="note-td">{note}</td>
+        </tr>"""
+            continue
+
+        for i_rep, rep in enumerate(reps):
+            title     = rep.get("title", "")
+            status    = rep.get("status", "")
+            date      = rep.get("date", "")
             badge_cls = STATUS_CLS.get(status, "cs-badge-etc")
-            date_s = f'<span class="cs-date">{date[5:]}</span>' if date else ""
-            content += (
+            date_s    = f'<span class="cs-date">{date[5:]}</span>' if date else ""
+            rep_html  = (
                 f'<div class="cs-det-row">'
                 f'<span class="cs-badge {badge_cls}">{status}</span>'
                 f'{date_s}'
@@ -556,13 +719,17 @@ def build_section_cs_detail(cs_inquiries: list[dict]) -> str:
                 f'</div>'
             )
 
-        note = f'<span class="cs-pending">미처리 {pending}건</span>' if pending > 0 else "처리 완료"
-        rows += f"""
+            # [FIX-8] 첫 행에만 cat-td / ref-td / note-td (rowspan)
+            cat_cell  = f'<td class="cat-td" rowspan="{row_count}">{cat}</td>'  if i_rep == 0 else ""
+            ref_cell  = f'<td class="ref-td" rowspan="{row_count}">{count}건</td>' if i_rep == 0 else ""
+            note_cell = f'<td class="note-td" rowspan="{row_count}">{note}</td>'    if i_rep == 0 else ""
+
+            rows += f"""
         <tr>
-          <td class="cat-td">{cat}</td>
-          <td class="content-td">{content}</td>
-          <td class="ref-td">{count}건</td>
-          <td class="note-td">{note}</td>
+          {cat_cell}
+          <td class="content-td">{rep_html}</td>
+          {ref_cell}
+          {note_cell}
         </tr>"""
 
     return f"""
@@ -596,6 +763,11 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
         end = datetime.strptime(date_str, "%Y-%m-%d")
         chart_dates = [(end - timedelta(days=i)).strftime("%Y-%m-%d") for i in range(6, -1, -1)]
 
+        # [FIX-9] 전일 analyzed.json 로드 → build_section_cs에 전달
+        prev_date_str  = (end - timedelta(days=1)).strftime("%Y-%m-%d")
+        prev_analyzed  = load_analyzed(prev_date_str) or {}
+        prev_cs_inqs   = prev_analyzed.get("cs_inquiries", [])
+
         chart_id = f"D{date_str.replace('-','')}"
         label    = f"{date_str} 일일 서비스 현황"
 
@@ -605,7 +777,11 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
             f'<span class="rpt-ts">조회: {datetime.now(KST).strftime("%Y-%m-%d %H:%M")}</span></div>'
             + sec("01", "주요 이슈",        build_section_issues(analyzed))
             + sec("02", "운영 지표",        build_section_chart(chart_dates, chart_id))
-            + sec("03", "1:1 문의 동향",    build_section_cs(analyzed.get("cs_inquiries", []), analyzed.get("cs_week_trend")))
+            + sec("03", "1:1 문의 동향",    build_section_cs(
+                analyzed.get("cs_inquiries", []),
+                analyzed.get("cs_week_trend"),
+                prev_cs_inquiries=prev_cs_inqs,   # [FIX-9]
+            ))
             + sec("04", "공식 라운지 동향", build_section_voc(
                 analyzed.get("voc_groups", []), raw_map,
                 pfx=f"D{date_str.replace('-','')}_"))
@@ -626,7 +802,10 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
             f'<span class="rpt-ts">집계기간: {wrange}</span></div>'
             + sec("01", "주간 주요 이슈",   build_section_issues(analyzed))
             + sec("02", "운영 지표",        build_section_chart(sorted_wd, chart_id))
-            + sec("03", "1:1 문의 동향",    build_section_cs(analyzed.get("cs_inquiries", []), analyzed.get("cs_week_trend")))
+            + sec("03", "1:1 문의 동향",    build_section_cs(
+                analyzed.get("cs_inquiries", []),
+                analyzed.get("cs_week_trend"),
+            ))
             + sec("04", "공식 라운지 동향", build_section_voc(
                 analyzed.get("voc_groups", []), raw_map,
                 pfx=f"W{date_str.replace('-','')}_"))
@@ -636,7 +815,7 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
 
 # ── HTML 전체 생성 ────────────────────────────────────────────
 def generate():
-    voc_dates = available_dates()
+    voc_dates = available_dates()   # [FIX-1] analyzed-only 날짜 포함
     all_d     = all_dates_union()
     now       = datetime.now(KST).strftime("%Y-%m-%d %H:%M KST")
     latest    = all_d[0] if all_d else ""
@@ -647,7 +826,7 @@ def generate():
     )
 
     panels_html = ""
-    for date_str in voc_dates:
+    for date_str in voc_dates:   # voc_dates now includes analyzed-only dates
         is_first = (date_str == latest)
         panels_html += f"""
         <div id="panel-{date_str}" class="date-panel" style="display:{'block' if is_first else 'none'}">
@@ -712,7 +891,7 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
            border-bottom:1px solid #e8eaed;margin-bottom:16px}}
 .mnav{{padding:8px 20px;border:none;border-bottom:2.5px solid transparent;
        background:none;cursor:pointer;font-size:12.5px;font-weight:700;
-       color:#5f6368;transition:all .15s}}
+       color:#5f6368;transition:all .15px}}
 .mnav.active{{color:#1a73e8;border-bottom-color:#1a73e8}}
 
 /* ── 지표 KPI 카드 ── */
@@ -862,7 +1041,7 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
 .cs-hint{{font-size:11px;color:#9aa0a6 !important}}
 .cs-content{{vertical-align:middle}}
 /* 05 CS 동향 배지 */
-.cs-det-row{{display:flex;align-items:center;gap:5px;padding:3px 0;font-size:12px;line-height:1.4}}
+.cs-det-row{{display:flex;align-items:center;gap:5px;padding:5px 10px;font-size:12px;line-height:1.4}}
 .cs-badge{{display:inline-block;padding:1px 6px;border-radius:10px;font-size:10.5px;font-weight:600;white-space:nowrap}}
 .cs-badge-recv{{background:#fff3e0;color:#e65100}}
 .cs-badge-proc{{background:#e3f2fd;color:#1565c0}}
@@ -972,11 +1151,13 @@ function switchSection(sec){{
 }}
 
 // ── 날짜 변경 ─────────────────────────────────────────────────
+// [FIX-2] 버그 수정: _date를 vocSwitchDate 호출 전에 갱신하면 기존 패널을 찾지 못함
+//          → vocSwitchDate 내부에서 _date 갱신하도록 순서 변경
 function onDateChange(d){{
-  _date=d;
   if(_section==='voc'){{
-    vocSwitchDate(d);
+    vocSwitchDate(d);   // vocSwitchDate 안에서 _date=d 처리
   }}else{{
+    _date=d;
     renderCurrentMetrics();
   }}
 }}
@@ -999,10 +1180,11 @@ function switchPeriod(p,btn){{
 }}
 
 // ── VOC 기존 로직 ──────────────────────────────────────────────
+// [FIX-2] _date 갱신을 이 함수 내부에서 처리 (onDateChange에서 중복 갱신 제거)
 function vocSwitchDate(d){{
-  var old=document.getElementById('panel-'+_date);
+  var old=document.getElementById('panel-'+_date);  // 기존 _date로 이전 패널 참조
   if(old)old.style.display='none';
-  _date=d;
+  _date=d;                                           // 이후 _date 갱신
   var np=document.getElementById('panel-'+d);
   if(np){{
     np.style.display='block';
@@ -1038,8 +1220,7 @@ function addDays(ds,n){{
 function prevDate(ds){{return addDays(ds,-1);}}
 function getWeekRange(ds){{
   var d=new Date(ds+'T00:00:00');
-  var dow=d.getDay(); // 0=Sun … 6=Sat
-  // Thu=4 기준. dow→days since Thu: (dow-4+7)%7
+  var dow=d.getDay();
   var sinceT=(dow-4+7)%7;
   var ws=addDays(ds,-sinceT);
   var we=addDays(ws,6);
@@ -1121,7 +1302,6 @@ function aggregateDates(start,end){{
       s.rev_pure +=m.rev_pure||0;
       s.dau+=m.dau||0; s.nu+=m.nu||0;
       s.pu+=m.pu||0;   s.npu+=m.npu||0;
-      // 플랫폼 누적
       var pl=m.platform||{{}};
       Object.keys(pl).forEach(function(k){{s.platform[k]=(s.platform[k]||0)+pl[k];}});
       s._days.push({{date:ds,dau:m.dau||0,pu:m.pu||0,npu:m.npu||0,
@@ -1129,14 +1309,12 @@ function aggregateDates(start,end){{
                      rev_total:m.rev_total||0,rev_pure:m.rev_pure||0}});
     }});
   }});
-  // 파생 지표
   ['old','hyper'].forEach(function(srv){{
     var s=r[srv];
     s.pur  = s.dau>0 ? s.pu/s.dau : 0;
     s.arpu = s.dau>0 ? Math.round(s.rev_total/s.dau) : 0;
     s.arppu= s.pu>0  ? Math.round(s.rev_total/s.pu)  : 0;
   }});
-  // 주/월 고유 유저 (WAU/MAU) → 주 시작일 데이터 참조
   var thuData=METRICS_DATA[start];
   if(thuData&&thuData.week&&thuData.week.week_start===start){{
     if(thuData.week.old) {{r.old.wau=thuData.week.old.wau;r.old.wnu=thuData.week.old.wnu;r.old.wpu=thuData.week.old.wpu;r.old.wnpu=thuData.week.old.wnpu;r.old.wpur=thuData.week.old.wpur;r.old.warpu=thuData.week.old.warpu;r.old.warppu=thuData.week.old.warppu;}}
@@ -1223,7 +1401,6 @@ function renderRevenue(dateStr,period){{
   var {{m,prev,chartDates,label}}=res;
   var isD=period==='D', isW=period==='W';
 
-  // KPI 키 선택
   var dKey=isD?'dau':isW?'wau':'mau';
   var nKey=isD?'nu':isW?'wnu':'mnu';
   var pKey=isD?'pu':isW?'wpu':'mpu';
@@ -1249,7 +1426,6 @@ function renderRevenue(dateStr,period){{
 
   var html='<div style="padding:10px 20px 4px"><span style="font-size:12px;color:#5f6368;font-weight:700">📅 '+label+'</span></div>';
 
-  // 대형 KPI 카드 (총매출 / 순수유저매출)
   html+='<div class="kpi-row">';
   html+='<div class="kpi-card"><div class="kpi-card-label">총 매출</div>';
   html+='<div class="kpi-card-value">'+fmtKRW(revT)+'원</div>';
@@ -1259,14 +1435,13 @@ function renderRevenue(dateStr,period){{
   html+='<div class="kpi-card-delta">'+fmtDelta(revP,prevRevP,true)+'</div></div>';
   html+='</div>';
 
-  // KPI Pills (DAU/NU/PU/NPU/PUR/ARPU/ARPPU)
   html+='<div class="kpi-pills">';
   var pills=[
     ['DAU', dau, prevDau, fmtNum, true],
     ['NU',  nu,  (po.nu||0)+(ph.nu||0), fmtNum, true],
     ['PU',  pu,  prevPu, fmtNum, true],
     ['NPU', npu, (po.npu||0)+(ph.npu||0), fmtNum, true],
-    ['PUR', pur, tot.pur||0, fmtPct, true],  // rough prev
+    ['PUR', pur, tot.pur||0, fmtPct, true],
     ['ARPU', arpu, (prevDau>0?Math.round(prevRevT/prevDau):0), fmtKRW, true],
     ['ARPPU',arppu,(prevPu>0?Math.round(prevRevT/prevPu):0),   fmtKRW, true],
   ];
@@ -1279,13 +1454,11 @@ function renderRevenue(dateStr,period){{
   }});
   html+='</div>';
 
-  // 매출 차트 (총매출 | 순수매출)
   html+='<div class="m-bar-pair">';
   html+='<div class="m-bar-box"><div class="m-chart-title">총 매출 추이</div><div class="m-chart-wrap"><canvas id="ch-rev-total"></canvas></div></div>';
   html+='<div class="m-bar-box"><div class="m-chart-title">순수 유저 매출 추이</div><div class="m-chart-wrap"><canvas id="ch-rev-pure"></canvas></div></div>';
   html+='</div>';
 
-  // 플랫폼 비중 파이
   html+='<div style="padding:0 20px 6px;font-size:12px;font-weight:700;color:#3c4043">플랫폼별 매출 비중</div>';
   html+='<div class="plat-row">';
   html+=buildPlatBox('구서버', o.platform||{{}});
@@ -1293,7 +1466,6 @@ function renderRevenue(dateStr,period){{
   html+=buildPlatBox('글로벌서버 (미오픈)', null);
   html+='</div>';
 
-  // 서버별 매출 테이블
   html+='<div style="padding:0 20px 16px">';
   html+='<div style="font-size:12px;font-weight:700;color:#3c4043;margin-bottom:8px">서버별 매출 집계</div>';
   html+='<table class="m-tbl"><thead><tr><th style="text-align:left">구분</th><th>구서버</th><th>하이퍼서버</th><th>글로벌서버</th><th>합계</th></tr></thead><tbody>';
@@ -1303,22 +1475,16 @@ function renderRevenue(dateStr,period){{
 
   el.innerHTML=html;
 
-  // 차트 렌더
   var labels=chartDates.map(function(d){{return d.slice(5);}});
-  var revTData=chartDates.map(function(d){{var x=METRICS_DATA[d];return x?((x.old?.rev_total||0)+(x.hyper?.rev_total||0)):0;}});
-  var revPData=chartDates.map(function(d){{var x=METRICS_DATA[d];return x?((x.old?.rev_pure||0)+(x.hyper?.rev_pure||0)):0;}});
-
   makeChart('ch-rev-total','bar',labels,[
     {{label:'구서버',   data:chartDates.map(function(d){{return METRICS_DATA[d]?.old?.rev_total||0;}}), backgroundColor:'rgba(26,115,232,.75)',stack:'s'}},
     {{label:'하이퍼서버',data:chartDates.map(function(d){{return METRICS_DATA[d]?.hyper?.rev_total||0;}}),backgroundColor:'rgba(52,168,83,.75)',stack:'s'}},
   ],{{plugins:{{legend:{{position:'top',labels:{{font:{{size:10}},boxWidth:10}}}},tooltip:{{mode:'index',intersect:false}}}},scales:{{x:{{stacked:true,ticks:{{font:{{size:10}}}},grid:{{display:false}}}},y:{{stacked:true,beginAtZero:true,ticks:{{font:{{size:10}},callback:function(v){{return v>=1e8?(v/1e8).toFixed(0)+'억':v>=1e4?(v/1e4).toFixed(0)+'만':v;}}}}}}}}}});
-
   makeChart('ch-rev-pure','bar',labels,[
     {{label:'구서버',    data:chartDates.map(function(d){{return METRICS_DATA[d]?.old?.rev_pure||0;}}),   backgroundColor:'rgba(26,115,232,.65)',stack:'s'}},
     {{label:'하이퍼서버',data:chartDates.map(function(d){{return METRICS_DATA[d]?.hyper?.rev_pure||0;}}), backgroundColor:'rgba(52,168,83,.65)', stack:'s'}},
   ],{{plugins:{{legend:{{position:'top',labels:{{font:{{size:10}},boxWidth:10}}}},tooltip:{{mode:'index',intersect:false}}}},scales:{{x:{{stacked:true,ticks:{{font:{{size:10}}}},grid:{{display:false}}}},y:{{stacked:true,beginAtZero:true,ticks:{{font:{{size:10}},callback:function(v){{return v>=1e8?(v/1e8).toFixed(0)+'억':v>=1e4?(v/1e4).toFixed(0)+'만':v;}}}}}}}}}});
 
-  // 파이 차트 렌더
   renderPieChart('pie-old',  o.platform||{{}});
   renderPieChart('pie-hyper',h.platform||{{}});
 }}
@@ -1358,22 +1524,17 @@ function renderPieChart(id,platform){{
 function renderPackages(dateStr,period){{
   var el=document.getElementById('m-content');
   var day=METRICS_DATA[dateStr];
-
-  // 전체기간 TOP10
   var todayOld   = day?.pkg_old   || [];
   var todayHyper = day?.pkg_hyper || [];
   var totalOld   = PKG_TOTALS.old   || [];
   var totalHyper = PKG_TOTALS.hyper || [];
-
   var label=period==='D'?dateStr:period==='W'?'주간':dateStr.slice(0,7)+' 월간';
-
   var html='<div style="padding:10px 20px 4px"><span style="font-size:12px;color:#5f6368;font-weight:700">📦 패키지 판매 현황 — '+label+'</span></div>';
   html+='<div class="pkg-cols">';
   html+=buildPkgCol('구서버',    totalOld,   todayOld);
   html+=buildPkgCol('하이퍼서버',totalHyper, todayHyper);
   html+=buildPkgCol('글로벌서버 (미오픈)', null, null);
   html+='</div>';
-
   el.innerHTML=html;
 }}
 function buildPkgCol(title,totalList,todayList){{
@@ -1411,8 +1572,6 @@ function renderUsers(dateStr,period){{
   var arppuKey=isD?'arppu':isW?'warppu':'marppu';
 
   var html='<div style="padding:10px 20px 4px"><span style="font-size:12px;color:#5f6368;font-weight:700">👤 유저 지표 — '+label+'</span></div>';
-
-  // 4개 라인 차트
   html+='<div class="m-chart-grid">';
   html+='<div class="m-chart-box"><div class="m-chart-title">DAU</div><div class="m-chart-wrap"><canvas id="ch-dau"></canvas></div></div>';
   html+='<div class="m-chart-box"><div class="m-chart-title">PU</div><div class="m-chart-wrap"><canvas id="ch-pu"></canvas></div></div>';
@@ -1420,7 +1579,6 @@ function renderUsers(dateStr,period){{
   html+='<div class="m-chart-box"><div class="m-chart-title">ARPPU</div><div class="m-chart-wrap"><canvas id="ch-arppu"></canvas></div></div>';
   html+='</div>';
 
-  // 서버별 지표 테이블
   function row(srvLabel, srv, na){{
     if(na) return '<tr><td>'+srvLabel+'</td><td colspan="7" class="m-global">미오픈</td></tr>';
     if(!srv) return '<tr><td>'+srvLabel+'</td><td colspan="7" class="m-na">-</td></tr>';
@@ -1447,7 +1605,6 @@ function renderUsers(dateStr,period){{
 
   el.innerHTML=html;
 
-  // 차트 렌더
   var labels=chartDates.map(function(d){{return d.slice(5);}});
   var chartCfg={{responsive:true,maintainAspectRatio:false,plugins:{{legend:{{position:'top',labels:{{font:{{size:10}},boxWidth:10}}}}}},scales:{{x:{{ticks:{{font:{{size:10}}}},grid:{{display:false}}}},y:{{beginAtZero:true,ticks:{{font:{{size:10}}}}}}}}}};
 
@@ -1480,7 +1637,7 @@ function renderCurrentMetrics(){{
 </html>"""
 
     OUTPUT.write_text(html, encoding="utf-8")
-    print(f"[DONE] 대시보드 v5.1 생성: {OUTPUT}")
+    print(f"[DONE] 대시보드 v5.2 생성: {OUTPUT}")
 
 
 if __name__ == "__main__":
