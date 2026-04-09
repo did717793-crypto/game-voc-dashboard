@@ -1,28 +1,26 @@
 {
   "date": "2026-04-07",
-  "major_issues": [
+  "major_issues": [],
+  "voc_groups": [
     {
-      "title": "4월 2일(목) 정기 점검 안내 (점검 완료)",
-      "summary": "4월 2일(목) 정기 점검 안내 (점검 완료)",
-      "board_name": "공지사항",
-      "board": "공지사항",
-      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431",
-      "feed_id": "7492431",
-      "date": "2026-04-01",
-      "count": 1
+      "category": "버그·오류",
+      "summary": "소서러 블레스 오브 엘리멘탈 십힘현상",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7511948",
+      "feed_ids": [
+        "7511948"
+      ]
     },
     {
-      "title": "4월 2일(목) 업데이트 내용 안내",
-      "summary": "4월 2일(목) 업데이트 내용 안내",
-      "board_name": "업데이트",
-      "board": "업데이트",
-      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433",
-      "feed_id": "7492433",
-      "date": "2026-04-01",
-      "count": 2
+      "category": "게임 관련",
+      "summary": "천안핵주먹 캐릭이 200에 팔린거면 ㅋㅋ 이제 캐릭을 누가사노?",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7513260",
+      "feed_ids": [
+        "7513260"
+      ]
     }
   ],
-  "voc_groups": [],
   "cs_inquiries": [],
   "cs_week_trend": [
     {

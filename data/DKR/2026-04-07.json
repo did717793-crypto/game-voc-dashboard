@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "date": "2026-04-07",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-04-07T00:00:00+09:00",
+    "window_end": "2026-04-07T23:59:59+09:00",
+    "crawled_at": "2026-04-09T23:19:55.934244+09:00",
+    "total_posts": 2,
+    "total_comments": 5,
+    "boards": {
+      "4": {
+        "name": "자유 게시판",
+        "count": 1
+      },
+      "7": {
+        "name": "버그 제보",
+        "count": 1
+      }
+    }
+  },
+  "official_posts": [],
+  "posts": [
+    {
+      "feed_id": "7513260",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "천안핵주먹 캐릭이 200에 팔린거면 ㅋㅋ 이제 캐릭을 누가사노?",
+      "body": "어줍잖게 신화 몇개있는캐릭들 100 언저리로 올리고잇던데ㅋㅋㅋㅋ 기다리다 던지는 캐릭사지 누가 어정쩡한거 사서 처맞고 댕기노 이제",
+      "author": "오늘만사는 만렙 2181",
+      "created_at": "2026-04-07T17:19:38+09:00",
+      "view_count": 244,
+      "comment_count": 2,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7513260",
+      "comments": [
+        {
+          "comment_id": "25730835",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "니가사람이냐",
+          "text": "워 내 148랩 부케도 신화 7개 인데 100이나 한다고??",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25740606",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "폭주하는 누나 7629",
+          "text": "네 다음 찡찡이",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7511948",
+      "board_id": 7,
+      "board_name": "버그 제보",
+      "title": "소서러 블레스 오브 엘리멘탈 십힘현상",
+      "body": "블레스 오브 엘리멘탈 쓰고 임페리얼 가드 같이쓰다보면  블레스 오브 엘리멘탈 스킬이 자꾸십혀요 영상보내도 조치안해주고 복붙만하고 조치좀 해줘요",
+      "author": "똥손 Lv1 4693",
+      "created_at": "2026-04-07T11:12:50+09:00",
+      "view_count": 132,
+      "comment_count": 3,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7511948",
+      "comments": [
+        {
+          "comment_id": "25712053",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "한숨 쉬는 언데드",
+          "text": "임페리얼 쿨감받은 상태에서 뮨쓰면 뮨면역 디버프 땜시 뮨씹히는게 맞음 ㅇㅇ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25712059",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "한숨 쉬는 언데드",
+          "text": "그냥 사용주기를 걸어놔요 40초로",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25730306",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "유투브시청자",
+          "text": "뮨은 40초 딜레이 있어요 뮨 쓰고 나서 위에 빨간 디버프 보이죠? 그거 끝나야 다음 뮨이 써집니다. 딜레이 40~41초 정도 주고 쓰면 됩니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    }
+  ]
+}

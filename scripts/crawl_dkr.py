@@ -193,7 +193,16 @@ def fetch_comments(feed_id: str, max_comments: int = 200) -> list[dict]:
     return comments
 
 
-def get_time_window(run_dt=None):
+def get_time_window(run_dt=None, target_date: str = None):
+    """시간 윈도우 계산.
+
+    target_date 지정 시: 해당 날짜 00:00:00 ~ 23:59:59 KST (전체 달력일)
+    미지정 시:           실행 시점 기준 어제 09:00 ~ 오늘 09:00 KST (기본 24h 윈도우)
+    """
+    if target_date:
+        dt = datetime.strptime(target_date, "%Y-%m-%d").replace(tzinfo=KST)
+        return dt.replace(hour=0, minute=0, second=0, microsecond=0), \
+               dt.replace(hour=23, minute=59, second=59, microsecond=0)
     if run_dt is None:
         run_dt = datetime.now(KST)
     today_9am = run_dt.replace(hour=9, minute=0, second=0, microsecond=0)
@@ -202,9 +211,12 @@ def get_time_window(run_dt=None):
 
 def run_crawl(date_label=None, dry_run=False):
     now_kst = datetime.now(KST)
-    window_start, window_end = get_time_window(now_kst)
     if date_label is None:
         date_label = (now_kst - timedelta(days=1)).strftime("%Y-%m-%d")
+    # date_label 지정 시 해당 날짜 전체, 미지정 시 어제 09:00~오늘 09:00
+    window_start, window_end = get_time_window(
+        run_dt=now_kst, target_date=date_label if date_label else None
+    )
 
     output_file = DATA_DIR / f"{date_label}.json"
     print(f"[INFO] DKR VOC 크롤링 시작: {date_label}")
@@ -234,6 +246,24 @@ def run_crawl(date_label=None, dry_run=False):
         user_posts.extend(posts)
 
     all_posts = official_posts + user_posts
+
+    # ── 디버그 요약 ──────────────────────────────────────────────
+    board_summary = {}
+    for p in all_posts:
+        bid   = p["board_id"]
+        bname = p["board_name"]
+        board_summary.setdefault(bid, {"name": bname, "count": 0})
+        board_summary[bid]["count"] += 1
+
+    print(f"\n[DEBUG] 수집 결과 요약")
+    print(f"  수집 총 게시글: {len(all_posts)}건")
+    print(f"  board_id별 개수:")
+    for bid, info in sorted(board_summary.items()):
+        print(f"    board_id={bid} [{info['name']}]: {info['count']}건")
+    print(f"  날짜 필터 범위: {window_start.strftime('%Y-%m-%d %H:%M')} ~ {window_end.strftime('%Y-%m-%d %H:%M')} KST")
+    print(f"  저장 날짜 라벨: {date_label}")
+    # ─────────────────────────────────────────────────────────────
+
     result = {
         "meta": {
             "date": date_label,
@@ -244,8 +274,8 @@ def run_crawl(date_label=None, dry_run=False):
             "total_posts": len(all_posts),
             "total_comments": sum(len(p.get("comments",[])) for p in all_posts),
             "boards": {
-                str(bid): {"name": bname, "count": sum(1 for p in all_posts if p["board_id"]==bid)}
-                for bid, bname in {**OFFICIAL_BOARDS, **VOC_BOARDS}.items()
+                str(bid): {"name": info["name"], "count": info["count"]}
+                for bid, info in board_summary.items()
             },
         },
         "official_posts": official_posts,
@@ -255,9 +285,8 @@ def run_crawl(date_label=None, dry_run=False):
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
-    m = result["meta"]
     print(f"\n[DONE] 저장: {output_file}")
-    print(f"  공식 {len(official_posts)}건 / 유저 {len(user_posts)}건 / 댓글 {m['total_comments']}건")
+    print(f"  공식 {len(official_posts)}건 / 유저 {len(user_posts)}건 / 댓글 {sum(len(p.get('comments',[])) for p in all_posts)}건")
     return output_file
 
 
