@@ -4,26 +4,17 @@
   "voc_groups": [
     {
       "category": "게임 관련",
-      "summary": "루멘탑 중심 콘텐츠 편중 불만 — 1년 내내 루멘탑만 반복된다는 비판",
-      "count": 1,
-      "representative_url": "",
-      "feed_ids": []
-    },
-    {
-      "category": "기타",
-      "summary": "과금 유저 이탈 우려 — 서비스 방향에 실망한 과금 유저 불만 표출",
-      "count": 1,
-      "representative_url": "",
-      "feed_ids": []
-    },
-    {
-      "category": "게임 관련",
-      "summary": "인터서버 그룹 재편 후 SG1·SG2·SG3 서버 배치 변경 내용 문의",
-      "count": 1,
-      "representative_url": "",
-      "feed_ids": []
+      "summary": "돈쓴사람들우짜냐",
+      "count": 3,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7500716",
+      "feed_ids": [
+        "7501810",
+        "7500716",
+        "7499792"
+      ]
     }
   ],
+  "cs_inquiries": [],
   "cs_week_trend": [
     {
       "date": "2026-03-29",
