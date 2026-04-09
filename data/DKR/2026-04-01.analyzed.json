@@ -6,32 +6,28 @@
       "board": "공지사항",
       "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431",
       "feed_id": "7492431",
-      "date": "2026-04-01"
-    },
-    {
-      "title": "4월 2일(목) 하이퍼 서버 업데이트 안내",
-      "board": "업데이트",
-      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492435",
-      "feed_id": "7492435",
-      "date": "2026-04-01"
+      "date": "2026-04-01",
+      "count": 1
     },
     {
       "title": "4월 2일(목) 업데이트 내용 안내",
       "board": "업데이트",
       "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433",
       "feed_id": "7492433",
-      "date": "2026-04-01"
+      "date": "2026-04-01",
+      "count": 2
     }
   ],
   "voc_groups": [
     {
       "category": "건의·요청",
       "summary": "32서버 상황",
-      "count": 4,
+      "count": 5,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490286",
       "feed_ids": [
         "7490312",
         "7490286",
+        "7490256",
         "7492423",
         "7490069"
       ]
@@ -39,7 +35,7 @@
     {
       "category": "게임 관련",
       "summary": "32서버 상황 마지막",
-      "count": 10,
+      "count": 9,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850",
       "feed_ids": [
         "7493307",
@@ -50,7 +46,6 @@
         "7491783",
         "7490333",
         "7490284",
-        "7490256",
         "7490014"
       ]
     },

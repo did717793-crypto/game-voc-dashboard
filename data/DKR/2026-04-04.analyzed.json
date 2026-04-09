@@ -4,13 +4,21 @@
   "voc_groups": [
     {
       "category": "게임 관련",
-      "summary": "돈쓴사람들우짜냐",
-      "count": 3,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7500716",
+      "summary": "진짜 1년 내내 루멘만 나올거라고 예상을 못했다.",
+      "count": 2,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7501810",
       "feed_ids": [
         "7501810",
-        "7500716",
         "7499792"
+      ]
+    },
+    {
+      "category": "기타",
+      "summary": "돈쓴사람들우짜냐",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7500716",
+      "feed_ids": [
+        "7500716"
       ]
     }
   ],

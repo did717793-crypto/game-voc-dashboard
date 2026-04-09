@@ -189,21 +189,61 @@ def main():
     print(f"STEP 2: VOC 분석 ({len(need_analyze)}건 처리 예정)")
     print(f"{'─'*55}")
 
+    # analyze_voc.analyze() 직접 호출 → 정확한 상태 추적
+    sys.path.insert(0, str(SCRIPTS))
+    try:
+        from analyze_voc import analyze as _analyze
+    except ImportError as e:
+        print(f"[ERR] analyze_voc 임포트 실패: {e}")
+        _analyze = None
+
+    # 전체 날짜 상태 추적 테이블 {date: "SUCCESS"|"SKIP"|"FAIL:<reason>"}
+    date_status: dict[str, str] = {}
+
+    # 이미 완료된 날짜 (need_analyze에 없는 analyzed-complete 날짜)
+    for d in all_dates:
+        if has_analyzed(d) and d not in need_analyze:
+            date_status[d] = "SKIP"
+
     need_analyze_sorted = sorted(set(need_analyze))
 
     if not need_analyze_sorted:
         print("  → 분석 대상 없음 (모두 처리 완료)")
-    else:
+    elif _analyze is None:
+        print("  [ERR] analyze_voc 로드 실패 → subprocess fallback")
         for d in need_analyze_sorted:
-            if not has_raw(d):
-                print(f"  [SKIP] {d} raw 없음")
-                continue
             ok = run_script("analyze_voc.py", [d], label=f"ANALYZE {d}")
+            status = "SUCCESS" if ok else "FAIL:subprocess"
+            date_status[d] = status
+            print(f"  {status}: {d}")
             if ok:
                 analyze_ok.append(d)
             else:
                 analyze_fail.append(d)
-                print(f"  [FAIL] {d} 분석 실패 → 다음 날짜 진행")
+    else:
+        for d in need_analyze_sorted:
+            if not has_raw(d):
+                date_status[d] = "FAIL:no_raw"
+                print(f"  FAIL:no_raw : {d}")
+                analyze_fail.append(d)
+                continue
+            try:
+                result = _analyze(d)          # "ok" | "skip" | "fail_*"
+                if result == "ok":
+                    date_status[d] = "SUCCESS"
+                    analyze_ok.append(d)
+                    print(f"  SUCCESS     : {d}")
+                elif result == "skip":
+                    date_status[d] = "SKIP"
+                    print(f"  SKIP        : {d}  (analyzed.json 존재)")
+                else:
+                    date_status[d] = f"FAIL:{result}"
+                    analyze_fail.append(d)
+                    print(f"  FAIL:{result:<10}: {d}")
+            except Exception as exc:
+                date_status[d] = f"FAIL:exception"
+                analyze_fail.append(d)
+                print(f"  FAIL:exception : {d}  ({exc})")
 
     # ── STEP 3: CS 데이터 (어제 기준) ─────────────────────────────────────
     print(f"\n{'─'*55}")
@@ -224,18 +264,28 @@ def main():
     print("STEP 5: GitHub push")
     print(f"{'─'*55}")
     push_msg = f"VOC 자동 업데이트: {today} KST"
-    git_push(push_msg)
+    push_ok = git_push(push_msg)
 
     # ── 최종 요약 ─────────────────────────────────────────────────────────
+    total_ok   = len(analyze_ok)
+    total_skip = sum(1 for s in date_status.values() if s == "SKIP")
+    total_fail = len(analyze_fail)
+
     print(f"\n{'#'*55}")
-    print(f"  실행 결과 요약")
+    print(f"  ▶ 실행 결과 요약  ({today} KST)")
     print(f"{'#'*55}")
-    print(f"  크롤링  성공: {len(crawl_ok)}건  실패: {len(crawl_fail)}건")
-    print(f"  분석    성공: {len(analyze_ok)}건  실패: {len(analyze_fail)}건")
-    if crawl_fail:
-        print(f"  [크롤 실패] {crawl_fail}")
+    print(f"  크롤링  : SUCCESS={len(crawl_ok)}  FAIL={len(crawl_fail)}")
+    print(f"  분석    : SUCCESS={total_ok}  SKIP={total_skip}  FAIL={total_fail}")
+    print(f"  대시보드: {'SUCCESS' if dash_ok else 'FAIL'}")
+    print(f"  Push    : {'SUCCESS' if push_ok else 'FAIL/SKIP'}")
+    print(f"{'─'*55}")
+    # 날짜별 상세 (SUCCESS/FAIL만 출력, SKIP은 생략)
+    for d in sorted(date_status):
+        st = date_status[d]
+        if st != "SKIP":
+            print(f"  {st:<20} {d}")
     if analyze_fail:
-        print(f"  [분석 실패] {analyze_fail}")
+        print(f"\n  ※ 분석 실패 날짜: {analyze_fail}")
     print(f"{'#'*55}\n")
 
 
