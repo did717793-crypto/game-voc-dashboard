@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-analyze_voc.py — DKR 커뮤니티 VOC 규칙 기반 분석기 v4.0
+analyze_voc.py — DKR 커뮤니티 VOC 규칙 기반 분석기 v5.0
 ────────────────────────────────────────────────────────
 변경 이력:
+  v5.0  summarize_lounge_title + (category,summary) 그룹핑 + build_insights 추가
   v4.0  분류 정확도 개선 + 중복/노이즈 제거 + major_issues 품질 개선
   v3.0  LLM 제거, 규칙 기반 단독 확정
   v2.0  LLM 기반 (폐기)
@@ -114,6 +115,81 @@ NOISE_EXCLUDE: bool = False
 
 # 노이즈 판단 정규식
 _NOISE_PATTERN = re.compile(r"^[ㄱ-ㅎㅏ-ㅣ?!.…~\s]+$")
+
+
+# ════════════════════════════════════════════════════════════════════════════
+#  ▶ 요약 변환 상수 — summarize_lounge_title 전용
+# ════════════════════════════════════════════════════════════════════════════
+
+# 주제 키워드
+_TOPIC_SERVER   = ["서버", "섭", "구섭", "하이퍼섭", "서버이전", "섭이전"]
+_TOPIC_TRANSFER = ["이전권", "이전 권"]
+_TOPIC_MERGE    = ["합쳐", "통합", "서버합", "섭합"]
+_TOPIC_TRADE    = ["팔", "팔린", "시세", "얼마", "가격", "거래", "사노"]
+_TOPIC_ACCESS   = ["접속", "로그인", "팅", "튕", "렉", "로딩", "끊김"]
+_TOPIC_SHUTDOWN = ["섭종", "폐겜", "접는다", "서비스종료", "서비스 종료", "폐서비스"]
+
+# 버그 suffix 패턴 (앞 단어 → 스킬명 추출용)
+_BUG_SUFFIXES   = ["오류", "버그", "에러", "미적용", "안됨", "현상", "십힘", "먹통"]
+
+
+def _extract_skill_name(title: str) -> str | None:
+    """버그 suffix 앞 단어(들) → 스킬/콘텐츠명 추출.
+
+    예) '십힘 스킬 버그' → '십힘 스킬'
+        '대항마 오류' → '대항마'
+    """
+    for suf in _BUG_SUFFIXES:
+        idx = title.find(suf)
+        if idx >= 2:                        # suffix 앞에 최소 2글자
+            candidate = title[:idx].strip()
+            words = candidate.split()
+            if 1 <= len(words) <= 6:
+                skill = " ".join(words[-4:])  # 마지막 4단어 이내
+                if len(skill) >= 2:
+                    return skill
+    return None
+
+
+def summarize_lounge_title(title: str, category: str = "") -> str:
+    """유저 원문 제목 → 보고용 요약 문장 (규칙 기반, LLM 없음).
+
+    category 별 우선 룰 → 공통 주제 룰 → 기본값 순으로 매칭.
+    """
+    t = title.lower()
+
+    if category == "버그·오류":
+        if any(kw in t for kw in _TOPIC_ACCESS):
+            return "게임 접속 / 로그인 장애 보고"
+        skill = _extract_skill_name(title)
+        if skill:
+            return f"{skill} 관련 오류 보고"
+        return "게임 내 오류 현상 보고"
+
+    if category == "건의·요청":
+        if any(kw in t for kw in _TOPIC_TRANSFER):
+            return "서버 이전 아이템 출시 건의"
+        if any(kw in t for kw in _TOPIC_MERGE):
+            return "서버 통합 건의"
+        if any(kw in t for kw in _TOPIC_SERVER):
+            return "서버 운영 관련 건의"
+        return "게임 개선 의견 제출"
+
+    if category == "기타":
+        if any(kw in t for kw in _TOPIC_SHUTDOWN):
+            return "서비스 종료 우려 / 게임 비판"
+        return "게임·운영 불만 의견"
+
+    # 게임 관련 (default)
+    if any(kw in t for kw in _TOPIC_SERVER):
+        return "서버 운영 관련 의견"
+    if any(kw in t for kw in _TOPIC_TRADE):
+        if any(kw in t for kw in ["떨어", "하락", "왜", "왜이렇게"]):
+            return "캐릭터·아이템 가치 하락 우려"
+        return "게임 내 거래 / 시세 문의"
+    if any(kw in t for kw in _TOPIC_ACCESS):
+        return "게임 접속 관련 문의"
+    return "게임 관련 유저 의견"
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -236,14 +312,15 @@ def build_major_issues(official_posts: list, date_label: str = "") -> list:
 
 
 def build_voc_groups(user_posts: list) -> list:
-    """유저 포스트 → 카테고리별 그룹핑 → voc_groups
+    """유저 포스트 → (category, summary) 기준 그룹핑 → voc_groups
 
     처리 순서:
       1. feed_id 기준 중복 제거
       2. 노이즈 필터 (FILTER_NOISE=True 시)
-      3. 카테고리 분류
-      4. 카테고리 내 동일 title 중복 통합 (count 정확도)
+      3. 카테고리 분류 + summarize_lounge_title 요약
+      4. (category, summary) 쌍으로 그룹핑 → count 집계
       5. 대표글 선정 (engagement 가중치: 댓글×2 + 좋아요)
+      6. 카테고리 내 count DESC 정렬
     """
     # 1. feed_id 중복 제거
     posts = dedup_by_feed_id(user_posts)
@@ -253,57 +330,51 @@ def build_voc_groups(user_posts: list) -> list:
         noise_posts = [p for p in posts if is_noise(p)]
         clean_posts = [p for p in posts if not is_noise(p)]
         if NOISE_EXCLUDE:
-            posts = clean_posts          # 완전 제외
+            posts = clean_posts
         else:
-            # 노이즈는 "기타"로 분류 (count에는 포함)
             posts = clean_posts
             for p in noise_posts:
                 p["_forced_cat"] = "기타"
             posts = posts + noise_posts
-    # FILTER_NOISE=False이면 그대로 진행
 
-    # 3. 카테고리 분류
-    groups: dict[str, list] = defaultdict(list)
+    # 3. 분류 + 요약 레이블 부여
+    classified: list[tuple[str, str, dict]] = []  # (cat, summary, post)
     for p in posts:
         cat = p.pop("_forced_cat", None) or classify_post(p)
-        groups[cat].append(p)
+        summ = summarize_lounge_title(p.get("title", ""), cat)
+        classified.append((cat, summ, p))
 
-    # 4. 카테고리별 그룹 생성 (동일 title 중복 통합)
+    # 4. (category, summary) 그룹핑
+    group_map: dict[tuple, list] = defaultdict(list)
+    for cat, summ, p in classified:
+        group_map[(cat, summ)].append(p)
+
+    # 5. 결과 생성: 카테고리 순서 유지, 동일 카테고리 내 count DESC
     result = []
     for cat in CATEGORY_ORDER:
-        cat_posts = groups.get(cat, [])
-        if not cat_posts:
+        # 해당 카테고리의 모든 (cat, summ) 쌍 추출
+        cat_groups = [(k, v) for k, v in group_map.items() if k[0] == cat]
+        if not cat_groups:
             continue
 
-        # 동일 title(정규화) → 첫 번째 게시글 기준 대표 URL 유지
-        title_first: dict[str, dict] = {}      # norm_title → 최초 포스트
-        title_all:   dict[str, list] = defaultdict(list)
+        # count 내림차순 정렬
+        cat_groups.sort(key=lambda kv: len(kv[1]), reverse=True)
 
-        def _norm(t: str) -> str:
-            return re.sub(r"\s+", " ", (t or "").strip().lower())
+        for (c, summ), group_posts in cat_groups:
+            # 대표글: engagement 가중치 최고
+            top = max(
+                group_posts,
+                key=lambda p: p.get("comment_count", 0) * 2 + p.get("like_count", 0)
+            )
+            all_fids = [str(p.get("feed_id", "")) for p in group_posts]
 
-        for p in cat_posts:
-            nt = _norm(p.get("title", ""))
-            if nt not in title_first:
-                title_first[nt] = p
-            title_all[nt].append(p)
-
-        # 5. 대표글: 모든 포스트 중 engagement 최고 (title 묶음 무관)
-        top = max(
-            cat_posts,
-            key=lambda p: p.get("comment_count", 0) * 2 + p.get("like_count", 0)
-        )
-
-        # feed_ids: 중복 없이 전부 포함
-        all_fids = [str(p.get("feed_id", "")) for p in cat_posts]
-
-        result.append({
-            "category":           cat,
-            "summary":            (top.get("title") or "")[:80],
-            "count":              len(cat_posts),
-            "representative_url": top.get("url", ""),
-            "feed_ids":           all_fids,
-        })
+            result.append({
+                "category":           cat,
+                "summary":            summ,
+                "count":              len(group_posts),
+                "representative_url": top.get("url", ""),
+                "feed_ids":           all_fids,
+            })
 
     return result
 
@@ -319,6 +390,88 @@ def build_cs_week_trend(target_date: str) -> list:
         }
         for i in range(6, -1, -1)
     ]
+
+
+def build_insights(date_label: str, voc_groups: list, user_posts: list) -> dict:
+    """VOC 인사이트: top_issues, trend(전일 대비), trending_keywords
+
+    - top_issues: count 상위 3개 그룹 요약
+    - trend: 전일 analyzed.json과 카테고리별 count 비교
+    - trending_keywords: 당일 제목 단어 빈도 (2글자 이상, 상위 10개)
+    """
+    # ── top_issues: count 상위 3 ──────────────────────────────────
+    top_issues = []
+    sorted_groups = sorted(voc_groups, key=lambda g: g["count"], reverse=True)
+    for g in sorted_groups[:3]:
+        top_issues.append({
+            "category": g["category"],
+            "summary":  g["summary"],
+            "count":    g["count"],
+            "url":      g.get("representative_url", ""),
+        })
+
+    # ── trend: 전일 비교 ──────────────────────────────────────────
+    prev_date = (
+        datetime.strptime(date_label, "%Y-%m-%d") - timedelta(days=1)
+    ).strftime("%Y-%m-%d")
+    prev_path = DATA_DIR / f"{prev_date}.analyzed.json"
+
+    curr_cat_count: dict[str, int] = defaultdict(int)
+    for g in voc_groups:
+        curr_cat_count[g["category"]] += g["count"]
+
+    trend: dict[str, dict] = {}
+    if prev_path.exists():
+        try:
+            with open(prev_path, encoding="utf-8") as f:
+                prev_data = json.load(f)
+            prev_cat_count: dict[str, int] = defaultdict(int)
+            for g in prev_data.get("voc_groups", []):
+                prev_cat_count[g["category"]] += g["count"]
+
+            all_cats = set(list(curr_cat_count.keys()) + list(prev_cat_count.keys()))
+            for cat in all_cats:
+                curr_n = curr_cat_count.get(cat, 0)
+                prev_n = prev_cat_count.get(cat, 0)
+                trend[cat] = {
+                    "current":  curr_n,
+                    "previous": prev_n,
+                    "delta":    curr_n - prev_n,
+                }
+        except Exception:
+            pass
+
+    # ── trending_keywords: 제목 단어 빈도 ────────────────────────
+    # 불용어
+    STOPWORDS = {
+        "이", "그", "저", "이게", "저게", "그게", "있어", "있는", "없는",
+        "없어", "하는", "하고", "하면", "해서", "해줘", "되는", "되어",
+        "인데", "인지", "것같", "것 같", "같은", "같은데", "같아", "같아요",
+        "에서", "으로", "로는", "이랑", "이나", "하나", "이다", "임", "게",
+        "의", "가", "을", "를", "은", "는", "도", "랑", "와", "과",
+        "뭔가", "왜", "어디", "어떻게", "이렇게", "언제", "진짜", "정말",
+        "좀", "또", "잘", "다", "더", "게임", "dk", "디케이", "리본",
+    }
+
+    word_freq: dict[str, int] = defaultdict(int)
+    for p in user_posts:
+        title = p.get("title", "")
+        # 한글/영어 단어 추출 (2글자 이상)
+        words = re.findall(r"[가-힣a-zA-Z]{2,}", title)
+        for w in words:
+            wl = w.lower()
+            if wl not in STOPWORDS and len(wl) >= 2:
+                word_freq[wl] += 1
+
+    trending = sorted(word_freq.items(), key=lambda x: x[1], reverse=True)[:10]
+    trending_keywords = [{"word": w, "count": c} for w, c in trending if c >= 2]
+
+    return {
+        "top_issues":         top_issues,
+        "trend":              trend,
+        "trending_keywords":  trending_keywords,
+        "prev_date":          prev_date,
+    }
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -352,6 +505,7 @@ def analyze(date_label: str, force: bool = False) -> str:
     major_issues  = build_major_issues(official_posts, date_label=date_label)
     voc_groups    = build_voc_groups(user_posts)
     cs_week_trend = build_cs_week_trend(date_label)
+    insights      = build_insights(date_label, voc_groups, user_posts)
 
     analyzed = {
         "date":          date_label,
@@ -359,6 +513,7 @@ def analyze(date_label: str, force: bool = False) -> str:
         "voc_groups":    voc_groups,
         "cs_inquiries":  [],
         "cs_week_trend": cs_week_trend,
+        "insights":      insights,
     }
 
     try:
@@ -376,6 +531,9 @@ def analyze(date_label: str, force: bool = False) -> str:
     )
     for g in voc_groups:
         print(f"       [{g['category']}] {g['count']}건  {g['summary'][:45]}")
+    if insights.get("trending_keywords"):
+        kws = ", ".join(k["word"] for k in insights["trending_keywords"][:5])
+        print(f"       trending: {kws}")
     return "ok"
 
 

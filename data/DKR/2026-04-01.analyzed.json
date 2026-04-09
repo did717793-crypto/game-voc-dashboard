@@ -25,41 +25,81 @@
   "voc_groups": [
     {
       "category": "건의·요청",
-      "summary": "32서버 상황",
-      "count": 5,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490286",
+      "summary": "게임 개선 의견 제출",
+      "count": 3,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423",
       "feed_ids": [
         "7490312",
-        "7490286",
-        "7490256",
         "7492423",
         "7490069"
       ]
     },
     {
+      "category": "건의·요청",
+      "summary": "서버 운영 관련 건의",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490286",
+      "feed_ids": [
+        "7490286"
+      ]
+    },
+    {
+      "category": "건의·요청",
+      "summary": "서버 이전 아이템 출시 건의",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490256",
+      "feed_ids": [
+        "7490256"
+      ]
+    },
+    {
       "category": "게임 관련",
-      "summary": "32서버 상황 마지막",
-      "count": 9,
+      "summary": "서버 운영 관련 의견",
+      "count": 5,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850",
       "feed_ids": [
-        "7493307",
         "7492521",
         "7492460",
         "7492345",
         "7491850",
-        "7491783",
-        "7490333",
-        "7490284",
         "7490014"
       ]
     },
     {
+      "category": "게임 관련",
+      "summary": "게임 관련 유저 의견",
+      "count": 3,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307",
+      "feed_ids": [
+        "7493307",
+        "7491783",
+        "7490284"
+      ]
+    },
+    {
+      "category": "게임 관련",
+      "summary": "게임 내 거래 / 시세 문의",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490333",
+      "feed_ids": [
+        "7490333"
+      ]
+    },
+    {
       "category": "기타",
-      "summary": "앤트런스 다시는 안한다 ㅅㄱ",
-      "count": 2,
+      "summary": "게임·운영 불만 의견",
+      "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7494737",
       "feed_ids": [
-        "7494737",
+        "7494737"
+      ]
+    },
+    {
+      "category": "기타",
+      "summary": "서비스 종료 우려 / 게임 비판",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784",
+      "feed_ids": [
         "7491784"
       ]
     }
@@ -101,5 +141,47 @@
       "received": 0,
       "processed": 0
     }
-  ]
+  ],
+  "insights": {
+    "top_issues": [
+      {
+        "category": "게임 관련",
+        "summary": "서버 운영 관련 의견",
+        "count": 5,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850"
+      },
+      {
+        "category": "건의·요청",
+        "summary": "게임 개선 의견 제출",
+        "count": 3,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423"
+      },
+      {
+        "category": "게임 관련",
+        "summary": "게임 관련 유저 의견",
+        "count": 3,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307"
+      }
+    ],
+    "trend": {},
+    "trending_keywords": [
+      {
+        "word": "섭이전",
+        "count": 2
+      },
+      {
+        "word": "서버",
+        "count": 2
+      },
+      {
+        "word": "상황",
+        "count": 2
+      },
+      {
+        "word": "이전권",
+        "count": 2
+      }
+    ],
+    "prev_date": "2026-03-31"
+  }
 }

@@ -1,27 +1,6 @@
 {
   "date": "2026-04-05",
-  "major_issues": [
-    {
-      "title": "4월 2일(목) 정기 점검 안내 (점검 완료)",
-      "summary": "4월 2일(목) 정기 점검 안내 (점검 완료)",
-      "board_name": "공지사항",
-      "board": "공지사항",
-      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431",
-      "feed_id": "7492431",
-      "date": "2026-04-01",
-      "count": 1
-    },
-    {
-      "title": "4월 2일(목) 업데이트 내용 안내",
-      "summary": "4월 2일(목) 업데이트 내용 안내",
-      "board_name": "업데이트",
-      "board": "업데이트",
-      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433",
-      "feed_id": "7492433",
-      "date": "2026-04-01",
-      "count": 2
-    }
-  ],
+  "major_issues": [],
   "voc_groups": [],
   "cs_inquiries": [],
   "cs_week_trend": [
@@ -60,5 +39,22 @@
       "received": 0,
       "processed": 0
     }
-  ]
+  ],
+  "insights": {
+    "top_issues": [],
+    "trend": {
+      "기타": {
+        "current": 0,
+        "previous": 1,
+        "delta": -1
+      },
+      "게임 관련": {
+        "current": 0,
+        "previous": 2,
+        "delta": -2
+      }
+    },
+    "trending_keywords": [],
+    "prev_date": "2026-04-04"
+  }
 }

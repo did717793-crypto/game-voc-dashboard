@@ -113,6 +113,82 @@ def build_metrics_js_data() -> str:
     )
 
 
+# ── 00 VOC 인사이트 ───────────────────────────────────────────
+def build_section_insights(insights: dict) -> str:
+    if not insights:
+        return "<p class='empty-s'>인사이트 데이터 없음</p>"
+
+    top_issues = insights.get("top_issues", [])
+    trend      = insights.get("trend", {})
+    keywords   = insights.get("trending_keywords", [])
+    prev_date  = insights.get("prev_date", "")
+
+    parts = []
+
+    # ── TOP 이슈 ──
+    if top_issues:
+        rows = ""
+        for i, iss in enumerate(top_issues, 1):
+            cat  = iss.get("category", "")
+            summ = iss.get("summary", "")
+            cnt  = iss.get("count", 1)
+            url  = iss.get("url", "#")
+            cls_map = {"버그·오류": "tg-bug", "건의·요청": "tg-sug",
+                       "게임 관련": "tg-game", "기타": "tg-etc"}
+            cls = cls_map.get(cat, "tg-etc")
+            rows += (
+                f'<tr><td style="width:28px;text-align:center;font-weight:700;color:#888">#{i}</td>'
+                f'<td><span class="tg {cls}">{cat}</span>'
+                f' <a href="{url}" target="_blank" class="iss-link">{summ}</a></td>'
+                f'<td style="text-align:right;white-space:nowrap;color:#5f6368">{cnt}건</td></tr>'
+            )
+        parts.append(
+            f'<p class="ins-label">📌 TOP VOC</p>'
+            f'<table class="ins-tbl">{rows}</table>'
+        )
+
+    # ── 전일 대비 트렌드 ──
+    if trend:
+        cat_order = ["버그·오류", "건의·요청", "게임 관련", "기타"]
+        rows = ""
+        for cat in cat_order:
+            info = trend.get(cat)
+            if not info:
+                continue
+            curr  = info["current"]
+            delta = info["delta"]
+            if delta > 0:
+                arrow = f'<span style="color:#c0392b">▲ {delta}</span>'
+            elif delta < 0:
+                arrow = f'<span style="color:#1e8449">▼ {abs(delta)}</span>'
+            else:
+                arrow = '<span style="color:#888">─</span>'
+            rows += (
+                f'<tr><td>{cat}</td>'
+                f'<td style="text-align:right">{curr}건</td>'
+                f'<td style="text-align:right">{arrow}</td></tr>'
+            )
+        if rows:
+            prev_lbl = f" (전일: {prev_date})" if prev_date else ""
+            parts.append(
+                f'<p class="ins-label">📊 전일 대비{prev_lbl}</p>'
+                f'<table class="ins-tbl">{rows}</table>'
+            )
+
+    # ── 트렌드 키워드 ──
+    if keywords:
+        tags = "".join(
+            f'<span class="kw-tag">{kw["word"]} <em>{kw["count"]}</em></span>'
+            for kw in keywords
+        )
+        parts.append(f'<p class="ins-label">🔑 주목 키워드</p><div class="kw-wrap">{tags}</div>')
+
+    if not parts:
+        return "<p class='empty-s'>인사이트 데이터 없음</p>"
+
+    return f'<div class="insights-wrap">{"".join(parts)}</div>'
+
+
 # ── 01 주요 이슈 ──────────────────────────────────────────────
 def build_section_issues(analyzed: dict) -> str:
     items = []
@@ -131,15 +207,14 @@ def build_section_issues(analyzed: dict) -> str:
         cnt  = voc.get("count", 1)
         summ = voc.get("summary", "")
         url  = voc.get("representative_url", "#")
-        if cnt >= 2 or cat == "버그·오류":
-            cnt_s = f' <span class="cnt-s">({cnt}건)</span>' if cnt > 1 else ""
-            cls_map = {"버그·오류": "tg-bug", "건의·요청": "tg-sug",
-                       "게임 관련": "tg-game", "기타": "tg-etc"}
-            cls = cls_map.get(cat, "tg-etc")
-            items.append(
-                f'<li><span class="tg {cls}">{cat}</span>'
-                f' <a href="{url}" target="_blank" class="iss-link">{summ}</a>{cnt_s}</li>'
-            )
+        cnt_s = f' <span class="cnt-s">({cnt}건)</span>' if cnt > 1 else ""
+        cls_map = {"버그·오류": "tg-bug", "건의·요청": "tg-sug",
+                   "게임 관련": "tg-game", "기타": "tg-etc"}
+        cls = cls_map.get(cat, "tg-etc")
+        items.append(
+            f'<li><span class="tg {cls}">{cat}</span>'
+            f' <a href="{url}" target="_blank" class="iss-link">{summ}</a>{cnt_s}</li>'
+        )
     if not items:
         return "<p class='empty-s'>수집된 주요 이슈 없음</p>"
     return f'<ul class="iss-list">{"".join(items)}</ul>'
@@ -775,6 +850,7 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
             f'<div class="rpt-header"><span class="rpt-game">DK모바일:리본</span>'
             f'<span class="rpt-title">{label}</span>'
             f'<span class="rpt-ts">조회: {datetime.now(KST).strftime("%Y-%m-%d %H:%M")}</span></div>'
+            + sec("00", "VOC 인사이트",     build_section_insights(analyzed.get("insights", {})))
             + sec("01", "주요 이슈",        build_section_issues(analyzed))
             + sec("02", "운영 지표",        build_section_chart(chart_dates, chart_id))
             + sec("03", "1:1 문의 동향",    build_section_cs(
@@ -989,6 +1065,17 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
 .iss-link{{color:#1a1a2e;text-decoration:none;font-weight:500}}
 .iss-link:hover{{color:#1a73e8;text-decoration:underline}}
 .cnt-s{{font-size:11px;color:#9aa0a6;margin-left:2px}}
+
+/* 인사이트 */
+.insights-wrap{{display:flex;flex-direction:column;gap:14px}}
+.ins-label{{font-size:11.5px;font-weight:700;color:#3c4043;margin-bottom:4px}}
+.ins-tbl{{width:100%;border-collapse:collapse;font-size:12.5px}}
+.ins-tbl td{{padding:5px 8px;border-bottom:1px solid #f1f3f4;vertical-align:middle}}
+.ins-tbl tr:last-child td{{border-bottom:none}}
+.kw-wrap{{display:flex;flex-wrap:wrap;gap:6px}}
+.kw-tag{{background:#e8f0fe;color:#1a73e8;font-size:11.5px;font-weight:600;
+         padding:3px 9px;border-radius:12px;display:inline-flex;align-items:center;gap:4px}}
+.kw-tag em{{font-style:normal;color:#9aa0a6;font-weight:400;font-size:10.5px}}
 
 /* 차트 */
 .chart-label{{font-size:12px;color:#5f6368;font-weight:600;margin-bottom:10px}}
