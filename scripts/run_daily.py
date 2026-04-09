@@ -93,31 +93,29 @@ def git_push() -> bool:
 
 
 if __name__ == "__main__":
-    today = datetime.now(KST).strftime("%Y-%m-%d")
+    today     = datetime.now(KST).strftime("%Y-%m-%d")
+    yesterday = (datetime.now(KST) - timedelta(days=1)).strftime("%Y-%m-%d")
+
     print(f"\n{'#'*50}")
-    print(f"  DKR VOC 일일 수집  {today}")
+    print(f"  DKR VOC 일일 수집  {today}  (데이터 기준: {yesterday})")
     print(f"{'#'*50}")
 
     # 1) 커뮤니티 크롤링
     crawl_ok = run_script("crawl_dkr.py")
 
     if crawl_ok:
-        # 2) CS 데이터 처리 (raw JSON → analyzed.json)
-        collect_cs_data(today)
+        # 2) VOC 규칙 기반 분석 → analyzed.json 생성 (없을 때만)
+        run_script("analyze_voc.py", [yesterday])
 
-        # 3) 대시보드 재생성
+        # 3) CS 데이터 처리 (raw JSON → analyzed.json cs_week_trend 업데이트)
+        collect_cs_data(yesterday)
+
+        # 4) 대시보드 재생성
         run_script("generate_dashboard.py")
-
-        # 4) index.html 동기화
-        src = GIT_DIR / "dashboard.html"
-        dst = GIT_DIR / "index.html"
-        if src.exists():
-            shutil.copy2(str(src), str(dst))
-            print("[INFO] index.html 동기화 완료")
 
         # 5) GitHub push
         git_push()
     else:
-        print("[WARN] 크롤링 실패 → CS/대시보드/push 건너뜀")
+        print("[WARN] 크롤링 실패 → 분석/CS/대시보드/push 건너뜀")
 
     print(f"\n[DONE] 일일 VOC 수집 완료 ({today})")
