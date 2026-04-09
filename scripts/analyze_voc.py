@@ -180,42 +180,87 @@ def dedup_by_feed_id(posts: list) -> list:
 #  필드 생성
 # ════════════════════════════════════════════════════════════════════════════
 
-def build_major_issues(official_posts: list) -> list:
-    """공식 게시판 포스트 → major_issues (title 유사 항목 묶기, count 추가, 최신순)"""
-    if not official_posts:
+def _load_official_posts_window(date_label: str, window_days: int = 7) -> list:
+    """당일 official_posts가 없으면 최근 window_days일 raw.json에서 수집"""
+    from datetime import datetime, timedelta
+    dt      = datetime.strptime(date_label, "%Y-%m-%d")
+    all_posts: list = []
+    for i in range(window_days):
+        d = (dt - timedelta(days=i)).strftime("%Y-%m-%d")
+        p = DATA_DIR / f"{d}.json"
+        if not p.exists():
+            continue
+        try:
+            raw = json.load(open(p, encoding="utf-8"))
+        except Exception:
+            continue
+        posts = raw.get("official_posts", [])
+        if posts:
+            all_posts.extend(posts)
+    return all_posts
+
+
+def build_major_issues(official_posts: list, date_label: str = "") -> list:
+    """공식 게시판 포스트 → major_issues
+
+    dashboard가 사용하는 키:
+      board_name  (대시보드 build_section_issues에서 "board_name" 키 사용)
+      summary     (대시보드 build_section_issues에서 "summary" 키 사용)
+      url, count, feed_id, date
+
+    당일 official_posts가 없으면 최근 7일 raw.json에서 롤링 수집.
+    """
+    # 0. 디버그: 입력 개수
+    print(f"  [DEBUG] official_posts 입력: {len(official_posts)}건")
+
+    # 1. 당일 없으면 롤링 수집
+    source = official_posts
+    if not source and date_label:
+        source = _load_official_posts_window(date_label)
+        if source:
+            print(f"  [DEBUG] 롤링 수집(최근 7일): {len(source)}건")
+
+    if not source:
+        print(f"  [DEBUG] major_issues 생성 전: 0건 (원본 없음)")
+        print(f"  [DEBUG] major_issues 생성 후: 0건")
         return []
 
-    # 1. feed_id 기준 중복 제거
-    unique = dedup_by_feed_id(official_posts)
+    # 2. feed_id 기준 중복 제거
+    unique = dedup_by_feed_id(source)
+    print(f"  [DEBUG] major_issues 생성 전 (dedup 후): {len(unique)}건")
 
-    # 2. (board_name + date) 기준 그룹핑 — 같은 날 같은 보드의 공지는 묶음
-    from collections import defaultdict
+    # 3. (board_name + date) 기준 그룹핑
     groups: dict[str, list] = defaultdict(list)
     for p in unique:
         title = (p.get("title") or "").strip()
         if not title:
             continue
-        date_key = (p.get("created_at") or "")[:10]
-        board    = p.get("board_name", "")
-        key      = f"{board}|{date_key}"
+        date_key  = (p.get("created_at") or "")[:10]
+        board_nm  = p.get("board_name", "")
+        key       = f"{board_nm}|{date_key}"
         groups[key].append(p)
 
     result = []
     for key, posts in groups.items():
-        board, date_key = key.split("|", 1)
-        # 대표 포스트: feed_id가 가장 작은 것 (가장 먼저 등록된 것)
+        board_nm, date_key = key.split("|", 1)
+        # 대표 포스트: 가장 먼저 등록된 것(feed_id 오름차순)
         rep = sorted(posts, key=lambda p: str(p.get("feed_id", "")))[0]
+        title = (rep.get("title") or "").strip()
         result.append({
-            "title":   (rep.get("title") or "").strip(),
-            "board":   board,
-            "url":     rep.get("url", ""),
-            "feed_id": str(rep.get("feed_id", "")),
-            "date":    date_key,
-            "count":   len(posts),
+            "title":      title,
+            "summary":    title,          # ← 대시보드 build_section_issues 사용 키
+            "board_name": board_nm,       # ← 대시보드 build_section_issues 사용 키
+            "board":      board_nm,       # 하위호환
+            "url":        rep.get("url", ""),
+            "feed_id":    str(rep.get("feed_id", "")),
+            "date":       date_key,
+            "count":      len(posts),
         })
 
-    # 3. 최신순 정렬
-    return sorted(result, key=lambda x: x["date"], reverse=True)
+    # 4. 최신순 정렬
+    result = sorted(result, key=lambda x: x["date"], reverse=True)
+    print(f"  [DEBUG] major_issues 생성 후: {len(result)}건")
+    return result
 
 
 def build_voc_groups(user_posts: list) -> list:
@@ -332,7 +377,7 @@ def analyze(date_label: str, force: bool = False) -> str:
     official_posts = raw.get("official_posts", [])
     user_posts     = raw.get("posts", [])
 
-    major_issues  = build_major_issues(official_posts)
+    major_issues  = build_major_issues(official_posts, date_label=date_label)
     voc_groups    = build_voc_groups(user_posts)
     cs_week_trend = build_cs_week_trend(date_label)
 
