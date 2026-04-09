@@ -1,23 +1,29 @@
 #!/usr/bin/env python3
 """
-run_daily.py — DKR VOC 백필 기반 자동 실행기 v2.0
+run_daily.py — DKR VOC 백필 기반 자동 실행기 v3.0
 ──────────────────────────────────────────────────
+변경 (v2.0 → v3.0):
+  [FIX] STEP 1 크롤링: 어제 1건만 처리 → need_raw 전체 순회
+        - 각 누락 날짜에 crawl_dkr.py --date YYYY-MM-DD 실행
+        - RETROACTIVE_WINDOW_DAYS(30일) 이내만 소급 크롤
+        - 30일 초과 누락은 API 데이터 없음으로 간주 스킵
+
 실행 전략:
   "어제"까지의 모든 날짜를 스캔하여 누락된 처리만 수행합니다.
 
 처리 흐름 (날짜별):
-  1. raw.json 없으면   → crawl_dkr.py 실행
-  2. analyzed.json 없으면 → analyze_voc.py 실행
-  3. 날짜별 실패 시 → 로그 출력 후 다음 날짜 진행 (중단 없음)
+  1. raw.json 없는 날짜 전체 → crawl_dkr.py --date [해당날짜]
+  2. analyzed.json 없는 날짜 전체 → analyze_voc.analyze()
+  3. 날짜별 실패 시 → 로그 후 다음 날짜 진행 (중단 없음)
 
 완료 후 1회 실행:
   4. generate_dashboard.py → index.html 갱신
   5. git push → GitHub Pages 반영
 
 설계 원칙:
-  - dashboard.html → index.html 복사 로직 없음 (generate_dashboard.py가 직접 index.html 생성)
+  - crawl_dkr.py --date: 지정 날짜의 00:00~23:59 KST 윈도우로 수집
+  - dashboard.html → index.html 복사 로직 없음
   - CS 브라우저 수집은 별도 수동 트리거 (collect_cs_data.py)
-  - 스킵/실패 로그 명확히 구분
 """
 
 import subprocess
@@ -38,6 +44,10 @@ GITHUB_REPO = "game-voc-dashboard"
 
 # 서비스 시작일 (백필 하한선)
 SERVICE_START = "2025-04-18"
+
+# 소급 크롤 최대 기간 (일): 이 기간 내 누락만 crawl 시도
+# Naver Lounge API는 오래된 데이터를 반환하지 않으므로 30일이 적절
+RETROACTIVE_WINDOW_DAYS = 30
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -156,33 +166,43 @@ def main():
     analyze_ok   = []
     analyze_fail = []
 
-    # ── STEP 1: 크롤링 (raw 없는 날짜 중 어제만 수집 가능) ────────────────
-    # crawl_dkr.py는 실행 시점의 "어제" 데이터를 수집하는 구조이므로
-    # 어제 raw가 없을 때만 실행
+    # ── STEP 1: 크롤링 (raw 없는 날짜 전체 순회) ─────────────────────────
+    # crawl_dkr.py --date YYYY-MM-DD: 해당 날짜 00:00~23:59 KST 윈도우로 수집
+    # RETROACTIVE_WINDOW_DAYS 이내 누락만 시도 (오래된 날짜는 API 데이터 없음)
     print(f"\n{'─'*55}")
-    print("STEP 1: 크롤링 (raw 없는 날짜 처리)")
+    print(f"STEP 1: 크롤링 (raw 없는 날짜 {len(need_raw)}건 처리)")
     print(f"{'─'*55}")
 
-    if not has_raw(yesterday):
-        print(f"  → {yesterday} raw 없음, crawl_dkr.py 실행")
-        ok = run_script("crawl_dkr.py", label="CRAWL")
-        if ok:
-            crawl_ok.append(yesterday)
-            # 크롤 성공 후 analyzed 대상 갱신
-            if not has_analyzed(yesterday):
-                need_analyze.append(yesterday)
-        else:
-            crawl_fail.append(yesterday)
-            print(f"  [FAIL] {yesterday} 크롤링 실패")
-    else:
-        print(f"  → {yesterday} raw 이미 있음, 크롤링 스킵")
+    def _days_diff(d: str) -> int:
+        """d 기준 yesterday로부터 며칠 전인지"""
+        return (datetime.strptime(yesterday, "%Y-%m-%d")
+                - datetime.strptime(d, "%Y-%m-%d")).days
 
-    if need_raw and yesterday not in need_raw:
-        print(f"  ※ 과거 raw 누락 {len(need_raw)}건은 수동 복구 필요 (crawl_dkr.py는 어제만 수집)")
-        for d in need_raw[:5]:
+    recent_need_raw = sorted(d for d in need_raw if _days_diff(d) <= RETROACTIVE_WINDOW_DAYS)
+    old_need_raw    = sorted(d for d in need_raw if _days_diff(d) >  RETROACTIVE_WINDOW_DAYS)
+
+    if not need_raw:
+        print(f"  → raw 누락 없음 (모두 수집 완료)")
+
+    for d in recent_need_raw:
+        diff = _days_diff(d)
+        print(f"  → [{d}] raw 없음 ({diff}일 전), crawl --date {d}")
+        ok = run_script("crawl_dkr.py", ["--date", d], label=f"CRAWL {d}")
+        if ok and has_raw(d):               # 실제 파일 생성 확인
+            crawl_ok.append(d)
+            print(f"  [OK]   {d} 크롤링 성공")
+            if not has_analyzed(d):
+                need_analyze.append(d)
+        else:
+            crawl_fail.append(d)
+            print(f"  [FAIL] {d} 크롤링 실패 (raw 파일 미생성)")
+
+    if old_need_raw:
+        print(f"\n  ※ {RETROACTIVE_WINDOW_DAYS}일 초과 누락 {len(old_need_raw)}건 — Naver API 소급 불가, 스킵")
+        for d in old_need_raw[-3:]:         # 최근 3건만 표시 (오래된 것)
             print(f"     {d}")
-        if len(need_raw) > 5:
-            print(f"     ... 외 {len(need_raw)-5}건")
+        if len(old_need_raw) > 3:
+            print(f"     (+ 구 누락 {len(old_need_raw)-3}건 생략)")
 
     # ── STEP 2: 분석 (analyzed 없는 날짜 처리) ───────────────────────────
     print(f"\n{'─'*55}")

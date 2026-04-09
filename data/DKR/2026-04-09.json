@@ -1,0 +1,309 @@
+{
+  "meta": {
+    "date": "2026-04-09",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-04-09T00:00:00+09:00",
+    "window_end": "2026-04-09T23:59:59+09:00",
+    "crawled_at": "2026-04-10T00:05:09.972566+09:00",
+    "total_posts": 7,
+    "total_comments": 18,
+    "boards": {
+      "4": {
+        "name": "자유 게시판",
+        "count": 6
+      },
+      "7": {
+        "name": "버그 제보",
+        "count": 1
+      }
+    }
+  },
+  "official_posts": [],
+  "posts": [
+    {
+      "feed_id": "7521214",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "신스 상향좀 시켜라",
+      "body": "진짜 재료로 전스 4개 들어간 신스가 이따위면 누가 배우냐",
+      "author": "뀨잉뀨잉뿌잉",
+      "created_at": "2026-04-09T17:57:12+09:00",
+      "view_count": 43,
+      "comment_count": 1,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7521214",
+      "comments": [
+        {
+          "comment_id": "25750235",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요 용사님.\n\n게임 내 만족스럽지 못한 부분이 있어 개선을 요청하시고자 의견을 남겨주셨네요.\n\n말씀해 주신 내용은 담당 부서를 통해 논의를 진행하여\n보다 만족스러운 경험을 선사해 드릴 수 있도록 노력하겠습니다.\n\n이외에도 다른 문의 사항 혹은 건의 사항이 있다면 언제든 찾아주시기 바라며,\n보다 발전된 모습으로 보답해 드리기 위해 최선을 다하겠습니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7521174",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "근데 영혼결속은 몇마리 넣는게 효율적임?",
+      "body": "5마리? 4마리?",
+      "author": "오늘만사는 만렙 2181",
+      "created_at": "2026-04-09T17:51:07+09:00",
+      "view_count": 32,
+      "comment_count": 1,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7521174",
+      "comments": [
+        {
+          "comment_id": "25753864",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "네이버최강 휴먼 9613",
+          "text": "ㅗ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7520783",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "개미 쿠마 디케이 당분간 계속 한다는거 보니깐",
+      "body": "조만간 기존 플로린 서버 유기시키고 플로린 서버 시즌2 내려나보다. 컨텐츠는 똑같이 루멘 10층 ㅋㅋㅋ",
+      "author": "꿀꽈배기",
+      "created_at": "2026-04-09T16:40:09+09:00",
+      "view_count": 84,
+      "comment_count": 5,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7520783",
+      "comments": [
+        {
+          "comment_id": "25749800",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "오늘만사는 만렙 2181",
+          "text": "어디 침팬치 데려다가 게임시키냐? 사람들도 생각이 있지",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 1
+        },
+        {
+          "comment_id": "25754327",
+          "parent_id": "25749800",
+          "depth": 2,
+          "author": "꿀꽈배기",
+          "text": "나도 그렇게 생각했는데, 플로린 서버할때 따라가는 사람들 있는거 보고 생각없는 사람 많다고 느꼈다",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25753689",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "학살중인 초보 6821",
+          "text": "뇌는 장식이 아니야. 케릭이 안팔렸으니까 한다고 하겠지 \n에휴....",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 2
+        },
+        {
+          "comment_id": "25754317",
+          "parent_id": "25753689",
+          "depth": 2,
+          "author": "꿀꽈배기",
+          "text": "니 뇌가 장식이냐? 캐릭값보다 캐릭 유지값이 훨씬 더 들어간다. 저번에 다야 서버일때 프모 짤리고 한달동안 노프모 하면서 5천 쓰고 캐릭 천만원 조금 더 받았다더라.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25754725",
+          "parent_id": "25753689",
+          "depth": 2,
+          "author": "학살중인 초보 6821",
+          "text": "알지 못하면 그냥 찌그러져 있어.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7519502",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "dk접은지 3개월차",
+      "body": "통장에 2천 모아지네 ㅋㅋ 드론이나 하나 사서 배워야지 ㅋㅋ 남은 개돼지들 이번업댓도 남은 리볼빙 카드한도 영혼까지 끌어서 과금준비 실시!!ㅋㅋ",
+      "author": "똥손팔라912",
+      "created_at": "2026-04-09T11:27:02+09:00",
+      "view_count": 162,
+      "comment_count": 3,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7519502",
+      "comments": [
+        {
+          "comment_id": "25750224",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "고뇌하는 저승사자 2169",
+          "text": "접으면 접은거지 머던다고 다시 3개월만에 나타나서 글을 적노??  훠이~  썩 짜지라",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25753697",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "학살중인 초보 6821",
+          "text": "네. 다음 꿈이 희망찬 거지 였습니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 1
+        },
+        {
+          "comment_id": "25753736",
+          "parent_id": "25753697",
+          "depth": 2,
+          "author": "똥손팔라912",
+          "text": "😁",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7519154",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "이렇게된거 구섭도 다이아 없애고 플로린으로 통합해라 겜수명 길어야 3개월이다",
+      "body": "신화변신 선택권 1장씩 뿌려라 섭종 곧인거 다 안다",
+      "author": "천상의 언데",
+      "created_at": "2026-04-09T09:42:19+09:00",
+      "view_count": 156,
+      "comment_count": 2,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7519154",
+      "comments": [
+        {
+          "comment_id": "25742810",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "폭주하는 누나 7629",
+          "text": "니들돈으로 두바이쫀득쿠키사먹어야되는데 \n그런짓하겠냐 ㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25749367",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "버스타는 Lv1 5425",
+          "text": "2개월아닌가요 수명. 3개월갈꺼있나요",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7519036",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "오프라인사냥 중지알림 오늘은 고치냐?",
+      "body": "돈내고 받는 서비스다.돈값좀해라 자동사냥 중지알림 안온지 3주째다 오늘은 좀 고쳐라",
+      "author": "럭키가이 겜돌이 6255",
+      "created_at": "2026-04-09T08:57:59+09:00",
+      "view_count": 82,
+      "comment_count": 3,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7519036",
+      "comments": [
+        {
+          "comment_id": "25741972",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "천상의 언데",
+          "text": "게임 출시때부터 문제였던 오프라인사냥ㅋㅋㅋㅋㅋㅋ 그걸 아직도 돈주고 사는사람이있네",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 1
+        },
+        {
+          "comment_id": "25743270",
+          "parent_id": "25741972",
+          "depth": 2,
+          "author": "럭키가이 겜돌이 6255",
+          "text": "그럼 컴터 하루종일 켜놓냐? 돈주고 사는게 왜?",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25748153",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "꿀꽈배기",
+          "text": "여기 개발자들 다 짜르고 진짜 소수 정예로 운영하는거 아님?",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7518737",
+      "board_id": 7,
+      "board_name": "버그 제보",
+      "title": "PVE버그 아직 된다 안고치냐",
+      "body": "제작확률 같은건 좀 그대로 나두고 버그나 잡아라 다망한게임 버그라도 잡아야지? 제작활률 건들여서 잇던 과금러들 다 접으면 니들 뭐 먹고 살래? PVE악용하는케릭 영구 정지한다고 글하나만 쓰면 막아지는걸 왜 안해? 멍청한 운영 적당히 해랏",
+      "author": "리이니",
+      "created_at": "2026-04-09T02:46:24+09:00",
+      "view_count": 133,
+      "comment_count": 3,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7518737",
+      "comments": [
+        {
+          "comment_id": "25742802",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요 용사님.\n\n먼저, 저희 DK모바일 리본을 즐겨주시는 용사님께 불편을 드려 죄송합니다.\n\n해당 현상에 대해서는 관련 부서로 전달하여 면밀한 확인 작업을 진행하겠습니다.\n\n해당 과정에서 문제가 확인될 경우 신속하게 수정하여\n최대한 빠른 시일 내에 불편함이 없으시도록 조치하겠습니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25743761",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "반짝이는 사과 6632100",
+          "text": "독재자트럼프 버그 씀",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25754356",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "꿀꽈배기",
+          "text": "여기 개발자들 다 짤린거 같은데 고쳐지겠냐. 지금 남아 있는 사람들은 숫자 고치는 거 밖에 못하는거 같은데",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    }
+  ]
+}
