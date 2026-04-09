@@ -22,7 +22,7 @@
     },
     {
       "category": "기타",
-      "summary": "서비스 종료 우려 / 게임 비판",
+      "summary": "서비스 종료 우려 및 게임 비판",
       "count": 2,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337",
       "feed_ids": [
@@ -73,7 +73,7 @@
     "top_issues": [
       {
         "category": "기타",
-        "summary": "서비스 종료 우려 / 게임 비판",
+        "summary": "서비스 종료 우려 및 게임 비판",
         "count": 2,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337"
       },
@@ -96,12 +96,12 @@
         "previous": 2,
         "delta": 0
       },
-      "건의·요청": {
+      "게임 관련": {
         "current": 1,
         "previous": 1,
         "delta": 0
       },
-      "게임 관련": {
+      "건의·요청": {
         "current": 1,
         "previous": 1,
         "delta": 0

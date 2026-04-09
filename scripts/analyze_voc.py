@@ -118,78 +118,269 @@ _NOISE_PATTERN = re.compile(r"^[ㄱ-ㅎㅏ-ㅣ?!.…~\s]+$")
 
 
 # ════════════════════════════════════════════════════════════════════════════
-#  ▶ 요약 변환 상수 — summarize_lounge_title 전용
+#  ▶ 3단계 보고용 요약 파이프라인 — summarize_lounge_title
+#
+#    Step 1: _classify_intent()   — 다중 신호 가중치 기반 의도 분류
+#    Step 2: _normalize_terms()   — 슬랭 → 보고용 표준 단어 변환
+#    Step 3: _generate_sentence() — intent + 정제된 제목 → 보고 문장
+#
+#  [원칙]
+#    · 단일 키워드 → 문장 결정 금지 (다중 신호 가중합으로 결정)
+#    · LLM 사용 금지 (규칙 + 테이블 기반)
+#    · 수정은 각 단계의 상수/로직만 수정
 # ════════════════════════════════════════════════════════════════════════════
 
-# 주제 키워드
-_TOPIC_SERVER   = ["서버", "섭", "구섭", "하이퍼섭", "서버이전", "섭이전"]
-_TOPIC_TRANSFER = ["이전권", "이전 권"]
-_TOPIC_MERGE    = ["합쳐", "통합", "서버합", "섭합"]
-_TOPIC_TRADE    = ["팔", "팔린", "시세", "얼마", "가격", "거래", "사노"]
-_TOPIC_ACCESS   = ["접속", "로그인", "팅", "튕", "렉", "로딩", "끊김"]
-_TOPIC_SHUTDOWN = ["섭종", "폐겜", "접는다", "서비스종료", "서비스 종료", "폐서비스"]
 
-# 버그 suffix 패턴 (앞 단어 → 스킬명 추출용)
-_BUG_SUFFIXES   = ["오류", "버그", "에러", "미적용", "안됨", "현상", "십힘", "먹통"]
+# ── Step 1 상수: intent 신호 집합 ────────────────────────────────────────────
+# 각 집합은 "신호 강도"가 다름 — 가중치 부여 시 참조
+
+# bug 신호
+_SIG_BUG_EXPLICIT  = {"버그", "오류", "에러", "error", "crash", "크래시", "이상"}
+_SIG_BUG_STATE     = {"십힘", "씹힘", "십혀", "씹혀", "미적용",
+                      "안됨", "안 됨", "안돼", "안 돼",
+                      "먹통", "오작동", "작동안", "작동 안", "끊겨"}
+
+# system_issue 신호 (기술적 접속/서버 증상 — "서버" 자체는 포함 안 함)
+_SIG_SYSTEM_SYMPTOM = {"접속", "로그인", "팅", "튕", "렉", "랙", "로딩",
+                        "끊김", "접속불가", "접속 불가", "로그인안", "로그인 안"}
+
+# price 신호
+_SIG_TRADE_OBJ  = {"가격", "시세", "얼마", "거래", "팔아", "사노",
+                   "팔린", "팔림", "팔려", "팔았"}
+_SIG_PRICE_DOWN = {"하락", "떨어", "폭락", "가치", "낮아", "싸",
+                   "누가사", "누가 사", "망했", "ㅋㅋ팔"}
+
+# complaint 신호
+_SIG_COMPLAINT  = {"섭종", "서비스종료", "서비스 종료", "폐겜", "폐서비스",
+                   "환불", "접는다", "탈게", "탈주", "망겜",
+                   "개판", "뭐하냐", "운영뭐", "운영 뭐", "ㅅㄱ"}
 
 
-def _extract_skill_name(title: str) -> str | None:
-    """버그 suffix 앞 단어(들) → 스킬/콘텐츠명 추출.
+# ── Step 2 상수: 슬랭 정제 테이블 ────────────────────────────────────────────
+# (원문_슬랭, 보고용_표준어) — 긴 표현을 먼저 배치 (부분 오버라이드 방지)
+_SLANG_TABLE: list[tuple[str, str]] = [
+    # 스킬 오작동 계열
+    ("씹힘현상",    "미적용 현상"),
+    ("십힘현상",    "미적용 현상"),
+    ("씹힘",        "미적용"),
+    ("십힘",        "미적용"),
+    ("씹혀",        "미적용"),
+    ("십혀",        "미적용"),
+    # 작동 불가 계열
+    ("먹통",        "작동 불가"),
+    ("안 됨",       "작동 불가"),
+    ("안됨",        "작동 불가"),
+    ("안 돼",       "작동 불가"),
+    ("안돼",        "작동 불가"),
+    # 접속 문제 계열
+    ("접속불가",    "접속 종료 현상"),
+    ("튕김",        "접속 종료 현상"),
+    ("팅김",        "접속 종료 현상"),
+    ("튕겨",        "접속 종료 현상"),
+    ("팅겨",        "접속 종료 현상"),
+    ("튕",          "접속 종료 현상"),
+    ("팅",          "접속 종료 현상"),
+    # 성능 저하 계열
+    ("렉걸",        "지연 현상"),
+    ("렉",          "지연 현상"),
+    ("랙",          "지연 현상"),
+    ("끊김",        "지연 현상"),
+    # 서버 슬랭
+    ("하이퍼섭",    "하이퍼 서버"),
+    ("구섭",        "구 서버"),
+    ("섭이전",      "서버 이전"),
+    ("섭종",        "서비스 종료"),
+    ("섭",          "서버"),
+    # 서비스 종료 (공백 없는 형태 통일)
+    ("서비스종료",  "서비스 종료"),
+    # 기타
+    ("폐겜",        "게임 폐서비스"),
+    ("ㅅㄱ",        ""),   # 불필요 감탄사 제거
+]
 
-    예) '십힘 스킬 버그' → '십힘 스킬'
-        '대항마 오류' → '대항마'
+# ── Step 2 보조: 스킬명 추출용 suffix ────────────────────────────────────────
+# (정제된 텍스트 기준 — normalize 후 탐색)
+_SKILL_SUFFIX_NORM = [
+    "미적용 현상", "미적용", "작동 불가",
+    "접속 종료 현상", "지연 현상",
+    "오류", "버그", "에러", "현상",
+]
+
+
+# ── Step 1: 의도 분류 ─────────────────────────────────────────────────────────
+
+def _classify_intent(title: str, category: str) -> str:
+    """다중 신호 가중합 기반 intent 분류.
+
+    각 intent별 score를 계산하고 최고값을 반환.
+    임계값(1.5) 미달 시 "general" 반환.
+
+    intent 종류:
+      bug          — 기능·스킬 오류
+      system_issue — 접속·서버 인프라 장애
+      price_drop   — 캐릭터·아이템 가치 하락 우려
+      price_question — 거래·시세 정보 문의
+      complaint    — 운영·서비스 불만
+      general      — 위 어디에도 해당 없음
     """
-    for suf in _BUG_SUFFIXES:
-        idx = title.find(suf)
-        if idx >= 2:                        # suffix 앞에 최소 2글자
-            candidate = title[:idx].strip()
+    from collections import defaultdict
+    t = title.lower()
+
+    scores: dict[str, float] = defaultdict(float)
+
+    # ── bug ──────────────────────────────────────────────────────
+    explicit_hits = sum(1 for s in _SIG_BUG_EXPLICIT if s in t)
+    state_hits    = sum(1 for s in _SIG_BUG_STATE    if s in t)
+    if explicit_hits >= 1:
+        scores["bug"] += 2.0 * explicit_hits
+    if state_hits >= 1:
+        scores["bug"] += 2.5 * state_hits
+    if category == "버그·오류":           # 보드 직접 매핑 보너스
+        scores["bug"] += 2.0
+
+    # ── system_issue ─────────────────────────────────────────────
+    # 기술 증상 신호가 있을 때만 활성화 (서버/서버이전 언급은 제외)
+    sys_hits = sum(1 for s in _SIG_SYSTEM_SYMPTOM if s in t)
+    if sys_hits >= 1:
+        # 버그 신호와 겹칠 때: 접속 관련이면 system_issue 강화
+        if explicit_hits + state_hits == 0:
+            scores["system_issue"] += 2.5 * sys_hits
+        else:
+            scores["system_issue"] += 1.0 * sys_hits  # bug와 경쟁
+
+    # ── price_drop ───────────────────────────────────────────────
+    trade_hits = sum(1 for s in _SIG_TRADE_OBJ  if s in t)
+    down_hits  = sum(1 for s in _SIG_PRICE_DOWN if s in t)
+    if trade_hits >= 1 and down_hits >= 1:
+        scores["price_drop"] += 3.5   # 거래 + 하락 동시 → 명확한 가치 우려
+    elif down_hits >= 2:
+        scores["price_drop"] += 3.0   # 하락 신호 2개 이상
+    elif down_hits == 1 and trade_hits >= 1:
+        scores["price_drop"] += 2.5
+
+    # ── price_question ───────────────────────────────────────────
+    if trade_hits >= 1 and down_hits == 0:
+        scores["price_question"] += 2.0 * trade_hits  # 거래만 → 시세 문의
+    elif trade_hits >= 2:
+        scores["price_question"] += 1.0               # 거래 신호 2개라면 보조 인정
+
+    # ── complaint ────────────────────────────────────────────────
+    complaint_hits = sum(1 for s in _SIG_COMPLAINT if s in t)
+    if complaint_hits >= 1:
+        scores["complaint"] += 3.5 * complaint_hits
+    if category == "기타":
+        scores["complaint"] += 1.5                    # 기타 카테고리 보너스
+
+    # ── 결정 ─────────────────────────────────────────────────────
+    if not scores:
+        return "general"
+    best_intent, best_score = max(scores.items(), key=lambda x: x[1])
+    return best_intent if best_score >= 1.5 else "general"
+
+
+# ── Step 2: 슬랭 정제 ────────────────────────────────────────────────────────
+
+def _normalize_terms(title: str) -> str:
+    """슬랭 → 보고용 표준 단어 치환 (테이블 순서대로 적용)."""
+    result = title
+    for slang, formal in _SLANG_TABLE:
+        result = result.replace(slang, formal)
+    return result.strip()
+
+
+def _extract_skill_from_normalized(norm: str) -> str | None:
+    """정제된 제목에서 스킬/콘텐츠명 추출.
+
+    suffix 앞 단어 블록 → 마지막 4단어 이내를 스킬명으로 사용.
+    예) '소서러 블레스 오브 엘리멘탈 미적용 현상' → '소서러 블레스 오브 엘리멘탈'
+    """
+    for suf in _SKILL_SUFFIX_NORM:
+        idx = norm.find(suf)
+        if idx >= 2:
+            candidate = norm[:idx].strip()
             words = candidate.split()
             if 1 <= len(words) <= 6:
-                skill = " ".join(words[-4:])  # 마지막 4단어 이내
+                skill = " ".join(words[-4:]).strip()
                 if len(skill) >= 2:
                     return skill
     return None
 
 
-def summarize_lounge_title(title: str, category: str = "") -> str:
-    """유저 원문 제목 → 보고용 요약 문장 (규칙 기반, LLM 없음).
+# ── Step 3: 문장 생성 ────────────────────────────────────────────────────────
 
-    category 별 우선 룰 → 공통 주제 룰 → 기본값 순으로 매칭.
-    """
-    t = title.lower()
+def _generate_sentence(intent: str, raw: str, norm: str, category: str) -> str:
+    """intent + 정제된 제목 → 보고용 최종 문장."""
 
-    if category == "버그·오류":
-        if any(kw in t for kw in _TOPIC_ACCESS):
-            return "게임 접속 / 로그인 장애 보고"
-        skill = _extract_skill_name(title)
+    if intent == "bug":
+        skill = _extract_skill_from_normalized(norm)
         if skill:
-            return f"{skill} 관련 오류 보고"
-        return "게임 내 오류 현상 보고"
+            return f"{skill} 스킬 효과 미적용 현상"
+        if "접속 종료 현상" in norm or "지연 현상" in norm:
+            return "게임 접속 / 로그인 장애 보고"
+        return "게임 내 기능 오류 보고"
+
+    if intent == "system_issue":
+        if "로그인" in raw:
+            return "게임 접속 / 로그인 장애 보고"
+        return "게임 접속 / 로그인 장애 보고"
+
+    if intent == "price_drop":
+        return "캐릭터 가치 하락에 대한 우려"
+
+    if intent == "price_question":
+        return "거래 가격에 대한 정보 문의"
+
+    if intent == "complaint":
+        if "서비스 종료" in norm or "게임 폐서비스" in norm:
+            return "서비스 종료 우려 및 게임 비판"
+        return "운영 정책에 대한 유저 불만"
+
+    # ── general: category 기반 폴백 ──────────────────────────────
+    if category == "버그·오류":
+        skill = _extract_skill_from_normalized(norm)
+        if skill:
+            return f"{skill} 스킬 효과 미적용 현상"
+        return "게임 내 기능 오류 보고"
 
     if category == "건의·요청":
-        if any(kw in t for kw in _TOPIC_TRANSFER):
+        if "이전권" in raw or "이전 권" in raw:
             return "서버 이전 아이템 출시 건의"
-        if any(kw in t for kw in _TOPIC_MERGE):
+        if any(kw in raw for kw in ["합쳐", "통합", "섭합"]):
             return "서버 통합 건의"
-        if any(kw in t for kw in _TOPIC_SERVER):
+        if "서버" in norm or "섭" in raw:
             return "서버 운영 관련 건의"
         return "게임 개선 의견 제출"
 
     if category == "기타":
-        if any(kw in t for kw in _TOPIC_SHUTDOWN):
-            return "서비스 종료 우려 / 게임 비판"
+        if "서비스 종료" in norm or "폐겜" in raw:
+            return "서비스 종료 우려 및 게임 비판"
         return "게임·운영 불만 의견"
 
     # 게임 관련 (default)
-    if any(kw in t for kw in _TOPIC_SERVER):
+    if any(kw in raw for kw in ["합쳐", "통합", "섭합"]):
+        return "서버 통합 관련 의견"
+    if "이전권" in raw or "이전 권" in raw:
+        return "서버 이전 아이템 관련 의견"
+    if "서버 이전" in norm or "섭이전" in raw:
+        return "서버 이전 관련 의견"
+    if "서버" in norm or "섭" in raw:
         return "서버 운영 관련 의견"
-    if any(kw in t for kw in _TOPIC_TRADE):
-        if any(kw in t for kw in ["떨어", "하락", "왜", "왜이렇게"]):
-            return "캐릭터·아이템 가치 하락 우려"
-        return "게임 내 거래 / 시세 문의"
-    if any(kw in t for kw in _TOPIC_ACCESS):
-        return "게임 접속 관련 문의"
     return "게임 관련 유저 의견"
+
+
+# ── 공개 함수: summarize_lounge_title ────────────────────────────────────────
+
+def summarize_lounge_title(title: str, category: str = "") -> str:
+    """유저 원문 제목 → 보고용 요약 문장.
+
+    3단계 파이프라인 (LLM 없음):
+      Step 1  _classify_intent()       — 다중 신호 가중합 의도 분류
+      Step 2  _normalize_terms()       — 슬랭 → 보고용 표준 단어
+      Step 3  _generate_sentence()     — intent + 정제어 → 보고 문장
+    """
+    intent     = _classify_intent(title, category)   # Step 1
+    norm_title = _normalize_terms(title)             # Step 2
+    return _generate_sentence(intent, title, norm_title, category)  # Step 3
 
 
 # ════════════════════════════════════════════════════════════════════════════

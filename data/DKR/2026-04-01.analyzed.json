@@ -54,19 +54,6 @@
     },
     {
       "category": "게임 관련",
-      "summary": "서버 운영 관련 의견",
-      "count": 5,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850",
-      "feed_ids": [
-        "7492521",
-        "7492460",
-        "7492345",
-        "7491850",
-        "7490014"
-      ]
-    },
-    {
-      "category": "게임 관련",
       "summary": "게임 관련 유저 의견",
       "count": 3,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307",
@@ -78,7 +65,36 @@
     },
     {
       "category": "게임 관련",
-      "summary": "게임 내 거래 / 시세 문의",
+      "summary": "서버 운영 관련 의견",
+      "count": 3,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850",
+      "feed_ids": [
+        "7492521",
+        "7491850",
+        "7490014"
+      ]
+    },
+    {
+      "category": "게임 관련",
+      "summary": "서버 통합 관련 의견",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460",
+      "feed_ids": [
+        "7492460"
+      ]
+    },
+    {
+      "category": "게임 관련",
+      "summary": "서버 이전 관련 의견",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345",
+      "feed_ids": [
+        "7492345"
+      ]
+    },
+    {
+      "category": "게임 관련",
+      "summary": "서버 이전 아이템 관련 의견",
       "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490333",
       "feed_ids": [
@@ -87,7 +103,7 @@
     },
     {
       "category": "기타",
-      "summary": "게임·운영 불만 의견",
+      "summary": "운영 정책에 대한 유저 불만",
       "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7494737",
       "feed_ids": [
@@ -96,7 +112,7 @@
     },
     {
       "category": "기타",
-      "summary": "서비스 종료 우려 / 게임 비판",
+      "summary": "서비스 종료 우려 및 게임 비판",
       "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784",
       "feed_ids": [
@@ -145,12 +161,6 @@
   "insights": {
     "top_issues": [
       {
-        "category": "게임 관련",
-        "summary": "서버 운영 관련 의견",
-        "count": 5,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850"
-      },
-      {
         "category": "건의·요청",
         "summary": "게임 개선 의견 제출",
         "count": 3,
@@ -161,6 +171,12 @@
         "summary": "게임 관련 유저 의견",
         "count": 3,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307"
+      },
+      {
+        "category": "게임 관련",
+        "summary": "서버 운영 관련 의견",
+        "count": 3,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850"
       }
     ],
     "trend": {},

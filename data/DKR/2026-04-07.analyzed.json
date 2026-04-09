@@ -4,7 +4,7 @@
   "voc_groups": [
     {
       "category": "버그·오류",
-      "summary": "블레스 오브 엘리멘탈 십힘 관련 오류 보고",
+      "summary": "소서러 블레스 오브 엘리멘탈 스킬 효과 미적용 현상",
       "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7511948",
       "feed_ids": [
@@ -13,7 +13,7 @@
     },
     {
       "category": "게임 관련",
-      "summary": "게임 내 거래 / 시세 문의",
+      "summary": "캐릭터 가치 하락에 대한 우려",
       "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7513260",
       "feed_ids": [
@@ -63,13 +63,13 @@
     "top_issues": [
       {
         "category": "버그·오류",
-        "summary": "블레스 오브 엘리멘탈 십힘 관련 오류 보고",
+        "summary": "소서러 블레스 오브 엘리멘탈 스킬 효과 미적용 현상",
         "count": 1,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7511948"
       },
       {
         "category": "게임 관련",
-        "summary": "게임 내 거래 / 시세 문의",
+        "summary": "캐릭터 가치 하락에 대한 우려",
         "count": 1,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7513260"
       }
@@ -80,15 +80,15 @@
         "previous": 0,
         "delta": 1
       },
-      "건의·요청": {
-        "current": 0,
-        "previous": 1,
-        "delta": -1
-      },
       "게임 관련": {
         "current": 1,
         "previous": 0,
         "delta": 1
+      },
+      "건의·요청": {
+        "current": 0,
+        "previous": 1,
+        "delta": -1
       }
     },
     "trending_keywords": [],
