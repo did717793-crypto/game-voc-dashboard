@@ -401,7 +401,20 @@ def build_section_voc(voc_groups: list[dict], raw_map: dict, pfx: str = "v") -> 
 
 
 # ── 04 1:1 문의 동향 ──────────────────────────────────────────
-CS_CAT_ORDER = ["계정·결제", "게임 관련", "이벤트", "버그·오류", "건의사항", "기타·실행"]
+# CS 문의 카테고리 (Hive 기준 8개 분류)
+CS_CAT_ORDER = ["결제", "계정", "설치/실행", "오류", "건의", "게임 이용", "이벤트", "기타"]
+
+# 도넛 컬러 (8개 카테고리 대응)
+_CS_DONUT_COLORS = [
+    "rgba(220,50,50,0.80)",    # 결제
+    "rgba(26,115,232,0.80)",   # 계정
+    "rgba(251,188,4,0.85)",    # 설치/실행
+    "rgba(234,67,53,0.75)",    # 오류
+    "rgba(52,168,83,0.80)",    # 건의
+    "rgba(70,157,198,0.80)",   # 게임 이용
+    "rgba(142,64,200,0.75)",   # 이벤트
+    "rgba(154,160,166,0.65)",  # 기타
+]
 
 
 def build_section_cs(
@@ -444,89 +457,106 @@ def build_section_cs(
             if v < 0: return f'<span style="color:#1a73e8;font-weight:bold">▼{abs(v)}{sfx}</span>'
             return f'<span style="color:#9aa0a6">■0{sfx}</span>'
 
-        # ── [FIX-6] 유형별 도넛 데이터 ──
-        dnt_id     = f"cs_dnt_{labels[-1].replace('-','')}"
-        _dnt_colors = [
-            "rgba(220,50,50,0.75)", "rgba(26,115,232,0.75)",
-            "rgba(251,188,4,0.75)", "rgba(52,168,83,0.75)",
-            "rgba(154,160,166,0.7)", "rgba(70,157,198,0.75)",
-        ]
+        # ── 유형별 도넛 — 항상 렌더링 (데이터 없으면 회색 placeholder) ──
+        dnt_id = f"cs_dnt_{labels[-1].replace('-','')}"
+
         prev_map = {}
         if prev_cs_inquiries:
             for _pi in prev_cs_inquiries:
                 prev_map[_pi.get("category", "")] = _pi.get("count", 0)
 
-        dnt_labels_list = [x.get("category", "") for x in cs_inquiries] if cs_inquiries else []
-        dnt_data_list   = [x.get("count", 0)     for x in cs_inquiries] if cs_inquiries else []
+        # 8개 카테고리 전체 기준으로 집계 (데이터 없는 카테고리는 0)
+        inq_map = {x.get("category", ""): x for x in cs_inquiries} if cs_inquiries else {}
+        dnt_labels_list = CS_CAT_ORDER
+        dnt_data_list   = [inq_map[c].get("count", 0) if c in inq_map else 0 for c in CS_CAT_ORDER]
+        has_dnt_data    = sum(dnt_data_list) > 0
 
+        # 지표 이슈 판단 (delta ±5 초과 시 표시)
+        def _issue_flag(cur, prv):
+            d = cur - prv
+            if d > 5:  return f'<span style="color:#c0392b;font-size:10px">⚠ 급증</span>'
+            if d < -5: return f'<span style="color:#1e8449;font-size:10px">↓ 감소</span>'
+            return '<span style="color:#9aa0a6;font-size:10px">-</span>'
+
+        # 유형별 표 행 (항상 전체 카테고리 표시)
         dnt_rows = ""
-        if cs_inquiries:
-            for _item in cs_inquiries:
-                _cat = _item.get("category", "")
-                _cur = _item.get("count", 0)
-                _prv = prev_map.get(_cat, 0)
-                _dlt = _cur - _prv
-                _prv_s = str(_prv) if prev_cs_inquiries is not None else "-"
-                dnt_rows += (
-                    f'<tr>'
-                    f'<td style="font-size:11px;text-align:left;padding:4px 6px;border-bottom:1px solid #f0f2f5">{_cat}</td>'
-                    f'<td style="font-size:11px;padding:4px 6px;text-align:center;border-bottom:1px solid #f0f2f5">{_prv_s}</td>'
-                    f'<td style="font-size:11px;padding:4px 6px;text-align:center;font-weight:bold;border-bottom:1px solid #f0f2f5">{_cur}</td>'
-                    f'<td style="font-size:11px;padding:4px 6px;text-align:center;border-bottom:1px solid #f0f2f5">{_delta(_dlt)}</td>'
-                    f'</tr>'
-                )
+        for _ci, _cat in enumerate(CS_CAT_ORDER):
+            _item  = inq_map.get(_cat)
+            _cur   = _item.get("count", 0) if _item else 0
+            _prv   = prev_map.get(_cat, 0)
+            _dlt   = _cur - _prv
+            _prv_s = str(_prv) if prev_cs_inquiries is not None else "-"
+            _dot   = f'<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:{_CS_DONUT_COLORS[_ci]};margin-right:4px;vertical-align:middle"></span>'
+            dnt_rows += (
+                f'<tr>'
+                f'<td style="font-size:11px;text-align:left;padding:3px 5px;border-bottom:1px solid #f0f2f5">{_dot}{_cat}</td>'
+                f'<td style="font-size:11px;padding:3px 5px;text-align:center;border-bottom:1px solid #f0f2f5">{_prv_s}</td>'
+                f'<td style="font-size:11px;padding:3px 5px;text-align:center;font-weight:{"bold" if _cur>0 else "normal"};border-bottom:1px solid #f0f2f5">{_cur}</td>'
+                f'<td style="font-size:11px;padding:3px 5px;text-align:center;border-bottom:1px solid #f0f2f5">{_delta(_dlt)}</td>'
+                f'<td style="font-size:11px;padding:3px 5px;text-align:center;border-bottom:1px solid #f0f2f5">{_issue_flag(_cur, _prv)}</td>'
+                f'</tr>'
+            )
 
-        # 도넛 섹션 HTML (cs_inquiries가 있을 때만)
-        if cs_inquiries and dnt_labels_list:
-            dnt_section_html = f"""
+        # 도넛 섹션 — 항상 canvas + JS 생성 (데이터 없으면 회색 원으로 표시)
+        _donut_data_js    = _json.dumps([1] if not has_dnt_data else dnt_data_list)
+        _donut_colors_js  = _json.dumps(["rgba(220,220,220,0.4)"] if not has_dnt_data
+                                        else _CS_DONUT_COLORS[:len(CS_CAT_ORDER)])
+        _donut_labels_js  = _json.dumps(CS_CAT_ORDER, ensure_ascii=False)
+        _donut_tooltip_fn = (
+            "function(c){return '데이터 없음';}"
+            if not has_dnt_data else
+            "function(c){var t=c.dataset.data.reduce(function(a,b){return a+b;},0);"
+            "return c.label+': '+c.parsed+'건 ('+Math.round(c.parsed/t*100)+'%)';}"
+        )
+
+        dnt_section_html = f"""
       <div>
-        <p style="font-size:11px;font-weight:700;color:#5f6368;margin-bottom:6px">유형별 문의 접수 현황</p>
-        <div style="display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:start">
-          <div style="position:relative;height:120px"><canvas id="{dnt_id}"></canvas></div>
+        <p style="font-size:11px;font-weight:700;color:#5f6368;margin-bottom:5px">유형별 문의 접수 현황</p>
+        <div style="display:grid;grid-template-columns:130px 1fr;gap:8px;align-items:start">
+          <div style="position:relative;height:150px"><canvas id="{dnt_id}"></canvas></div>
           <table style="width:100%;border-collapse:collapse">
             <thead>
               <tr>
-                <th style="font-size:10px;padding:4px 6px;background:#f1f3f4;color:#5f6368;font-weight:600;text-align:left;border-bottom:1.5px solid #e8eaed">분류</th>
-                <th style="font-size:10px;padding:4px 6px;background:#f1f3f4;color:#5f6368;font-weight:600;text-align:center;border-bottom:1.5px solid #e8eaed">전일</th>
-                <th style="font-size:10px;padding:4px 6px;background:#f1f3f4;color:#5f6368;font-weight:600;text-align:center;border-bottom:1.5px solid #e8eaed">금일</th>
-                <th style="font-size:10px;padding:4px 6px;background:#f1f3f4;color:#5f6368;font-weight:600;text-align:center;border-bottom:1.5px solid #e8eaed">증감</th>
+                <th style="font-size:10px;padding:3px 5px;background:#f1f3f4;color:#5f6368;font-weight:600;text-align:left;border-bottom:1.5px solid #e8eaed">분류</th>
+                <th style="font-size:10px;padding:3px 5px;background:#f1f3f4;color:#5f6368;font-weight:600;text-align:center;border-bottom:1.5px solid #e8eaed">전일</th>
+                <th style="font-size:10px;padding:3px 5px;background:#f1f3f4;color:#5f6368;font-weight:600;text-align:center;border-bottom:1.5px solid #e8eaed">금일</th>
+                <th style="font-size:10px;padding:3px 5px;background:#f1f3f4;color:#5f6368;font-weight:600;text-align:center;border-bottom:1.5px solid #e8eaed">증감</th>
+                <th style="font-size:10px;padding:3px 5px;background:#f1f3f4;color:#5f6368;font-weight:600;text-align:center;border-bottom:1.5px solid #e8eaed">지표이슈</th>
               </tr>
             </thead>
             <tbody>{dnt_rows}</tbody>
           </table>
         </div>
+        {"<p style='font-size:10px;color:#9aa0a6;margin-top:4px;text-align:center'>· CS 데이터 미수집 (Hive 브라우저 수집 필요)</p>" if not has_dnt_data else ""}
       </div>"""
-            dnt_js = f"""
+
+        dnt_js = f"""
     <script>
     (function(){{
       var c=document.getElementById('{dnt_id}');
       if(!c||c._ok)return;c._ok=true;
+      var hasData={str(has_dnt_data).lower()};
       new Chart(c,{{
         type:'doughnut',
         data:{{
-          labels:{_json.dumps(dnt_labels_list, ensure_ascii=False)},
+          labels:{_donut_labels_js},
           datasets:[{{
-            data:{_json.dumps(dnt_data_list)},
-            backgroundColor:{_json.dumps(_dnt_colors[:len(dnt_labels_list)])},
-            borderWidth:2,borderColor:'#fff'
+            data:{_donut_data_js},
+            backgroundColor:{_donut_colors_js},
+            borderWidth:hasData?2:1,
+            borderColor:hasData?'#fff':'rgba(200,200,200,0.5)'
           }}]
         }},
         options:{{
-          responsive:true,maintainAspectRatio:false,cutout:'55%',
+          responsive:true,maintainAspectRatio:false,cutout:'58%',
           plugins:{{
             legend:{{display:false}},
-            tooltip:{{callbacks:{{label:function(c){{
-              var t=c.dataset.data.reduce(function(a,b){{return a+b;}},0);
-              return c.label+': '+c.parsed+'건 ('+Math.round(c.parsed/t*100)+'%)';
-            }}}}}}
+            tooltip:{{enabled:hasData,callbacks:{{label:{_donut_tooltip_fn}}}}}
           }}
         }}
       }});
     }})();
     </script>"""
-        else:
-            dnt_section_html = ""
-            dnt_js = ""
 
         trend_html = f"""
         <div style="margin-bottom:8px">
@@ -668,7 +698,7 @@ def build_section_cs(
                   <td style="padding:7px 8px;border-bottom:1px solid #f0f2f5;text-align:center">{yest_rate_v}%</td>
                 </tr>
                 <tr>
-                  <td style="padding:7px 8px;border-bottom:1px solid #f0f2f5;text-align:center;font-size:11px;font-weight:bold">{labels[-1]}<br><span style="color:#1a73e8;font-size:10px">(금일)</span></td>
+                  <td style="padding:7px 8px;border-bottom:1px solid #f0f2f5;text-align:center;font-size:11px;font-weight:bold">{labels[-1]}<br><span style="color:#1a73e8;font-size:10px">(당일)</span></td>
                   <td style="padding:7px 8px;border-bottom:1px solid #f0f2f5;text-align:center;font-weight:bold">{today_recv}</td>
                   <td style="padding:7px 8px;border-bottom:1px solid #f0f2f5;text-align:center;font-weight:bold">{today_proc}</td>
                   <td style="padding:7px 8px;border-bottom:1px solid #f0f2f5;text-align:center;font-weight:bold">{today_miss}</td>
@@ -694,7 +724,7 @@ def build_section_cs(
     else:
         by_cat = {c: [] for c in CS_CAT_ORDER}
         for item in cs_inquiries:
-            cat = item.get("category", "기타·실행")
+            cat = item.get("category", "기타")
             by_cat.setdefault(cat, []).append(item)
 
         rows = ""

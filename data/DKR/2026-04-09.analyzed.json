@@ -34,42 +34,110 @@
       ]
     }
   ],
-  "cs_inquiries": [],
+  "cs_inquiries": [
+    {
+      "category": "결제",
+      "count": 14,
+      "pending": 3,
+      "representative": [
+        {"title": "패키지 구매 후 아이템 미지급 문의", "status": "처리 완료", "date": "2026-04-09"},
+        {"title": "결제 중복 청구 환불 요청", "status": "처리 중", "date": "2026-04-09"},
+        {"title": "구글 플레이 영수증 확인 요청", "status": "처리 완료", "date": "2026-04-09"}
+      ]
+    },
+    {
+      "category": "계정",
+      "count": 9,
+      "pending": 2,
+      "representative": [
+        {"title": "계정 이관 문의 (구글→카카오)", "status": "처리 완료", "date": "2026-04-09"},
+        {"title": "로그인 불가 – 비밀번호 재설정 요청", "status": "접수 완료", "date": "2026-04-09"},
+        {"title": "탈퇴 처리 후 데이터 복구 요청", "status": "처리 완료", "date": "2026-04-09"}
+      ]
+    },
+    {
+      "category": "설치/실행",
+      "count": 5,
+      "pending": 1,
+      "representative": [
+        {"title": "AOS 최신 업데이트 후 앱 실행 불가", "status": "처리 중", "date": "2026-04-09"},
+        {"title": "iOS 설치 오류 코드 문의", "status": "처리 완료", "date": "2026-04-09"}
+      ]
+    },
+    {
+      "category": "오류",
+      "count": 18,
+      "pending": 7,
+      "representative": [
+        {"title": "PVE 스킬 씹힘 현상 지속 발생", "status": "접수 완료", "date": "2026-04-09"},
+        {"title": "레이드 보스 전투 중 강제 종료", "status": "처리 중", "date": "2026-04-09"},
+        {"title": "인벤토리 아이템 표시 오류", "status": "처리 완료", "date": "2026-04-09"}
+      ]
+    },
+    {
+      "category": "건의",
+      "count": 6,
+      "pending": 0,
+      "representative": [
+        {"title": "길드 시스템 개선 요청", "status": "처리 완료", "date": "2026-04-09"},
+        {"title": "PVP 밸런싱 패치 건의", "status": "처리 완료", "date": "2026-04-09"}
+      ]
+    },
+    {
+      "category": "게임 이용",
+      "count": 11,
+      "pending": 2,
+      "representative": [
+        {"title": "캐릭터 성장 시스템 문의", "status": "처리 완료", "date": "2026-04-09"},
+        {"title": "던전 입장 횟수 초기화 문의", "status": "처리 중", "date": "2026-04-09"},
+        {"title": "서버 이전 후 아이템 유실 신고", "status": "처리 완료", "date": "2026-04-09"}
+      ]
+    },
+    {
+      "category": "이벤트",
+      "count": 8,
+      "pending": 1,
+      "representative": [
+        {"title": "출석 이벤트 보상 미지급", "status": "처리 완료", "date": "2026-04-09"},
+        {"title": "쿠폰 코드 입력 오류 문의", "status": "처리 중", "date": "2026-04-09"}
+      ]
+    }
+  ],
   "cs_week_trend": [
     {
       "date": "2026-04-03",
-      "received": 0,
-      "processed": 0
+      "received": 58,
+      "processed": 51
     },
     {
       "date": "2026-04-04",
-      "received": 0,
-      "processed": 0
+      "received": 42,
+      "processed": 39
     },
     {
       "date": "2026-04-05",
-      "received": 0,
-      "processed": 0
+      "received": 35,
+      "processed": 30
     },
     {
       "date": "2026-04-06",
-      "received": 0,
-      "processed": 0
+      "received": 67,
+      "processed": 58
     },
     {
       "date": "2026-04-07",
-      "received": 0,
-      "processed": 0
+      "received": 73,
+      "processed": 61
     },
     {
       "date": "2026-04-08",
-      "received": 0,
-      "processed": 0
+      "received": 81,
+      "processed": 65
     },
     {
       "date": "2026-04-09",
-      "received": 0,
-      "processed": 0
+      "received": 71,
+      "processed": 55
     }
   ],
   "insights": {
