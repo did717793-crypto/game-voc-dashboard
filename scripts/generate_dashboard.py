@@ -147,34 +147,6 @@ def build_section_insights(insights: dict) -> str:
             f'<table class="ins-tbl">{rows}</table>'
         )
 
-    # ── 전일 대비 트렌드 ──
-    if trend:
-        cat_order = ["버그·오류", "건의·요청", "게임 관련", "기타"]
-        rows = ""
-        for cat in cat_order:
-            info = trend.get(cat)
-            if not info:
-                continue
-            curr  = info["current"]
-            delta = info["delta"]
-            if delta > 0:
-                arrow = f'<span style="color:#c0392b">▲ {delta}</span>'
-            elif delta < 0:
-                arrow = f'<span style="color:#1e8449">▼ {abs(delta)}</span>'
-            else:
-                arrow = '<span style="color:#888">─</span>'
-            rows += (
-                f'<tr><td>{cat}</td>'
-                f'<td style="text-align:right">{curr}건</td>'
-                f'<td style="text-align:right">{arrow}</td></tr>'
-            )
-        if rows:
-            prev_lbl = f" (전일: {prev_date})" if prev_date else ""
-            parts.append(
-                f'<p class="ins-label">📊 전일 대비{prev_lbl}</p>'
-                f'<table class="ins-tbl">{rows}</table>'
-            )
-
     # ── 트렌드 키워드 ──
     if keywords:
         tags = "".join(
@@ -776,81 +748,6 @@ def build_section_cs(
 
 
 # ── 05 CS 동향 ──────────────────────────────────────────────
-def build_section_cs_detail(cs_inquiries: list[dict]) -> str:
-    # [FIX-8] 04번과 동일하게 개별 티켓을 각 행으로 분리 (rowspan 적용)
-    STATUS_CLS = {
-        "접수 완료": "cs-badge-recv",
-        "접수완료":  "cs-badge-recv",
-        "처리 중":   "cs-badge-proc",
-        "처리중":    "cs-badge-proc",
-        "답변 완료": "cs-badge-done",
-        "조회 완료": "cs-badge-view",
-        "삭제":      "cs-badge-del",
-    }
-
-    if not cs_inquiries:
-        return "<p class='empty-s'>수집된 CS 문의 없음</p>"
-
-    rows = ""
-    for item in cs_inquiries:
-        cat     = item.get("category", "기타")
-        count   = item.get("count", 0)
-        pending = item.get("pending", 0)
-        reps    = item.get("representative", [])
-        row_count = max(1, len(reps))
-        note    = f'<span class="cs-pending">미처리 {pending}건</span>' if pending > 0 else "처리 완료"
-
-        if not reps:
-            rows += f"""
-        <tr>
-          <td class="cat-td">{cat}</td>
-          <td class="content-td" style="color:#9aa0a6;padding:10px 14px">데이터 없음</td>
-          <td class="ref-td">{count}건</td>
-          <td class="note-td">{note}</td>
-        </tr>"""
-            continue
-
-        for i_rep, rep in enumerate(reps):
-            title     = rep.get("title", "")
-            status    = rep.get("status", "")
-            date      = rep.get("date", "")
-            badge_cls = STATUS_CLS.get(status, "cs-badge-etc")
-            date_s    = f'<span class="cs-date">{date[5:]}</span>' if date else ""
-            rep_html  = (
-                f'<div class="cs-det-row">'
-                f'<span class="cs-badge {badge_cls}">{status}</span>'
-                f'{date_s}'
-                f'<span class="cs-ttl">{title}</span>'
-                f'</div>'
-            )
-
-            # [FIX-8] 첫 행에만 cat-td / ref-td / note-td (rowspan)
-            cat_cell  = f'<td class="cat-td" rowspan="{row_count}">{cat}</td>'  if i_rep == 0 else ""
-            ref_cell  = f'<td class="ref-td" rowspan="{row_count}">{count}건</td>' if i_rep == 0 else ""
-            note_cell = f'<td class="note-td" rowspan="{row_count}">{note}</td>'    if i_rep == 0 else ""
-
-            rows += f"""
-        <tr>
-          {cat_cell}
-          <td class="content-td">{rep_html}</td>
-          {ref_cell}
-          {note_cell}
-        </tr>"""
-
-    return f"""
-    <table class="voc-tbl">
-      <thead>
-        <tr>
-          <th style="width:76px">항목</th>
-          <th>내용</th>
-          <th style="width:52px">건수</th>
-          <th style="width:70px">비고</th>
-        </tr>
-      </thead>
-      <tbody>{rows}</tbody>
-    </table>"""
-
-
 # ── 리포트 섹션 래퍼 ──────────────────────────────────────────
 def sec(num: str, title: str, body: str) -> str:
     return f"""
@@ -891,7 +788,6 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
             + sec("04", "공식 라운지 동향", build_section_voc(
                 analyzed.get("voc_groups", []), raw_map,
                 pfx=f"D{date_str.replace('-','')}_"))
-            + sec("05", "CS 동향",          build_section_cs_detail(analyzed.get("cs_inquiries", [])))
         )
     else:  # weekly
         idx        = all_dates.index(date_str) if date_str in all_dates else 0
@@ -915,7 +811,6 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
             + sec("04", "공식 라운지 동향", build_section_voc(
                 analyzed.get("voc_groups", []), raw_map,
                 pfx=f"W{date_str.replace('-','')}_"))
-            + sec("05", "CS 동향",          build_section_cs_detail(analyzed.get("cs_inquiries", [])))
         )
 
 

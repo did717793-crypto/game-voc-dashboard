@@ -55,9 +55,14 @@ KST          = timezone(timedelta(hours=9))
 RAW_DIR.mkdir(exist_ok=True)
 
 # ── Hive URL 상수 ─────────────────────────────────────────────────────────────
-HIVE_LOGIN_URL   = "https://hive.com/ko/signin"
-HIVE_INQUIRY_URL = "https://inquiry.withhive.com/ko/inquiry"
-HIVE_SESSION_CHECK = "https://inquiry.withhive.com"
+# inquiry.withhive.com은 OAuth 리다이렉트 방식 사용
+# → 직접 inquiry 페이지 접근 시 oauth-manager.withhive.com으로 이동
+# → OAuth 인증 후 withhive.com/console 계정으로 접속됨
+HIVE_LOGIN_URL   = "https://oauth-manager.withhive.com/auth/oauth/authorize?client_id=console.hive.inquiry&response_type=code&redirect_uri=https%3A%2F%2Finquiry.withhive.com%2Finquiry&scope=&state=hive_inquiry"
+HIVE_INQUIRY_URL = "https://inquiry.withhive.com/inquiry"   # /ko/ 없이 직접 접근
+HIVE_SESSION_CHECK = "https://inquiry.withhive.com/inquiry"
+# 로그인 감지: OAuth 인증 완료 후 URL이 oauth-manager에 있으면 미로그인
+HIVE_OAUTH_DOMAIN = "oauth-manager.withhive.com"
 
 # ── BROWSER_JS (collect_cs_data.py 와 동일) ───────────────────────────────────
 BROWSER_JS = r"""
@@ -160,37 +165,73 @@ def load_cookies(context) -> bool:
 # ── 세션 체크 / 로그인 ────────────────────────────────────────────────────────
 
 def is_logged_in(page) -> bool:
-    """현재 페이지가 로그인 상태인지 확인"""
+    """inquiry.withhive.com 세션 유효 여부 확인.
+
+    로그인된 상태 → inquiry 페이지 정상 접근 (테이블 존재)
+    미로그인 → oauth-manager.withhive.com 으로 리다이렉트
+    """
     try:
-        page.goto(HIVE_SESSION_CHECK, timeout=15_000)
-        page.wait_for_load_state("networkidle", timeout=15_000)
+        page.goto(HIVE_SESSION_CHECK, timeout=20_000)
+        page.wait_for_load_state("networkidle", timeout=20_000)
         url = page.url
-        # 로그인 페이지로 리다이렉트되면 미로그인
-        return "signin" not in url and "login" not in url
+        if HIVE_OAUTH_DOMAIN in url:
+            return False   # OAuth 로그인 페이지로 리다이렉트 = 미로그인
+        # 테이블이 실제로 있는지 확인
+        try:
+            page.wait_for_selector("table tbody tr", timeout=5_000)
+            return True
+        except Exception:
+            # 테이블 없어도 inquiry 도메인에 있으면 로그인 상태
+            return "inquiry.withhive.com" in url
     except Exception:
         return False
 
 
 def login(page, hive_id: str, hive_pw: str) -> bool:
-    """Hive 로그인 시도. 반환: 성공 여부"""
-    print(f"[INFO] 로그인 시도 → {HIVE_LOGIN_URL}")
+    """Hive OAuth 로그인 시도. 반환: 성공 여부.
+
+    inquiry.withhive.com은 OAuth2 방식을 사용:
+      1. inquiry 페이지 접근 → oauth-manager로 리다이렉트
+      2. oauth-manager에서 ID/PW 입력
+      3. 인증 완료 → inquiry 페이지로 복귀
+    """
+    print(f"[INFO] 로그인 시도 (OAuth) → inquiry.withhive.com")
     try:
-        page.goto(HIVE_LOGIN_URL, timeout=20_000)
+        # inquiry 페이지 직접 이동 → oauth-manager 리다이렉트 트리거
+        page.goto(HIVE_SESSION_CHECK, timeout=20_000)
         page.wait_for_load_state("networkidle", timeout=20_000)
 
-        # ID/PW 입력 셀렉터 (Hive 실제 셀렉터 — 변경 시 수정 필요)
-        selectors_id = ["input[type='email']", "input[name='email']",
-                        "input[placeholder*='이메일']", "input[placeholder*='ID']",
-                        "#email", "#id"]
-        selectors_pw = ["input[type='password']", "input[name='password']",
-                        "#password", "#pw"]
+        current_url = page.url
+        if HIVE_OAUTH_DOMAIN not in current_url:
+            # 이미 로그인된 상태
+            print("[OK] 이미 로그인 상태")
+            return True
+
+        print(f"  [OAuth] 인증 페이지: {current_url[:60]}...")
+
+        # Hive 로그인 폼 셀렉터 (oauth-manager 페이지 기준)
+        selectors_id = [
+            "input[name='hive_id']",
+            "input[name='username']",
+            "input[type='email']",
+            "input[name='email']",
+            "input[placeholder*='ID']",
+            "input[placeholder*='이메일']",
+            "#hive_id", "#email", "#id",
+        ]
+        selectors_pw = [
+            "input[name='hive_pw']",
+            "input[name='password']",
+            "input[type='password']",
+            "#hive_pw", "#password",
+        ]
 
         id_filled = False
         for sel in selectors_id:
             try:
                 page.fill(sel, hive_id, timeout=3_000)
                 id_filled = True
-                print(f"  ID 입력 ({sel})")
+                print(f"  ID 입력 완료 ({sel})")
                 break
             except Exception:
                 continue
@@ -200,35 +241,49 @@ def login(page, hive_id: str, hive_pw: str) -> bool:
             try:
                 page.fill(sel, hive_pw, timeout=3_000)
                 pw_filled = True
-                print(f"  PW 입력 ({sel})")
+                print(f"  PW 입력 완료 ({sel})")
                 break
             except Exception:
                 continue
 
         if not id_filled or not pw_filled:
-            print("[WARN] 로그인 폼 셀렉터를 찾지 못함 — 헤드 모드로 재시도 권장")
+            print("[WARN] 로그인 폼 셀렉터 탐색 실패")
+            print("  → --headed 옵션으로 직접 확인 후 셀렉터 수정 필요")
             return False
 
         # 로그인 버튼 클릭
-        btn_selectors = ["button[type='submit']", "button:has-text('로그인')",
-                         "button:has-text('Login')", ".login-btn", "#loginBtn"]
+        btn_selectors = [
+            "button[type='submit']",
+            "button:has-text('로그인')",
+            "button:has-text('Login')",
+            "button:has-text('Sign in')",
+            "input[type='submit']",
+            ".login-btn", "#loginBtn",
+        ]
+        btn_clicked = False
         for sel in btn_selectors:
             try:
                 page.click(sel, timeout=3_000)
+                btn_clicked = True
                 print(f"  로그인 버튼 클릭 ({sel})")
                 break
             except Exception:
                 continue
 
-        page.wait_for_load_state("networkidle", timeout=20_000)
+        if not btn_clicked:
+            page.keyboard.press("Enter")
+            print("  Enter 키 전송 (버튼 미발견 fallback)")
+
+        # OAuth 콜백 완료 대기 (inquiry 페이지 복귀)
+        page.wait_for_load_state("networkidle", timeout=30_000)
         time.sleep(2)
 
-        url = page.url
-        if "signin" in url or "login" in url:
-            print("[ERROR] 로그인 실패 — 잘못된 자격증명이거나 CAPTCHA 발생")
+        final_url = page.url
+        if HIVE_OAUTH_DOMAIN in final_url:
+            print("[ERROR] 로그인 실패 — OAuth 페이지에 남아 있음 (잘못된 자격증명 or CAPTCHA)")
             return False
 
-        print("[OK] 로그인 성공")
+        print(f"[OK] 로그인 성공 → {final_url}")
         return True
 
     except Exception as e:
@@ -250,8 +305,8 @@ def collect_all_pages(page, max_pages: int = 50) -> list[dict]:
             page.goto(url, timeout=20_000)
             page.wait_for_load_state("networkidle", timeout=15_000)
 
-            # 세션 만료 체크
-            if "signin" in page.url or "login" in page.url:
+            # 세션 만료 체크 (OAuth 리다이렉트 감지)
+            if HIVE_OAUTH_DOMAIN in page.url:
                 print(f"  [WARN] 세션 만료 감지 (page {page_no}) → 중단")
                 break
 
