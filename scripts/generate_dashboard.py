@@ -821,14 +821,23 @@ def generate():
     now       = datetime.now(KST).strftime("%Y-%m-%d %H:%M KST")
     latest    = all_d[0] if all_d else ""
 
+    # [FIX-DATE] report_date = latest - 1일 (전일 기준 리포트)
+    if all_d:
+        _latest_dt  = datetime.strptime(all_d[0], "%Y-%m-%d")
+        _report_dt  = _latest_dt - timedelta(days=1)
+        report_date = _report_dt.strftime("%Y-%m-%d")
+        default_date = report_date if report_date in all_d else all_d[0]
+    else:
+        default_date = ""
+
     date_opts = "".join(
-        f'<option value="{d}"{" selected" if i==0 else ""}>{d}</option>\n'
-        for i, d in enumerate(all_d)
+        f'<option value="{d}"{" selected" if d == default_date else ""}>{d}</option>\n'
+        for d in all_d
     )
 
     panels_html = ""
     for date_str in voc_dates:   # voc_dates now includes analyzed-only dates
-        is_first = (date_str == latest)
+        is_first = (date_str == default_date)
         panels_html += f"""
         <div id="panel-{date_str}" class="date-panel" style="display:{'block' if is_first else 'none'}">
           <div id="D-{date_str}" class="period-panel" style="display:block">{build_report(date_str,"daily",voc_dates)}</div>

@@ -192,10 +192,14 @@ def aggregate(records: list, target_dates: list) -> dict:
 
 # ── analyzed.json 업데이트 ────────────────────────────────────────────────────
 def update_analyzed(target_date: str, records: list) -> bool:
-    json_path = DATA_DIR / f"{target_date}.analyzed.json"
+    # report_date = target_date - 1일 (전일 기준 리포트)
+    report_date = (datetime.strptime(target_date, "%Y-%m-%d") - timedelta(days=1)).strftime("%Y-%m-%d")
+    json_path = DATA_DIR / f"{report_date}.analyzed.json"
     if not json_path.exists():
-        print(f"[ERROR] {json_path} 없음")
+        print(f"[ERROR] {json_path} 없음 (target_date={target_date}, report_date={report_date})")
         return False
+
+    print(f"[INFO] target_date={target_date} → report_date={report_date}")
 
     with open(json_path, encoding="utf-8") as f:
         data = json.load(f)
@@ -217,8 +221,23 @@ def update_analyzed(target_date: str, records: list) -> bool:
 
     data["cs_week_trend"] = trend
 
-    # ── cs_inquiries 업데이트 (카테고리별 당일 집계) ──
-    cs_inqs = build_cs_inquiries(records, target_date)
+    # ── cs_daily (report_date 기준 인입/처리) ──
+    report_recv = sum(1 for r in records if r.get("received") == report_date)
+    report_proc = sum(
+        1 for r in records
+        if r.get("status") not in UNPROCESSED
+        and r.get("completed") == report_date
+    )
+    data["cs_daily"] = {"received": report_recv, "processed": report_proc}
+
+    # ── cs_status_counts (전체 수집 건 기준 상태별 집계) ──
+    status_counts: defaultdict[str, int] = defaultdict(int)
+    for r in records:
+        status_counts[r.get("status", "")] += 1
+    data["cs_status_counts"] = dict(status_counts)
+
+    # ── cs_inquiries (report_date 기준 필터링, 카테고리별 집계) ──
+    cs_inqs = build_cs_inquiries(records, report_date)
     data["cs_inquiries"] = cs_inqs
 
     with open(json_path, "w", encoding="utf-8") as f:
@@ -226,6 +245,11 @@ def update_analyzed(target_date: str, records: list) -> bool:
 
     # ── 출력 요약 ──
     print(f"[OK] {json_path.name} 업데이트 완료")
+    print(f"\n  cs_daily (report_date={report_date}):")
+    print(f"    인입={report_recv}건, 처리={report_proc}건")
+    print(f"\n  cs_status_counts:")
+    for st, cnt in sorted(data["cs_status_counts"].items()):
+        print(f"    {st}: {cnt}건")
     print(f"\n  cs_week_trend:")
     print(f"  {'날짜':^12} {'인입':>4} {'처리':>4} {'처리율':>6}")
     print("  " + "-" * 32)

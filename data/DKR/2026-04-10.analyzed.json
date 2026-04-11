@@ -34,42 +34,67 @@
       ]
     }
   ],
-  "cs_inquiries": [],
+  "cs_inquiries": [
+    {
+      "category": "이벤트",
+      "count": 1,
+      "pending": 1,
+      "representative": [
+        {
+          "title": "[원스토어/안내] 봄맞이 쿠폰 이벤트_4/15(수)~4/19(일)",
+          "status": "접수 완료",
+          "date": "2026-04-10"
+        }
+      ]
+    },
+    {
+      "category": "기타",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "[제품 변경사항] 2026년 6월 1일 이후 BigQuery에서 legacy SQL을 더 이상 사용할 수 없",
+          "status": "관리자 삭제",
+          "date": "2026-04-10"
+        }
+      ]
+    }
+  ],
   "cs_week_trend": [
     {
       "date": "2026-04-04",
-      "received": 0,
+      "received": 3,
       "processed": 0
     },
     {
       "date": "2026-04-05",
-      "received": 0,
+      "received": 1,
       "processed": 0
     },
     {
       "date": "2026-04-06",
-      "received": 0,
-      "processed": 0
+      "received": 5,
+      "processed": 5
     },
     {
       "date": "2026-04-07",
-      "received": 0,
-      "processed": 0
+      "received": 5,
+      "processed": 2
     },
     {
       "date": "2026-04-08",
-      "received": 0,
-      "processed": 0
+      "received": 4,
+      "processed": 5
     },
     {
       "date": "2026-04-09",
-      "received": 0,
-      "processed": 0
+      "received": 3,
+      "processed": 3
     },
     {
       "date": "2026-04-10",
-      "received": 0,
-      "processed": 0
+      "received": 2,
+      "processed": 3
     }
   ],
   "insights": {
@@ -112,5 +137,15 @@
     },
     "trending_keywords": [],
     "prev_date": "2026-04-08"
+  },
+  "cs_daily": {
+    "received": 2,
+    "processed": 3
+  },
+  "cs_status_counts": {
+    "접수 완료": 1,
+    "관리자 삭제": 5,
+    "답변 완료": 12,
+    "조회 완료": 7
   }
 }
