@@ -690,42 +690,64 @@ def build_section_cs(
         </div>
         {dnt_js}"""
 
-    # ── 당일 문의 상세 (기존 로직 유지) ──
-    if not cs_inquiries:
-        detail_html = "<p class='empty-s' style='color:#888;font-size:12px'>당일 DKR 문의 없음</p>"
-    else:
-        by_cat = {c: [] for c in CS_CAT_ORDER}
-        for item in cs_inquiries:
-            cat = item.get("category", "기타")
-            by_cat.setdefault(cat, []).append(item)
+    # [FIX-CS05] detail_html은 05 섹션(build_section_cs_detail)으로 분리
+    if not trend_html:
+        return """
+        <div class="cs-placeholder">
+          <p>📋 Hive 콘솔에서 당일 문의 데이터를 수동으로 업데이트해 주세요.</p>
+          <p class="cs-hint">→ console.withhive.com → 문의 목록 → 한국어 → 전체 검색</p>
+        </div>"""
 
-        rows = ""
-        for cat in CS_CAT_ORDER:
-            items = by_cat.get(cat, [])
-            if not items:
-                continue
-            total = sum(x.get("count", 1) for x in items)
-            content = ""
-            for item in items:
-                summ = item.get("summary", "")
-                cnt  = item.get("count", 1)
+    return trend_html
+
+
+# ── 05 CS 상세 문의 ──────────────────────────────────────────────
+def build_section_cs_detail(cs_inquiries: list[dict]) -> str:
+    """CS 상세 문의 테이블 — representative 키 기반 렌더링 (05 섹션)"""
+    if not cs_inquiries:
+        return "<p class='empty-s' style='color:#888;font-size:12px'>당일 DKR 문의 없음</p>"
+
+    by_cat = {c: [] for c in CS_CAT_ORDER}
+    for item in cs_inquiries:
+        cat = item.get("category", "기타")
+        by_cat.setdefault(cat, []).append(item)
+
+    rows = ""
+    for cat in CS_CAT_ORDER:
+        items = by_cat.get(cat, [])
+        if not items:
+            continue
+        total = sum(x.get("count", 1) for x in items)
+        content = ""
+        for item in items:
+            # [FIX-representative] "summary" 키 없음 → representative 리스트 사용
+            representative = item.get("representative", [])
+            if representative:
+                summ = representative[0].get("title", "")[:60]
+                sub_items = [
+                    f"{r.get('title', '')[:50]} [{r.get('status', '')}]"
+                    for r in representative[1:]
+                ]
+            else:
+                summ      = item.get("summary", "")
                 sub_items = item.get("items", [])
-                sub_html = ""
-                if sub_items:
-                    sub_html = "<ul class='cs-sub'>" + "".join(f"<li>{s}</li>" for s in sub_items) + "</ul>"
-                cnt_txt = f'<span class="cnt-s">({cnt}건)</span>' if cnt > 1 else ""
-                content += f'<div class="cs-item">{summ}{cnt_txt}{sub_html}</div>'
-            rows += f"""
+            cnt      = item.get("count", 1)
+            sub_html = ""
+            if sub_items:
+                sub_html = "<ul class='cs-sub'>" + "".join(f"<li>{s}</li>" for s in sub_items) + "</ul>"
+            cnt_txt = f'<span class="cnt-s">({cnt}건)</span>' if cnt > 1 else ""
+            content += f'<div class="cs-item">{summ}{cnt_txt}{sub_html}</div>'
+        rows += f"""
             <tr>
               <td class="cat-td">{cat}</td>
               <td class="content-td cs-content">{content}</td>
               <td class="ref-td">{total}건</td>
             </tr>"""
 
-        if not rows:
-            detail_html = "<p class='empty-s'>수집된 문의 없음</p>"
-        else:
-            detail_html = f"""
+    if not rows:
+        return "<p class='empty-s'>수집된 문의 없음</p>"
+
+    return f"""
             <table class="voc-tbl">
               <thead>
                 <tr>
@@ -736,15 +758,6 @@ def build_section_cs(
               </thead>
               <tbody>{rows}</tbody>
             </table>"""
-
-    if not trend_html and not cs_inquiries:
-        return """
-        <div class="cs-placeholder">
-          <p>📋 Hive 콘솔에서 당일 문의 데이터를 수동으로 업데이트해 주세요.</p>
-          <p class="cs-hint">→ console.withhive.com → 문의 목록 → 한국어 → 전체 검색</p>
-        </div>"""
-
-    return trend_html + detail_html
 
 
 # ── 05 CS 동향 ──────────────────────────────────────────────
@@ -788,6 +801,8 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
             + sec("04", "공식 라운지 동향", build_section_voc(
                 analyzed.get("voc_groups", []), raw_map,
                 pfx=f"D{date_str.replace('-','')}_"))
+            + sec("05", "CS 상세 문의",    build_section_cs_detail(
+                analyzed.get("cs_inquiries", [])))
         )
     else:  # weekly
         idx        = all_dates.index(date_str) if date_str in all_dates else 0
@@ -811,6 +826,8 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
             + sec("04", "공식 라운지 동향", build_section_voc(
                 analyzed.get("voc_groups", []), raw_map,
                 pfx=f"W{date_str.replace('-','')}_"))
+            + sec("05", "CS 상세 문의",    build_section_cs_detail(
+                analyzed.get("cs_inquiries", [])))
         )
 
 
@@ -830,9 +847,10 @@ def generate():
     else:
         default_date = ""
 
+    # [FIX-DROPDOWN] report_date 이하 날짜만 드롭다운에 표시 (today 제외)
     date_opts = "".join(
         f'<option value="{d}"{" selected" if d == default_date else ""}>{d}</option>\n'
-        for d in all_d
+        for d in all_d if d <= default_date
     )
 
     panels_html = ""
