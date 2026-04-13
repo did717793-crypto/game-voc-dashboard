@@ -1,32 +1,51 @@
 {
-  "date": "2026-04-11",
+  "date": "2026-04-12",
   "major_issues": [],
   "voc_groups": [],
   "cs_inquiries": [
     {
-      "category": "기타",
+      "category": "오류",
       "count": 2,
       "pending": 2,
       "representative": [
         {
-          "title": "물약",
+          "title": "공속버그",
           "status": "접수 완료",
-          "date": "2026-04-11"
+          "date": "2026-04-12"
         },
         {
-          "title": "신성한장신구강화주문서",
+          "title": "버그신고",
           "status": "접수 완료",
-          "date": "2026-04-11"
+          "date": "2026-04-12"
+        }
+      ]
+    },
+    {
+      "category": "게임 이용",
+      "count": 1,
+      "pending": 1,
+      "representative": [
+        {
+          "title": "던전층수",
+          "status": "접수 완료",
+          "date": "2026-04-12"
+        }
+      ]
+    },
+    {
+      "category": "기타",
+      "count": 1,
+      "pending": 1,
+      "representative": [
+        {
+          "title": "마법인형 영혼 결속 오픈기념패스",
+          "status": "접수 완료",
+          "date": "2026-04-12"
         }
       ]
     }
   ],
   "cs_week_trend": [
-    {
-      "date": "2026-04-05",
-      "received": 0,
-      "processed": 0
-    },
     {
       "date": "2026-04-06",
       "received": 0,
@@ -56,16 +75,21 @@
       "date": "2026-04-11",
       "received": 2,
       "processed": 0
+    },
+    {
+      "date": "2026-04-12",
+      "received": 4,
+      "processed": 0
     }
   ],
   "insights": {
     "top_issues": [],
     "trend": {},
     "trending_keywords": [],
-    "prev_date": "2026-04-10"
+    "prev_date": "2026-04-11"
   },
   "cs_daily": {
-    "received": 2,
+    "received": 4,
     "processed": 0
   },
   "cs_status_counts": {
