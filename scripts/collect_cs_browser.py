@@ -352,25 +352,17 @@ def parse_row(cells: list[str]) -> dict | None:
 # ── 날짜 JS 직접 설정 ────────────────────────────────────────────────────────
 def set_date_range_js(hf, start: str, end: str):
     """
-    날짜 input을 JS로 직접 설정 + change/input 이벤트 트리거.
+    날짜 input을 JS로 직접 설정 (버튼 클릭 방식은 form 반영 불안정).
     start, end: 'YYYY-MM-DD' 형식
     """
     hf.evaluate(f"""
         () => {{
-            function setVal(el, val) {{
-                if (!el) return;
-                var nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
-                if (nativeInputValueSetter) nativeInputValueSetter.call(el, val);
-                else el.value = val;
-                el.dispatchEvent(new Event('input', {{bubbles:true}}));
-                el.dispatchEvent(new Event('change', {{bubbles:true}}));
-            }}
             var sdf = document.querySelector('#search_date, input[name="sdf"]');
             var sds = document.querySelector('input[name="sds"]');
             var sde = document.querySelector('input[name="sde"]');
-            setVal(sdf, '{start} - {end}');
-            setVal(sds, '{start}');
-            setVal(sde, '{end}');
+            if (sdf) sdf.value = '{start} - {end}';
+            if (sds) sds.value = '{start}';
+            if (sde) sde.value = '{end}';
         }}
     """)
     time.sleep(0.3)
@@ -432,22 +424,6 @@ def collect_all_pages(hive_frame, page, start_date: str, end_date: str) -> list[
         if selected != DKR_GAME_ID:
             print("[ERROR] 게임 선택 실패")
             return []
-        # 게임 선택 AJAX 완전 대기
-        try:
-            hive_frame.wait_for_load_state("networkidle", timeout=15_000)
-        except Exception:
-            pass
-        time.sleep(3)
-        print(f"  [OK] 게임 AJAX 완료 대기 완료")
-        # 날짜가 AJAX로 초기화됐을 수 있으므로 현재 날짜 값 확인
-        cur_dates = hive_frame.evaluate("""
-            () => ({
-                sdf: document.querySelector('#search_date, input[name="sdf"]')?.value || '',
-                sds: document.querySelector('input[name="sds"]')?.value || '',
-                sde: document.querySelector('input[name="sde"]')?.value || ''
-            })
-        """)
-        print(f"  [게임AJAX 후 날짜] sdf={cur_dates.get('sdf')} sds={cur_dates.get('sds')} sde={cur_dates.get('sde')}")
     except Exception as e:
         print(f"[ERROR] 게임 선택 예외: {e}")
         return []
@@ -498,19 +474,9 @@ def collect_all_pages(hive_frame, page, start_date: str, end_date: str) -> list[
     if not ss7_off:
         print("[WARN] ss_7 해제 실패 — 결과가 0건으로 나올 수 있음")
 
-    # 4. 날짜 설정 (JS 직접) — 게임 선택 AJAX 후 날짜가 리셋됐을 수 있으므로 재설정
+    # 4. 날짜 설정 (JS 직접)
     print(f"\n[STEP 4] 날짜 JS 설정: {start_date} ~ {end_date}")
     set_date_range_js(hive_frame, start_date, end_date)
-    time.sleep(1)
-    # 날짜 설정 확인
-    confirmed_dates = hive_frame.evaluate("""
-        () => ({
-            sdf: document.querySelector('#search_date, input[name="sdf"]')?.value || '',
-            sds: document.querySelector('input[name="sds"]')?.value || '',
-            sde: document.querySelector('input[name="sde"]')?.value || ''
-        })
-    """)
-    print(f"  [날짜 확인] sdf={confirmed_dates.get('sdf')} sds={confirmed_dates.get('sds')} sde={confirmed_dates.get('sde')}")
 
     # 5(skip). 페이지 크기는 STEP 1-b에서 이미 설정 완료
 
