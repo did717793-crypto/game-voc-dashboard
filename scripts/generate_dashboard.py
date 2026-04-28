@@ -838,19 +838,13 @@ def generate():
     now       = datetime.now(KST).strftime("%Y-%m-%d %H:%M KST")
     latest    = all_d[0] if all_d else ""
 
-    # [FIX-DATE] report_date = latest - 1일 (전일 기준 리포트)
-    if all_d:
-        _latest_dt  = datetime.strptime(all_d[0], "%Y-%m-%d")
-        _report_dt  = _latest_dt - timedelta(days=1)
-        report_date = _report_dt.strftime("%Y-%m-%d")
-        default_date = report_date if report_date in all_d else all_d[0]
-    else:
-        default_date = ""
+    # [FIX-DATE] default = 가장 최신 analyzed 날짜 (all_d[0])
+    default_date = all_d[0] if all_d else ""
 
-    # [FIX-DROPDOWN] report_date 이하 날짜만 드롭다운에 표시 (today 제외)
+    # [FIX-DROPDOWN] analyzed.json 존재하는 모든 날짜 표시 (전체 포함)
     date_opts = "".join(
         f'<option value="{d}"{" selected" if d == default_date else ""}>{d}</option>\n'
-        for d in all_d if d <= default_date
+        for d in all_d
     )
 
     panels_html = ""

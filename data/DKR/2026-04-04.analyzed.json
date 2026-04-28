@@ -30,7 +30,44 @@
       ]
     }
   ],
-  "cs_inquiries": [],
+  "cs_inquiries": [
+    {
+      "category": "오류",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "파이썬의요람 랭킹 오류",
+          "status": "답변 완료",
+          "date": "2026-04-04"
+        }
+      ]
+    },
+    {
+      "category": "건의",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "[다시 돌아온 와썹맨] 제안서 재전달의 건",
+          "status": "관리자 삭제",
+          "date": "2026-04-04"
+        }
+      ]
+    },
+    {
+      "category": "게임 이용",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "전설스킬 추출좀 하게해주세요",
+          "status": "답변 완료",
+          "date": "2026-04-04"
+        }
+      ]
+    }
+  ],
   "cs_week_trend": [
     {
       "date": "2026-03-29",
@@ -59,12 +96,12 @@
     },
     {
       "date": "2026-04-03",
-      "received": 0,
-      "processed": 0
+      "received": 2,
+      "processed": 1
     },
     {
       "date": "2026-04-04",
-      "received": 0,
+      "received": 3,
       "processed": 0
     }
   ],
@@ -113,5 +150,15 @@
       }
     ],
     "prev_date": "2026-04-03"
+  },
+  "cs_daily": {
+    "received": 3,
+    "processed": 0
+  },
+  "cs_status_counts": {
+    "접수 완료": 1,
+    "관리자 삭제": 5,
+    "답변 완료": 12,
+    "조회 완료": 7
   }
 }

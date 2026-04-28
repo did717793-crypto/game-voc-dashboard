@@ -63,7 +63,42 @@
       ]
     }
   ],
-  "cs_inquiries": [],
+  "cs_inquiries": [
+    {
+      "category": "오류",
+      "count": 2,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "재문의:재문의:룬정수버그",
+          "status": "답변 완료",
+          "date": "2026-04-08"
+        },
+        {
+          "title": "재문의:재문의:룬정수버그",
+          "status": "답변 완료",
+          "date": "2026-04-08"
+        }
+      ]
+    },
+    {
+      "category": "게임 이용",
+      "count": 2,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "서버이전권 왜 안내줍니까 씨발",
+          "status": "답변 완료",
+          "date": "2026-04-08"
+        },
+        {
+          "title": "전설스킬북 삭제를 복구받을수있는지 문의드립니다",
+          "status": "조회 완료",
+          "date": "2026-04-08"
+        }
+      ]
+    }
+  ],
   "cs_week_trend": [
     {
       "date": "2026-04-02",
@@ -72,33 +107,33 @@
     },
     {
       "date": "2026-04-03",
-      "received": 0,
-      "processed": 0
+      "received": 2,
+      "processed": 1
     },
     {
       "date": "2026-04-04",
-      "received": 0,
+      "received": 3,
       "processed": 0
     },
     {
       "date": "2026-04-05",
-      "received": 0,
+      "received": 1,
       "processed": 0
     },
     {
       "date": "2026-04-06",
-      "received": 0,
-      "processed": 0
+      "received": 5,
+      "processed": 5
     },
     {
       "date": "2026-04-07",
-      "received": 0,
-      "processed": 0
+      "received": 5,
+      "processed": 2
     },
     {
       "date": "2026-04-08",
-      "received": 0,
-      "processed": 0
+      "received": 4,
+      "processed": 5
     }
   ],
   "insights": {
@@ -141,5 +176,15 @@
     },
     "trending_keywords": [],
     "prev_date": "2026-04-07"
+  },
+  "cs_daily": {
+    "received": 4,
+    "processed": 5
+  },
+  "cs_status_counts": {
+    "접수 완료": 1,
+    "관리자 삭제": 5,
+    "답변 완료": 12,
+    "조회 완료": 7
   }
 }
