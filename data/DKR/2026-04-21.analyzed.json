@@ -1,0 +1,67 @@
+{
+  "date": "2026-04-21",
+  "period": "2026-04-21 ~ 2026-04-21",
+  "voc_count": 0,
+  "voc_posts": [],
+  "top_issues": [],
+  "sentiment": {},
+  "keywords": [],
+  "cs_week_trend": [
+    {
+      "date": "2026-04-15",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-16",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-17",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-18",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-19",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-20",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-21",
+      "received": 1,
+      "processed": 0
+    }
+  ],
+  "cs_daily": {
+    "received": 1,
+    "processed": 0
+  },
+  "cs_status_counts": {
+    "접수 완료": 2
+  },
+  "cs_inquiries": [
+    {
+      "category": "건의",
+      "count": 1,
+      "pending": 1,
+      "representative": [
+        {
+          "title": "신청인의 검토의견에 대한 재답변서 요청(2026-05959)",
+          "status": "접수 완료",
+          "date": "2026-04-21"
+        }
+      ]
+    }
+  ]
+}
