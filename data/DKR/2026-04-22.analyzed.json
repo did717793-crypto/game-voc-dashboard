@@ -1,0 +1,96 @@
+{
+  "date": "2026-04-22",
+  "period": "2026-04-22 ~ 2026-04-22",
+  "voc_count": 0,
+  "voc_posts": [],
+  "top_issues": [],
+  "sentiment": {},
+  "keywords": [],
+  "cs_week_trend": [
+    {
+      "date": "2026-04-16",
+      "received": 7,
+      "processed": 4
+    },
+    {
+      "date": "2026-04-17",
+      "received": 2,
+      "processed": 6
+    },
+    {
+      "date": "2026-04-18",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-19",
+      "received": 5,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-20",
+      "received": 6,
+      "processed": 10
+    },
+    {
+      "date": "2026-04-21",
+      "received": 19,
+      "processed": 12
+    },
+    {
+      "date": "2026-04-22",
+      "received": 5,
+      "processed": 11
+    }
+  ],
+  "cs_daily": {
+    "received": 5,
+    "processed": 11
+  },
+  "cs_status_counts": {
+    "답변 완료": 35,
+    "삭제": 1,
+    "조회 완료": 31
+  },
+  "cs_inquiries": [
+    {
+      "category": "결제",
+      "count": 3,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "결제오류",
+          "status": "조회 완료",
+          "date": "2026-04-22"
+        },
+        {
+          "title": "재문의:결제오류",
+          "status": "답변 완료",
+          "date": "2026-04-22"
+        },
+        {
+          "title": "19일 패키지구매",
+          "status": "조회 완료",
+          "date": "2026-04-22"
+        }
+      ]
+    },
+    {
+      "category": "기타",
+      "count": 2,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "재문의:사냥좀 하자 시발럼들아",
+          "status": "답변 완료",
+          "date": "2026-04-22"
+        },
+        {
+          "title": "재문의:재문의:신화인형 자동수락 현상",
+          "status": "답변 완료",
+          "date": "2026-04-22"
+        }
+      ]
+    }
+  ]
+}

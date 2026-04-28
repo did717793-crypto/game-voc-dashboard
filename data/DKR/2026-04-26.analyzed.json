@@ -1,0 +1,81 @@
+{
+  "date": "2026-04-26",
+  "period": "2026-04-26 ~ 2026-04-26",
+  "voc_count": 0,
+  "voc_posts": [],
+  "top_issues": [],
+  "sentiment": {},
+  "keywords": [],
+  "cs_week_trend": [
+    {
+      "date": "2026-04-20",
+      "received": 6,
+      "processed": 10
+    },
+    {
+      "date": "2026-04-21",
+      "received": 19,
+      "processed": 12
+    },
+    {
+      "date": "2026-04-22",
+      "received": 5,
+      "processed": 11
+    },
+    {
+      "date": "2026-04-23",
+      "received": 4,
+      "processed": 5
+    },
+    {
+      "date": "2026-04-24",
+      "received": 8,
+      "processed": 8
+    },
+    {
+      "date": "2026-04-25",
+      "received": 2,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-26",
+      "received": 2,
+      "processed": 0
+    }
+  ],
+  "cs_daily": {
+    "received": 2,
+    "processed": 0
+  },
+  "cs_status_counts": {
+    "답변 완료": 35,
+    "삭제": 1,
+    "조회 완료": 31
+  },
+  "cs_inquiries": [
+    {
+      "category": "계정",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "거래소 이용 네이버 계정",
+          "status": "답변 완료",
+          "date": "2026-04-26"
+        }
+      ]
+    },
+    {
+      "category": "기타",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "귓말안가짐",
+          "status": "삭제",
+          "date": "2026-04-26"
+        }
+      ]
+    }
+  ]
+}

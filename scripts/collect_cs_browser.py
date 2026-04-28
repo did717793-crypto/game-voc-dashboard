@@ -341,6 +341,7 @@ def parse_row(cells: list[str]) -> dict | None:
     return {
         "title":     cells[5].strip(),
         "category":  cells[4].strip(),
+        "game":      cells[3].strip(),          # 게임명 (DK : REBORN / ETC 등) — 필터용
         "path":      cells[2].strip(),
         "uid":       cells[6].strip().split("\n")[0],
         "received":  received,
@@ -619,9 +620,85 @@ def collect_all_pages(hive_frame, page, start_date: str, end_date: str) -> list[
 
 
 # ── 메인 ─────────────────────────────────────────────────────────────────────
+def collect_pages_get_url(hf, start_date: str, end_date: str) -> tuple[list, list]:
+    """
+    GET URL 직접 호출 방식으로 특정 날짜 범위 수집.
+    검증된 방식 (2026-04-28): sds/sde 파라미터가 서버에 정확히 적용됨.
+
+    반환: (전체 records, DK:REBORN 필터 records)
+    """
+    from collections import Counter
+
+    # 검증된 GET URL 템플릿
+    GET_URL_TMPL = (
+        "https://inquiry.withhive.com/inquiry?"
+        "menu_cd=415&company_cd=342&lang=0014010001"
+        f"&sg={DKR_GAME_ID}"
+        "&sc=-1&sc3=-1&qs=&si=-1&sa=-1&detail_sc=-1&gsi=-1"
+        "&sf_1=on&sf_2=on&sf_3=on&sf_4=on&sf_5=on&sf_6=on&sf_7=on&sf_8=on&sf_9=on"
+        "&sdf={sdf}&sds={sds}&sde={sde}"
+        "&ss_1=on&ss_2=on&ss_3=on&ss_4=on&ss_5=on&ss_6=on"
+        "&sst=-1&stx=&agent=-1&modiCompany=-1&modiLanguage=-1"
+        "&sd_date=st&spc=200&page={page}"
+    )
+
+    sdf = f"{start_date}+--+{end_date}".replace("-", "-")
+    sdf_display = f"{start_date} - {end_date}"
+    all_records = []
+    page_no = 1
+
+    url = GET_URL_TMPL.format(sdf=sdf_display.replace(" ", "+"), sds=start_date, sde=end_date, page=1)
+    print(f"  [GET URL] {url[:130]}...")
+    hf.goto(url, timeout=15_000)
+    time.sleep(4)
+
+    body = hf.inner_text("body")
+    m = re.search(r"검색\s*건수\s*:?\s*([\d,]+)", body)
+    total = int(m.group(1).replace(",", "")) if m else 0
+    dates_v = hf.evaluate("""() => ({
+        sds: document.querySelector('input[name="sds"]')?.value || '',
+        sde: document.querySelector('input[name="sde"]')?.value || ''
+    })""")
+    print(f"  서버 적용 날짜: {dates_v['sds']} ~ {dates_v['sde']}")
+    print(f"  총 건수: {total}건")
+
+    if total == 0:
+        return [], []
+
+    while True:
+        rows = hf.evaluate("""
+            () => Array.from(document.querySelectorAll('table tbody tr')).map(row =>
+                Array.from(row.querySelectorAll('td')).map(c => c.innerText.trim())
+            ).filter(c => c.some(t => /\\d{4}-\\d{2}-\\d{2}/.test(t)) && c.length >= 10)
+        """)
+        page_records = [r for r in (parse_row(row) for row in rows) if r]
+        all_records.extend(page_records)
+        print(f"  [PAGE {page_no}] {len(page_records)}건 (누적: {len(all_records)}/{total})")
+
+        if len(all_records) >= total:
+            break
+
+        page_no += 1
+        url_next = GET_URL_TMPL.format(sdf=sdf_display.replace(" ", "+"), sds=start_date, sde=end_date, page=page_no)
+        hf.goto(url_next, timeout=15_000)
+        time.sleep(3)
+
+    # DK : REBORN 필터 (이중 안전장치)
+    dkr_records  = [r for r in all_records if r.get("game", "") == "DK : REBORN"]
+    other_cnt    = Counter(r.get("game", "?") for r in all_records if r.get("game") != "DK : REBORN")
+
+    print(f"\n  [필터]")
+    print(f"  total_raw    = {len(all_records)}건")
+    print(f"  filtered_raw = {len(dkr_records)}건 (DK : REBORN only)")
+    if other_cnt:
+        print(f"  제외 게임: {dict(other_cnt)}")
+
+    return all_records, dkr_records
+
+
 def main():
     today = datetime.now(KST).strftime("%Y-%m-%d")
-    parser = argparse.ArgumentParser(description="DKR CS 브라우저 자동 수집 v2.2")
+    parser = argparse.ArgumentParser(description="DKR CS 브라우저 자동 수집 v2.3")
     parser.add_argument("--date", "-d",
                         default=today,
                         help="분석 기준 날짜 (기본: 오늘 KST)")
@@ -633,6 +710,8 @@ def main():
                         help="수집 종료일 (기본: 오늘)")
     parser.add_argument("--headed", action="store_true", help="브라우저 창 표시")
     parser.add_argument("--no-analyze", action="store_true", help="raw 저장만")
+    parser.add_argument("--get-url", action="store_true",
+                        help="GET URL 직접 호출 방식 사용 (날짜 범위 정확 적용)")
     args = parser.parse_args()
 
     target_date = args.date
@@ -669,7 +748,15 @@ def main():
             browser.close()
             sys.exit(1)
 
-        records = collect_all_pages(hf, page, start_date=start_date, end_date=end_date)
+        if args.get_url:
+            # ── GET URL 방식 (날짜 범위 정확 적용) ──
+            print(f"\n[MODE] GET URL 직접 호출 방식 (sds={start_date} ~ sde={end_date})")
+            all_records, records = collect_pages_get_url(hf, start_date=start_date, end_date=end_date)
+        else:
+            # ── 기존 UI 방식 ──
+            all_records = collect_all_pages(hf, page, start_date=start_date, end_date=end_date)
+            records = all_records
+
         browser.close()
 
     if not records:
@@ -678,10 +765,15 @@ def main():
 
     # 저장
     payload = {
-        "collected_at": datetime.now(KST).isoformat(),
-        "target_date":  target_date,
-        "total":        len(records),
-        "records":      records,
+        "collected_at":  datetime.now(KST).isoformat(),
+        "target_date":   target_date,
+        "start_date":    start_date,
+        "end_date":      end_date,
+        "total_raw":     len(all_records) if args.get_url else len(records),
+        "filtered_raw":  len(records) if args.get_url else len(records),
+        "filter":        "game == 'DK : REBORN'" if args.get_url else "none",
+        "total":         len(records),
+        "records":       records,
     }
     out_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"\n[OK] 저장 완료 → {out_file.name} ({len(records)}건)")

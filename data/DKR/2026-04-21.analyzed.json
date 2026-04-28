@@ -1,0 +1,125 @@
+{
+  "date": "2026-04-21",
+  "period": "2026-04-21 ~ 2026-04-21",
+  "voc_count": 0,
+  "voc_posts": [],
+  "top_issues": [],
+  "sentiment": {},
+  "keywords": [],
+  "cs_week_trend": [
+    {
+      "date": "2026-04-15",
+      "received": 1,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-16",
+      "received": 7,
+      "processed": 4
+    },
+    {
+      "date": "2026-04-17",
+      "received": 2,
+      "processed": 6
+    },
+    {
+      "date": "2026-04-18",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-19",
+      "received": 5,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-20",
+      "received": 6,
+      "processed": 10
+    },
+    {
+      "date": "2026-04-21",
+      "received": 19,
+      "processed": 12
+    }
+  ],
+  "cs_daily": {
+    "received": 19,
+    "processed": 12
+  },
+  "cs_status_counts": {
+    "답변 완료": 35,
+    "삭제": 1,
+    "조회 완료": 31
+  },
+  "cs_inquiries": [
+    {
+      "category": "결제",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "결제오류",
+          "status": "조회 완료",
+          "date": "2026-04-21"
+        }
+      ]
+    },
+    {
+      "category": "오류",
+      "count": 2,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "버그로 인한문의를 했는데 자꾸 이상한소리 하네요",
+          "status": "답변 완료",
+          "date": "2026-04-21"
+        },
+        {
+          "title": "신화 마법인형 합성성공 버그",
+          "status": "조회 완료",
+          "date": "2026-04-21"
+        }
+      ]
+    },
+    {
+      "category": "게임 이용",
+      "count": 2,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "스킬",
+          "status": "조회 완료",
+          "date": "2026-04-21"
+        },
+        {
+          "title": "던전 자동 클리어가 안돼요",
+          "status": "답변 완료",
+          "date": "2026-04-21"
+        }
+      ]
+    },
+    {
+      "category": "기타",
+      "count": 14,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "사냥좀 하자 시발럼들아",
+          "status": "조회 완료",
+          "date": "2026-04-21"
+        },
+        {
+          "title": "재문의:재문의:신화인형 자동수락 현상",
+          "status": "답변 완료",
+          "date": "2026-04-21"
+        },
+        {
+          "title": "재문의:재문의:신화인형 자동수락 현상",
+          "status": "답변 완료",
+          "date": "2026-04-21"
+        }
+      ]
+    }
+  ]
+}

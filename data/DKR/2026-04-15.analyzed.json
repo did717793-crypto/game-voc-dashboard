@@ -1,0 +1,69 @@
+{
+  "date": "2026-04-15",
+  "period": "2026-04-15 ~ 2026-04-15",
+  "voc_count": 0,
+  "voc_posts": [],
+  "top_issues": [],
+  "sentiment": {},
+  "keywords": [],
+  "cs_week_trend": [
+    {
+      "date": "2026-04-09",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-10",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-11",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-12",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-13",
+      "received": 5,
+      "processed": 2
+    },
+    {
+      "date": "2026-04-14",
+      "received": 1,
+      "processed": 3
+    },
+    {
+      "date": "2026-04-15",
+      "received": 1,
+      "processed": 0
+    }
+  ],
+  "cs_daily": {
+    "received": 1,
+    "processed": 0
+  },
+  "cs_status_counts": {
+    "답변 완료": 35,
+    "삭제": 1,
+    "조회 완료": 31
+  },
+  "cs_inquiries": [
+    {
+      "category": "기타",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "패키지상품",
+          "status": "답변 완료",
+          "date": "2026-04-15"
+        }
+      ]
+    }
+  ]
+}
