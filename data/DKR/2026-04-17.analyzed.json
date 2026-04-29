@@ -32,44 +32,6 @@
       ]
     }
   ],
-  "cs_inquiries": [],
-  "cs_week_trend": [
-    {
-      "date": "2026-04-11",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-12",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-13",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-14",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-15",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-16",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-17",
-      "received": 0,
-      "processed": 0
-    }
-  ],
   "insights": {
     "top_issues": [
       {
@@ -92,15 +54,15 @@
       }
     ],
     "trend": {
-      "건의·요청": {
-        "current": 4,
-        "previous": 2,
-        "delta": 2
-      },
       "기타": {
         "current": 1,
         "previous": 0,
         "delta": 1
+      },
+      "건의·요청": {
+        "current": 4,
+        "previous": 2,
+        "delta": 2
       }
     },
     "trending_keywords": [
@@ -110,5 +72,77 @@
       }
     ],
     "prev_date": "2026-04-16"
-  }
+  },
+  "cs_daily": {
+    "received": 2,
+    "processed": 6
+  },
+  "cs_status_counts": {
+    "답변 완료": 35,
+    "삭제": 1,
+    "조회 완료": 31
+  },
+  "cs_inquiries": [
+    {
+      "category": "오류",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "버그",
+          "status": "조회 완료",
+          "date": "2026-04-17"
+        }
+      ]
+    },
+    {
+      "category": "기타",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "연금석연마",
+          "status": "조회 완료",
+          "date": "2026-04-17"
+        }
+      ]
+    }
+  ],
+  "cs_week_trend": [
+    {
+      "date": "2026-04-11",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-12",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-13",
+      "received": 5,
+      "processed": 2
+    },
+    {
+      "date": "2026-04-14",
+      "received": 1,
+      "processed": 3
+    },
+    {
+      "date": "2026-04-15",
+      "received": 1,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-16",
+      "received": 7,
+      "processed": 4
+    },
+    {
+      "date": "2026-04-17",
+      "received": 2,
+      "processed": 6
+    }
+  ]
 }

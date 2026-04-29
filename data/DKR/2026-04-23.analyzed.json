@@ -74,44 +74,6 @@
       ]
     }
   ],
-  "cs_inquiries": [],
-  "cs_week_trend": [
-    {
-      "date": "2026-04-17",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-18",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-19",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-20",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-21",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-22",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-23",
-      "received": 0,
-      "processed": 0
-    }
-  ],
   "insights": {
     "top_issues": [
       {
@@ -139,6 +101,11 @@
         "previous": 2,
         "delta": -2
       },
+      "기타": {
+        "current": 3,
+        "previous": 0,
+        "delta": 3
+      },
       "게임 관련": {
         "current": 3,
         "previous": 4,
@@ -148,14 +115,98 @@
         "current": 6,
         "previous": 1,
         "delta": 5
-      },
-      "기타": {
-        "current": 3,
-        "previous": 0,
-        "delta": 3
       }
     },
     "trending_keywords": [],
     "prev_date": "2026-04-22"
-  }
+  },
+  "cs_daily": {
+    "received": 4,
+    "processed": 5
+  },
+  "cs_status_counts": {
+    "답변 완료": 35,
+    "삭제": 1,
+    "조회 완료": 31
+  },
+  "cs_inquiries": [
+    {
+      "category": "게임 이용",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "재문의:스킬",
+          "status": "조회 완료",
+          "date": "2026-04-23"
+        }
+      ]
+    },
+    {
+      "category": "이벤트",
+      "count": 2,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "잊혀진탑 보상누락",
+          "status": "조회 완료",
+          "date": "2026-04-23"
+        },
+        {
+          "title": "큐브룰렛이벤트",
+          "status": "답변 완료",
+          "date": "2026-04-23"
+        }
+      ]
+    },
+    {
+      "category": "기타",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "이상함",
+          "status": "답변 완료",
+          "date": "2026-04-23"
+        }
+      ]
+    }
+  ],
+  "cs_week_trend": [
+    {
+      "date": "2026-04-17",
+      "received": 2,
+      "processed": 6
+    },
+    {
+      "date": "2026-04-18",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-19",
+      "received": 5,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-20",
+      "received": 6,
+      "processed": 10
+    },
+    {
+      "date": "2026-04-21",
+      "received": 19,
+      "processed": 12
+    },
+    {
+      "date": "2026-04-22",
+      "received": 5,
+      "processed": 11
+    },
+    {
+      "date": "2026-04-23",
+      "received": 4,
+      "processed": 5
+    }
+  ]
 }

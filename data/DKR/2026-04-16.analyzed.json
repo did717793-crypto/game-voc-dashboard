@@ -24,44 +24,6 @@
       ]
     }
   ],
-  "cs_inquiries": [],
-  "cs_week_trend": [
-    {
-      "date": "2026-04-10",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-11",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-12",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-13",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-14",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-15",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-16",
-      "received": 0,
-      "processed": 0
-    }
-  ],
   "insights": {
     "top_issues": [
       {
@@ -80,5 +42,104 @@
     },
     "trending_keywords": [],
     "prev_date": "2026-04-15"
-  }
+  },
+  "cs_daily": {
+    "received": 7,
+    "processed": 4
+  },
+  "cs_status_counts": {
+    "답변 완료": 35,
+    "삭제": 1,
+    "조회 완료": 31
+  },
+  "cs_inquiries": [
+    {
+      "category": "오류",
+      "count": 4,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "오류안내",
+          "status": "조회 완료",
+          "date": "2026-04-16"
+        },
+        {
+          "title": "재문의:미션보상 오류",
+          "status": "조회 완료",
+          "date": "2026-04-16"
+        },
+        {
+          "title": "미션보상 오류",
+          "status": "조회 완료",
+          "date": "2026-04-16"
+        }
+      ]
+    },
+    {
+      "category": "이벤트",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "이벤트관련 카운팅이전부안되요",
+          "status": "답변 완료",
+          "date": "2026-04-16"
+        }
+      ]
+    },
+    {
+      "category": "기타",
+      "count": 2,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "이상현상",
+          "status": "답변 완료",
+          "date": "2026-04-16"
+        },
+        {
+          "title": "미션카운팅안돼요",
+          "status": "답변 완료",
+          "date": "2026-04-16"
+        }
+      ]
+    }
+  ],
+  "cs_week_trend": [
+    {
+      "date": "2026-04-10",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-11",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-12",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-13",
+      "received": 5,
+      "processed": 2
+    },
+    {
+      "date": "2026-04-14",
+      "received": 1,
+      "processed": 3
+    },
+    {
+      "date": "2026-04-15",
+      "received": 1,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-16",
+      "received": 7,
+      "processed": 4
+    }
+  ]
 }

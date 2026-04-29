@@ -39,7 +39,99 @@
       ]
     }
   ],
-  "cs_inquiries": [],
+  "insights": {
+    "top_issues": [
+      {
+        "category": "버그·오류",
+        "summary": "게임 내 기능 오류 보고",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7535137"
+      },
+      {
+        "category": "버그·오류",
+        "summary": "지금 스킬 효과 미적용 현상",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7534473"
+      },
+      {
+        "category": "건의·요청",
+        "summary": "게임 개선 의견 제출",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7532880"
+      }
+    ],
+    "trend": {
+      "버그·오류": {
+        "current": 2,
+        "previous": 2,
+        "delta": 0
+      },
+      "건의·요청": {
+        "current": 2,
+        "previous": 0,
+        "delta": 2
+      }
+    },
+    "trending_keywords": [],
+    "prev_date": "2026-04-12"
+  },
+  "cs_daily": {
+    "received": 5,
+    "processed": 2
+  },
+  "cs_status_counts": {
+    "답변 완료": 35,
+    "삭제": 1,
+    "조회 완료": 31
+  },
+  "cs_inquiries": [
+    {
+      "category": "오류",
+      "count": 2,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "투력 버그",
+          "status": "답변 완료",
+          "date": "2026-04-13"
+        },
+        {
+          "title": "재문의:재문의:재문의:룬정수버그",
+          "status": "답변 완료",
+          "date": "2026-04-13"
+        }
+      ]
+    },
+    {
+      "category": "게임 이용",
+      "count": 2,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "시련던전",
+          "status": "답변 완료",
+          "date": "2026-04-13"
+        },
+        {
+          "title": "시련던전",
+          "status": "답변 완료",
+          "date": "2026-04-13"
+        }
+      ]
+    },
+    {
+      "category": "기타",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "신성주문서로",
+          "status": "답변 완료",
+          "date": "2026-04-13"
+        }
+      ]
+    }
+  ],
   "cs_week_trend": [
     {
       "date": "2026-04-07",
@@ -73,44 +165,8 @@
     },
     {
       "date": "2026-04-13",
-      "received": 0,
-      "processed": 0
+      "received": 5,
+      "processed": 2
     }
-  ],
-  "insights": {
-    "top_issues": [
-      {
-        "category": "버그·오류",
-        "summary": "게임 내 기능 오류 보고",
-        "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7535137"
-      },
-      {
-        "category": "버그·오류",
-        "summary": "지금 스킬 효과 미적용 현상",
-        "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7534473"
-      },
-      {
-        "category": "건의·요청",
-        "summary": "게임 개선 의견 제출",
-        "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7532880"
-      }
-    ],
-    "trend": {
-      "건의·요청": {
-        "current": 2,
-        "previous": 0,
-        "delta": 2
-      },
-      "버그·오류": {
-        "current": 2,
-        "previous": 2,
-        "delta": 0
-      }
-    },
-    "trending_keywords": [],
-    "prev_date": "2026-04-12"
-  }
+  ]
 }

@@ -12,44 +12,6 @@
       ]
     }
   ],
-  "cs_inquiries": [],
-  "cs_week_trend": [
-    {
-      "date": "2026-04-12",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-13",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-14",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-15",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-16",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-17",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-18",
-      "received": 0,
-      "processed": 0
-    }
-  ],
   "insights": {
     "top_issues": [
       {
@@ -73,5 +35,52 @@
     },
     "trending_keywords": [],
     "prev_date": "2026-04-17"
-  }
+  },
+  "cs_daily": {
+    "received": 0,
+    "processed": 0
+  },
+  "cs_status_counts": {
+    "답변 완료": 35,
+    "삭제": 1,
+    "조회 완료": 31
+  },
+  "cs_inquiries": [],
+  "cs_week_trend": [
+    {
+      "date": "2026-04-12",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-13",
+      "received": 5,
+      "processed": 2
+    },
+    {
+      "date": "2026-04-14",
+      "received": 1,
+      "processed": 3
+    },
+    {
+      "date": "2026-04-15",
+      "received": 1,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-16",
+      "received": 7,
+      "processed": 4
+    },
+    {
+      "date": "2026-04-17",
+      "received": 2,
+      "processed": 6
+    },
+    {
+      "date": "2026-04-18",
+      "received": 0,
+      "processed": 0
+    }
+  ]
 }

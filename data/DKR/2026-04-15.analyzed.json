@@ -42,7 +42,59 @@
       ]
     }
   ],
-  "cs_inquiries": [],
+  "insights": {
+    "top_issues": [
+      {
+        "category": "건의·요청",
+        "summary": "좀비길드 금촌1동 스킬 효과 미적용 현상",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7540961"
+      },
+      {
+        "category": "건의·요청",
+        "summary": "게임 개선 의견 제출",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7538766"
+      }
+    ],
+    "trend": {
+      "건의·요청": {
+        "current": 2,
+        "previous": 1,
+        "delta": 1
+      },
+      "버그·오류": {
+        "current": 0,
+        "previous": 1,
+        "delta": -1
+      }
+    },
+    "trending_keywords": [],
+    "prev_date": "2026-04-14"
+  },
+  "cs_daily": {
+    "received": 1,
+    "processed": 0
+  },
+  "cs_status_counts": {
+    "답변 완료": 35,
+    "삭제": 1,
+    "조회 완료": 31
+  },
+  "cs_inquiries": [
+    {
+      "category": "기타",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "패키지상품",
+          "status": "답변 완료",
+          "date": "2026-04-15"
+        }
+      ]
+    }
+  ],
   "cs_week_trend": [
     {
       "date": "2026-04-09",
@@ -66,48 +118,18 @@
     },
     {
       "date": "2026-04-13",
-      "received": 0,
-      "processed": 0
+      "received": 5,
+      "processed": 2
     },
     {
       "date": "2026-04-14",
-      "received": 0,
-      "processed": 0
+      "received": 1,
+      "processed": 3
     },
     {
       "date": "2026-04-15",
-      "received": 0,
+      "received": 1,
       "processed": 0
     }
-  ],
-  "insights": {
-    "top_issues": [
-      {
-        "category": "건의·요청",
-        "summary": "좀비길드 금촌1동 스킬 효과 미적용 현상",
-        "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7540961"
-      },
-      {
-        "category": "건의·요청",
-        "summary": "게임 개선 의견 제출",
-        "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7538766"
-      }
-    ],
-    "trend": {
-      "버그·오류": {
-        "current": 0,
-        "previous": 1,
-        "delta": -1
-      },
-      "건의·요청": {
-        "current": 2,
-        "previous": 1,
-        "delta": 1
-      }
-    },
-    "trending_keywords": [],
-    "prev_date": "2026-04-14"
-  }
+  ]
 }

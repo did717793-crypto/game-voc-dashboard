@@ -2,63 +2,25 @@
   "date": "2026-04-25",
   "major_issues": [],
   "voc_groups": [],
-  "cs_inquiries": [],
-  "cs_week_trend": [
-    {
-      "date": "2026-04-19",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-20",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-21",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-22",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-23",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-24",
-      "received": 0,
-      "processed": 0
-    },
-    {
-      "date": "2026-04-25",
-      "received": 0,
-      "processed": 0
-    }
-  ],
   "insights": {
     "top_issues": [],
     "trend": {
-      "기타": {
+      "버그·오류": {
         "current": 0,
-        "previous": 2,
-        "delta": -2
+        "previous": 6,
+        "delta": -6
       },
       "건의·요청": {
         "current": 0,
         "previous": 4,
         "delta": -4
       },
-      "게임 관련": {
+      "기타": {
         "current": 0,
-        "previous": 6,
-        "delta": -6
+        "previous": 2,
+        "delta": -2
       },
-      "버그·오류": {
+      "게임 관련": {
         "current": 0,
         "previous": 6,
         "delta": -6
@@ -66,5 +28,77 @@
     },
     "trending_keywords": [],
     "prev_date": "2026-04-24"
-  }
+  },
+  "cs_daily": {
+    "received": 2,
+    "processed": 0
+  },
+  "cs_status_counts": {
+    "답변 완료": 35,
+    "삭제": 1,
+    "조회 완료": 31
+  },
+  "cs_inquiries": [
+    {
+      "category": "게임 이용",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "던전 자동클리어가 안돼요",
+          "status": "답변 완료",
+          "date": "2026-04-25"
+        }
+      ]
+    },
+    {
+      "category": "이벤트",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "잊탑 보상",
+          "status": "답변 완료",
+          "date": "2026-04-25"
+        }
+      ]
+    }
+  ],
+  "cs_week_trend": [
+    {
+      "date": "2026-04-19",
+      "received": 5,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-20",
+      "received": 6,
+      "processed": 10
+    },
+    {
+      "date": "2026-04-21",
+      "received": 19,
+      "processed": 12
+    },
+    {
+      "date": "2026-04-22",
+      "received": 5,
+      "processed": 11
+    },
+    {
+      "date": "2026-04-23",
+      "received": 4,
+      "processed": 5
+    },
+    {
+      "date": "2026-04-24",
+      "received": 8,
+      "processed": 8
+    },
+    {
+      "date": "2026-04-25",
+      "received": 2,
+      "processed": 0
+    }
+  ]
 }

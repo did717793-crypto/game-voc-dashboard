@@ -2,7 +2,44 @@
   "date": "2026-04-11",
   "major_issues": [],
   "voc_groups": [],
-  "cs_inquiries": [],
+  "insights": {
+    "top_issues": [],
+    "trend": {
+      "기타": {
+        "current": 0,
+        "previous": 1,
+        "delta": -1
+      }
+    },
+    "trending_keywords": [],
+    "prev_date": "2026-04-10"
+  },
+  "cs_daily": {
+    "received": 2,
+    "processed": 0
+  },
+  "cs_status_counts": {
+    "접수 완료": 11
+  },
+  "cs_inquiries": [
+    {
+      "category": "기타",
+      "count": 2,
+      "pending": 2,
+      "representative": [
+        {
+          "title": "물약",
+          "status": "접수 완료",
+          "date": "2026-04-11"
+        },
+        {
+          "title": "신성한장신구강화주문서",
+          "status": "접수 완료",
+          "date": "2026-04-11"
+        }
+      ]
+    }
+  ],
   "cs_week_trend": [
     {
       "date": "2026-04-05",
@@ -31,25 +68,13 @@
     },
     {
       "date": "2026-04-10",
-      "received": 0,
+      "received": 1,
       "processed": 0
     },
     {
       "date": "2026-04-11",
-      "received": 0,
+      "received": 2,
       "processed": 0
     }
-  ],
-  "insights": {
-    "top_issues": [],
-    "trend": {
-      "기타": {
-        "current": 0,
-        "previous": 1,
-        "delta": -1
-      }
-    },
-    "trending_keywords": [],
-    "prev_date": "2026-04-10"
-  }
+  ]
 }

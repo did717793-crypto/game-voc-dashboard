@@ -698,13 +698,36 @@ def analyze(date_label: str, force: bool = False) -> str:
     cs_week_trend = build_cs_week_trend(date_label)
     insights      = build_insights(date_label, voc_groups, user_posts)
 
+    # ── 기존 analyzed.json에서 CS 필드 보존 (MERGE 방식) ──────────────
+    # collect_cs_data.py가 저장한 cs_daily, cs_status_counts, cs_inquiries,
+    # cs_week_trend 를 덮어쓰지 않도록 기존 값을 먼저 읽어서 유지.
+    existing = {}
+    if analyzed_path.exists():
+        try:
+            with open(analyzed_path, encoding="utf-8") as f:
+                existing = json.load(f)
+        except Exception:
+            existing = {}
+
+    # CS 관련 필드: 기존 값 우선 (없으면 기본값)
+    cs_daily_val        = existing.get("cs_daily",        None)
+    cs_status_val       = existing.get("cs_status_counts", {})
+    cs_inquiries_val    = existing.get("cs_inquiries",    [])
+    # cs_week_trend: collect_cs_data가 덮어쓴 버전이 있으면 그걸 우선 사용
+    # (collect_cs_data의 cs_week_trend가 실 수집 기반으로 더 정확)
+    cs_wt_existing = existing.get("cs_week_trend")
+    cs_week_trend_final = cs_wt_existing if cs_wt_existing else cs_week_trend
+
     analyzed = {
-        "date":          date_label,
-        "major_issues":  major_issues,
-        "voc_groups":    voc_groups,
-        "cs_inquiries":  [],
-        "cs_week_trend": cs_week_trend,
-        "insights":      insights,
+        "date":              date_label,
+        "major_issues":      major_issues,
+        "voc_groups":        voc_groups,
+        "insights":          insights,
+        # CS 필드: 기존 값 보존
+        "cs_daily":          cs_daily_val,
+        "cs_status_counts":  cs_status_val,
+        "cs_inquiries":      cs_inquiries_val,
+        "cs_week_trend":     cs_week_trend_final,
     }
 
     try:
