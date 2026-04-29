@@ -291,9 +291,7 @@ def build_section_voc(voc_groups: list[dict], raw_map: dict, pfx: str = "v") -> 
             if i_item == 0:
                 cat_cell = f'<td class="cat-td" rowspan="{row_count}">{cat}</td>'
 
-            # [FIX-7] 개별 item 링크
-            note_cell = f'<a href="{url}" target="_blank" class="link-btn" onclick="event.stopPropagation()">[링크]</a>'
-
+            # 비고 컬럼 제거: 링크는 raw/analyzed에 유지하되 화면에서만 미노출
             rows += f"""
         <tr>
           {cat_cell}
@@ -306,7 +304,6 @@ def build_section_voc(voc_groups: list[dict], raw_map: dict, pfx: str = "v") -> 
             {exp_div}
           </td>
           <td class="ref-td">{item_cnt}건</td>
-          <td class="note-td">{note_cell}</td>
         </tr>"""
             idx += 1
 
@@ -317,7 +314,6 @@ def build_section_voc(voc_groups: list[dict], raw_map: dict, pfx: str = "v") -> 
           <th style="width:76px">항목</th>
           <th>내용</th>
           <th style="width:52px">건수</th>
-          <th style="width:70px">비고</th>
         </tr>
       </thead>
       <tbody>{rows}</tbody>
@@ -422,16 +418,44 @@ def build_section_cs(
             )
 
         # 도넛 섹션 — 항상 canvas + JS 생성 (데이터 없으면 회색 원으로 표시)
-        _donut_data_js    = _json.dumps([1] if not has_dnt_data else dnt_data_list)
-        _donut_colors_js  = _json.dumps(["rgba(220,220,220,0.4)"] if not has_dnt_data
-                                        else _CS_DONUT_COLORS[:len(CS_CAT_ORDER)])
-        _donut_labels_js  = _json.dumps(CS_CAT_ORDER, ensure_ascii=False)
+        # 0건 유형 제거 후 파이 차트용 데이터 구성
+        if has_dnt_data:
+            _pie_pairs = [(CS_CAT_ORDER[i], dnt_data_list[i], _CS_DONUT_COLORS[i])
+                          for i in range(len(CS_CAT_ORDER)) if dnt_data_list[i] > 0]
+            _pie_labels  = [p[0] for p in _pie_pairs]
+            _pie_data    = [p[1] for p in _pie_pairs]
+            _pie_colors  = [p[2] for p in _pie_pairs]
+        else:
+            _pie_labels  = ["데이터 없음"]
+            _pie_data    = [1]
+            _pie_colors  = ["rgba(220,220,220,0.4)"]
+
+        _donut_data_js    = _json.dumps(_pie_data)
+        _donut_colors_js  = _json.dumps(_pie_colors)
+        _donut_labels_js  = _json.dumps(_pie_labels, ensure_ascii=False)
         _donut_tooltip_fn = (
             "function(c){return '데이터 없음';}"
             if not has_dnt_data else
             "function(c){var t=c.dataset.data.reduce(function(a,b){return a+b;},0);"
             "return c.label+': '+c.parsed+'건 ('+Math.round(c.parsed/t*100)+'%)';}"
         )
+        # 파이 라벨 플러그인 (항상 표시) — 데이터 있을 때만
+        _pie_label_plugin = (
+            "const pieLabelPlugin={id:'pieLabel',afterDatasetsDraw(chart){"
+            "const {ctx,data}=chart;"
+            "chart.getDatasetMeta(0).data.forEach((arc,i)=>{"
+            "const {startAngle,endAngle,outerRadius,x,y}=arc.getProps(['startAngle','endAngle','outerRadius','x','y'],true);"
+            "const mid=(startAngle+endAngle)/2;"
+            "const r=outerRadius*0.65;"
+            "const px=x+Math.cos(mid)*r,py=y+Math.sin(mid)*r;"
+            "const total=data.datasets[0].data.reduce((a,b)=>a+b,0);"
+            "const pct=Math.round(data.datasets[0].data[i]/total*100);"
+            "if(pct<5)return;"
+            "ctx.save();ctx.font='bold 10px sans-serif';ctx.fillStyle='#fff';"
+            "ctx.textAlign='center';ctx.textBaseline='middle';"
+            "ctx.fillText(pct+'%',px,py);ctx.restore();"
+            "});}};"
+        ) if has_dnt_data else "const pieLabelPlugin={};"
 
         dnt_section_html = f"""
       <div>
@@ -460,8 +484,9 @@ def build_section_cs(
       var c=document.getElementById('{dnt_id}');
       if(!c||c._ok)return;c._ok=true;
       var hasData={str(has_dnt_data).lower()};
+      {_pie_label_plugin}
       new Chart(c,{{
-        type:'doughnut',
+        type:'pie',
         data:{{
           labels:{_donut_labels_js},
           datasets:[{{
@@ -472,12 +497,13 @@ def build_section_cs(
           }}]
         }},
         options:{{
-          responsive:true,maintainAspectRatio:false,cutout:'58%',
+          responsive:true,maintainAspectRatio:false,
           plugins:{{
             legend:{{display:false}},
             tooltip:{{enabled:hasData,callbacks:{{label:{_donut_tooltip_fn}}}}}
           }}
-        }}
+        }},
+        plugins:[pieLabelPlugin]
       }});
     }})();
     </script>"""
