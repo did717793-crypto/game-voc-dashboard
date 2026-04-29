@@ -1,0 +1,173 @@
+{
+  "meta": {
+    "date": "2026-04-20",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-04-20T00:00:00+09:00",
+    "window_end": "2026-04-20T23:59:59+09:00",
+    "crawled_at": "2026-04-29T13:00:13.595827+09:00",
+    "total_posts": 7,
+    "total_comments": 4,
+    "boards": {
+      "11": {
+        "name": "공지사항",
+        "count": 1
+      },
+      "4": {
+        "name": "자유 게시판",
+        "count": 2
+      },
+      "7": {
+        "name": "버그 제보",
+        "count": 3
+      },
+      "5": {
+        "name": "질문과 답변",
+        "count": 1
+      }
+    }
+  },
+  "official_posts": [
+    {
+      "feed_id": "7558359",
+      "board_id": 11,
+      "board_name": "공지사항",
+      "title": "4월 20일(월) 임시 점검 안내 (점검 완료)",
+      "body": "MMORPG의 기본, DK모바일 리본 안녕하세요. DK모바일 리본 입니다. 4월 20일(목) 임시 점검이 예정되어 일정을 안내해 드립니다. 13:10 임시 점검이 완료되었습니다. 기다려 주신 용사님들께 감사드립니다. 점검 일정 및 자세한 사항은 아래 내용을 참고 부탁드립니다. 🛠️ 4월 20일(목) 임시 점검 안내 📌 임시 점검 일정 - 2026년 4월 20일(목) 12:50 ~ 13:10(20분) 📌 임시 점검 내용 - 거래소 특권 기능이 정상 작동하지 않는 현상 수정 📌 임시 점검 보상 - 상급 에스텔라의 별빛 주문서(귀속) 10개 ※ 점검 일시 및 내용은 변동될 수 있으며, 변동 시 공지사항을 통해 안내드릴 예정입니다. ※ 점검 시작 전 안정적인 데이터의 저장을 위해 안전한 위치에서 게임을 종료해 주시기 바랍니다. ※ 계정 내 다수 서버에 캐릭터가 존재할 경우 가장 먼저 접속한 캐릭터에 점검 보상이 지급되며, 우편 지급된 점검 보상은 타 캐릭터로 이동이 불가하오니 참고 부탁드립니다. 게임 이용에 불편을 끼쳐 드리게 되어 진심으로 사과드리며, 안정적이고 쾌적한 환경을 제공해 드릴 수 있도록 노력하겠습니다. 감사합니다.",
+      "author": "GM리토스",
+      "created_at": "2026-04-20T12:46:57+09:00",
+      "view_count": 415,
+      "comment_count": 0,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7558359",
+      "comments": []
+    }
+  ],
+  "posts": [
+    {
+      "feed_id": "7560250",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "ㅋㅋ 여기도곧 섭종이구만",
+      "body": "잘가랑",
+      "author": "즐겜중인 휴먼 5586",
+      "created_at": "2026-04-20T23:28:15+09:00",
+      "view_count": 129,
+      "comment_count": 0,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7560250",
+      "comments": []
+    },
+    {
+      "feed_id": "7559120",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "신화 교체 비용",
+      "body": "전설 4개 모아서  한번씩   합성도전하고있는 중이였는데     인형  4트째 에  똭하고  탈로스가  뜨고 // 이번에  이벤으로 많이 퍼준걸로  변신도   어케  4개 모아져서    합성도전했는데    요것도  4트째 루멘의 계승자 데반 이 떴는데     변신 함 돌려볼까하고  확정전인데      첫번교체비용이  3000개 인데 그 다음부터 다야 몇개씩 들어가나요?",
+      "author": "밤새는 삼촌 3349",
+      "created_at": "2026-04-20T17:18:09+09:00",
+      "view_count": 151,
+      "comment_count": 0,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7559120",
+      "comments": []
+    },
+    {
+      "feed_id": "7558377",
+      "board_id": 7,
+      "board_name": "버그 제보",
+      "title": "접속",
+      "body": "PC 접속 안됩니다. 모바일은 됨",
+      "author": "Stork",
+      "created_at": "2026-04-20T12:57:05+09:00",
+      "view_count": 110,
+      "comment_count": 3,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7558377",
+      "comments": [
+        {
+          "comment_id": "25924189",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요, 용사님.\n\nPC 버전 접속이 불가능하시어 글을 남겨주셨네요.\n\n번거로우시더라도, 크로스플레이 런처 및 DK모바일 리본 PC 버전을 모두 삭제 후\n재설치를 진행하신 뒤 다시 한번 접속해 보시길 부탁드립니다.\n\n혹여, 삭제 후 재설치를 진행하셨으나 동일하게 접속이 불가능하실 경우\n접속 불가 화면 및 오류 메시지가 확인되는 스크린샷과 함께\n다시 한번 제보해 주시길 부탁드리겠습니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25929266",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "활동하는나그네",
+          "text": "재설치후 되시나여",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25946511",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "수원스타일",
+          "text": "저도 잘 하다가 큐브 렉걸렸길래 껐다 켰는데 그 이후로 접속이 안되네요 캐릭선택 후 접속시 꺼집니다.. 다 지우고 다시 설치해도 현상 동일하네요.;;",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7558321",
+      "board_id": 7,
+      "board_name": "버그 제보",
+      "title": "아이템이 거래도안되고 상점에 물품도 사지지가 않아요!",
+      "body": "본인인증한지1년됫다고해서 인증햇더니 그뒤로 아무것도이용이안되네요",
+      "author": "전국제패 입문자 2251",
+      "created_at": "2026-04-20T12:29:23+09:00",
+      "view_count": 83,
+      "comment_count": 0,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7558321",
+      "comments": []
+    },
+    {
+      "feed_id": "7557698",
+      "board_id": 7,
+      "board_name": "버그 제보",
+      "title": "새턴보상 미션완료  안바아져요",
+      "body": "에러떠서 안받아지는데  어찌합니까",
+      "author": "하루살이 모범생 8522",
+      "created_at": "2026-04-20T07:23:44+09:00",
+      "view_count": 40,
+      "comment_count": 0,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7557698",
+      "comments": []
+    },
+    {
+      "feed_id": "7557726",
+      "board_id": 5,
+      "board_name": "질문과 답변",
+      "title": "상점에서 패키지 구매가 안됩니다.",
+      "body": "어제부터 거래소 판매가 안되고 패키지 구매도 안되요. 빠른처리 부탁합니다.",
+      "author": "도도한 저승사자 5486",
+      "created_at": "2026-04-20T07:51:03+09:00",
+      "view_count": 85,
+      "comment_count": 1,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7557726",
+      "comments": [
+        {
+          "comment_id": "25920228",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요 용사님.\n\n먼저, 저희 DK모바일 리본을 즐겨주시는 용사님께 불편을 드려 죄송합니다.\n\n해당 현상에 대해서는 관련 부서로 전달하여 면밀한 확인 작업을 진행하겠습니다.\n\n해당 과정에서 문제가 확인될 경우 신속하게 수정하여\n최대한 빠른 시일 내에 불편함이 없으시도록 조치하겠습니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    }
+  ]
+}

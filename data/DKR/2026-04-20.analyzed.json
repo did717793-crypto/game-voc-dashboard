@@ -1,31 +1,78 @@
 {
   "date": "2026-04-20",
-  "period": "2026-04-20 ~ 2026-04-20",
-  "voc_count": 0,
-  "voc_posts": [],
-  "top_issues": [],
-  "sentiment": {},
-  "keywords": [],
+  "major_issues": [
+    {
+      "title": "4월 20일(월) 임시 점검 안내 (점검 완료)",
+      "summary": "4월 20일(월) 임시 점검 안내 (점검 완료)",
+      "board_name": "공지사항",
+      "board": "공지사항",
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7558359",
+      "feed_id": "7558359",
+      "date": "2026-04-20",
+      "count": 1
+    }
+  ],
+  "voc_groups": [
+    {
+      "category": "버그·오류",
+      "summary": "게임 내 기능 오류 보고",
+      "count": 2,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7558321",
+      "feed_ids": [
+        "7558321",
+        "7557698"
+      ]
+    },
+    {
+      "category": "게임 관련",
+      "summary": "게임 관련 유저 의견",
+      "count": 2,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7557726",
+      "feed_ids": [
+        "7559120",
+        "7557726"
+      ]
+    },
+    {
+      "category": "기타",
+      "summary": "서비스 종료 우려 및 게임 비판",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7560250",
+      "feed_ids": [
+        "7560250"
+      ]
+    },
+    {
+      "category": "기타",
+      "summary": "게임 접속 / 로그인 장애 보고",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7558377",
+      "feed_ids": [
+        "7558377"
+      ]
+    }
+  ],
+  "cs_inquiries": [],
   "cs_week_trend": [
     {
       "date": "2026-04-14",
-      "received": 1,
-      "processed": 3
+      "received": 0,
+      "processed": 0
     },
     {
       "date": "2026-04-15",
-      "received": 1,
+      "received": 0,
       "processed": 0
     },
     {
       "date": "2026-04-16",
-      "received": 7,
-      "processed": 4
+      "received": 0,
+      "processed": 0
     },
     {
       "date": "2026-04-17",
-      "received": 2,
-      "processed": 6
+      "received": 0,
+      "processed": 0
     },
     {
       "date": "2026-04-18",
@@ -34,75 +81,54 @@
     },
     {
       "date": "2026-04-19",
-      "received": 5,
+      "received": 0,
       "processed": 0
     },
     {
       "date": "2026-04-20",
-      "received": 6,
-      "processed": 10
+      "received": 0,
+      "processed": 0
     }
   ],
-  "cs_daily": {
-    "received": 6,
-    "processed": 10
-  },
-  "cs_status_counts": {
-    "답변 완료": 35,
-    "삭제": 1,
-    "조회 완료": 31
-  },
-  "cs_inquiries": [
-    {
-      "category": "오류",
-      "count": 2,
-      "pending": 0,
-      "representative": [
-        {
-          "title": "2026년4월19일 패키지 버그",
-          "status": "조회 완료",
-          "date": "2026-04-20"
-        },
-        {
-          "title": "거래소특권 버그",
-          "status": "답변 완료",
-          "date": "2026-04-20"
-        }
-      ]
+  "insights": {
+    "top_issues": [
+      {
+        "category": "버그·오류",
+        "summary": "게임 내 기능 오류 보고",
+        "count": 2,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7558321"
+      },
+      {
+        "category": "게임 관련",
+        "summary": "게임 관련 유저 의견",
+        "count": 2,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7557726"
+      },
+      {
+        "category": "기타",
+        "summary": "서비스 종료 우려 및 게임 비판",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7560250"
+      }
+    ],
+    "trend": {
+      "버그·오류": {
+        "current": 2,
+        "previous": 3,
+        "delta": -1
+      },
+      "기타": {
+        "current": 2,
+        "previous": 0,
+        "delta": 2
+      },
+      "게임 관련": {
+        "current": 2,
+        "previous": 1,
+        "delta": 1
+      }
     },
-    {
-      "category": "게임 이용",
-      "count": 2,
-      "pending": 0,
-      "representative": [
-        {
-          "title": "재문의:공용길드아이템먹튀",
-          "status": "답변 완료",
-          "date": "2026-04-20"
-        },
-        {
-          "title": "공용길드아이템먹튀",
-          "status": "조회 완료",
-          "date": "2026-04-20"
-        }
-      ]
-    },
-    {
-      "category": "기타",
-      "count": 2,
-      "pending": 0,
-      "representative": [
-        {
-          "title": "길드명변경",
-          "status": "답변 완료",
-          "date": "2026-04-20"
-        },
-        {
-          "title": "상점이용이안되네요",
-          "status": "조회 완료",
-          "date": "2026-04-20"
-        }
-      ]
-    }
-  ]
+    "trending_keywords": [],
+    "prev_date": "2026-04-19"
+  }
 }

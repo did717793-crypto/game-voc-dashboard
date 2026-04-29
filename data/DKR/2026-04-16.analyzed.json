@@ -1,11 +1,30 @@
 {
   "date": "2026-04-16",
-  "period": "2026-04-16 ~ 2026-04-16",
-  "voc_count": 0,
-  "voc_posts": [],
-  "top_issues": [],
-  "sentiment": {},
-  "keywords": [],
+  "major_issues": [
+    {
+      "title": "4월 16일(목) 확인된 이슈 안내 (4/17 10:45 내용 수정)",
+      "summary": "4월 16일(목) 확인된 이슈 안내 (4/17 10:45 내용 수정)",
+      "board_name": "공지사항",
+      "board": "공지사항",
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7544250",
+      "feed_id": "7544250",
+      "date": "2026-04-16",
+      "count": 1
+    }
+  ],
+  "voc_groups": [
+    {
+      "category": "건의·요청",
+      "summary": "게임 개선 의견 제출",
+      "count": 2,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7543905",
+      "feed_ids": [
+        "7543905",
+        "7543123"
+      ]
+    }
+  ],
+  "cs_inquiries": [],
   "cs_week_trend": [
     {
       "date": "2026-04-10",
@@ -24,85 +43,42 @@
     },
     {
       "date": "2026-04-13",
-      "received": 5,
-      "processed": 2
+      "received": 0,
+      "processed": 0
     },
     {
       "date": "2026-04-14",
-      "received": 1,
-      "processed": 3
+      "received": 0,
+      "processed": 0
     },
     {
       "date": "2026-04-15",
-      "received": 1,
+      "received": 0,
       "processed": 0
     },
     {
       "date": "2026-04-16",
-      "received": 7,
-      "processed": 4
+      "received": 0,
+      "processed": 0
     }
   ],
-  "cs_daily": {
-    "received": 7,
-    "processed": 4
-  },
-  "cs_status_counts": {
-    "답변 완료": 35,
-    "삭제": 1,
-    "조회 완료": 31
-  },
-  "cs_inquiries": [
-    {
-      "category": "오류",
-      "count": 4,
-      "pending": 0,
-      "representative": [
-        {
-          "title": "오류안내",
-          "status": "조회 완료",
-          "date": "2026-04-16"
-        },
-        {
-          "title": "재문의:미션보상 오류",
-          "status": "조회 완료",
-          "date": "2026-04-16"
-        },
-        {
-          "title": "미션보상 오류",
-          "status": "조회 완료",
-          "date": "2026-04-16"
-        }
-      ]
+  "insights": {
+    "top_issues": [
+      {
+        "category": "건의·요청",
+        "summary": "게임 개선 의견 제출",
+        "count": 2,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7543905"
+      }
+    ],
+    "trend": {
+      "건의·요청": {
+        "current": 2,
+        "previous": 2,
+        "delta": 0
+      }
     },
-    {
-      "category": "이벤트",
-      "count": 1,
-      "pending": 0,
-      "representative": [
-        {
-          "title": "이벤트관련 카운팅이전부안되요",
-          "status": "답변 완료",
-          "date": "2026-04-16"
-        }
-      ]
-    },
-    {
-      "category": "기타",
-      "count": 2,
-      "pending": 0,
-      "representative": [
-        {
-          "title": "이상현상",
-          "status": "답변 완료",
-          "date": "2026-04-16"
-        },
-        {
-          "title": "미션카운팅안돼요",
-          "status": "답변 완료",
-          "date": "2026-04-16"
-        }
-      ]
-    }
-  ]
+    "trending_keywords": [],
+    "prev_date": "2026-04-15"
+  }
 }

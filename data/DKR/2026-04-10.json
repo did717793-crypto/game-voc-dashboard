@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "date": "2026-04-10",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-04-10T00:00:00+09:00",
+    "window_end": "2026-04-10T23:59:59+09:00",
+    "crawled_at": "2026-04-29T12:58:59.103742+09:00",
+    "total_posts": 1,
+    "total_comments": 1,
+    "boards": {
+      "9": {
+        "name": "건의 게시판",
+        "count": 1
+      }
+    }
+  },
+  "official_posts": [],
+  "posts": [
+    {
+      "feed_id": "7524891",
+      "board_id": 9,
+      "board_name": "건의 게시판",
+      "title": "무게",
+      "body": "메디, 올마이티  <<<<패스 돌려서 존나게 많은데 창고에도 못넣고 넘 무거운데여 돈내고 산건데 버릴수도 없고 추가로 균열아티팩트상자 소모할때를 만들어주던가 무게를 0만들어주던가 창고를 열어주던가 일좀 하세요 엔트러스님들아 돈 빨아먹을 패키지 궁리 적당히하고",
+      "author": "달리는 미니언 3269677",
+      "created_at": "2026-04-10T16:57:29+09:00",
+      "view_count": 79,
+      "comment_count": 1,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7524891",
+      "comments": [
+        {
+          "comment_id": "25764959",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요 용사님.\n\n게임 내 만족스럽지 못한 부분이 있어 개선을 요청하시고자 의견을 남겨주셨네요.\n\n말씀해 주신 내용은 담당 부서를 통해 논의를 진행하여\n보다 만족스러운 경험을 선사해 드릴 수 있도록 노력하겠습니다.\n\n이외에도 다른 문의 사항 혹은 건의 사항이 있다면 언제든 찾아주시기 바라며,\n보다 발전된 모습으로 보답해 드리기 위해 최선을 다하겠습니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    }
+  ]
+}

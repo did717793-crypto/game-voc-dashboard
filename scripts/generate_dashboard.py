@@ -113,54 +113,6 @@ def build_metrics_js_data() -> str:
     )
 
 
-# ── 00 VOC 인사이트 ───────────────────────────────────────────
-def build_section_insights(insights: dict) -> str:
-    if not insights:
-        return "<p class='empty-s'>인사이트 데이터 없음</p>"
-
-    top_issues = insights.get("top_issues", [])
-    trend      = insights.get("trend", {})
-    keywords   = insights.get("trending_keywords", [])
-    prev_date  = insights.get("prev_date", "")
-
-    parts = []
-
-    # ── TOP 이슈 ──
-    if top_issues:
-        rows = ""
-        for i, iss in enumerate(top_issues, 1):
-            cat  = iss.get("category", "")
-            summ = iss.get("summary", "")
-            cnt  = iss.get("count", 1)
-            url  = iss.get("url", "#")
-            cls_map = {"버그·오류": "tg-bug", "건의·요청": "tg-sug",
-                       "게임 관련": "tg-game", "기타": "tg-etc"}
-            cls = cls_map.get(cat, "tg-etc")
-            rows += (
-                f'<tr><td style="width:28px;text-align:center;font-weight:700;color:#888">#{i}</td>'
-                f'<td><span class="tg {cls}">{cat}</span>'
-                f' <a href="{url}" target="_blank" class="iss-link">{summ}</a></td>'
-                f'<td style="text-align:right;white-space:nowrap;color:#5f6368">{cnt}건</td></tr>'
-            )
-        parts.append(
-            f'<p class="ins-label">📌 TOP VOC</p>'
-            f'<table class="ins-tbl">{rows}</table>'
-        )
-
-    # ── 트렌드 키워드 ──
-    if keywords:
-        tags = "".join(
-            f'<span class="kw-tag">{kw["word"]} <em>{kw["count"]}</em></span>'
-            for kw in keywords
-        )
-        parts.append(f'<p class="ins-label">🔑 주목 키워드</p><div class="kw-wrap">{tags}</div>')
-
-    if not parts:
-        return "<p class='empty-s'>인사이트 데이터 없음</p>"
-
-    return f'<div class="insights-wrap">{"".join(parts)}</div>'
-
-
 # ── 01 주요 이슈 ──────────────────────────────────────────────
 def build_section_issues(analyzed: dict) -> str:
     items = []
@@ -790,7 +742,6 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
             f'<div class="rpt-header"><span class="rpt-game">DK모바일:리본</span>'
             f'<span class="rpt-title">{label}</span>'
             f'<span class="rpt-ts">조회: {datetime.now(KST).strftime("%Y-%m-%d %H:%M")}</span></div>'
-            + sec("00", "VOC 인사이트",     build_section_insights(analyzed.get("insights", {})))
             + sec("01", "주요 이슈",        build_section_issues(analyzed))
             + sec("02", "운영 지표",        build_section_chart(chart_dates, chart_id))
             + sec("03", "1:1 문의 동향",    build_section_cs(

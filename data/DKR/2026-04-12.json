@@ -1,0 +1,340 @@
+{
+  "meta": {
+    "date": "2026-04-12",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-04-12T00:00:00+09:00",
+    "window_end": "2026-04-12T23:59:59+09:00",
+    "crawled_at": "2026-04-29T12:59:12.290665+09:00",
+    "total_posts": 2,
+    "total_comments": 29,
+    "boards": {
+      "7": {
+        "name": "버그 제보",
+        "count": 2
+      }
+    }
+  },
+  "official_posts": [],
+  "posts": [
+    {
+      "feed_id": "7531315",
+      "board_id": 7,
+      "board_name": "버그 제보",
+      "title": "일해라 운영자...버그판 dk..",
+      "body": "이건 증거잇어도 안잡는 이유 돈받앗냐?",
+      "author": "리이니",
+      "created_at": "2026-04-12T17:25:02+09:00",
+      "view_count": 391,
+      "comment_count": 9,
+      "like_count": 1,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7531315",
+      "comments": [
+        {
+          "comment_id": "25796010",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "고뇌하는 저승사자 2169",
+          "text": "와~",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25797828",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "리이니",
+          "text": "버그 한두명이 걸린게 아니네 서버 다시 시작해 멍청한 영자야",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25799452",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "천하통일 킬러 2204",
+          "text": "발켜라 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ약하다찡ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25799525",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "세계 최강 암살자 5342",
+          "text": "어떻게 나이 처먹으면 발켜라라고 쓰는지 먼저 말해줘라",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25801808",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "날카로운 끝판왕 8409",
+          "text": "저렇게 버그를 대놓고 쓰는데 잡지도않고  버그를 고치지도않고 과금하는애들만 불쌍하지",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25829073",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM치토스",
+          "text": "저런 버그는 게임 사람 떠나게 하는 지름길인데 운영진들 좀 게시판 보고 운영 좀 관심 가지세요. 패키지만 맨날 만들지말고!!!",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25832262",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "든든한 수박 727341",
+          "text": "이 새 색히들 여기는 오토 답변 안다네?ㅋㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25832267",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "든든한 수박 727341",
+          "text": "여기는 왜 오토 답변이 없냐?",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 1
+        },
+        {
+          "comment_id": "25841829",
+          "parent_id": "25832267",
+          "depth": 2,
+          "author": "GM치토스",
+          "text": "오토도 이거 개발진이나 운영진에 접수 할 수 없는 건가...",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7531259",
+      "board_id": 7,
+      "board_name": "버그 제보",
+      "title": "입벌구 영베리 버그왕",
+      "body": "",
+      "author": "산뜻한 사람 9301141",
+      "created_at": "2026-04-12T17:04:45+09:00",
+      "view_count": 678,
+      "comment_count": 20,
+      "like_count": 4,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7531259",
+      "comments": [
+        {
+          "comment_id": "25795808",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "꿈에서본 고인물 4614",
+          "text": "저긴 일주일씩 돌아가면서 버그쓰기로했나보네",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25795817",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "리이니",
+          "text": "저거 증거가 잇어도 운영자 양반 뭐하는거냐 ㅋㅋㅋ개.망.겜.. 진짜 적당히하자 당당히 버그쓰고 자랑질하면서 저런거 올리는 애들 영구정지좀 시키자",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25795832",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "리이니",
+          "text": "버그 저렇게 쓰고도 당당히 잇다니 운영 진짜 못한다 이미망햇지만 저거 못잡으면 버그케릭들 팅것다가 접시키던가",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25795841",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "라운지대표 쪼렙 8695",
+          "text": "진짜 게임사 일 안한다...\n이런 게임을 하고 있는 나도 에휴..........",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25795958",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "네이버최강 군주 2845",
+          "text": "좀비에 있을때 모르고 쓴지 알았는데 차브르사 일주일 버그걸리고 이번엔 영베리케릭이 걸리넹ㅋㅋㅋㅋㅋㅋ저정도면 알고 쓰는거같음",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 9
+        },
+        {
+          "comment_id": "25796833",
+          "parent_id": "25795958",
+          "depth": 2,
+          "author": "학살중인 쪼렙 6951",
+          "text": "너 캐릭이 약하다고 생각을 안해봤니?",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25799075",
+          "parent_id": "25795958",
+          "depth": 2,
+          "author": "천하태평 검사 5934",
+          "text": "천동아 똥이랑 다니면 똥 묻는다햇나 않햇나 안타깝다 마지막으로 술 먹고 전화하지마라",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25799767",
+          "parent_id": "25795958",
+          "depth": 2,
+          "author": "네이버최강 군주 2845",
+          "text": "ㅋㅋㅋㅋㅋㅋㅋㅋ아니 누군지 모르겠는데 통화내용 녹음 해놓은거 들려주고 싶네 누가 징징대고 하소연을해 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ응?",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25799780",
+          "parent_id": "25795958",
+          "depth": 2,
+          "author": "네이버최강 군주 2845",
+          "text": "내케릭 쌔다고 생각해본적이 없는데ㅋㅋㅋ내가 쓴 댓글이 내가 쌔다는 말이 있었어 ?학교는 나왔고?",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25799939",
+          "parent_id": "25795958",
+          "depth": 2,
+          "author": "천하태평 검사 5934",
+          "text": "너가 하소연했잖아 녹음본 열려 자신있으면 ^^",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25800401",
+          "parent_id": "25795958",
+          "depth": 2,
+          "author": "네이버최강 군주 2845",
+          "text": "ㅋㅋㅋㅋㅋㅋㅋ고춘이야? 요약해줄까? 술취해서 기억이 안나는건가?",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25801567",
+          "parent_id": "25795958",
+          "depth": 2,
+          "author": "천하태평 검사 5934",
+          "text": "그만좀 찡찡거려 나가놓고 말도 많고 전화해서 찡얼 거리고 으 추해",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25802990",
+          "parent_id": "25795958",
+          "depth": 2,
+          "author": "천하태평 검사 5934",
+          "text": "그만좀 찡찡거려 길드 나가놓고 말도 많고 왤케 추해 사람이\n전화해서 칭얼거리는거도 그만해줘",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25807671",
+          "parent_id": "25795958",
+          "depth": 2,
+          "author": "네이버최강 군주 2845",
+          "text": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ귀여웡",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25796017",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "내가 바로 끝판왕 3809",
+          "text": "트럼프가 알려줬다 버그 쓰는법.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25799442",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "천하통일 킬러 2204",
+          "text": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ캐릭약하다고 찡찡ㅋㅋㅋㅋㅋㅋㅋㅋㅋ약하면 버그찡ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25801864",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "날카로운 끝판왕 8409",
+          "text": "버그쓰면서도 왜이렇게 당당하냐 \n인간자체가 뻔뻔하노",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25809927",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "학살중인 쪼렙 6951",
+          "text": "막피 그만하고 현복해라 송충아",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25832284",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "든든한 수박 727341",
+          "text": "여긴 오토 답변 안달림",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "25850969",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "열렙 중인 언니 8503",
+          "text": "800만이 넘을수가잇냐 ㅋㅋ 하이퍼서버도 안되는걸 너는 뭔데 820만이냐",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    }
+  ]
+}

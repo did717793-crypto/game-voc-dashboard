@@ -1,11 +1,48 @@
 {
   "date": "2026-04-15",
-  "period": "2026-04-15 ~ 2026-04-15",
-  "voc_count": 0,
-  "voc_posts": [],
-  "top_issues": [],
-  "sentiment": {},
-  "keywords": [],
+  "major_issues": [
+    {
+      "title": "4월 16일(목) 정기 점검 안내 (점검 연장)",
+      "summary": "4월 16일(목) 정기 점검 안내 (점검 연장)",
+      "board_name": "공지사항",
+      "board": "공지사항",
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7540541",
+      "feed_id": "7540541",
+      "date": "2026-04-15",
+      "count": 1
+    },
+    {
+      "title": "4월 16일(목) 업데이트 내용 안내",
+      "summary": "4월 16일(목) 업데이트 내용 안내",
+      "board_name": "업데이트",
+      "board": "업데이트",
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7540554",
+      "feed_id": "7540554",
+      "date": "2026-04-15",
+      "count": 2
+    }
+  ],
+  "voc_groups": [
+    {
+      "category": "건의·요청",
+      "summary": "좀비길드 금촌1동 스킬 효과 미적용 현상",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7540961",
+      "feed_ids": [
+        "7540961"
+      ]
+    },
+    {
+      "category": "건의·요청",
+      "summary": "게임 개선 의견 제출",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7538766",
+      "feed_ids": [
+        "7538766"
+      ]
+    }
+  ],
+  "cs_inquiries": [],
   "cs_week_trend": [
     {
       "date": "2026-04-09",
@@ -29,41 +66,48 @@
     },
     {
       "date": "2026-04-13",
-      "received": 5,
-      "processed": 2
+      "received": 0,
+      "processed": 0
     },
     {
       "date": "2026-04-14",
-      "received": 1,
-      "processed": 3
+      "received": 0,
+      "processed": 0
     },
     {
       "date": "2026-04-15",
-      "received": 1,
+      "received": 0,
       "processed": 0
     }
   ],
-  "cs_daily": {
-    "received": 1,
-    "processed": 0
-  },
-  "cs_status_counts": {
-    "답변 완료": 35,
-    "삭제": 1,
-    "조회 완료": 31
-  },
-  "cs_inquiries": [
-    {
-      "category": "기타",
-      "count": 1,
-      "pending": 0,
-      "representative": [
-        {
-          "title": "패키지상품",
-          "status": "답변 완료",
-          "date": "2026-04-15"
-        }
-      ]
-    }
-  ]
+  "insights": {
+    "top_issues": [
+      {
+        "category": "건의·요청",
+        "summary": "좀비길드 금촌1동 스킬 효과 미적용 현상",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7540961"
+      },
+      {
+        "category": "건의·요청",
+        "summary": "게임 개선 의견 제출",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7538766"
+      }
+    ],
+    "trend": {
+      "버그·오류": {
+        "current": 0,
+        "previous": 1,
+        "delta": -1
+      },
+      "건의·요청": {
+        "current": 2,
+        "previous": 1,
+        "delta": 1
+      }
+    },
+    "trending_keywords": [],
+    "prev_date": "2026-04-14"
+  }
 }
