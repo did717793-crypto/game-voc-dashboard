@@ -339,15 +339,60 @@ def parse_row(cells: list[str]) -> dict | None:
 
     completed_raw = cells[8].strip()
     return {
+        "ask_id":    cells[1].strip(),           # 문의 번호 — 상세 페이지 접근용
         "title":     cells[5].strip(),
         "category":  cells[4].strip(),
-        "game":      cells[3].strip(),          # 게임명 (DK : REBORN / ETC 등) — 필터용
+        "game":      cells[3].strip(),           # 게임명 (DK : REBORN / ETC 등) — 필터용
         "path":      cells[2].strip(),
         "uid":       cells[6].strip().split("\n")[0],
         "received":  received,
         "completed": extract_date(completed_raw) if completed_raw != "-" else None,
         "status":    cells[9].strip(),
+        "body":      None,                       # 상세 페이지 수집 시 채워짐
     }
+
+
+# ── 상세 페이지 본문 수집 ───────────────────────────────────────────────────────
+_DETAIL_BASE_URL = (
+    "https://inquiry.withhive.com/inquiry/view?"
+    "ask_id={ask_id}&menu_cd=415&company_cd=342&lang=0014010001"
+)
+
+def fetch_inquiry_body(hf, ask_id: str) -> str:
+    """
+    문의 상세 페이지에서 본문(body) 추출.
+
+    본문은 JavaScript의 content_body 변수에 HTML 형태로 저장되어 있음.
+    패턴: content_body += '...<br/>...';
+    확인됨 (2026-04-29): inquiry/view?ask_id=10009368 → 신화인형 본문 정상 추출
+    """
+    if not ask_id:
+        return ""
+    try:
+        detail_url = _DETAIL_BASE_URL.format(ask_id=ask_id)
+        hf.goto(detail_url, timeout=10_000)
+        time.sleep(2)
+
+        # HTML에서 content_body JS 변수 값 추출
+        inner_html = hf.inner_html("html")
+        # content_body += '...'; 패턴 (CSS 제외 — CSS는 body{} 형태)
+        chunks = re.findall(r"content_body\s*\+=\s*'([^']*)'", inner_html)
+        body_parts = []
+        for chunk in chunks:
+            # CSS body 제외
+            if "font-family" in chunk or "font-size" in chunk or chunk.strip().startswith("body"):
+                continue
+            # HTML 태그 제거, 줄바꿈 정리
+            clean = re.sub(r'<br\s*/?>', '\n', chunk, flags=re.IGNORECASE)
+            clean = re.sub(r'<[^>]+>', '', clean)
+            clean = re.sub(r'[\r\n]+', ' ', clean).strip()
+            clean = clean.replace('. ', ' ').replace(',', ', ')  # 마침표 뒤 공백 정리
+            if clean:
+                body_parts.append(clean)
+
+        return ' '.join(body_parts).strip()
+    except Exception as e:
+        return ""
 
 
 # ── 날짜 JS 직접 설정 ────────────────────────────────────────────────────────
@@ -692,6 +737,21 @@ def collect_pages_get_url(hf, start_date: str, end_date: str) -> tuple[list, lis
     print(f"  filtered_raw = {len(dkr_records)}건 (DK : REBORN only)")
     if other_cnt:
         print(f"  제외 게임: {dict(other_cnt)}")
+
+    # ── 상세 페이지 본문 수집 ───────────────────────────────────────
+    print(f"\n  [상세 본문 수집] {len(dkr_records)}건 상세 페이지 접근 시작...")
+    body_ok = 0
+    for i, record in enumerate(dkr_records):
+        ask_id = record.get("ask_id", "")
+        if not ask_id:
+            continue
+        body_text = fetch_inquiry_body(hf, ask_id)
+        record["body"] = body_text if body_text else None
+        if body_text:
+            body_ok += 1
+        if (i + 1) % 10 == 0:
+            print(f"    진행: {i+1}/{len(dkr_records)}건 (본문 수집: {body_ok}건)")
+    print(f"  [완료] 본문 수집 성공: {body_ok}/{len(dkr_records)}건")
 
     return all_records, dkr_records
 

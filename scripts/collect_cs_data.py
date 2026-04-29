@@ -156,6 +156,7 @@ def build_cs_inquiries(records: list, target_date: str) -> list[dict]:
         if len(cat_reps[cat]) < 3:          # 대표 티켓 최대 3개
             cat_reps[cat].append({
                 "title":  (r.get("title") or "")[:60],
+                "body":   (r.get("body") or ""),    # 상세 본문 (재수집 시 채워짐)
                 "status": r.get("status", ""),
                 "date":   r.get("received", ""),
             })
