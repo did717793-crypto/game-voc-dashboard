@@ -114,14 +114,17 @@ def build_metrics_js_data() -> str:
 
 
 # ── 01 주요 이슈 ──────────────────────────────────────────────
-# 라운지 VOC가 주요 이슈에 오르기 위한 최소 건수 임계값
-# (공지/업데이트 major_issues는 항상 표시, 라운지 voc_groups는 임계값 이상만)
-VOC_MAJOR_THRESHOLD = 3
+# 노출 기준 (변경 금지):
+#   공지/업데이트 (major_issues): 무조건 포함
+#   CS (cs_inquiries 카테고리):   10건 이상만 포함
+#   VOC (voc_groups):             주요 이슈 미포함 → 공식 라운지 동향 섹션에서만 표시
+CS_MAJOR_THRESHOLD = 10
 
 
 def build_section_issues(analyzed: dict) -> str:
     items = []
-    # 공지/업데이트 (official_posts): 항상 표시
+
+    # ① 공지/업데이트 (major_issues): 무조건 포함
     for iss in analyzed.get("major_issues", []):
         board   = iss.get("board_name", "")
         summary = iss.get("summary", "")
@@ -132,26 +135,24 @@ def build_section_issues(analyzed: dict) -> str:
             f'<li><span class="tg {cls}">{tag}</span>'
             f' <a href="{url}" target="_blank" class="iss-link">{summary}</a></li>'
         )
-    # 라운지 VOC: VOC_MAJOR_THRESHOLD 이상인 그룹만 표시
-    # (서버 장애/접속 문제는 2건 이상도 주요 이슈 판단)
-    for voc in analyzed.get("voc_groups", []):
-        cat  = voc.get("category", "")
-        cnt  = voc.get("count", 1)
-        summ = voc.get("summary", "")
-        url  = voc.get("representative_url", "#")
-        # 임계값 적용: 접속/서버 장애는 2건 이상, 나머지는 VOC_MAJOR_THRESHOLD 이상
-        is_service_issue = any(kw in summ for kw in ["접속", "로그인 장애", "서버", "장애"])
-        threshold = 2 if is_service_issue else VOC_MAJOR_THRESHOLD
-        if cnt < threshold:
+
+    # ② CS (cs_inquiries): 카테고리 건수 10건 이상만 포함
+    for inq in analyzed.get("cs_inquiries", []):
+        cnt  = inq.get("count", 0)
+        if cnt < CS_MAJOR_THRESHOLD:
             continue
-        cnt_s = f' <span class="cnt-s">({cnt}건)</span>' if cnt > 1 else ""
-        cls_map = {"버그·오류": "tg-bug", "건의·요청": "tg-sug",
-                   "게임 관련": "tg-game", "기타": "tg-etc"}
-        cls = cls_map.get(cat, "tg-etc")
+        cat  = inq.get("category", "")
+        reps = inq.get("representative", [])
+        summ = reps[0].get("title", cat) if reps else cat
         items.append(
-            f'<li><span class="tg {cls}">{cat}</span>'
-            f' <a href="{url}" target="_blank" class="iss-link">{summ}</a>{cnt_s}</li>'
+            f'<li><span class="tg tg-cs">CS</span>'
+            f' {summ}'
+            f' <span class="cnt-s">({cnt}건)</span></li>'
         )
+
+    # ③ VOC (voc_groups): 주요 이슈 미포함
+    #    → "공식 라운지 동향" 섹션(sec 04)에서 단독 표시
+
     if not items:
         return "<p class='empty-s'>수집된 주요 이슈 없음</p>"
     return f'<ul class="iss-list">{"".join(items)}</ul>'
@@ -1075,6 +1076,7 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
 .tg-sug{{background:#fff3cd;color:#b45309}}
 .tg-game{{background:#e8f0fe;color:#1a73e8}}
 .tg-etc{{background:#f1f3f4;color:#5f6368}}
+.tg-cs{{background:#fce8e6;color:#c62828}}
 .iss-link{{color:#1a1a2e;text-decoration:none;font-weight:500}}
 .iss-link:hover{{color:#1a73e8;text-decoration:underline}}
 .cnt-s{{font-size:11px;color:#9aa0a6;margin-left:2px}}
