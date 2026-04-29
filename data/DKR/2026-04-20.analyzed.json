@@ -74,11 +74,6 @@
       }
     ],
     "trend": {
-      "버그·오류": {
-        "current": 2,
-        "previous": 3,
-        "delta": -1
-      },
       "기타": {
         "current": 2,
         "previous": 0,
@@ -88,6 +83,11 @@
         "current": 2,
         "previous": 1,
         "delta": 1
+      },
+      "버그·오류": {
+        "current": 2,
+        "previous": 3,
+        "delta": -1
       }
     },
     "trending_keywords": [],

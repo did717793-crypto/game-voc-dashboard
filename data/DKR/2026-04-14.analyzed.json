@@ -4,20 +4,20 @@
   "voc_groups": [
     {
       "category": "버그·오류",
-      "summary": "게임 내 기능 오류 보고",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7537569",
-      "feed_ids": [
-        "7537569"
-      ]
-    },
-    {
-      "category": "건의·요청",
       "summary": "게임 접속 / 로그인 장애 보고",
       "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7535677",
       "feed_ids": [
         "7535677"
+      ]
+    },
+    {
+      "category": "버그·오류",
+      "summary": "게임 내 기능 오류 보고",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7537569",
+      "feed_ids": [
+        "7537569"
       ]
     }
   ],
@@ -25,27 +25,27 @@
     "top_issues": [
       {
         "category": "버그·오류",
-        "summary": "게임 내 기능 오류 보고",
-        "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7537569"
-      },
-      {
-        "category": "건의·요청",
         "summary": "게임 접속 / 로그인 장애 보고",
         "count": 1,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7535677"
+      },
+      {
+        "category": "버그·오류",
+        "summary": "게임 내 기능 오류 보고",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7537569"
       }
     ],
     "trend": {
       "건의·요청": {
-        "current": 1,
+        "current": 0,
         "previous": 2,
-        "delta": -1
+        "delta": -2
       },
       "버그·오류": {
-        "current": 1,
+        "current": 2,
         "previous": 2,
-        "delta": -1
+        "delta": 0
       }
     },
     "trending_keywords": [],

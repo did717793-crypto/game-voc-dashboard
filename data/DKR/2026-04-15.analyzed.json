@@ -24,7 +24,7 @@
   ],
   "voc_groups": [
     {
-      "category": "건의·요청",
+      "category": "버그·오류",
       "summary": "좀비길드 금촌1동 스킬 효과 미적용 현상",
       "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7540961",
@@ -33,8 +33,8 @@
       ]
     },
     {
-      "category": "건의·요청",
-      "summary": "게임 개선 의견 제출",
+      "category": "버그·오류",
+      "summary": "게임 내 기능 오류 보고",
       "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7538766",
       "feed_ids": [
@@ -45,28 +45,23 @@
   "insights": {
     "top_issues": [
       {
-        "category": "건의·요청",
+        "category": "버그·오류",
         "summary": "좀비길드 금촌1동 스킬 효과 미적용 현상",
         "count": 1,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7540961"
       },
       {
-        "category": "건의·요청",
-        "summary": "게임 개선 의견 제출",
+        "category": "버그·오류",
+        "summary": "게임 내 기능 오류 보고",
         "count": 1,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7538766"
       }
     ],
     "trend": {
-      "건의·요청": {
-        "current": 2,
-        "previous": 1,
-        "delta": 1
-      },
       "버그·오류": {
-        "current": 0,
-        "previous": 1,
-        "delta": -1
+        "current": 2,
+        "previous": 2,
+        "delta": 0
       }
     },
     "trending_keywords": [],

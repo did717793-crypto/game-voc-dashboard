@@ -44,15 +44,15 @@
         "previous": 0,
         "delta": 1
       },
-      "기타": {
-        "current": 0,
-        "previous": 1,
-        "delta": -1
-      },
       "버그·오류": {
         "current": 3,
         "previous": 0,
         "delta": 3
+      },
+      "기타": {
+        "current": 0,
+        "previous": 1,
+        "delta": -1
       }
     },
     "trending_keywords": [],

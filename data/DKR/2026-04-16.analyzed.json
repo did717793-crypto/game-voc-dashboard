@@ -14,12 +14,20 @@
   ],
   "voc_groups": [
     {
-      "category": "건의·요청",
-      "summary": "게임 개선 의견 제출",
-      "count": 2,
+      "category": "버그·오류",
+      "summary": "게임 내 기능 오류 보고",
+      "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7543905",
       "feed_ids": [
-        "7543905",
+        "7543905"
+      ]
+    },
+    {
+      "category": "건의·요청",
+      "summary": "게임 개선 의견 제출",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7543123",
+      "feed_ids": [
         "7543123"
       ]
     }
@@ -27,17 +35,28 @@
   "insights": {
     "top_issues": [
       {
+        "category": "버그·오류",
+        "summary": "게임 내 기능 오류 보고",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7543905"
+      },
+      {
         "category": "건의·요청",
         "summary": "게임 개선 의견 제출",
-        "count": 2,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7543905"
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7543123"
       }
     ],
     "trend": {
-      "건의·요청": {
-        "current": 2,
+      "버그·오류": {
+        "current": 1,
         "previous": 2,
-        "delta": 0
+        "delta": -1
+      },
+      "건의·요청": {
+        "current": 1,
+        "previous": 0,
+        "delta": 1
       }
     },
     "trending_keywords": [],

@@ -14,16 +14,31 @@
   ],
   "voc_groups": [
     {
+      "category": "버그·오류",
+      "summary": "게임 내 기능 오류 보고",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7571451",
+      "feed_ids": [
+        "7571451"
+      ]
+    },
+    {
+      "category": "버그·오류",
+      "summary": "권장 전투력 충족 상태에서 던전 소탕 불가 현상",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7568560",
+      "feed_ids": [
+        "7568560"
+      ]
+    },
+    {
       "category": "건의·요청",
       "summary": "게임 개선 의견 제출",
-      "count": 5,
+      "count": 2,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7571036",
       "feed_ids": [
-        "7571451",
-        "7571252",
         "7571115",
-        "7571036",
-        "7568560"
+        "7571036"
       ]
     },
     {
@@ -33,6 +48,15 @@
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7569662",
       "feed_ids": [
         "7569662"
+      ]
+    },
+    {
+      "category": "건의·요청",
+      "summary": "현돌 초기화 콘텐츠 출시 건의",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7571252",
+      "feed_ids": [
+        "7571252"
       ]
     },
     {
@@ -79,7 +103,7 @@
       {
         "category": "건의·요청",
         "summary": "게임 개선 의견 제출",
-        "count": 5,
+        "count": 2,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7571036"
       },
       {
@@ -96,25 +120,25 @@
       }
     ],
     "trend": {
-      "버그·오류": {
-        "current": 0,
-        "previous": 2,
-        "delta": -2
-      },
       "기타": {
         "current": 3,
         "previous": 0,
         "delta": 3
       },
+      "건의·요청": {
+        "current": 4,
+        "previous": 1,
+        "delta": 3
+      },
       "게임 관련": {
         "current": 3,
-        "previous": 4,
-        "delta": -1
+        "previous": 3,
+        "delta": 0
       },
-      "건의·요청": {
-        "current": 6,
-        "previous": 1,
-        "delta": 5
+      "버그·오류": {
+        "current": 2,
+        "previous": 3,
+        "delta": -1
       }
     },
     "trending_keywords": [],

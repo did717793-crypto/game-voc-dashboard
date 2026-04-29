@@ -56,10 +56,12 @@ BUG_KEYWORDS: list[str] = [
     # 직접 버그·오류 표현
     "버그", "오류", "에러", "error",
     # 기능 이상
-    "안됨", "안돼", "안 돼", "안 됨", "먹통", "오작동", "작동",
+    "안됨", "안돼", "안 돼", "안 됨", "안된다", "안되는", "먹통", "오작동", "작동",
     # 접속 문제
-    "팅", "튕", "렉", "렉걸", "멈춤", "멈춰",
+    "팅", "튕", "렉", "랙", "렉걸", "멈춤", "멈춰",
     "접속불가", "접속 불가", "로그인 안", "로그인안", "로딩",
+    # 서버 장애
+    "서버터", "터졌", "터진", "터짐", "서버 터",
     # 앱 충돌
     "크래시", "crash", "뻗어", "죽어",
     # 추가
@@ -142,7 +144,8 @@ _SIG_BUG_STATE     = {"십힘", "씹힘", "십혀", "씹혀", "미적용",
 
 # system_issue 신호 (기술적 접속/서버 증상 — "서버" 자체는 포함 안 함)
 _SIG_SYSTEM_SYMPTOM = {"접속", "로그인", "팅", "튕", "렉", "랙", "로딩",
-                        "끊김", "접속불가", "접속 불가", "로그인안", "로그인 안"}
+                        "끊김", "접속불가", "접속 불가", "로그인안", "로그인 안",
+                        "터졌", "터진", "서버터"}
 
 # price 신호
 _SIG_TRADE_OBJ  = {"가격", "시세", "얼마", "거래", "팔아", "사노",
@@ -308,8 +311,55 @@ def _extract_skill_from_normalized(norm: str) -> str | None:
 
 # ── Step 3: 문장 생성 ────────────────────────────────────────────────────────
 
-def _generate_sentence(intent: str, raw: str, norm: str, category: str) -> str:
-    """intent + 정제된 제목 → 보고용 최종 문장."""
+def _generate_sentence(intent: str, raw: str, norm: str, category: str,
+                       body: str = "") -> str:
+    """intent + 정제된 제목 → 보고용 최종 문장.
+
+    body: 본문 텍스트 (summarize_lounge_title에서 선택적으로 전달)
+    """
+    import re as _re
+
+    raw_lower  = raw.lower()
+    body_lower = body.lower()
+    combined   = raw_lower + " " + body_lower
+
+    # ── 내용 기반 구체적 패턴 우선 적용 ─────────────────────────
+    # 던전 소탕 불가
+    if ("던전" in combined or "소탕" in combined) and (
+            "안됨" in combined or "안 됨" in combined or "불가" in combined or
+            "안되" in combined or "않됨" in combined or "않돼" in combined):
+        return "권장 전투력 충족 상태에서 던전 소탕 불가 현상"
+
+    # 상품 구매 횟수 오류
+    if ("구매횟수" in combined or ("구매" in combined and "횟수" in combined)):
+        return "상품 구매 횟수 미초기화 오류 현상"
+
+    # 매크로 신고 — 서버번호·길드명 추출 (매크로 키워드 필수)
+    if "매크로" in combined:
+        server_m = _re.search(r'(\d+)\s*섭', raw)
+        server_s = f"{server_m.group(1)}서버 " if server_m else ""
+        # 길드명 추출
+        guild = ""
+        for word in raw.split():
+            if any(c.isalpha() and not c.isascii() for c in word) and len(word) >= 2:
+                if word not in {"영자야", "작업장", "매크로", "제재안하냐", "왜", "뭐임", "ㅋㅋ"}:
+                    if "길드" in word or "guild" in word.lower():
+                        guild = word + " "
+                        break
+        # 본문에 영문 길드명 있는지 확인
+        en_guild = _re.search(r'[A-Z]{2,}', raw + " " + body)
+        if en_guild:
+            guild = en_guild.group(0) + " 길드 "
+        elif "좀비" in combined:
+            guild = "좀비 길드 "
+        return f"{server_s}{guild}매크로 사용 의심 제재 요청"
+
+    # 파이썬 요람 / 미션 이벤트 카운트
+    if ("파이썬" in combined or "python" in combined) and (
+            "카운트" in combined or "카운팅" in combined or "클리어" in combined):
+        return "1주년 미션 이벤트 파이썬의 요람 카운트 미적용 현상"
+
+    # ── 기존 intent 기반 분기 ────────────────────────────────────
 
     if intent == "bug":
         skill = _extract_skill_from_normalized(norm)
@@ -320,8 +370,6 @@ def _generate_sentence(intent: str, raw: str, norm: str, category: str) -> str:
         return "게임 내 기능 오류 보고"
 
     if intent == "system_issue":
-        if "로그인" in raw:
-            return "게임 접속 / 로그인 장애 보고"
         return "게임 접속 / 로그인 장애 보고"
 
     if intent == "price_drop":
@@ -337,6 +385,10 @@ def _generate_sentence(intent: str, raw: str, norm: str, category: str) -> str:
 
     # ── general: category 기반 폴백 ──────────────────────────────
     if category == "버그·오류":
+        # 접속/서버 장애 키워드
+        if any(kw in combined for kw in ["접속", "로그인", "렉", "랙", "팅", "튕",
+                                          "서버", "터졌", "터진"]):
+            return "게임 접속 / 로그인 장애 보고"
         skill = _extract_skill_from_normalized(norm)
         if skill:
             return f"{skill} 스킬 효과 미적용 현상"
@@ -347,6 +399,12 @@ def _generate_sentence(intent: str, raw: str, norm: str, category: str) -> str:
             return "서버 이전 아이템 출시 건의"
         if any(kw in raw for kw in ["합쳐", "통합", "섭합"]):
             return "서버 통합 건의"
+        # 서버/접속 관련 건의는 장애 성격 우선
+        if any(kw in combined for kw in ["접속", "로그인", "렉", "랙", "서버 터"]):
+            return "게임 접속 / 로그인 장애 보고"
+        # 현돌 초기화 관련
+        if "현돌" in combined and "초기화" in combined:
+            return "현돌 초기화 콘텐츠 출시 건의"
         if "서버" in norm or "섭" in raw:
             return "서버 운영 관련 건의"
         return "게임 개선 의견 제출"
@@ -370,17 +428,19 @@ def _generate_sentence(intent: str, raw: str, norm: str, category: str) -> str:
 
 # ── 공개 함수: summarize_lounge_title ────────────────────────────────────────
 
-def summarize_lounge_title(title: str, category: str = "") -> str:
+def summarize_lounge_title(title: str, category: str = "", body: str = "") -> str:
     """유저 원문 제목 → 보고용 요약 문장.
 
     3단계 파이프라인 (LLM 없음):
       Step 1  _classify_intent()       — 다중 신호 가중합 의도 분류
       Step 2  _normalize_terms()       — 슬랭 → 보고용 표준 단어
       Step 3  _generate_sentence()     — intent + 정제어 → 보고 문장
+
+    body: 본문 텍스트 (추가 맥락 제공용)
     """
     intent     = _classify_intent(title, category)   # Step 1
     norm_title = _normalize_terms(title)             # Step 2
-    return _generate_sentence(intent, title, norm_title, category)  # Step 3
+    return _generate_sentence(intent, title, norm_title, category, body=body)  # Step 3
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -401,9 +461,20 @@ def classify_post(post: dict) -> str:
     """단일 포스트 → 카테고리 문자열
 
     우선순위:
-      board_id 직접 매핑 (4 제외) → BUG → SUGGEST → COMPLAINT → default
+      board_id 직접 매핑 (4, 9 제외) → BUG → SUGGEST → COMPLAINT → default
+    [FIX] board_id=9 (건의 게시판): 내용에 버그 키워드 있으면 버그·오류로 재분류
     """
     board_id = post.get("board_id")
+
+    # board_id=9 (건의 게시판): 내용 기반 재분류 먼저
+    if board_id == 9:
+        text9 = f"{post.get('title', '')} {post.get('body', '')}".lower()
+        for kw in BUG_KEYWORDS:
+            if kw in text9:
+                return "버그·오류"
+        # 버그 키워드 없으면 원래 건의·요청
+        return "건의·요청"
+
     cat = BOARD_CATEGORY_MAP.get(board_id)
     if cat is not None:
         return cat
@@ -532,7 +603,7 @@ def build_voc_groups(user_posts: list) -> list:
     classified: list[tuple[str, str, dict]] = []  # (cat, summary, post)
     for p in posts:
         cat = p.pop("_forced_cat", None) or classify_post(p)
-        summ = summarize_lounge_title(p.get("title", ""), cat)
+        summ = summarize_lounge_title(p.get("title", ""), cat, body=p.get("body", ""))
         classified.append((cat, summ, p))
 
     # 4. (category, summary) 그룹핑

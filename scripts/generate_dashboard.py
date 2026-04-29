@@ -114,8 +114,14 @@ def build_metrics_js_data() -> str:
 
 
 # ── 01 주요 이슈 ──────────────────────────────────────────────
+# 라운지 VOC가 주요 이슈에 오르기 위한 최소 건수 임계값
+# (공지/업데이트 major_issues는 항상 표시, 라운지 voc_groups는 임계값 이상만)
+VOC_MAJOR_THRESHOLD = 3
+
+
 def build_section_issues(analyzed: dict) -> str:
     items = []
+    # 공지/업데이트 (official_posts): 항상 표시
     for iss in analyzed.get("major_issues", []):
         board   = iss.get("board_name", "")
         summary = iss.get("summary", "")
@@ -126,11 +132,18 @@ def build_section_issues(analyzed: dict) -> str:
             f'<li><span class="tg {cls}">{tag}</span>'
             f' <a href="{url}" target="_blank" class="iss-link">{summary}</a></li>'
         )
+    # 라운지 VOC: VOC_MAJOR_THRESHOLD 이상인 그룹만 표시
+    # (서버 장애/접속 문제는 2건 이상도 주요 이슈 판단)
     for voc in analyzed.get("voc_groups", []):
         cat  = voc.get("category", "")
         cnt  = voc.get("count", 1)
         summ = voc.get("summary", "")
         url  = voc.get("representative_url", "#")
+        # 임계값 적용: 접속/서버 장애는 2건 이상, 나머지는 VOC_MAJOR_THRESHOLD 이상
+        is_service_issue = any(kw in summ for kw in ["접속", "로그인 장애", "서버", "장애"])
+        threshold = 2 if is_service_issue else VOC_MAJOR_THRESHOLD
+        if cnt < threshold:
+            continue
         cnt_s = f' <span class="cnt-s">({cnt}건)</span>' if cnt > 1 else ""
         cls_map = {"버그·오류": "tg-bug", "건의·요청": "tg-sug",
                    "게임 관련": "tg-game", "기타": "tg-etc"}
@@ -679,9 +692,61 @@ def build_section_cs(
     return trend_html
 
 
+# ── CS 제목 정제 함수 ──────────────────────────────────────────
+# 욕설/비속어 → 제거 후 맥락 기반 정제 요약
+_CS_PROFANITY = ["시발", "씨발", "ssibar", "ssiba", "럼드라", "개새", "ㅅㅂ",
+                 "ㅆㅂ", "병신", "새끼", "쓰레기", "꺼져", "ㅈ같"]
+
+_CS_CLEAN_PATTERNS = [
+    # (조건 키워드, 정제 요약)
+    (["접속", "안되", "안됨", "로그인", "게임이안"],
+     "게임 접속 불가 불만 문의"),
+    (["서버", "렉", "랙", "지연"], "서버 지연/접속 장애 관련 문의"),
+    (["보상", "누락", "안왔", "못받"], "보상 누락 문의"),
+    (["이벤트", "카운트", "미션", "클리어"],
+     "이벤트 미션 진행 오류 문의"),
+    (["환불", "결제", "취소"], "결제/환불 문의"),
+    (["cctv", "감시", "안전지역", "배치"], "안전지역 감시성 캐릭터 배치 개선 요청"),
+    (["인형", "마법인형", "신화인형"], "인형 아이템 관련 문의"),
+]
+
+
+def _clean_cs_title(title: str, category: str = "") -> str:
+    """CS 원문 제목 → 욕설 제거 + 맥락 기반 정제 요약.
+
+    욕설이 없는 원문은 그대로 반환.
+    욕설이 있으면 맥락 키워드 기반으로 정제 요약 생성.
+    """
+    has_profanity = any(p in title.lower() for p in _CS_PROFANITY)
+    if not has_profanity:
+        return title[:60]   # 욕설 없으면 원문 그대로 (길이 제한만)
+
+    # 욕설 있음 → 맥락 기반 정제
+    title_lower = title.lower()
+    for keywords, clean_summary in _CS_CLEAN_PATTERNS:
+        if any(kw in title_lower for kw in keywords):
+            return clean_summary
+
+    # 카테고리 폴백
+    fallback = {
+        "오류":     "게임 오류 관련 불만 문의",
+        "건의":     "게임 개선 요청",
+        "게임 이용": "게임 이용 불편 문의",
+        "결제":     "결제 관련 문의",
+    }
+    return fallback.get(category, "게임 이용 관련 문의")
+
+
 # ── 05 CS 상세 문의 ──────────────────────────────────────────────
+_cs_det_idx = [0]   # 전역 인덱스 (아코디언 id 고유성)
+
+
 def build_section_cs_detail(cs_inquiries: list[dict]) -> str:
-    """CS 상세 문의 테이블 — representative 키 기반 렌더링 (05 섹션)"""
+    """CS 상세 문의 테이블 — representative 키 기반 렌더링 (05 섹션)
+    [수정] 요약 텍스트에서 건수 제거 (건수는 우측 컬럼에만 표시)
+    [추가] 클릭 시 아코디언으로 대표 티켓 원문 목록 표시
+    [추가] 욕설 정제 후 표시
+    """
     if not cs_inquiries:
         return "<p class='empty-s' style='color:#888;font-size:12px'>당일 DKR 문의 없음</p>"
 
@@ -698,23 +763,48 @@ def build_section_cs_detail(cs_inquiries: list[dict]) -> str:
         total = sum(x.get("count", 1) for x in items)
         content = ""
         for item in items:
-            # [FIX-representative] "summary" 키 없음 → representative 리스트 사용
             representative = item.get("representative", [])
             if representative:
-                summ = representative[0].get("title", "")[:60]
-                sub_items = [
-                    f"{r.get('title', '')[:50]} [{r.get('status', '')}]"
-                    for r in representative[1:]
-                ]
+                # 정제된 요약 (첫 번째 대표 제목 기준)
+                raw_title = representative[0].get("title", "")
+                summ = _clean_cs_title(raw_title, cat)
+                # 아코디언용 상세: 대표 티켓 원문 목록
+                det_items = representative  # 원문 포함 전체
             else:
-                summ      = item.get("summary", "")
-                sub_items = item.get("items", [])
-            cnt      = item.get("count", 1)
-            sub_html = ""
-            if sub_items:
-                sub_html = "<ul class='cs-sub'>" + "".join(f"<li>{s}</li>" for s in sub_items) + "</ul>"
-            cnt_txt = f'<span class="cnt-s">({cnt}건)</span>' if cnt > 1 else ""
-            content += f'<div class="cs-item">{summ}{cnt_txt}{sub_html}</div>'
+                summ = item.get("summary", "")
+                det_items = []
+
+            cnt = item.get("count", 1)
+            # [수정] 요약 텍스트에서 건수 제거 — 건수는 ref-td에만 표시
+            # cnt_txt 완전 제거
+
+            # 아코디언 상세 (클릭 시 원문 표시)
+            vid = f"cs_det_{_cs_det_idx[0]}"
+            _cs_det_idx[0] += 1
+            has_det = bool(det_items)
+            arr = f'<span id="ar-{vid}" class="arr">▸</span>' if has_det else '<span class="arr-ph"></span>'
+            oc_attr = f' onclick="toggleVoc(\'{vid}\')" style="cursor:pointer"' if has_det else ""
+
+            det_html = ""
+            if has_det:
+                det_rows = ""
+                for r in det_items:
+                    rt = r.get("title", "")[:80]
+                    rs = r.get("status", "")
+                    rd = r.get("date", "")
+                    det_rows += (f'<div class="det-item">'
+                                 f'<span style="font-size:11px;color:#3c4043">{rt}</span>'
+                                 f'<span style="font-size:10px;color:#9aa0a6;margin-left:6px">[{rs}]</span>'
+                                 f'</div>')
+                det_html = (f'<div id="{vid}" class="det-group" style="display:none">'
+                            f'<p style="font-size:10px;color:#9aa0a6;margin-bottom:4px">원문 문의</p>'
+                            f'{det_rows}</div>')
+
+            content += (f'<div class="voc-row-item"{oc_attr}>'
+                        f'<div class="voc-item-main">{arr}'
+                        f'<span class="vitem-link">{summ}</span></div>'
+                        f'{det_html}</div>')
+
         rows += f"""
             <tr>
               <td class="cat-td">{cat}</td>

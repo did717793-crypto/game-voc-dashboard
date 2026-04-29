@@ -61,15 +61,15 @@
       }
     ],
     "trend": {
-      "버그·오류": {
-        "current": 2,
-        "previous": 2,
-        "delta": 0
-      },
       "건의·요청": {
         "current": 2,
         "previous": 0,
         "delta": 2
+      },
+      "버그·오류": {
+        "current": 2,
+        "previous": 2,
+        "delta": 0
       }
     },
     "trending_keywords": [],
