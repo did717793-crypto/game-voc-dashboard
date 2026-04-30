@@ -919,11 +919,13 @@ def build_section_cs_detail(cs_inquiries: list[dict]) -> str:
                     f'</div>'
                 )
 
+            # det_html은 voc-row-item 밖(형제) - 안에 넣으면 flex 경쟁으로 voc-item-main 압축됨
             content += (
                 f'<div class="voc-row-item"{oc_attr}>'
                 f'<div class="voc-item-main">{arr}'
                 f'<span class="vitem-link">{summ}</span></div>'
-                f'{det_html}</div>'
+                f'</div>'
+                f'{det_html}'
             )
 
         rows += f"""
@@ -1237,7 +1239,7 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
 .voc-item-main{{display:flex;align-items:center;gap:4px;flex:1;min-width:0}}
 .arr{{font-size:11px;color:#1a73e8;flex-shrink:0;width:13px}}
 .arr-ph{{width:13px;flex-shrink:0}}
-.vitem-link{{font-size:12.5px;color:#3c4043;text-decoration:none;line-height:1.5;flex:1}}
+.vitem-link{{font-size:12.5px;color:#3c4043;text-decoration:none;line-height:1.5;flex:1;min-width:0;white-space:normal;word-break:keep-all;overflow-wrap:break-word}}
 .vitem-link:hover{{color:#1a73e8}}
 .link-btn{{font-size:11px;color:#1a73e8;text-decoration:none;font-weight:600;
            white-space:nowrap;flex-shrink:0;display:inline-block;margin:2px 0}}
