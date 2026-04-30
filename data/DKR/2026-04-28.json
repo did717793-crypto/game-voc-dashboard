@@ -1,0 +1,184 @@
+{
+  "meta": {
+    "date": "2026-04-28",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-04-28T00:00:00+09:00",
+    "window_end": "2026-04-28T23:59:59+09:00",
+    "crawled_at": "2026-04-30T10:27:59.552954+09:00",
+    "total_posts": 2,
+    "total_comments": 13,
+    "boards": {
+      "4": {
+        "name": "자유 게시판",
+        "count": 1
+      },
+      "5": {
+        "name": "질문과 답변",
+        "count": 1
+      }
+    }
+  },
+  "official_posts": [],
+  "posts": [
+    {
+      "feed_id": "7593738",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "몇 주 쟁했는데 한주 좀 쉽시다",
+      "body": "이번주 연휴기간인데 한주 쉽시다. 엔트러스님들. 우리도(구섭) 고객센터 쉬시는 것처럼 쉬고 싶어요. 인터 나눠서 휴식기좀하고 쌈준비하게.. (현돌 리셋해줌 감사.). 아 그리고 19일 패키지 못산거 왜 답변 없나요?",
+      "author": "쉬고싶다",
+      "created_at": "2026-04-28T21:07:06+09:00",
+      "view_count": 252,
+      "comment_count": 10,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7593738",
+      "comments": [
+        {
+          "comment_id": "26061937",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "네이버최강 휴먼 9613",
+          "text": "응 ~~~~ 곧 섭종",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 1
+        },
+        {
+          "comment_id": "26064700",
+          "parent_id": "26061937",
+          "depth": 2,
+          "author": "231daw",
+          "text": "지금패치하는거 보면 반박을 못하겠어요.아 스펙만 막올려주는 패치만 하는데 사냥터도 없고 아..매달 4만원씩 고정비용 이건 너무하다싶어요",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26067444",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "천하통일 킬러 2204",
+          "text": "뭘또쉰대 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ쟁없으면 또 찡찡 개그치 할거면서 ㅋㅋㅋㅋㅋㅋㅋㅋ\n나그 금고 ㅊ  ㅕ  드 가  라 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26068046",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요 용사님.\n\n먼저, 용사님의 소중한 의견에 감사의 인사를 드립니다.\n\n저희 DK모바일 리본은 더욱 발전된 모습을 보여드리고자 노력하고 있으며,\n보내주시는 모든 의견은 모두 귀 기울여 듣고 있습니다.\n\n남겨주신 의견들은 담당 부서에 전달하여 내부적으로 논의할 수 있도록 하겠습니다.\n\n앞으로도 좋은 의견이 있으시다면 언제든지 소중한 말씀 부탁드립니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26069149",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "큐티 호빵 6872260",
+          "text": "연휴때 농사 지면 연휴 동안 쟁없어서 손구락만 빨고 있어야함 제발 연휴때 농사시즌 주지 마삼",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26070487",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "라운지대표 오빠 266",
+          "text": "농사 = 게임망하는길",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 1
+        },
+        {
+          "comment_id": "26071389",
+          "parent_id": "26070487",
+          "depth": 2,
+          "author": "큐티 호빵 6872260",
+          "text": "농사 -> 자동사냥 -> 20분간 유튜브 보면서 적없어서 루멘 사냥 행복해함 -> 20분뒤 심심하니 루베스나 할까? -> 잃음 -> 마상창 손댐 -> 탈탈 털리고 거지됨 -> 안해 씨바",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26072659",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "천하통일 킬러 2204",
+          "text": "농사 = 게임망하는길",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 1
+        },
+        {
+          "comment_id": "26074275",
+          "parent_id": "26072659",
+          "depth": 2,
+          "author": "러블리한 포도 4377156",
+          "text": "약자의 입장에서 이 문제를 생각해야 합니다. 약자가 안정적으로 성장해야만 적과 맞서 싸울 수 있습니다",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26076128",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "천하통일 킬러 2204",
+          "text": "밑댓글ㅋㅋ약장의 입장생각 ㅇ 지 롤ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ  \n\n끼리끼리 다 뭉쳐놓아놓고도 안되는얘들을 뭔 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7590961",
+      "board_id": 5,
+      "board_name": "질문과 답변",
+      "title": "뉴비 살만한 것들좀 추천해주세요",
+      "body": "뉴비 살만한 패키지 있으면 추천 부탁드립니다 시작한지 이제 일주일정도? 됐는데 오늘 원스 릴레이 쿠폰이라 몇개만 지를려는데 최대한 가성비좀 추천 해주세요 일단 월정액만 미리 사둔 상태입니다 ㅠ",
+      "author": "유즈리하이노리",
+      "created_at": "2026-04-28T12:09:48+09:00",
+      "view_count": 208,
+      "comment_count": 3,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7590961",
+      "comments": [
+        {
+          "comment_id": "26053908",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "천하통일 킬러 2204",
+          "text": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ\n\n뉴비인척 종종올라오는 엔트러스 측근들ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ\n부지런하다 ㄹㅇ ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26058138",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "럭키가이 겜돌이 6255",
+          "text": "주디에 병뚜껑 20개넣고 죽빵 20대 쳐패고싶네",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26073838",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "섭스왕",
+          "text": "그냥 계정을 사세요 그게 돈 덜 들어갑니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    }
+  ]
+}

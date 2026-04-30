@@ -1,0 +1,175 @@
+{
+  "date": "2026-04-29",
+  "major_issues": [
+    {
+      "title": "4월 30일(목) 정기 점검 안내",
+      "summary": "4월 30일(목) 정기 점검 안내",
+      "board_name": "공지사항",
+      "board": "공지사항",
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7598434",
+      "feed_id": "7598434",
+      "date": "2026-04-29",
+      "count": 1
+    },
+    {
+      "title": "4월 30일(목) 업데이트 내용 안내",
+      "summary": "4월 30일(목) 업데이트 내용 안내",
+      "board_name": "업데이트",
+      "board": "업데이트",
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7598442",
+      "feed_id": "7598442",
+      "date": "2026-04-29",
+      "count": 2
+    }
+  ],
+  "voc_groups": [
+    {
+      "category": "건의·요청",
+      "summary": "서버 통합 건의",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7597665",
+      "feed_ids": [
+        "7597665"
+      ]
+    },
+    {
+      "category": "게임 관련",
+      "summary": "게임 관련 유저 의견",
+      "count": 4,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7597870",
+      "feed_ids": [
+        "7599463",
+        "7598462",
+        "7597870",
+        "7597780"
+      ]
+    },
+    {
+      "category": "게임 관련",
+      "summary": "서버 운영 관련 의견",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7596409",
+      "feed_ids": [
+        "7596409"
+      ]
+    },
+    {
+      "category": "기타",
+      "summary": "운영 정책에 대한 유저 불만",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7596586",
+      "feed_ids": [
+        "7596586"
+      ]
+    }
+  ],
+  "insights": {
+    "top_issues": [
+      {
+        "category": "게임 관련",
+        "summary": "게임 관련 유저 의견",
+        "count": 4,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7597870"
+      },
+      {
+        "category": "건의·요청",
+        "summary": "서버 통합 건의",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7597665"
+      },
+      {
+        "category": "게임 관련",
+        "summary": "서버 운영 관련 의견",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7596409"
+      }
+    ],
+    "trend": {
+      "기타": {
+        "current": 1,
+        "previous": 0,
+        "delta": 1
+      },
+      "게임 관련": {
+        "current": 5,
+        "previous": 2,
+        "delta": 3
+      },
+      "건의·요청": {
+        "current": 1,
+        "previous": 0,
+        "delta": 1
+      }
+    },
+    "trending_keywords": [],
+    "prev_date": "2026-04-28"
+  },
+  "cs_daily": {
+    "received": 2,
+    "processed": 1
+  },
+  "cs_status_counts": {
+    "접수 완료": 1,
+    "답변 완료": 36,
+    "삭제": 1,
+    "조회 완료": 31
+  },
+  "cs_inquiries": [
+    {
+      "category": "기타",
+      "count": 2,
+      "pending": 1,
+      "representative": [
+        {
+          "title": "불법프로그램신고",
+          "body": "신고 대상 : 쇠뭉치외50캐릭 서버명 : 32서버 이거 외에도 쟁중에도 불법프로그램으로 몇캐릭을 다중으로 돌리는데 이게 어떻게 정지가안당하죠? 적당히하시죠 무슨 1인pc 1인1게임아닌가요 ? 1인 뭐 몇캐릭씩 움직이는데 쇠뭉치 쇠구슬 쇠창살 등등 아이디도 기억이안남 왜 냎두시는거죠 ?",
+          "status": "접수 완료",
+          "date": "2026-04-29"
+        },
+        {
+          "title": "자동프로그램 메크로 사용하는사람 안잡나요",
+          "body": "캐릭터명 : 흑견 서버명 : 가룸 작업장이 이렇게많은데 괜찮은건가요",
+          "status": "답변 완료",
+          "date": "2026-04-29"
+        }
+      ]
+    }
+  ],
+  "cs_week_trend": [
+    {
+      "date": "2026-04-23",
+      "received": 4,
+      "processed": 5
+    },
+    {
+      "date": "2026-04-24",
+      "received": 8,
+      "processed": 8
+    },
+    {
+      "date": "2026-04-25",
+      "received": 2,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-26",
+      "received": 2,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-27",
+      "received": 0,
+      "processed": 5
+    },
+    {
+      "date": "2026-04-28",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-29",
+      "received": 2,
+      "processed": 1
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "date": "2026-04-28",
+  "major_issues": [],
+  "voc_groups": [
+    {
+      "category": "게임 관련",
+      "summary": "게임 관련 유저 의견",
+      "count": 2,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7593738",
+      "feed_ids": [
+        "7593738",
+        "7590961"
+      ]
+    }
+  ],
+  "insights": {
+    "top_issues": [
+      {
+        "category": "게임 관련",
+        "summary": "게임 관련 유저 의견",
+        "count": 2,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7593738"
+      }
+    ],
+    "trend": {
+      "게임 관련": {
+        "current": 2,
+        "previous": 1,
+        "delta": 1
+      },
+      "건의·요청": {
+        "current": 0,
+        "previous": 2,
+        "delta": -2
+      }
+    },
+    "trending_keywords": [],
+    "prev_date": "2026-04-27"
+  },
+  "cs_daily": {
+    "received": 0,
+    "processed": 0
+  },
+  "cs_status_counts": {
+    "접수 완료": 1,
+    "답변 완료": 36,
+    "삭제": 1,
+    "조회 완료": 31
+  },
+  "cs_inquiries": [],
+  "cs_week_trend": [
+    {
+      "date": "2026-04-22",
+      "received": 5,
+      "processed": 11
+    },
+    {
+      "date": "2026-04-23",
+      "received": 4,
+      "processed": 5
+    },
+    {
+      "date": "2026-04-24",
+      "received": 8,
+      "processed": 8
+    },
+    {
+      "date": "2026-04-25",
+      "received": 2,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-26",
+      "received": 2,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-27",
+      "received": 0,
+      "processed": 5
+    },
+    {
+      "date": "2026-04-28",
+      "received": 0,
+      "processed": 0
+    }
+  ]
+}
