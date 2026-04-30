@@ -5,15 +5,15 @@
   "insights": {
     "top_issues": [],
     "trend": {
-      "게임 관련": {
-        "current": 0,
-        "previous": 2,
-        "delta": -2
-      },
       "버그·오류": {
         "current": 0,
         "previous": 1,
         "delta": -1
+      },
+      "게임 관련": {
+        "current": 0,
+        "previous": 2,
+        "delta": -2
       }
     },
     "trending_keywords": [],

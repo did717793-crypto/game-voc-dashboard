@@ -250,10 +250,19 @@ def build_section_chart(chart_dates: list[str], chart_id: str) -> str:
 CAT_ORDER = ["게임 관련", "버그·오류", "건의·요청", "기타"]
 
 
-def build_section_voc(voc_groups: list[dict], raw_map: dict, pfx: str = "v") -> str:
+def build_section_voc(voc_groups: list[dict], raw_map: dict, pfx: str = "v",
+                      cs_inquiries: list[dict] = None) -> str:
     # [FIX-7] 항목(카테고리) 단위 집계 → 각 내용(item) 개별 행 + 개별 링크 + rowspan
+    # [v6.0] cs_inquiries 크로스 링크: issue_type 매핑으로 CS 건수 병기
     if not voc_groups:
         return "<p class='empty-s'>수집된 VOC 없음</p>"
+
+    # CS 카테고리별 건수 집계 (크로스 링크용)
+    cs_cat_map: dict[str, int] = {}
+    if cs_inquiries:
+        for inq in cs_inquiries:
+            cat = inq.get("category", "")
+            cs_cat_map[cat] = cs_cat_map.get(cat, 0) + inq.get("count", 0)
 
     by_cat: dict[str, list] = {c: [] for c in CAT_ORDER}
     for g in voc_groups:
@@ -306,6 +315,17 @@ def build_section_voc(voc_groups: list[dict], raw_map: dict, pfx: str = "v") -> 
             if i_item == 0:
                 cat_cell = f'<td class="cat-td" rowspan="{row_count}">{cat}</td>'
 
+            # CS 크로스 링크: issue_type 매핑으로 CS 건수 계산
+            issue_type = item.get("issue_type", "")
+            cs_linked_cats = _ISSUE_TYPE_TO_CS_CAT.get(issue_type, [])
+            cs_cnt = sum(cs_cat_map.get(c, 0) for c in cs_linked_cats)
+            if cs_cnt > 0:
+                cnt_display = (f'{item_cnt}건'
+                               f'<span style="font-size:10px;color:#1a73e8;margin-left:4px">'
+                               f'+CS {cs_cnt}건</span>')
+            else:
+                cnt_display = f'{item_cnt}건'
+
             # 비고 컬럼 제거: 링크는 raw/analyzed에 유지하되 화면에서만 미노출
             rows += f"""
         <tr>
@@ -318,7 +338,7 @@ def build_section_voc(voc_groups: list[dict], raw_map: dict, pfx: str = "v") -> 
             </div>
             {exp_div}
           </td>
-          <td class="ref-td">{item_cnt}건</td>
+          <td class="ref-td">{cnt_display}</td>
         </tr>"""
             idx += 1
 
@@ -701,9 +721,26 @@ _CS_PROFANITY = ["시발", "씨발", "ssibar", "ssiba", "럼드라", "개새", "
 
 # 욕설 포함 단어 정제 (캐릭터명에 비속어가 포함된 경우 등)
 _PROFANITY_WORDS = re.compile(
-    r'(시발|씨발|ssibar|ssiba|럼드라|개새|ㅅㅂ|ㅆㅂ|병신|새끼|쓰레기|꺼져|ㅈ같'
-    r'|병진|새귀|놈드라|졷같|니애미)', re.IGNORECASE
+    # 긴 패턴 우선 (alternation 순서 중요 — 짧은 패턴이 먼저 오면 잔류 발생)
+    r'(ssibar[a-z]*|ssiba[a-z]*|sibal|sibbal'
+    r'|시발[가-힣]*|씨발[가-힣]*'   # "시발려나", "시발럼드라" 등 한글 잔류 방지
+    r'|개[가-힣]{2,5}달|개[가-힣]{2,5}진'   # 개병진스달 등 (긴 것 먼저)
+    r'|개[가-힣]{1,2}달|개[가-힣]{1,2}진'   # 개스달, 개병진 등
+    r'|개새|개병|개스|개ㅅ'
+    r'|ㄲㅈ|뒤져|뒤지|닥쳐|존나|ㅈ나|지랄'
+    r'|애미[가-힣]*|니애미[가-힣]*|에미[가-힣]*'
+    r'|병신|새끼|꺼져|럼드라|졷같[가-힣]*|새귀[가-힣]*|놈드라'
+    r'|ㅅㅂ|ㅆㅂ|쓰레기|ㅈ같|병진)', re.IGNORECASE
 )
+
+# 이슈 타입 → CS 카테고리 크로스 링크 (analyze_voc.py의 CS_CATEGORY_TO_ISSUE_TYPE 역매핑)
+_ISSUE_TYPE_TO_CS_CAT: dict[str, list[str]] = {
+    "접속·서버 장애":      ["오류", "설치/실행"],
+    "아이템·보상 오류":    ["이벤트"],
+    "기능·스킬 오류":      ["게임 이용"],
+    "게임 개선 건의":      ["건의"],
+    "던전·콘텐츠 진행 불가": ["오류", "게임 이용"],
+}
 
 
 def _summarize_cs_from_body(title: str, body: str, category: str = "") -> str:
@@ -901,7 +938,8 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
             ))
             + sec("04", "공식 라운지 동향", build_section_voc(
                 analyzed.get("voc_groups", []), raw_map,
-                pfx=f"D{date_str.replace('-','')}_"))
+                pfx=f"D{date_str.replace('-','')}_",
+                cs_inquiries=analyzed.get("cs_inquiries", [])))
             + sec("05", "CS 상세 문의",    build_section_cs_detail(
                 analyzed.get("cs_inquiries", [])))
         )
@@ -926,7 +964,8 @@ def build_report(date_str: str, period: str, all_dates: list[str]) -> str:
             ))
             + sec("04", "공식 라운지 동향", build_section_voc(
                 analyzed.get("voc_groups", []), raw_map,
-                pfx=f"W{date_str.replace('-','')}_"))
+                pfx=f"W{date_str.replace('-','')}_",
+                cs_inquiries=analyzed.get("cs_inquiries", [])))
             + sec("05", "CS 상세 문의",    build_section_cs_detail(
                 analyzed.get("cs_inquiries", [])))
         )

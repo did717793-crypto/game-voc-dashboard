@@ -3,19 +3,30 @@
   "major_issues": [],
   "voc_groups": [
     {
+      "issue_type": "기능·스킬 오류",
       "category": "버그·오류",
-      "summary": "게임 내 기능 오류 보고",
-      "count": 3,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7555131",
+      "summary": "거래소 특권이 안받아짐 그래서 지금 1주년 기념창에서 구매가 안됨 재덥 해보고 폰으로 해봐도 안됨",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7554996",
       "feed_ids": [
-        "7555367",
-        "7555131",
         "7554996"
       ]
     },
     {
+      "issue_type": "게임 개선 건의",
+      "category": "건의·요청",
+      "summary": "이거 빨리 해결해주세요 오늘 구매 못한 패키지 365,000,000플로린+20,000 다야 가져가시고 보상해",
+      "count": 2,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7555131",
+      "feed_ids": [
+        "7555367",
+        "7555131"
+      ]
+    },
+    {
+      "issue_type": "게임 일반",
       "category": "게임 관련",
-      "summary": "서버 운영 관련 의견",
+      "summary": "55섭 길마(MANJI)랑 임백정(힘) 길드먹튀+6천억플로",
       "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7556611",
       "feed_ids": [
@@ -26,33 +37,39 @@
   "insights": {
     "top_issues": [
       {
-        "category": "버그·오류",
-        "summary": "게임 내 기능 오류 보고",
-        "count": 3,
+        "category": "건의·요청",
+        "summary": "이거 빨리 해결해주세요 오늘 구매 못한 패키지 365,000,000플로린+20,000 다야 가져가시고 보상해",
+        "count": 2,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7555131"
       },
       {
+        "category": "버그·오류",
+        "summary": "거래소 특권이 안받아짐 그래서 지금 1주년 기념창에서 구매가 안됨 재덥 해보고 폰으로 해봐도 안됨",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7554996"
+      },
+      {
         "category": "게임 관련",
-        "summary": "서버 운영 관련 의견",
+        "summary": "55섭 길마(MANJI)랑 임백정(힘) 길드먹튀+6천억플로",
         "count": 1,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7556611"
       }
     ],
     "trend": {
-      "게임 관련": {
+      "버그·오류": {
         "current": 1,
         "previous": 0,
         "delta": 1
       },
-      "버그·오류": {
-        "current": 3,
-        "previous": 0,
-        "delta": 3
-      },
-      "기타": {
-        "current": 0,
+      "건의·요청": {
+        "current": 2,
         "previous": 1,
-        "delta": -1
+        "delta": 1
+      },
+      "게임 관련": {
+        "current": 1,
+        "previous": 0,
+        "delta": 1
       }
     },
     "trending_keywords": [],

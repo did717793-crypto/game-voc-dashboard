@@ -3,49 +3,46 @@
   "major_issues": [],
   "voc_groups": [
     {
-      "category": "건의·요청",
-      "summary": "게임 개선 의견 제출",
+      "issue_type": "매크로·불법 행위 제보",
+      "category": "게임 관련",
+      "summary": "매크로 사용 의심 제재 요청",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7587038",
+      "feed_ids": [
+        "7587038"
+      ]
+    },
+    {
+      "issue_type": "게임 일반",
+      "category": "게임 관련",
+      "summary": "10층까지 나와야죠 경치도좀 대폭늘리고 기간을 늘려주시던지 균열보스잡느거 어떻게 보완이 안될까요",
       "count": 2,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7586535",
       "feed_ids": [
         "7586535",
         "7588646"
       ]
-    },
-    {
-      "category": "게임 관련",
-      "summary": "게임 관련 유저 의견",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7587038",
-      "feed_ids": [
-        "7587038"
-      ]
     }
   ],
   "insights": {
     "top_issues": [
       {
-        "category": "건의·요청",
-        "summary": "게임 개선 의견 제출",
+        "category": "게임 관련",
+        "summary": "10층까지 나와야죠 경치도좀 대폭늘리고 기간을 늘려주시던지 균열보스잡느거 어떻게 보완이 안될까요",
         "count": 2,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7586535"
       },
       {
         "category": "게임 관련",
-        "summary": "게임 관련 유저 의견",
+        "summary": "매크로 사용 의심 제재 요청",
         "count": 1,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7587038"
       }
     ],
     "trend": {
       "게임 관련": {
-        "current": 1,
+        "current": 3,
         "previous": 1,
-        "delta": 0
-      },
-      "건의·요청": {
-        "current": 2,
-        "previous": 0,
         "delta": 2
       }
     },

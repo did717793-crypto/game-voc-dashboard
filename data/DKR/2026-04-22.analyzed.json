@@ -24,50 +24,28 @@
   ],
   "voc_groups": [
     {
+      "issue_type": "접속·서버 장애",
       "category": "버그·오류",
-      "summary": "게임 접속 / 로그인 장애 보고",
-      "count": 2,
+      "summary": "서버 접속·게임 지연 장애 보고",
+      "count": 4,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7564097",
       "feed_ids": [
-        "7564019",
+        "7564112",
+        "7564016",
+        "7563937",
         "7564097"
       ]
     },
     {
-      "category": "버그·오류",
-      "summary": "접속 스킬 효과 미적용 현상",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7563937",
+      "issue_type": "게임 일반",
+      "category": "게임 관련",
+      "summary": "어제 임시점검하더니 오프라인사냥 중지알림 또 안오네",
+      "count": 3,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7564019",
       "feed_ids": [
-        "7563937"
-      ]
-    },
-    {
-      "category": "건의·요청",
-      "summary": "게임 개선 의견 제출",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7563715",
-      "feed_ids": [
+        "7565172",
+        "7564019",
         "7563715"
-      ]
-    },
-    {
-      "category": "게임 관련",
-      "summary": "게임 접속 / 로그인 장애 보고",
-      "count": 2,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7564112",
-      "feed_ids": [
-        "7564112",
-        "7564016"
-      ]
-    },
-    {
-      "category": "게임 관련",
-      "summary": "게임 관련 유저 의견",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7565172",
-      "feed_ids": [
-        "7565172"
       ]
     }
   ],
@@ -75,38 +53,32 @@
     "top_issues": [
       {
         "category": "버그·오류",
-        "summary": "게임 접속 / 로그인 장애 보고",
-        "count": 2,
+        "summary": "서버 접속·게임 지연 장애 보고",
+        "count": 4,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7564097"
       },
       {
         "category": "게임 관련",
-        "summary": "게임 접속 / 로그인 장애 보고",
-        "count": 2,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7564112"
-      },
-      {
-        "category": "버그·오류",
-        "summary": "접속 스킬 효과 미적용 현상",
-        "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7563937"
+        "summary": "어제 임시점검하더니 오프라인사냥 중지알림 또 안오네",
+        "count": 3,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7564019"
       }
     ],
     "trend": {
       "버그·오류": {
-        "current": 3,
-        "previous": 1,
+        "current": 4,
+        "previous": 2,
         "delta": 2
       },
       "건의·요청": {
-        "current": 1,
+        "current": 0,
         "previous": 1,
-        "delta": 0
+        "delta": -1
       },
       "게임 관련": {
         "current": 3,
-        "previous": 3,
-        "delta": 0
+        "previous": 2,
+        "delta": 1
       }
     },
     "trending_keywords": [

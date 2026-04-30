@@ -14,26 +14,17 @@
   ],
   "voc_groups": [
     {
+      "issue_type": "기능·스킬 오류",
       "category": "버그·오류",
-      "summary": "게임 내 기능 오류 보고",
-      "count": 2,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7558321",
+      "summary": "에러떠서 안받아지는데 어찌합니까",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7557698",
       "feed_ids": [
-        "7558321",
         "7557698"
       ]
     },
     {
-      "category": "게임 관련",
-      "summary": "게임 관련 유저 의견",
-      "count": 2,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7557726",
-      "feed_ids": [
-        "7559120",
-        "7557726"
-      ]
-    },
-    {
+      "issue_type": "서비스 종료 우려",
       "category": "기타",
       "summary": "서비스 종료 우려 및 게임 비판",
       "count": 1,
@@ -43,11 +34,24 @@
       ]
     },
     {
-      "category": "기타",
-      "summary": "게임 접속 / 로그인 장애 보고",
-      "count": 1,
+      "issue_type": "가격·거래 문의",
+      "category": "게임 관련",
+      "summary": "게임 내 아이템 거래·시세 관련 문의",
+      "count": 2,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7557726",
+      "feed_ids": [
+        "7558321",
+        "7557726"
+      ]
+    },
+    {
+      "issue_type": "게임 일반",
+      "category": "게임 관련",
+      "summary": "전설 4개 모아서 한번씩 합성도전하고있는 중이였는데 인형 4트째 에 똭하고 탈로스가 뜨고 // 이번에 이벤으",
+      "count": 2,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7558377",
       "feed_ids": [
+        "7559120",
         "7558377"
       ]
     }
@@ -55,39 +59,44 @@
   "insights": {
     "top_issues": [
       {
-        "category": "버그·오류",
-        "summary": "게임 내 기능 오류 보고",
-        "count": 2,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7558321"
-      },
-      {
         "category": "게임 관련",
-        "summary": "게임 관련 유저 의견",
+        "summary": "게임 내 아이템 거래·시세 관련 문의",
         "count": 2,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7557726"
       },
       {
-        "category": "기타",
-        "summary": "서비스 종료 우려 및 게임 비판",
+        "category": "게임 관련",
+        "summary": "전설 4개 모아서 한번씩 합성도전하고있는 중이였는데 인형 4트째 에 똭하고 탈로스가 뜨고 // 이번에 이벤으",
+        "count": 2,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7558377"
+      },
+      {
+        "category": "버그·오류",
+        "summary": "에러떠서 안받아지는데 어찌합니까",
         "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7560250"
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7557698"
       }
     ],
     "trend": {
-      "기타": {
-        "current": 2,
-        "previous": 0,
-        "delta": 2
-      },
-      "게임 관련": {
-        "current": 2,
+      "버그·오류": {
+        "current": 1,
         "previous": 1,
+        "delta": 0
+      },
+      "건의·요청": {
+        "current": 0,
+        "previous": 2,
+        "delta": -2
+      },
+      "기타": {
+        "current": 1,
+        "previous": 0,
         "delta": 1
       },
-      "버그·오류": {
-        "current": 2,
-        "previous": 3,
-        "delta": -1
+      "게임 관련": {
+        "current": 4,
+        "previous": 1,
+        "delta": 3
       }
     },
     "trending_keywords": [],

@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 """
-analyze_voc.py — DKR 커뮤니티 VOC 규칙 기반 분석기 v5.0
+analyze_voc.py — DKR 커뮤니티 VOC 규칙 기반 분석기 v6.0
 ────────────────────────────────────────────────────────
 변경 이력:
+  v6.0  이슈 타입 기반 의미 병합 시스템 도입
+        - ISSUE_TYPES: 의미 기반 이슈 타입 정의 (접속·서버 장애, 매크로 등)
+        - classify_issue_type(): board_id 무관 의미 분류
+        - generate_group_summary(): fallback 표현 완전 제거, 실제 내용 기반
+        - build_voc_groups() 재설계: issue_type 기준 병합 (board_id 제외)
+        - _PROFANITY_PATTERN: 변형 욕설 패턴 강화
   v5.0  summarize_lounge_title + (category,summary) 그룹핑 + build_insights 추가
   v4.0  분류 정확도 개선 + 중복/노이즈 제거 + major_issues 품질 개선
   v3.0  LLM 제거, 규칙 기반 단독 확정
@@ -117,6 +123,20 @@ NOISE_EXCLUDE: bool = False
 
 # 노이즈 판단 정규식
 _NOISE_PATTERN = re.compile(r"^[ㄱ-ㅎㅏ-ㅣ?!.…~\s]+$")
+
+# 욕설 패턴 (변형 포함) — analyze_voc 내부 정제용
+_PROFANITY_PATTERN = re.compile(
+    # 긴 패턴 우선 (alternation 순서 중요 — 짧은 패턴 먼저 오면 잔류 발생)
+    r'(ssibar[a-z]*|ssiba[a-z]*|sibal|sibbal|ㅅㅂ'
+    r'|시발[가-힣]*|씨발[가-힣]*'   # "시발려나" 등 한글 잔류 방지
+    r'|개[가-힣]{2,5}달|개[가-힣]{2,5}진'   # 개병진스달 등 (긴 것 먼저)
+    r'|개[가-힣]{1,2}달|개[가-힣]{1,2}진'   # 개스달, 개병진 등
+    r'|개새|개병|개스|개ㅅ'
+    r'|ㄲㅈ|뒤져|뒤지|닥쳐|존나|ㅈ나|지랄'
+    r'|애미[가-힣]*|니애미[가-힣]*|에미[가-힣]*'
+    r'|병신|새끼|꺼져|럼드라|졷같[가-힣]*|새귀[가-힣]*|놈드라',
+    re.IGNORECASE
+)
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -448,12 +468,21 @@ def summarize_lounge_title(title: str, category: str = "", body: str = "") -> st
 # ════════════════════════════════════════════════════════════════════════════
 
 def is_noise(post: dict) -> bool:
-    """노이즈 게시글 판별: 제목이 너무 짧거나 자음/모음만인 경우"""
+    """노이즈 게시글 판별: 제목이 너무 짧거나 자음/모음만인 경우.
+
+    [v6.0] 제목이 짧아도 본문이 충분하면 노이즈 제외
+           (예: 제목="헐;;" / 본문="서버 터진게냐? 확인하라" → 유효 게시글)
+    """
     title = (post.get("title") or "").strip()
+    body  = (post.get("body")  or "").strip()
+
+    # 본문이 충분하면 제목 길이 무관하게 유효 처리
+    has_valid_body = len(body) >= 8 and bool(re.search(r'[가-힣]{2,}', body))
+
     if len(title) < NOISE_MIN_LEN:
-        return True
+        return not has_valid_body    # 본문 있으면 노이즈 아님
     if _NOISE_PATTERN.match(title):
-        return True
+        return not has_valid_body
     return False
 
 
@@ -573,70 +602,294 @@ def build_major_issues(official_posts: list, date_label: str = "") -> list:
     return result
 
 
-def build_voc_groups(user_posts: list) -> list:
-    """유저 포스트 → (category, summary) 기준 그룹핑 → voc_groups
+# ════════════════════════════════════════════════════════════════════════════
+#  ▶ v6.0 이슈 타입 기반 병합 시스템
+#  [설계 원칙]
+#    · 그룹핑 기준: issue_type (board_id 완전 제외)
+#    · 같은 이슈 타입 + 같은 날짜 → 1개 그룹 (게시판 무관)
+#    · 요약: 실제 내용 기반, fallback 표현("게임 관련 유저 의견" 등) 절대 금지
+#    · 욕설: _PROFANITY_PATTERN으로 정제 후 요약
+# ════════════════════════════════════════════════════════════════════════════
 
-    처리 순서:
-      1. feed_id 기준 중복 제거
-      2. 노이즈 필터 (FILTER_NOISE=True 시)
-      3. 카테고리 분류 + summarize_lounge_title 요약
-      4. (category, summary) 쌍으로 그룹핑 → count 집계
-      5. 대표글 선정 (engagement 가중치: 댓글×2 + 좋아요)
-      6. 카테고리 내 count DESC 정렬
+# 이슈 타입 정의 — 순서가 우선순위 (구체적인 타입이 앞에 와야 함)
+# (이슈타입명, [매칭 키워드], 매핑 카테고리)
+ISSUE_TYPES: list[tuple[str, list[str], str]] = [
+    # ① 매크로 — 구체적 표현 우선, "메크로"(오타)도 포함
+    ("매크로·불법 행위 제보",
+     ["매크로", "메크로", "작업장", "불법 프로그램", "다중 접속 의심", "자동사냥"],
+     "게임 관련"),
+    # ② 던전 소탕/진행 불가
+    ("던전·콘텐츠 진행 불가",
+     ["소탕 안됨", "소탕불가", "소탕 불가", "소탕이 안", "입장불가", "입장 불가",
+      "클리어가 안", "클리어 안됨", "시련의 던전 권장", "던전 소탕",
+      "소탕이안", "소탕안됨"],
+     "버그·오류"),
+    # ③ 아이템/보상 오류 — 접속과 분리 (카운트, 보상, 이벤트 관련)
+    ("아이템·보상 오류",
+     ["보상 안됨", "보상 안 됨", "보상이 안", "보상 못", "미지급",
+      "파이썬의 요람", "파이썬의요람", "파이썬 요람", "잊혀진탑", "잊탑",
+      "미션 이벤트", "카운트가 안", "카운트 안됨", "카운트 안돼",
+      "카운트안됨", "카운팅 안됨", "카운터 안됨",
+      "구매 횟수", "구매횟수", "횟수 초기화", "횟수가 안"],
+     "버그·오류"),
+    # ④ 접속/서버 장애 — 단음절 "팅" 제거 (카운팅에 오탐 방지), 섭터 추가
+    ("접속·서버 장애",
+     ["렉", "랙", "접속불가", "접속 불가", "접속이 안", "접속안됨",
+      "로그인 안", "로그인안", "서버터", "서버가 터", "서버 터진",
+      "서버 죽", "섭터", "터졌", "터짐", "튕김", "팅김",
+      "튕겨", "팅겨", "끊겨", "끊김", "지연"],
+     "버그·오류"),
+    # ⑤ 기능/스킬 오류
+    ("기능·스킬 오류",
+     ["버그", "오류", "에러", "error", "씹힘", "십힘", "미적용",
+      "작동 안", "작동안", "안됨", "안 됨", "먹통", "오작동"],
+     "버그·오류"),
+    # ⑥ 서버 통합/이전
+    ("서버 통합·이전 건의",
+     ["서버 통합", "섭 통합", "섭통합", "합쳐", "인터섭", "섭합",
+      "서버 합병", "이전권", "서버이전권"],
+     "건의·요청"),
+    # ⑦ 게임 개선 건의
+    ("게임 개선 건의",
+     ["건의", "개선", "제안", "추가해", "해주세요", "해주셨으면",
+      "넣어줘", "나왔으면", "출시해", "부탁드립", "부탁드려",
+      "제발", "있으면 좋겠", "했으면 좋겠", "해줬으면"],
+     "건의·요청"),
+    # ⑧ 서비스 종료 우려
+    ("서비스 종료 우려",
+     ["섭종", "서비스 종료", "서비스종료", "폐겜", "폐서비스", "망겜"],
+     "기타"),
+    # ⑨ 운영 불만
+    ("운영·정책 불만",
+     ["운영 뭐", "운영뭐", "뭐하냐", "환불", "접는다", "탈게", "탈주",
+      "개판", "엉망", "한심", "뭐하는 거", "운영진"],
+     "기타"),
+    # ⑩ 가격/거래
+    ("가격·거래 문의",
+     ["거래", "시세", "얼마", "팔아", "팔린", "가격이 얼마", "팔고"],
+     "게임 관련"),
+    # ⑪ 게임 일반 (최후 fallback — 반드시 실제 내용 기반 요약 생성)
+    ("게임 일반", [], "게임 관련"),
+]
+
+# CS 카테고리 → 이슈 타입 매핑 (generate_dashboard.py 크로스 링크용)
+CS_CATEGORY_TO_ISSUE_TYPE: dict[str, str] = {
+    "오류":      "접속·서버 장애",
+    "설치/실행": "접속·서버 장애",
+    "이벤트":   "아이템·보상 오류",
+    "게임 이용": "기능·스킬 오류",
+    "건의":     "게임 개선 건의",
+}
+
+
+# ── v6.0 헬퍼 함수 ───────────────────────────────────────────────────────────
+
+def _remove_profanity(text: str) -> str:
+    """욕설 패턴 제거 후 반환"""
+    if not text:
+        return ""
+    return _PROFANITY_PATTERN.sub("", text).strip()
+
+
+def _extract_meaningful_sentence(text: str, max_len: int = 60) -> str:
+    """본문에서 의미있는 첫 문장 추출.
+
+    처리:
+      1. 캐릭터명/서버명 헤더 제거
+      2. 욕설 제거
+      3. 최소 6자 이상, 실제 한글/영어 포함 문장 반환
+    """
+    if not text:
+        return ""
+    t = re.sub(r'캐릭터명\s*:\s*\S+\s*', '', text)
+    t = re.sub(r'서버명\s*:\s*\S+\s*', '', t)
+    t = _remove_profanity(t)
+    sentences = re.split(r'[.!?\n]', t)
+    for sent in sentences:
+        sent = re.sub(r'\s+', ' ', sent).strip()
+        if len(sent) < 6:
+            continue
+        # 자음/모음/특수문자만인 경우 스킵
+        if re.match(r'^[ㄱ-ㅎㅏ-ㅣ\s?!.…~,ㅋㅠ]+$', sent):
+            continue
+        # 실제 한글/영어 단어 포함 여부
+        if re.search(r'[가-힣a-zA-Z]{2,}', sent):
+            return sent[:max_len]
+    return ""
+
+
+def classify_issue_type(post: dict) -> str:
+    """게시글 하나 → 이슈 타입명.
+
+    board_id 무관 — 제목+본문 의미 기반 분류.
+    ISSUE_TYPES 순서(우선순위)대로 탐색.
+    """
+    text = f"{post.get('title', '')} {post.get('body', '') or ''}".lower()
+    for issue_type, keywords, _ in ISSUE_TYPES[:-1]:   # 마지막 "게임 일반" 제외
+        if keywords and any(kw in text for kw in keywords):
+            return issue_type
+    return "게임 일반"
+
+
+def generate_group_summary(issue_type: str, posts: list) -> str:
+    """이슈 타입 + 게시글 목록 → 보고용 요약.
+
+    [원칙]
+      · fallback 표현 절대 금지 ("게임 관련 유저 의견", "서버 운영 관련 의견" 등)
+      · 반드시 실제 내용 기반
+      · 형식: [대상/콘텐츠] + [현상/행위]
+    """
+    combined_title = " ".join(p.get("title", "") for p in posts)
+    combined_body  = " ".join(p.get("body", "") or "" for p in posts)
+    combined_all   = f"{combined_title} {combined_body}".lower()
+
+    if issue_type == "접속·서버 장애":
+        server_m = re.search(r'(\d+)\s*섭', combined_title)
+        if server_m:
+            return f"{server_m.group(1)}서버 접속·게임 지연 장애 보고"
+        return "서버 접속·게임 지연 장애 보고"
+
+    if issue_type == "매크로·불법 행위 제보":
+        server_m = re.search(r'(\d+)\s*섭', combined_title)
+        server_s = f"{server_m.group(1)}서버 " if server_m else ""
+        guild = ""
+        if "좀비" in combined_all:
+            guild = "좀비 길드 "
+        else:
+            en_m = re.search(r'[A-Z][A-Z]+', combined_title + " " + combined_body)
+            if en_m:
+                guild = en_m.group(0) + " 길드 "
+        return f"{server_s}{guild}매크로 사용 의심 제재 요청"
+
+    if issue_type == "던전·콘텐츠 진행 불가":
+        dungeon_m = re.search(
+            r'(시련의\s*던전|파이썬의\s*요람|[가-힣]+\s*던전)',
+            combined_title + " " + combined_body
+        )
+        dungeon = dungeon_m.group(0).strip() if dungeon_m else "던전"
+        floor_m = re.search(r'(\d+)\s*층', combined_title + " " + combined_body)
+        floor_s = f" {floor_m.group(1)}층" if floor_m else ""
+        return f"{dungeon}{floor_s} 권장 전투력 충족 상태에서 소탕 불가 현상"
+
+    if issue_type == "아이템·보상 오류":
+        if "파이썬" in combined_all or "요람" in combined_all:
+            return "1주년 미션 이벤트 파이썬의 요람 카운트 미적용 현상"
+        if "잊혀진탑" in combined_all or "잊탑" in combined_all:
+            return "잊혀진탑 보상 미지급 현상"
+        if ("구매" in combined_all and "횟수" in combined_all) or "미초기화" in combined_all:
+            return "상품 구매 횟수 미초기화 오류 현상"
+        event_m = re.search(r'([가-힣a-zA-Z]+\s*이벤트)', combined_title)
+        if event_m:
+            return f"{event_m.group(0)} 보상·카운트 오류 현상"
+        return "이벤트·보상 오류 현상"
+
+    if issue_type == "기능·스킬 오류":
+        skill = _extract_skill_from_normalized(_normalize_terms(combined_title))
+        if skill:
+            return f"{skill} 스킬 효과 미적용 현상"
+        feat_m = re.search(
+            r'(귓말|거래소|인형|강화|길드|파티|스킬|소환)\s*(안됨|작동|오류|버그|불가)',
+            combined_all
+        )
+        if feat_m:
+            return f"{feat_m.group(1)} 기능 오작동 현상"
+        body_sent = _extract_meaningful_sentence(combined_body)
+        if body_sent:
+            return body_sent
+        return _extract_meaningful_sentence(combined_title) or "게임 내 기능 오류 현상"
+
+    if issue_type == "서버 통합·이전 건의":
+        return "서버 통합 건의"
+
+    if issue_type == "게임 개선 건의":
+        if "현돌" in combined_all and "초기화" in combined_all:
+            return "현돌 초기화 콘텐츠 출시 건의"
+        body_sent = _extract_meaningful_sentence(combined_body)
+        if body_sent:
+            return body_sent
+        title_sent = _extract_meaningful_sentence(combined_title)
+        if title_sent:
+            return title_sent
+        return "게임 개선·콘텐츠 추가 건의"
+
+    if issue_type == "서비스 종료 우려":
+        return "서비스 종료 우려 및 게임 비판"
+
+    if issue_type == "운영·정책 불만":
+        body_sent = _extract_meaningful_sentence(combined_body)
+        if body_sent:
+            return body_sent
+        return "운영 정책에 대한 유저 불만"
+
+    if issue_type == "가격·거래 문의":
+        return "게임 내 아이템 거래·시세 관련 문의"
+
+    # 게임 일반 — 반드시 실제 내용 기반
+    body_sent = _extract_meaningful_sentence(combined_body)
+    if body_sent:
+        return body_sent
+    title_sent = _extract_meaningful_sentence(combined_title)
+    if title_sent:
+        return title_sent
+    # 최후: 첫 번째 포스트 제목 정제 (욕설 제거 후)
+    first = (posts[0].get("title") or "").strip()
+    cleaned = _remove_profanity(first)
+    if len(cleaned) >= 5:
+        return cleaned[:60]
+    return "기타 게임 관련 의견"
+
+
+def build_voc_groups(user_posts: list) -> list:
+    """v6.0: 이슈 타입 기반 의미 병합 시스템
+
+    변경 (v5.0->v6.0):
+      - 그룹핑 기준: issue_type (board_id 완전 제외)
+      - generate_group_summary()로 fallback 표현 제거
+      - voc_groups 출력에 issue_type 필드 추가 (dashboard 크로스 링크용)
     """
     # 1. feed_id 중복 제거
     posts = dedup_by_feed_id(user_posts)
 
-    # 2. 노이즈 처리
+    # 2. 노이즈 처리 (짧은 글도 issue_type 분류에서 처리하므로 제외는 하지 않음)
     if FILTER_NOISE:
-        noise_posts = [p for p in posts if is_noise(p)]
-        clean_posts = [p for p in posts if not is_noise(p)]
-        if NOISE_EXCLUDE:
-            posts = clean_posts
-        else:
-            posts = clean_posts
-            for p in noise_posts:
-                p["_forced_cat"] = "기타"
-            posts = posts + noise_posts
+        posts = [p for p in posts if not is_noise(p)]
 
-    # 3. 분류 + 요약 레이블 부여
-    classified: list[tuple[str, str, dict]] = []  # (cat, summary, post)
+    # 3. 이슈 타입 분류 (board_id 무관)
+    typed: list[tuple[str, dict]] = []
     for p in posts:
-        cat = p.pop("_forced_cat", None) or classify_post(p)
-        summ = summarize_lounge_title(p.get("title", ""), cat, body=p.get("body", ""))
-        classified.append((cat, summ, p))
+        issue_type = classify_issue_type(p)
+        typed.append((issue_type, p))
 
-    # 4. (category, summary) 그룹핑
-    group_map: dict[tuple, list] = defaultdict(list)
-    for cat, summ, p in classified:
-        group_map[(cat, summ)].append(p)
+    # 4. issue_type 기준 그룹핑
+    group_map: dict[str, list] = defaultdict(list)
+    for issue_type, p in typed:
+        group_map[issue_type].append(p)
 
-    # 5. 결과 생성: 카테고리 순서 유지, 동일 카테고리 내 count DESC
+    # 5. ISSUE_TYPES 순서로 결과 생성 (같은 이슈 타입 내 count DESC)
     result = []
-    for cat in CATEGORY_ORDER:
-        # 해당 카테고리의 모든 (cat, summ) 쌍 추출
-        cat_groups = [(k, v) for k, v in group_map.items() if k[0] == cat]
-        if not cat_groups:
+    for issue_type, _, category in ISSUE_TYPES:
+        group_posts = group_map.get(issue_type, [])
+        if not group_posts:
             continue
 
-        # count 내림차순 정렬
-        cat_groups.sort(key=lambda kv: len(kv[1]), reverse=True)
+        # 요약 생성 (실제 내용 기반)
+        summary = generate_group_summary(issue_type, group_posts)
 
-        for (c, summ), group_posts in cat_groups:
-            # 대표글: engagement 가중치 최고
-            top = max(
-                group_posts,
-                key=lambda p: p.get("comment_count", 0) * 2 + p.get("like_count", 0)
-            )
-            all_fids = [str(p.get("feed_id", "")) for p in group_posts]
+        # 대표글: engagement 가중치 최고
+        top = max(
+            group_posts,
+            key=lambda p: p.get("comment_count", 0) * 2 + p.get("like_count", 0)
+        )
+        feed_ids = [str(p.get("feed_id", "")) for p in group_posts]
 
-            result.append({
-                "category":           cat,
-                "summary":            summ,
-                "count":              len(group_posts),
-                "representative_url": top.get("url", ""),
-                "feed_ids":           all_fids,
-            })
+        result.append({
+            "issue_type":         issue_type,          # v6.0 추가 (크로스 링크용)
+            "category":           category,
+            "summary":            summary,
+            "count":              len(group_posts),
+            "representative_url": top.get("url", ""),
+            "feed_ids":           feed_ids,
+        })
 
     return result
 

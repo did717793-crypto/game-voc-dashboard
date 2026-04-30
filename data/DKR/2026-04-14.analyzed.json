@@ -3,21 +3,23 @@
   "major_issues": [],
   "voc_groups": [
     {
+      "issue_type": "기능·스킬 오류",
       "category": "버그·오류",
-      "summary": "게임 접속 / 로그인 장애 보고",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7535677",
-      "feed_ids": [
-        "7535677"
-      ]
-    },
-    {
-      "category": "버그·오류",
-      "summary": "게임 내 기능 오류 보고",
+      "summary": "제발~~~~~버그좀잡자 열심히하는 유저들은 ㅂ ㅅ 이냐 버그로 보스잡는거 뻔히 알면서 잡지도 않고 원하는거녀",
       "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7537569",
       "feed_ids": [
         "7537569"
+      ]
+    },
+    {
+      "issue_type": "게임 개선 건의",
+      "category": "건의·요청",
+      "summary": "엘디플레이어로 게임을 하고 잇는 유저입니다 어제 저녁부터 게임을 못하고 잇습니다 엘디플레이어가 문제가 잇는건",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7535677",
+      "feed_ids": [
+        "7535677"
       ]
     }
   ],
@@ -25,27 +27,32 @@
     "top_issues": [
       {
         "category": "버그·오류",
-        "summary": "게임 접속 / 로그인 장애 보고",
-        "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7535677"
-      },
-      {
-        "category": "버그·오류",
-        "summary": "게임 내 기능 오류 보고",
+        "summary": "제발~~~~~버그좀잡자 열심히하는 유저들은 ㅂ ㅅ 이냐 버그로 보스잡는거 뻔히 알면서 잡지도 않고 원하는거녀",
         "count": 1,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7537569"
+      },
+      {
+        "category": "건의·요청",
+        "summary": "엘디플레이어로 게임을 하고 잇는 유저입니다 어제 저녁부터 게임을 못하고 잇습니다 엘디플레이어가 문제가 잇는건",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7535677"
       }
     ],
     "trend": {
+      "버그·오류": {
+        "current": 1,
+        "previous": 1,
+        "delta": 0
+      },
       "건의·요청": {
+        "current": 1,
+        "previous": 1,
+        "delta": 0
+      },
+      "게임 관련": {
         "current": 0,
         "previous": 2,
         "delta": -2
-      },
-      "버그·오류": {
-        "current": 2,
-        "previous": 2,
-        "delta": 0
       }
     },
     "trending_keywords": [],

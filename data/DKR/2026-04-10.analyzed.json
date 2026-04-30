@@ -3,8 +3,9 @@
   "major_issues": [],
   "voc_groups": [
     {
-      "category": "기타",
-      "summary": "운영 정책에 대한 유저 불만",
+      "issue_type": "게임 일반",
+      "category": "게임 관련",
+      "summary": "메디, 올마이티 <<<<패스 돌려서 게 많은데 창고에도 못넣고 넘 무거운데여 돈내고 산건데 버릴수도 없고 추",
       "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7524891",
       "feed_ids": [
@@ -15,27 +16,27 @@
   "insights": {
     "top_issues": [
       {
-        "category": "기타",
-        "summary": "운영 정책에 대한 유저 불만",
+        "category": "게임 관련",
+        "summary": "메디, 올마이티 <<<<패스 돌려서 게 많은데 창고에도 못넣고 넘 무거운데여 돈내고 산건데 버릴수도 없고 추",
         "count": 1,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7524891"
       }
     ],
     "trend": {
-      "게임 관련": {
-        "current": 0,
-        "previous": 5,
-        "delta": -5
-      },
-      "기타": {
-        "current": 1,
-        "previous": 1,
-        "delta": 0
-      },
       "버그·오류": {
         "current": 0,
         "previous": 1,
         "delta": -1
+      },
+      "기타": {
+        "current": 0,
+        "previous": 1,
+        "delta": -1
+      },
+      "게임 관련": {
+        "current": 1,
+        "previous": 5,
+        "delta": -4
       }
     },
     "trending_keywords": [],

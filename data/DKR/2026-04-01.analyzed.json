@@ -24,93 +24,33 @@
   ],
   "voc_groups": [
     {
+      "issue_type": "서버 통합·이전 건의",
       "category": "건의·요청",
-      "summary": "게임 개선 의견 제출",
-      "count": 3,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423",
+      "summary": "서버 통합 건의",
+      "count": 6,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460",
       "feed_ids": [
-        "7490312",
-        "7492423",
+        "7492460",
+        "7492345",
+        "7490333",
+        "7490284",
+        "7490256",
         "7490069"
       ]
     },
     {
+      "issue_type": "게임 개선 건의",
       "category": "건의·요청",
-      "summary": "서버 운영 관련 건의",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490286",
+      "summary": "개인으로 들어가게해주세요~ 라인이아니여도 보스치면 아이템먹을수있게요~ 신화스킬 재료가 전설스킬이던데",
+      "count": 2,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423",
       "feed_ids": [
-        "7490286"
+        "7490312",
+        "7492423"
       ]
     },
     {
-      "category": "건의·요청",
-      "summary": "서버 이전 아이템 출시 건의",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490256",
-      "feed_ids": [
-        "7490256"
-      ]
-    },
-    {
-      "category": "게임 관련",
-      "summary": "게임 관련 유저 의견",
-      "count": 3,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307",
-      "feed_ids": [
-        "7493307",
-        "7491783",
-        "7490284"
-      ]
-    },
-    {
-      "category": "게임 관련",
-      "summary": "서버 운영 관련 의견",
-      "count": 3,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850",
-      "feed_ids": [
-        "7492521",
-        "7491850",
-        "7490014"
-      ]
-    },
-    {
-      "category": "게임 관련",
-      "summary": "서버 통합 관련 의견",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460",
-      "feed_ids": [
-        "7492460"
-      ]
-    },
-    {
-      "category": "게임 관련",
-      "summary": "서버 이전 관련 의견",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492345",
-      "feed_ids": [
-        "7492345"
-      ]
-    },
-    {
-      "category": "게임 관련",
-      "summary": "서버 이전 아이템 관련 의견",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490333",
-      "feed_ids": [
-        "7490333"
-      ]
-    },
-    {
-      "category": "기타",
-      "summary": "운영 정책에 대한 유저 불만",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7494737",
-      "feed_ids": [
-        "7494737"
-      ]
-    },
-    {
+      "issue_type": "서비스 종료 우려",
       "category": "기타",
       "summary": "서비스 종료 우려 및 게임 비판",
       "count": 1,
@@ -118,27 +58,43 @@
       "feed_ids": [
         "7491784"
       ]
+    },
+    {
+      "issue_type": "게임 일반",
+      "category": "게임 관련",
+      "summary": "유저들 소리 아예 쌩까버리는 겜서 첨본다 이제야 탈출하는군 빠빠이 노잼 접을란다 ~ 퉤 게임이든 현생이든 없",
+      "count": 7,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850",
+      "feed_ids": [
+        "7494737",
+        "7493307",
+        "7492521",
+        "7491850",
+        "7491783",
+        "7490286",
+        "7490014"
+      ]
     }
   ],
   "insights": {
     "top_issues": [
       {
-        "category": "건의·요청",
-        "summary": "게임 개선 의견 제출",
-        "count": 3,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423"
-      },
-      {
         "category": "게임 관련",
-        "summary": "게임 관련 유저 의견",
-        "count": 3,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7493307"
-      },
-      {
-        "category": "게임 관련",
-        "summary": "서버 운영 관련 의견",
-        "count": 3,
+        "summary": "유저들 소리 아예 쌩까버리는 겜서 첨본다 이제야 탈출하는군 빠빠이 노잼 접을란다 ~ 퉤 게임이든 현생이든 없",
+        "count": 7,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850"
+      },
+      {
+        "category": "건의·요청",
+        "summary": "서버 통합 건의",
+        "count": 6,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460"
+      },
+      {
+        "category": "건의·요청",
+        "summary": "개인으로 들어가게해주세요~ 라인이아니여도 보스치면 아이템먹을수있게요~ 신화스킬 재료가 전설스킬이던데",
+        "count": 2,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423"
       }
     ],
     "trend": {},
