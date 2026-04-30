@@ -117,25 +117,25 @@
       }
     ],
     "trend": {
-      "버그·오류": {
-        "current": 12,
-        "previous": 3,
-        "delta": 9
-      },
       "건의·요청": {
         "current": 2,
         "previous": 3,
         "delta": -1
+      },
+      "게임 관련": {
+        "current": 3,
+        "previous": 5,
+        "delta": -2
       },
       "기타": {
         "current": 1,
         "previous": 1,
         "delta": 0
       },
-      "게임 관련": {
-        "current": 3,
-        "previous": 5,
-        "delta": -2
+      "버그·오류": {
+        "current": 12,
+        "previous": 3,
+        "delta": 9
       }
     },
     "trending_keywords": [

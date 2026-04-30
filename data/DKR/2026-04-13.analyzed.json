@@ -56,11 +56,6 @@
       }
     ],
     "trend": {
-      "버그·오류": {
-        "current": 1,
-        "previous": 2,
-        "delta": -1
-      },
       "건의·요청": {
         "current": 1,
         "previous": 0,
@@ -70,6 +65,11 @@
         "current": 2,
         "previous": 0,
         "delta": 2
+      },
+      "버그·오류": {
+        "current": 1,
+        "previous": 2,
+        "delta": -1
       }
     },
     "trending_keywords": [],

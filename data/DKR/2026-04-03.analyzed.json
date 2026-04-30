@@ -61,14 +61,14 @@
         "previous": 1,
         "delta": 0
       },
-      "기타": {
-        "current": 2,
-        "previous": 2,
-        "delta": 0
-      },
       "게임 관련": {
         "current": 1,
         "previous": 1,
+        "delta": 0
+      },
+      "기타": {
+        "current": 2,
+        "previous": 2,
         "delta": 0
       }
     },

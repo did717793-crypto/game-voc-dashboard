@@ -742,18 +742,44 @@ _ISSUE_TYPE_TO_CS_CAT: dict[str, list[str]] = {
     "던전·콘텐츠 진행 불가": ["오류", "게임 이용"],
 }
 
+# CS 요약 잔류 음절 파편 패턴 (욕설 제거 후 남는 의미 없는 조각)
+_CS_RESIDUE = re.compile(r'(려나|스달|ㅌ은|새귀|달이|병진스|럼드|새귀듫)')
+
+# CS 카테고리별 fallback 요약 (body/title 모두 실패 시)
+_CS_FALLBACK: dict[str, str] = {
+    "오류":      "게임 오류 및 접속 문제 문의",
+    "건의":      "게임 개선 요청",
+    "게임 이용": "게임 기능 관련 문의",
+    "결제":      "결제 관련 문의",
+    "이벤트":    "이벤트 보상 관련 문의",
+    "계정":      "계정 관련 문의",
+    "설치/실행": "설치·실행 관련 문의",
+    "기타":      "기타 문의",
+}
+
+
+def _is_meaningful_cs_body(text: str) -> bool:
+    """CS body 정제 결과가 의미 있는지 검증."""
+    if not text or len(text) < 8:
+        return False
+    if not re.search(r'[가-힣a-zA-Z]{2,}', text):
+        return False
+    if _CS_RESIDUE.search(text):
+        return False
+    return True
+
 
 def _summarize_cs_from_body(title: str, body: str, category: str = "") -> str:
     """CS body 기반 요약 생성.
 
     우선순위:
-      1. body가 있으면 → body에서 핵심 내용 추출 (욕설 제거, 캐릭터명/서버명 앞부분 제거)
-      2. body 없음 → title 정제 (욕설 제거)
-      3. title도 너무 짧거나 의미 없으면 → 카테고리 기반 폴백
+      1. body → 욕설·헤더 제거 후 검증 통과 시 사용
+      2. title → 욕설 제거 후 검증 통과 시 사용
+      3. 카테고리 fallback (카테고리명+현상 형태)
 
     창작 금지: body에 없는 내용 추가 안 함.
     """
-    # body 정제
+    # body 정제 + 검증
     clean_body = ""
     if body:
         b = body.strip()
@@ -763,7 +789,8 @@ def _summarize_cs_from_body(title: str, body: str, category: str = "") -> str:
         # 욕설 제거
         b = _PROFANITY_WORDS.sub('', b)
         b = re.sub(r'\s+', ' ', b).strip()
-        if len(b) >= 10:
+        # 검증: 길이 + 의미 없는 파편 없음 + 실제 내용 있음
+        if _is_meaningful_cs_body(b):
             clean_body = b
 
     # title 정제
@@ -774,29 +801,19 @@ def _summarize_cs_from_body(title: str, body: str, category: str = "") -> str:
     else:
         clean_title_display = _PROFANITY_WORDS.sub('', clean_title).strip()[:60]
 
-    # body 기반 요약 생성
+    # 1순위: body 기반 요약 (검증 통과된 경우만)
     if clean_body:
-        # body 앞 70자를 기본 요약으로 사용 (없는 내용 창작 금지)
         summary = clean_body[:70]
-        # 문장이 잘린 경우 마지막 완전한 어절까지만 사용
         if len(clean_body) > 70 and ' ' in summary:
             summary = summary.rsplit(' ', 1)[0]
         return summary
 
-    # body 없음 → title 정제 표시
-    if clean_title_display:
+    # 2순위: title 정제 표시 (검증 통과 여부 확인)
+    if clean_title_display and _is_meaningful_cs_body(clean_title_display):
         return clean_title_display
 
-    # 최후 폴백
-    fallback = {
-        "오류": "게임 오류 관련 문의",
-        "건의": "게임 개선 요청",
-        "게임 이용": "게임 이용 문의",
-        "결제": "결제 관련 문의",
-        "이벤트": "이벤트 관련 문의",
-        "기타": "기타 문의",
-    }
-    return fallback.get(category, "문의")
+    # 3순위: 카테고리 기반 fallback ([카테고리]+현상 형태, 카테고리명 단독 금지)
+    return _CS_FALLBACK.get(category, "게임 관련 문의")
 
 
 # ── 05 CS 상세 문의 ──────────────────────────────────────────────
