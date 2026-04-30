@@ -759,8 +759,8 @@ _CS_FALLBACK: dict[str, str] = {
 
 
 def _is_meaningful_cs_body(text: str) -> bool:
-    """CS body 정제 결과가 의미 있는지 검증."""
-    if not text or len(text) < 8:
+    """CS 텍스트가 표시 가능한 의미 있는 내용인지 검증."""
+    if not text or len(text.strip()) < 6:
         return False
     if not re.search(r'[가-힣a-zA-Z]{2,}', text):
         return False
@@ -769,50 +769,55 @@ def _is_meaningful_cs_body(text: str) -> bool:
     return True
 
 
+def _clean_body_for_display(body: str, max_len: int = 300) -> str:
+    """본문 표시용 전처리.
+
+    - 캐릭터명/서버명 헤더 제거
+    - \\n / \\r → 공백 치환 (한 글자씩 줄바꿈 방지)
+    - 연속 공백 → 단일 공백
+    - max_len 이내로 자름
+    """
+    if not body:
+        return ""
+    b = body.strip()
+    b = re.sub(r'캐릭터명\s*:\s*\S+\s*', '', b)
+    b = re.sub(r'서버명\s*:\s*\S+\s*', '', b)
+    b = re.sub(r'[\r\n]+', ' ', b)          # ← 핵심: 줄바꿈 → 공백
+    b = re.sub(r'\s{2,}', ' ', b).strip()   # 연속 공백 → 단일 공백
+    return b[:max_len]
+
+
 def _summarize_cs_from_body(title: str, body: str, category: str = "") -> str:
-    """CS body 기반 요약 생성.
+    """CS 1줄 요약 생성 (리스트 표시용).
 
     우선순위:
-      1. body → 욕설·헤더 제거 후 검증 통과 시 사용
-      2. title → 욕설 제거 후 검증 통과 시 사용
-      3. 카테고리 fallback (카테고리명+현상 형태)
+      1. 제목(title) — 욕설 제거 후 유효하면 그대로 사용 (자연스러운 1줄 요약)
+      2. body 첫 의미 있는 문장 — 헤더·욕설 제거 후
+      3. 카테고리 기반 fallback
 
-    창작 금지: body에 없는 내용 추가 안 함.
+    창작 금지 / 원문 body 70자 truncation 사용 금지.
     """
-    # body 정제 + 검증
-    clean_body = ""
+    # ── 1순위: 제목 정제 ──────────────────────────────────────────
+    clean_title = _PROFANITY_WORDS.sub('', title.strip()).strip()
+    if _is_meaningful_cs_body(clean_title):
+        return clean_title[:60]
+
+    # ── 2순위: body 첫 의미 있는 문장 ────────────────────────────
     if body:
         b = body.strip()
-        # "캐릭터명 : X 서버명 : Y" 헤더 제거 (raw에서 확인된 패턴)
         b = re.sub(r'캐릭터명\s*:\s*\S+\s*', '', b)
         b = re.sub(r'서버명\s*:\s*\S+\s*', '', b)
-        # 욕설 제거
         b = _PROFANITY_WORDS.sub('', b)
-        b = re.sub(r'\s+', ' ', b).strip()
-        # 검증: 길이 + 의미 없는 파편 없음 + 실제 내용 있음
+        b = re.sub(r'[\r\n]+', ' ', b)
+        b = re.sub(r'\s{2,}', ' ', b).strip()
         if _is_meaningful_cs_body(b):
-            clean_body = b
+            # 첫 문장만 사용 (. ! ? 기준)
+            first = re.split(r'[.!?]', b)[0].strip()
+            if _is_meaningful_cs_body(first):
+                return first[:60]
+            return b[:60]
 
-    # title 정제
-    clean_title = title.strip()
-    has_profanity_title = any(p in clean_title.lower() for p in _CS_PROFANITY)
-    if not has_profanity_title:
-        clean_title_display = clean_title[:60]
-    else:
-        clean_title_display = _PROFANITY_WORDS.sub('', clean_title).strip()[:60]
-
-    # 1순위: body 기반 요약 (검증 통과된 경우만)
-    if clean_body:
-        summary = clean_body[:70]
-        if len(clean_body) > 70 and ' ' in summary:
-            summary = summary.rsplit(' ', 1)[0]
-        return summary
-
-    # 2순위: title 정제 표시 (검증 통과 여부 확인)
-    if clean_title_display and _is_meaningful_cs_body(clean_title_display):
-        return clean_title_display
-
-    # 3순위: 카테고리 기반 fallback ([카테고리]+현상 형태, 카테고리명 단독 금지)
+    # ── 3순위: 카테고리 기반 fallback ────────────────────────────
     return _CS_FALLBACK.get(category, "게임 관련 문의")
 
 
@@ -843,55 +848,83 @@ def build_section_cs_detail(cs_inquiries: list[dict]) -> str:
         content = ""
         for item in items:
             representative = item.get("representative", [])
-            if representative:
-                # body 기반 요약 (body 없으면 title 정제)
-                raw_title = representative[0].get("title", "")
-                raw_body  = representative[0].get("body", "") or ""
-                summ = _summarize_cs_from_body(raw_title, raw_body, cat)
-                # 아코디언용 상세: 대표 티켓 원문 목록
-                det_items = representative  # 원문 포함 전체
-            else:
-                summ = item.get("summary", "")
-                det_items = []
-
             cnt = item.get("count", 1)
-            # [수정] 요약 텍스트에서 건수 제거 — 건수는 ref-td에만 표시
-            # cnt_txt 완전 제거
 
-            # 아코디언 상세 (클릭 시 원문 표시)
+            # ── 요약문 생성 (1줄, 제목 우선) ──────────────────────
+            if representative:
+                r0 = representative[0]
+                summ = _summarize_cs_from_body(
+                    r0.get("title", ""), r0.get("body", "") or "", cat
+                )
+            else:
+                summ = _CS_FALLBACK.get(cat, "게임 관련 문의")
+
+            # ── 아코디언 ID ────────────────────────────────────────
             vid = f"cs_det_{_cs_det_idx[0]}"
             _cs_det_idx[0] += 1
-            has_det = bool(det_items)
-            arr = f'<span id="ar-{vid}" class="arr">▸</span>' if has_det else '<span class="arr-ph"></span>'
+            has_det = bool(representative)
+            arr     = f'<span id="ar-{vid}" class="arr">▸</span>' if has_det else '<span class="arr-ph"></span>'
             oc_attr = f' onclick="toggleVoc(\'{vid}\')" style="cursor:pointer"' if has_det else ""
 
+            # ── 아코디언 상세 ──────────────────────────────────────
+            # 구조: [요약문] + [원문 body (1줄)] + [카테고리/날짜/상태]
             det_html = ""
             if has_det:
                 det_rows = ""
-                for r in det_items:
-                    rt = r.get("title", "")[:80]
-                    rb = (r.get("body") or "").strip()[:200]   # 원문 본문
-                    rs = r.get("status", "")
-                    rd = r.get("date", "")
-                    # 본문 표시: body 있으면 body, 없으면 title만
-                    body_html = (f'<div style="font-size:10.5px;color:#444;'
-                                 f'margin-top:3px;line-height:1.5">{rb}</div>'
-                                 ) if rb else ""
-                    det_rows += (f'<div class="det-item" style="margin-bottom:6px;'
-                                 f'padding-bottom:6px;border-bottom:1px solid #f0f2f5">'
-                                 f'<span style="font-size:11px;font-weight:600;color:#3c4043">'
-                                 f'{rt}</span>'
-                                 f'<span style="font-size:10px;color:#9aa0a6;margin-left:6px">'
-                                 f'[{rs}] {rd}</span>'
-                                 f'{body_html}</div>')
-                det_html = (f'<div id="{vid}" class="det-group" style="display:none">'
-                            f'<p style="font-size:10px;color:#9aa0a6;margin-bottom:4px">원문 문의</p>'
-                            f'{det_rows}</div>')
+                for r in representative:
+                    r_title  = r.get("title", "")
+                    r_body   = r.get("body", "") or ""
+                    r_status = r.get("status", "")
+                    r_date   = r.get("date", "")
 
-            content += (f'<div class="voc-row-item"{oc_attr}>'
-                        f'<div class="voc-item-main">{arr}'
-                        f'<span class="vitem-link">{summ}</span></div>'
-                        f'{det_html}</div>')
+                    # 요약문 (대표 티켓 제목 정제)
+                    r_summ = _summarize_cs_from_body(r_title, r_body, cat)
+
+                    # 원문 body 전처리: \n → 공백, 연속공백 정리, 헤더 제거
+                    r_body_display = _clean_body_for_display(r_body, max_len=200)
+
+                    # 원문 body div (white-space:normal 강제)
+                    body_div = (
+                        f'<div style="font-size:10.5px;color:#5f6368;margin-top:4px;'
+                        f'white-space:normal;word-break:break-word;line-height:1.6">'
+                        f'{r_body_display}</div>'
+                    ) if r_body_display else ""
+
+                    # 메타 정보 (카테고리/날짜/상태)
+                    meta_div = (
+                        f'<div style="font-size:10px;color:#9aa0a6;margin-top:3px">'
+                        f'<span style="margin-right:8px">{cat}</span>'
+                        f'<span style="margin-right:8px">{r_date}</span>'
+                        f'<span>[{r_status}]</span>'
+                        f'</div>'
+                    )
+
+                    det_rows += (
+                        f'<div class="det-item" style="margin-bottom:8px;'
+                        f'padding-bottom:8px;border-bottom:1px solid #dde6ff">'
+                        # 요약문 (상단)
+                        f'<div style="font-size:11px;font-weight:600;color:#1a1a2e">{r_summ}</div>'
+                        # 원문 body (하단)
+                        f'{body_div}'
+                        # 메타 정보
+                        f'{meta_div}'
+                        f'</div>'
+                    )
+
+                det_html = (
+                    f'<div id="{vid}" class="det-group" style="display:none">'
+                    f'<p style="font-size:10px;color:#9aa0a6;margin-bottom:6px">'
+                    f'원문 문의 ({cnt}건)</p>'
+                    f'{det_rows}'
+                    f'</div>'
+                )
+
+            content += (
+                f'<div class="voc-row-item"{oc_attr}>'
+                f'<div class="voc-item-main">{arr}'
+                f'<span class="vitem-link">{summ}</span></div>'
+                f'{det_html}</div>'
+            )
 
         rows += f"""
             <tr>
