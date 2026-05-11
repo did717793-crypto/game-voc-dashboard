@@ -1,0 +1,130 @@
+{
+  "date": "2026-05-01",
+  "major_issues": [],
+  "voc_groups": [
+    {
+      "issue_type": "운영·정책 불만",
+      "category": "기타",
+      "summary": "무슨 공지도없고 겜 안된지가 몇시간짼대 아직도 안돼고 무슨 아무런 대꾸가 없어요",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7606602",
+      "feed_ids": [
+        "7606602"
+      ]
+    },
+    {
+      "issue_type": "게임 일반",
+      "category": "게임 관련",
+      "summary": "현재 장비 프리셋이 3개뿐이라 다양한 직업을 키우는 유저들에게는 너무 부족합니다",
+      "count": 8,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7608796",
+      "feed_ids": [
+        "7610796",
+        "7608113",
+        "7607382",
+        "7606632",
+        "7606569",
+        "7608796",
+        "7607371",
+        "7606126"
+      ]
+    }
+  ],
+  "insights": {
+    "top_issues": [
+      {
+        "category": "게임 관련",
+        "summary": "현재 장비 프리셋이 3개뿐이라 다양한 직업을 키우는 유저들에게는 너무 부족합니다",
+        "count": 8,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7608796"
+      },
+      {
+        "category": "기타",
+        "summary": "무슨 공지도없고 겜 안된지가 몇시간짼대 아직도 안돼고 무슨 아무런 대꾸가 없어요",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7606602"
+      }
+    ],
+    "trend": {
+      "게임 관련": {
+        "current": 8,
+        "previous": 1,
+        "delta": 7
+      },
+      "기타": {
+        "current": 1,
+        "previous": 0,
+        "delta": 1
+      }
+    },
+    "trending_keywords": [
+      {
+        "word": "일안해요",
+        "count": 2
+      }
+    ],
+    "prev_date": "2026-04-30"
+  },
+  "cs_daily": {
+    "received": 1,
+    "processed": 0
+  },
+  "cs_status_counts": {
+    "접수 완료": 3,
+    "조회 완료": 6,
+    "답변 완료": 7,
+    "삭제": 1
+  },
+  "cs_inquiries": [
+    {
+      "category": "기타",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "신의전당 질문",
+          "body": "캐릭터명 : 천인 서버명 : 벤투스 기습의판도라상자-보유버프6개 해제 라고 하는데발동 시 뮨, 생텀 도 해제 시키는 건가요?",
+          "status": "조회 완료",
+          "date": "2026-05-01"
+        }
+      ]
+    }
+  ],
+  "cs_week_trend": [
+    {
+      "date": "2026-04-25",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-26",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-27",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-28",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-29",
+      "received": 2,
+      "processed": 1
+    },
+    {
+      "date": "2026-04-30",
+      "received": 1,
+      "processed": 2
+    },
+    {
+      "date": "2026-05-01",
+      "received": 1,
+      "processed": 0
+    }
+  ]
+}

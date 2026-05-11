@@ -84,21 +84,21 @@
     "processed": 1
   },
   "cs_status_counts": {
-    "접수 완료": 1,
-    "답변 완료": 36,
-    "삭제": 1,
-    "조회 완료": 31
+    "접수 완료": 3,
+    "조회 완료": 6,
+    "답변 완료": 7,
+    "삭제": 1
   },
   "cs_inquiries": [
     {
       "category": "기타",
       "count": 2,
-      "pending": 1,
+      "pending": 0,
       "representative": [
         {
           "title": "불법프로그램신고",
           "body": "신고 대상 : 쇠뭉치외50캐릭 서버명 : 32서버 이거 외에도 쟁중에도 불법프로그램으로 몇캐릭을 다중으로 돌리는데 이게 어떻게 정지가안당하죠? 적당히하시죠 무슨 1인pc 1인1게임아닌가요 ? 1인 뭐 몇캐릭씩 움직이는데 쇠뭉치 쇠구슬 쇠창살 등등 아이디도 기억이안남 왜 냎두시는거죠 ?",
-          "status": "접수 완료",
+          "status": "답변 완료",
           "date": "2026-04-29"
         },
         {
@@ -113,28 +113,28 @@
   "cs_week_trend": [
     {
       "date": "2026-04-23",
-      "received": 4,
-      "processed": 5
+      "received": 0,
+      "processed": 0
     },
     {
       "date": "2026-04-24",
-      "received": 8,
-      "processed": 8
+      "received": 0,
+      "processed": 0
     },
     {
       "date": "2026-04-25",
-      "received": 2,
+      "received": 0,
       "processed": 0
     },
     {
       "date": "2026-04-26",
-      "received": 2,
+      "received": 0,
       "processed": 0
     },
     {
       "date": "2026-04-27",
       "received": 0,
-      "processed": 5
+      "processed": 0
     },
     {
       "date": "2026-04-28",

@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "date": "2026-05-10",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-05-10T00:00:00+09:00",
+    "window_end": "2026-05-10T23:59:59+09:00",
+    "crawled_at": "2026-05-11T11:02:24.689041+09:00",
+    "total_posts": 2,
+    "total_comments": 3,
+    "boards": {
+      "4": {
+        "name": "자유 게시판",
+        "count": 2
+      }
+    }
+  },
+  "official_posts": [],
+  "posts": [
+    {
+      "feed_id": "7646167",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "진심 궁금해서 물어보는데",
+      "body": "피통 160만인데.. 투기장가서 진짜 쎈케릭만나도 잠깐이라도 뻐대거든? 근데 루멘에서 존나쎈놈도 아닌데 한대 툭치니 원킬나더라? 이거머냐?",
+      "author": "럭키가이 겜돌이 6255",
+      "created_at": "2026-05-10T12:57:11+09:00",
+      "view_count": 124,
+      "comment_count": 3,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7646167",
+      "comments": [
+        {
+          "comment_id": "26245595",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "천하통일 킬러 2204",
+          "text": "럭~키 가이라그래~ 러억~ 퀴~",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26251666",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "버스타는 Lv1 5425",
+          "text": "나도. 그럴때있는데. 이건.유저가 . 핵을쓰는게. 아니고 그냥. 게임자체. 버그인듯. 솔직히. 버그많은게임이라는건. 인정해야지",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26253633",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "전국제패 도적 1014",
+          "text": "썬더폴",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7645539",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "아니 모래시계  금고나드 왜케안나와",
+      "body": "뭔패치를햇길래",
+      "author": "운좋은 사과 4506204",
+      "created_at": "2026-05-10T08:44:31+09:00",
+      "view_count": 39,
+      "comment_count": 0,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7645539",
+      "comments": []
+    }
+  ]
+}

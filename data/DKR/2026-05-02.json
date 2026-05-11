@@ -1,0 +1,34 @@
+{
+  "meta": {
+    "date": "2026-05-02",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-05-02T00:00:00+09:00",
+    "window_end": "2026-05-02T23:59:59+09:00",
+    "crawled_at": "2026-05-11T11:01:22.522168+09:00",
+    "total_posts": 1,
+    "total_comments": 0,
+    "boards": {
+      "4": {
+        "name": "자유 게시판",
+        "count": 1
+      }
+    }
+  },
+  "official_posts": [],
+  "posts": [
+    {
+      "feed_id": "7615054",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "답변도없구",
+      "body": "역시 관리는 짱이네 ㄲㅋㅋㅋㅋ",
+      "author": "답도 없는 형 4141",
+      "created_at": "2026-05-02T18:31:52+09:00",
+      "view_count": 58,
+      "comment_count": 0,
+      "like_count": 1,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7615054",
+      "comments": []
+    }
+  ]
+}

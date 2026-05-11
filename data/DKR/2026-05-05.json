@@ -1,0 +1,129 @@
+{
+  "meta": {
+    "date": "2026-05-05",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-05-05T00:00:00+09:00",
+    "window_end": "2026-05-05T23:59:59+09:00",
+    "crawled_at": "2026-05-11T11:01:46.730870+09:00",
+    "total_posts": 3,
+    "total_comments": 6,
+    "boards": {
+      "4": {
+        "name": "자유 게시판",
+        "count": 1
+      },
+      "9": {
+        "name": "건의 게시판",
+        "count": 2
+      }
+    }
+  },
+  "official_posts": [],
+  "posts": [
+    {
+      "feed_id": "7626080",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "어디 길드인지 맞춰 보세요",
+      "body": "8층은 자기네건데 좀비 나라때문에 사냥 못한다고 징징징 9층에서 사냥 해야 되는데 좀비 때문에 사냥 못한다고 징징징 보스 타이밍 예전하고 다르다고 징징징 8층 뺏겨 농사 안준다고 징징징 농사기간 주니 심심하다고 징징징 직장인 많아 저녁시간 접속해 쟁좀 하자는데 안모인다고 징징징 뻘짓 하다 출석 시간에만 와 출석한다고 징징징 이 길드는 어디 길드인지 아시는분?",
+      "author": "반짝이는 사과 6632100",
+      "created_at": "2026-05-05T13:08:09+09:00",
+      "view_count": 290,
+      "comment_count": 1,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7626080",
+      "comments": [
+        {
+          "comment_id": "26175359",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "라운지대표 쪼렙 8695",
+          "text": "ㅂㅂ박",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7627712",
+      "board_id": 9,
+      "board_name": "건의 게시판",
+      "title": "허허",
+      "body": "인터페이스 노출  [ 피통보이게 ] 거래소나 템컬렉 장비러쉬 등등 하다보면 피통안보여서 누가와서 치면 모르자너 ㅡㅡ 수정좀해라 노출되게 콱그냥~",
+      "author": "천하통일 킬러 2204",
+      "created_at": "2026-05-05T20:41:03+09:00",
+      "view_count": 220,
+      "comment_count": 3,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7627712",
+      "comments": [
+        {
+          "comment_id": "26176481",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "네이버최강 휴먼 9613",
+          "text": "삭제된 댓글입니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 2
+        },
+        {
+          "comment_id": "26180785",
+          "parent_id": "26176481",
+          "depth": 2,
+          "author": "천하통일 킬러 2204",
+          "text": "ㄴ.ㅡ금?ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ\n\n느.ㄱ ㅡㅁ 롤 ㄹ 스  ㅉㅉ???ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26180796",
+          "parent_id": "26176481",
+          "depth": 2,
+          "author": "천하통일 킬러 2204",
+          "text": "롤렉ㅅ   ㄸ잽이련이네 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26184470",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요 용사님.\n\n소중한 시간을 내어 의견을 남겨주신 용사님께 진심으로 감사드립니다.\n\n말씀해주신 의견에 대해서는 신중하게 검토하여\n모든 용사님께 이로운 방향으로 개선될 수 있도록 노력하겠습니다.\n\n다만, 이러한 과정에서 원하시는 방향으로 진행되지 않을 수 있는 점,\n용사님께서 부디 너른 마음으로 이해해 주시길 부탁드리겠습니다.\n\n언제나 용사님의 의견을 소중히 생각하고 수렴하여 \n더욱 만족스러운 게임이 될 수 있도록 최선을 다하겠습니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7626562",
+      "board_id": 9,
+      "board_name": "건의 게시판",
+      "title": "1주년 기념 주화로 드래곤족 주화를 교환할 때의 교환 수량이 비율적으로 적절하지 않다고 생각합니다. 교환 수량을 상향 조정해 주시면 감사하겠습니다.",
+      "body": "1주년 기념 주화로 드래곤족 주화를 교환할 때의 교환 수량이 비율적으로 적절하지 않다고 생각합니다. 교환 수량을 상향 조정해 주시면 감사하겠습니다.",
+      "author": "기대하는 수박 9949799",
+      "created_at": "2026-05-05T15:24:57+09:00",
+      "view_count": 161,
+      "comment_count": 1,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7626562",
+      "comments": [
+        {
+          "comment_id": "26182407",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요 용사님.\n\n먼저, 용사님의 소중한 의견에 감사의 인사를 드립니다.\n\n저희 DK모바일 리본은 더욱 발전된 모습을 보여드리고자 노력하고 있으며,\n보내주시는 모든 의견은 모두 귀 기울여 듣고 있습니다.\n\n작성해주신 건의 사항은 담당 부서로 전달하여 논의할 수 있도록 최선을 다하겠습니다.\n\n앞으로도 좋은 의견이 있으시다면 언제든지 소중한 말씀 부탁드립니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    }
+  ]
+}

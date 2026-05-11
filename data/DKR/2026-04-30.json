@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "date": "2026-04-30",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-04-30T00:00:00+09:00",
+    "window_end": "2026-04-30T23:59:59+09:00",
+    "crawled_at": "2026-05-11T11:01:03.065646+09:00",
+    "total_posts": 1,
+    "total_comments": 1,
+    "boards": {
+      "7": {
+        "name": "버그 제보",
+        "count": 1
+      }
+    }
+  },
+  "official_posts": [],
+  "posts": [
+    {
+      "feed_id": "7605314",
+      "board_id": 7,
+      "board_name": "버그 제보",
+      "title": "빠른처리좀ㅜ",
+      "body": "갑자기 튕기더니 접 안되요 왜이래요 빨리 처리좀ㅡㅡ",
+      "author": "답도 없는 형 4141",
+      "created_at": "2026-04-30T22:13:44+09:00",
+      "view_count": 68,
+      "comment_count": 1,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7605314",
+      "comments": [
+        {
+          "comment_id": "26153809",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요, 용사님.\n\n게임 접속이 불가능하시어 글을 남겨주셨네요.\n\n현재 DK모바일 리본은 한국/대만 서비스를 제공하고 있으며,\n접속하신 지역이 정식 서비스가 진행되고 있는 지역이 아닐 경우\n정상 접속이 어려울 수 있사오니 참고 부탁드립니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    }
+  ]
+}

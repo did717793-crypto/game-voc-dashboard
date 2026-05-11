@@ -1,0 +1,94 @@
+{
+  "date": "2026-05-03",
+  "major_issues": [],
+  "voc_groups": [
+    {
+      "issue_type": "게임 일반",
+      "category": "게임 관련",
+      "summary": "누가 2천만원 주고 삼ㅋㅋㅋㅋㅋㅋ ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ PVP겜에 ㅋㅋㅋ농사 주라고 찡찡ㅋㅋㅋ",
+      "count": 7,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7617348",
+      "feed_ids": [
+        "7619656",
+        "7618979",
+        "7618319",
+        "7618232",
+        "7617945",
+        "7617348",
+        "7616578"
+      ]
+    }
+  ],
+  "insights": {
+    "top_issues": [
+      {
+        "category": "게임 관련",
+        "summary": "누가 2천만원 주고 삼ㅋㅋㅋㅋㅋㅋ ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ PVP겜에 ㅋㅋㅋ농사 주라고 찡찡ㅋㅋㅋ",
+        "count": 7,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7617348"
+      }
+    ],
+    "trend": {
+      "게임 관련": {
+        "current": 7,
+        "previous": 1,
+        "delta": 6
+      }
+    },
+    "trending_keywords": [
+      {
+        "word": "쿠순신",
+        "count": 2
+      }
+    ],
+    "prev_date": "2026-05-02"
+  },
+  "cs_daily": {
+    "received": 0,
+    "processed": 0
+  },
+  "cs_status_counts": {
+    "접수 완료": 3,
+    "조회 완료": 6,
+    "답변 완료": 7,
+    "삭제": 1
+  },
+  "cs_inquiries": [],
+  "cs_week_trend": [
+    {
+      "date": "2026-04-27",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-28",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-29",
+      "received": 2,
+      "processed": 1
+    },
+    {
+      "date": "2026-04-30",
+      "received": 1,
+      "processed": 2
+    },
+    {
+      "date": "2026-05-01",
+      "received": 1,
+      "processed": 0
+    },
+    {
+      "date": "2026-05-02",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-05-03",
+      "received": 0,
+      "processed": 0
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "date": "2026-05-02",
+  "major_issues": [],
+  "voc_groups": [
+    {
+      "issue_type": "게임 일반",
+      "category": "게임 관련",
+      "summary": "역시 관리는 짱이네 ㄲㅋㅋㅋㅋ",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7615054",
+      "feed_ids": [
+        "7615054"
+      ]
+    }
+  ],
+  "insights": {
+    "top_issues": [
+      {
+        "category": "게임 관련",
+        "summary": "역시 관리는 짱이네 ㄲㅋㅋㅋㅋ",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7615054"
+      }
+    ],
+    "trend": {
+      "기타": {
+        "current": 0,
+        "previous": 1,
+        "delta": -1
+      },
+      "게임 관련": {
+        "current": 1,
+        "previous": 8,
+        "delta": -7
+      }
+    },
+    "trending_keywords": [],
+    "prev_date": "2026-05-01"
+  },
+  "cs_daily": {
+    "received": 0,
+    "processed": 0
+  },
+  "cs_status_counts": {
+    "접수 완료": 3,
+    "조회 완료": 6,
+    "답변 완료": 7,
+    "삭제": 1
+  },
+  "cs_inquiries": [],
+  "cs_week_trend": [
+    {
+      "date": "2026-04-26",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-27",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-28",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-04-29",
+      "received": 2,
+      "processed": 1
+    },
+    {
+      "date": "2026-04-30",
+      "received": 1,
+      "processed": 2
+    },
+    {
+      "date": "2026-05-01",
+      "received": 1,
+      "processed": 0
+    },
+    {
+      "date": "2026-05-02",
+      "received": 0,
+      "processed": 0
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "date": "2026-05-08",
+  "major_issues": [],
+  "voc_groups": [
+    {
+      "issue_type": "게임 개선 건의",
+      "category": "건의·요청",
+      "summary": "상점 상품란에서 플로린으로 구매할수 있는 에오스 디오네 변신",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7640060",
+      "feed_ids": [
+        "7640060"
+      ]
+    }
+  ],
+  "insights": {
+    "top_issues": [
+      {
+        "category": "건의·요청",
+        "summary": "상점 상품란에서 플로린으로 구매할수 있는 에오스 디오네 변신",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7640060"
+      }
+    ],
+    "trend": {
+      "기타": {
+        "current": 0,
+        "previous": 1,
+        "delta": -1
+      },
+      "게임 관련": {
+        "current": 0,
+        "previous": 5,
+        "delta": -5
+      },
+      "건의·요청": {
+        "current": 1,
+        "previous": 1,
+        "delta": 0
+      }
+    },
+    "trending_keywords": [],
+    "prev_date": "2026-05-07"
+  },
+  "cs_daily": {
+    "received": 1,
+    "processed": 2
+  },
+  "cs_status_counts": {
+    "접수 완료": 3,
+    "조회 완료": 6,
+    "답변 완료": 7,
+    "삭제": 1
+  },
+  "cs_inquiries": [
+    {
+      "category": "기타",
+      "count": 1,
+      "pending": 1,
+      "representative": [
+        {
+          "title": "재문의:1주년 기념일 컬렉 1개가 없습니다",
+          "body": "동의 문구 :   기념 트로피(귀속) [초월] 1개의 복구에 동의합니다.",
+          "status": "접수 완료",
+          "date": "2026-05-08"
+        }
+      ]
+    }
+  ],
+  "cs_week_trend": [
+    {
+      "date": "2026-05-02",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-05-03",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-05-04",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-05-05",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-05-06",
+      "received": 6,
+      "processed": 4
+    },
+    {
+      "date": "2026-05-07",
+      "received": 4,
+      "processed": 5
+    },
+    {
+      "date": "2026-05-08",
+      "received": 1,
+      "processed": 2
+    }
+  ]
+}

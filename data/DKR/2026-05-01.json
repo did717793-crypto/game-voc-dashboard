@@ -1,0 +1,401 @@
+{
+  "meta": {
+    "date": "2026-05-01",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-05-01T00:00:00+09:00",
+    "window_end": "2026-05-01T23:59:59+09:00",
+    "crawled_at": "2026-05-11T11:01:10.040292+09:00",
+    "total_posts": 9,
+    "total_comments": 24,
+    "boards": {
+      "4": {
+        "name": "자유 게시판",
+        "count": 6
+      },
+      "9": {
+        "name": "건의 게시판",
+        "count": 2
+      },
+      "7": {
+        "name": "버그 제보",
+        "count": 1
+      }
+    }
+  },
+  "official_posts": [],
+  "posts": [
+    {
+      "feed_id": "7610796",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "장비 프리셋 추가",
+      "body": "현재 장비 프리셋이 3개뿐이라 다양한 직업을 키우는 유저들에게는 너무 부족합니다. 쾌적한 플레이를 위해 프리셋 슬롯을 5개로 확장해 주세요",
+      "author": "러블리한 포도 4377156",
+      "created_at": "2026-05-01T20:38:39+09:00",
+      "view_count": 93,
+      "comment_count": 0,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7610796",
+      "comments": []
+    },
+    {
+      "feed_id": "7608113",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "일안해요?",
+      "body": "빨리 고쳐줘요",
+      "author": "답도 없는 형 4141",
+      "created_at": "2026-05-01T11:47:22+09:00",
+      "view_count": 157,
+      "comment_count": 5,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7608113",
+      "comments": [
+        {
+          "comment_id": "26104353",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "네이버최강 휴먼 9613",
+          "text": "너는 일하냐",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 3
+        },
+        {
+          "comment_id": "26104361",
+          "parent_id": "26104353",
+          "depth": 2,
+          "author": "답도 없는 형 4141",
+          "text": "시비거노 백수새끼가",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26106611",
+          "parent_id": "26104353",
+          "depth": 2,
+          "author": "네이버최강 휴먼 9613",
+          "text": "응 니얼굴",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26106615",
+          "parent_id": "26104353",
+          "depth": 2,
+          "author": "답도 없는 형 4141",
+          "text": "할짓없노?",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26114430",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "수달",
+          "text": "왜 일을안해 무슨 말이라도 해봐 영자~",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7607382",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "보스데미지를 30% 처 올려도 데미지가 똑같이 들어가는데?",
+      "body": "말이되냐 어떻게 깨라는거야",
+      "author": "오늘만사는 만렙 2181",
+      "created_at": "2026-05-01T08:52:19+09:00",
+      "view_count": 163,
+      "comment_count": 0,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7607382",
+      "comments": []
+    },
+    {
+      "feed_id": "7606632",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "아니진짜 머하세요?",
+      "body": "접속안되요 잠이 오세요 직원여러분?",
+      "author": "즐겜중인 고인물 8345",
+      "created_at": "2026-05-01T02:23:32+09:00",
+      "view_count": 167,
+      "comment_count": 2,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7606632",
+      "comments": [
+        {
+          "comment_id": "26101151",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "똥손팔라912",
+          "text": "섭종료 검토한다고 기사떳네요.ㅡㅡ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 1
+        },
+        {
+          "comment_id": "26114446",
+          "parent_id": "26101151",
+          "depth": 2,
+          "author": "수달",
+          "text": "아니 내친구는 그대로 접속햐서 게임을 하고 있다고요 같운섭에 같은 길드인데",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7606602",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "아니 일안해요?",
+      "body": "무슨 공지도없고 겜 안된지가 몇시간짼대 아직도 안돼고 무슨 아무런 대꾸가 없어요? 진상이 온게 아니고 운영진들이 지금 진상을 만들고 있는 겁니다 그래놓고 지들은 편하게 자고있겠지 ㅋ 기분 엿같네",
+      "author": "즐겜중인 고인물 8345",
+      "created_at": "2026-05-01T02:16:17+09:00",
+      "view_count": 24,
+      "comment_count": 1,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7606602",
+      "comments": [
+        {
+          "comment_id": "26099198",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "즐겜중인 고인물 8345",
+          "text": "아니 참나 응대도 없고 공지도없고 그냥편하게 자고있으면서 좀 따지니까 부적절절한내용ㆍ?\n점검이나 빨리해요 먼 오월 21일 기다리겠어요?접겠어요?",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7606569",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "갑자기안돼요",
+      "body": "이거 갑자기 왜 이러는거에여??????????????",
+      "author": "수달",
+      "created_at": "2026-05-01T02:03:02+09:00",
+      "view_count": 108,
+      "comment_count": 4,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7606569",
+      "comments": [
+        {
+          "comment_id": "26100204",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "켄토끼",
+          "text": "하.. 환불하고 싶네요..",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26119491",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "든든한 수박 727341",
+          "text": "해외네",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 1
+        },
+        {
+          "comment_id": "26127410",
+          "parent_id": "26119491",
+          "depth": 2,
+          "author": "수달",
+          "text": "머요?",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26153807",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요, 용사님.\n\n게임 접속이 불가능하시어 글을 남겨주셨네요.\n\n현재 DK모바일 리본은 한국/대만 서비스를 제공하고 있으며,\n접속하신 지역이 정식 서비스가 진행되고 있는 지역이 아닐 경우\n정상 접속이 어려울 수 있사오니 참고 부탁드립니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7608796",
+      "board_id": 9,
+      "board_name": "건의 게시판",
+      "title": "아 빨리좀 해결해줘요",
+      "body": "하",
+      "author": "답도 없는 형 4141",
+      "created_at": "2026-05-01T14:21:46+09:00",
+      "view_count": 172,
+      "comment_count": 6,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7608796",
+      "comments": [
+        {
+          "comment_id": "26110657",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "켄토끼",
+          "text": "충전 하루만 참았으면 바로 접었을텐데...",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 3
+        },
+        {
+          "comment_id": "26110823",
+          "parent_id": "26110657",
+          "depth": 2,
+          "author": "답도 없는 형 4141",
+          "text": "다그런것도 아니고 몇명만 그런건 왜그런거지 ㅜㅜㅜ 돌겠네요",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26111151",
+          "parent_id": "26110657",
+          "depth": 2,
+          "author": "켄토끼",
+          "text": "그러니깐요.. 점검하다가 문제 생겼으면 대처를 빨리 해주던가요..",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26111340",
+          "parent_id": "26110657",
+          "depth": 2,
+          "author": "답도 없는 형 4141",
+          "text": "우리 농사란말이에요 ㅜㅜㅜㅜㅜㅜㅜㅜ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26114383",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "수달",
+          "text": "혹시 현질안해서 그런가… ㅋ 환불요청할게 없어서??\n무슨 설명이라도 해주던가요",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26151145",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요, 용사님.\n\n게임 접속이 불가능하시어 글을 남겨주셨네요.\n\n현재 DK모바일 리본은 한국/대만 서비스를 제공하고 있으며,\n접속하신 지역이 정식 서비스가 진행되고 있는 지역이 아닐 경우\n정상 접속이 어려울 수 있사오니 참고 부탁드립니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7607371",
+      "board_id": 9,
+      "board_name": "건의 게시판",
+      "title": "루베스 환수율 어케됨?",
+      "body": "할때마다 딴적이 없는데 이제껏  도박이란게  잃을때가 있으면 이겨서 딸때도 있어야지 할때마다 지는게 말이되나 이럴거면 사설토토가서 슬롯하는게 더 확률높겠다 적당히 해야되는데 환수율 몇프로냐?",
+      "author": "날카로운 끝판왕 8409",
+      "created_at": "2026-05-01T08:48:55+09:00",
+      "view_count": 164,
+      "comment_count": 4,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7607371",
+      "comments": [
+        {
+          "comment_id": "26125350",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "학살중인 초보 6821",
+          "text": "적당히 놀다 가세요.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26125882",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "오늘만사는 만렙 2181",
+          "text": "삭제된 댓글입니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 2
+        },
+        {
+          "comment_id": "26126049",
+          "parent_id": "26125882",
+          "depth": 2,
+          "author": "날카로운 끝판왕 8409",
+          "text": "왜욕을하니 개 빙쉰아",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26126171",
+          "parent_id": "26125882",
+          "depth": 2,
+          "author": "날카로운 끝판왕 8409",
+          "text": "니가 하는거 전부 반사",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26193169",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "천상의 언데",
+          "text": "루베스 할돈으로 현돌사서 마카라나 해라 그게 확률더높다",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7606126",
+      "board_id": 7,
+      "board_name": "버그 제보",
+      "title": "모바일, PC 게임 접속 안됩니다.",
+      "body": "",
+      "author": "켄토끼",
+      "created_at": "2026-05-01T00:04:55+09:00",
+      "view_count": 43,
+      "comment_count": 1,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7606126",
+      "comments": [
+        {
+          "comment_id": "26153812",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요, 용사님.\n\n게임 접속이 불가능하시어 글을 남겨주셨네요.\n\n현재 DK모바일 리본은 한국/대만 서비스를 제공하고 있으며,\n접속하신 지역이 정식 서비스가 진행되고 있는 지역이 아닐 경우\n정상 접속이 어려울 수 있사오니 참고 부탁드립니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    }
+  ]
+}
