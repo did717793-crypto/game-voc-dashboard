@@ -1,0 +1,154 @@
+{
+  "date": "2026-05-12",
+  "major_issues": [],
+  "voc_groups": [
+    {
+      "issue_type": "매크로·불법 행위 제보",
+      "category": "게임 관련",
+      "summary": "매크로 사용 의심 제재 요청",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7657098",
+      "feed_ids": [
+        "7657098"
+      ]
+    },
+    {
+      "issue_type": "접속·서버 장애",
+      "category": "버그·오류",
+      "summary": "서버 접속·게임 지연 장애 보고",
+      "count": 2,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7657111",
+      "feed_ids": [
+        "7657111",
+        "7655562"
+      ]
+    },
+    {
+      "issue_type": "게임 일반",
+      "category": "게임 관련",
+      "summary": "루멘탑에서 죽이는건 통제인가요",
+      "count": 3,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7656418",
+      "feed_ids": [
+        "7655243",
+        "7656418",
+        "7655222"
+      ]
+    }
+  ],
+  "insights": {
+    "top_issues": [
+      {
+        "category": "게임 관련",
+        "summary": "루멘탑에서 죽이는건 통제인가요",
+        "count": 3,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7656418"
+      },
+      {
+        "category": "버그·오류",
+        "summary": "서버 접속·게임 지연 장애 보고",
+        "count": 2,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7657111"
+      },
+      {
+        "category": "게임 관련",
+        "summary": "매크로 사용 의심 제재 요청",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7657098"
+      }
+    ],
+    "trend": {
+      "건의·요청": {
+        "current": 0,
+        "previous": 3,
+        "delta": -3
+      },
+      "버그·오류": {
+        "current": 2,
+        "previous": 0,
+        "delta": 2
+      },
+      "게임 관련": {
+        "current": 4,
+        "previous": 3,
+        "delta": 1
+      }
+    },
+    "trending_keywords": [],
+    "prev_date": "2026-05-11"
+  },
+  "cs_daily": {
+    "received": 4,
+    "processed": 2
+  },
+  "cs_status_counts": {
+    "접수 완료": 3,
+    "답변 완료": 7,
+    "조회 완료": 8,
+    "삭제": 1
+  },
+  "cs_inquiries": [
+    {
+      "category": "기타",
+      "count": 4,
+      "pending": 1,
+      "representative": [
+        {
+          "title": "장비복구관련",
+          "body": "캐릭터명 : 만지면커져요 서버명 : 하이데 안녕하세요 신성한주문서가 없었다면 이렇게 문의도 드릴일이 없었지만 정말 실수로 그런건데 도저히 안되나요??서버가 종료될때까지 정말 열심히 게임하고 있는 유저인데  한번만 더 생각 부탁드리겠습니다ㅠ 정말 실수로 모르고 한거에요ㅠㅠ부탁드려요",
+          "status": "답변 완료",
+          "date": "2026-05-12"
+        },
+        {
+          "title": "강화실수 복구문의",
+          "body": "캐릭터명 : 만지면커져요 서버명 : 하이데 안녕하세요 문의는 한번 드렸지만 간절하게 한번 더 부탁드립니다 파멸템이 많지 않고 그걸 불만없이 저에게 준 나라길드 길원들이 저의 실수로 인해서 멘탈이 나가는 일이 있으면 너무 힘들거 같아서요 쟁구도가 힘든 부분이 있어서 정말 열심히 하고 있습니다 도와주세요 정말 실수 였습니다 매일 다이아로 신성한방어구 주문서 하나씩 만들었었는데 새벽6시에 신성한 주문서 제작이 된지 알고 정말 실수로 그런거에요 도와주세요 디케이리본이 종료 될때까지 즐겁게 게임하고 싶습니다..ㅠㅠ",
+          "status": "답변 완료",
+          "date": "2026-05-12"
+        },
+        {
+          "title": "안녕하세요 운영자님",
+          "body": "캐릭터명 : 만지면커져요 서버명 : 하이데 친애하는 DK모바일 리본 관계자님께,  안녕하세요 DK모바일 리본을 즐기고 있는 유저입니다 다름이 아니라,  게임 내 아이템 강화 진행 중 제 실수로 인해 문의를 드리게 되었습니다 제가 보유 중이던 ‘파멸의 티셔츠’을 강화하는 과정에서 원래는 ‘신성한 주문서’를 사용해야 했으나,  순간적인 클릭 미스로 ‘축복받은 주문서’를 사용해버렸습니다 정말 의도하지 않은 실수였고,  너무 당황스럽고 속상한 마음에 이렇게 간절히 문의드립니다 가능하시다면 해당 강화 내역에 대해 1회성 복구나 도움을 받을 수 있을지 검토 부탁드립니다 항상 게임 운영과 관리에 힘써주셔서 감사드리며,  바쁘시겠지만 부디 너그러운 마음으로 한 번만 도움 부탁드립니다 정말 절실한 마음으로 문의드립니다 감사합니다.",
+          "status": "답변 완료",
+          "date": "2026-05-12"
+        }
+      ]
+    }
+  ],
+  "cs_week_trend": [
+    {
+      "date": "2026-05-06",
+      "received": 6,
+      "processed": 3
+    },
+    {
+      "date": "2026-05-07",
+      "received": 4,
+      "processed": 5
+    },
+    {
+      "date": "2026-05-08",
+      "received": 1,
+      "processed": 2
+    },
+    {
+      "date": "2026-05-09",
+      "received": 1,
+      "processed": 0
+    },
+    {
+      "date": "2026-05-10",
+      "received": 1,
+      "processed": 0
+    },
+    {
+      "date": "2026-05-11",
+      "received": 1,
+      "processed": 3
+    },
+    {
+      "date": "2026-05-12",
+      "received": 4,
+      "processed": 2
+    }
+  ]
+}

@@ -1,0 +1,348 @@
+{
+  "meta": {
+    "date": "2026-05-11",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-05-11T00:00:00+09:00",
+    "window_end": "2026-05-11T23:59:59+09:00",
+    "crawled_at": "2026-05-14T11:21:54.394428+09:00",
+    "total_posts": 6,
+    "total_comments": 23,
+    "boards": {
+      "4": {
+        "name": "자유 게시판",
+        "count": 3
+      },
+      "9": {
+        "name": "건의 게시판",
+        "count": 1
+      },
+      "7": {
+        "name": "버그 제보",
+        "count": 2
+      }
+    }
+  },
+  "official_posts": [],
+  "posts": [
+    {
+      "feed_id": "7649685",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "큰라인만합쳐라",
+      "body": "인원없는곳끼리합치고 큰라인합지고ㅇㅋ?",
+      "author": "Hhshdhhx",
+      "created_at": "2026-05-11T12:30:30+09:00",
+      "view_count": 193,
+      "comment_count": 1,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7649685",
+      "comments": [
+        {
+          "comment_id": "26260313",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요 용사님.\n\n먼저, 용사님의 소중한 의견에 감사의 인사를 드립니다.\n\n저희 DK모바일 리본은 더욱 발전된 모습을 보여드리고자 노력하고 있으며,\n보내주시는 모든 의견은 모두 귀 기울여 듣고 있습니다.\n\n인터 서버 그룹 편성에 대해 남겨주신 의견은 \n담당 부서로 전달하여 논의할 수 있도록 최선을 다하겠습니다.\n\n앞으로도 좋은 의견이 있으시다면 언제든지 소중한 말씀 부탁드립니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7649603",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "구섭 다야벌이 이정도면 ㅁㅌㅊ?",
+      "body": "하루에 현돌 3~40개 캐서 자기전에 마상돌리고 자는데 한달만에 이정도 벌었으면 ㅁㅌㅊ임? 판매중인거 25만다야 팔아먹은거 35만다야 그와중에 전스패키지 다샀는데 20트 실패함 쓰레기겜",
+      "author": "천상의 언데",
+      "created_at": "2026-05-11T12:01:42+09:00",
+      "view_count": 363,
+      "comment_count": 14,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7649603",
+      "comments": [
+        {
+          "comment_id": "26261753",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "네이버최강 휴먼 9613",
+          "text": "ㅗ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26261984",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "천하통일 킬러 2204",
+          "text": "ㅌㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26267006",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "학살중인 초보 6821",
+          "text": "편의점 알바라도 해라...\n\n삶이 어려워?\n\n왜그러고 살아?",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 10
+        },
+        {
+          "comment_id": "26276361",
+          "parent_id": "26267006",
+          "depth": 2,
+          "author": "천상의 언데",
+          "text": "직장인인데염... 걍 이거는 방치통발로 돌리는거고;; 배아픔??",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26277735",
+          "parent_id": "26267006",
+          "depth": 2,
+          "author": "학살중인 초보 6821",
+          "text": "긁?  ㅋㅋㅋㅋㅋㅋㅋㅋㅋ \n직장인이래ㅋㅋㅋㅋㅋㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26278207",
+          "parent_id": "26267006",
+          "depth": 2,
+          "author": "천상의 언데",
+          "text": "너같이 겜창인생들이나 이딴게임 24시간 붙들고 루멘사냥하지ㅋㅋ 난 그냥 하루에 3번 확인하는게 다다ㅋㅋㅋㅋㅋ 쌀먹이 다야버니깐 배아픈가벼ㅠ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26278214",
+          "parent_id": "26267006",
+          "depth": 2,
+          "author": "천상의 언데",
+          "text": "님처럼 겜_창인생들이나 이런겜 24시간 붙들고 루멘사냥하지 저같은 직장인들은 하루 3번 확인하면 끝임^^ 다야 잘벌어서 배아프시면 노하우좀 알려드려요?",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26278445",
+          "parent_id": "26267006",
+          "depth": 2,
+          "author": "학살중인 초보 6821",
+          "text": "본인의 인생이니 잘 알겠지요ㅋㅋㅋㅋㅋㅋㅋㅋㅋ 왜 남일처럼 말하면 뭐라도 된줄 아는가봐ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26278477",
+          "parent_id": "26267006",
+          "depth": 2,
+          "author": "천상의 언데",
+          "text": "아니 근데 님 얼마나 못배우셨으면 본인이 먼저 시작한걸 인지 못하세요??ㅜㅜ 역시 님처럼 남 잘되는꼴 못보고 배아파하는 겜_창들보는맛으로 쌀먹함ㅋㅋㅋㅋㅋ 쌀먹이 다야 잘버니깐 배알꼴리긴한가봐ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26278500",
+          "parent_id": "26267006",
+          "depth": 2,
+          "author": "학살중인 초보 6821",
+          "text": "와그렇게 화가넜엌ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㄲㅋㅋㄲㅋ 그닥 부럽지도 않아",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26278585",
+          "parent_id": "26267006",
+          "depth": 2,
+          "author": "천상의 언데",
+          "text": "아니 본인이 먼저 삶이 어렵냐는둥 왜그러고 사냐는둥 배알꼴려서 시비털어놓고 이제와서 나보고 화났냐그러네ㅋㅋㅋㅋㅋㅋㅋㅋㅋ 부러우면 부럽다하세요~~ㅋㅋㅋ 님 루멘 뒤지게 사냥해도 저 다야 못벌죠?ㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26278664",
+          "parent_id": "26267006",
+          "depth": 2,
+          "author": "학살중인 초보 6821",
+          "text": "인생 최대업적이 디케이하면서 다야 팔은거야? 왜케 화나서 그러는거야? 겜은 돈쓰려고 하는거지 열심히도 산다. 열심히 살아 낮에 나거서 햇살도 좀 아 다야 벌어야 되서 못나가지ㅋㅋㅋㅋㅋㅋ\n이젠 댓글 달지마. 왜 긁혀서 자꾸 댓글 달아ㅋㅋㅋㅋㅋ 편의점 알바 아니면 아닌거지 입에 거품물고 달려드니까 더 진짜같네ㅋㅋㅋㅋㅋㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26278816",
+          "parent_id": "26267006",
+          "depth": 2,
+          "author": "천상의 언데",
+          "text": "넵! 형님처럼 겜에 몇천씩쓰는 흑우분들께 제가 열심히 번 다야 팔아드리겠습니다! 충성!ㅋㅋㅋ 님처럼 긁히는 라인들때문에 쌀먹 77ㅓ억 합니다^^ 그리고 거품물고 달려는건 님은듯ㅋㅋㅋㅋㅋㅋ 몇마디 해주니깐 개긁혀서 편의점알바 드립이나치고ㅋㅋㅋ 귀엽다 귀여워~~",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26276493",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "노련한 입문자 7020",
+          "text": "잘버는구만",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7649166",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "2주 잘쉬었으니 쟁합시다",
+      "body": "연휴쉰거는 너무 좋았는데 2주 쉬니 할게 없긴함. 구섭 쟁하러 가즈아~! 엔트러스형님들 루멘9층만 현돌 리셋하면 빡쟁각 나옵니다.(중립형들 위해 저층도 어느정도 해주심 좋을듯 지속적으로 나오게.. 현실적으로) 3개 라인 다 9층가서 피터지게 싸우게 해주십쇼. 이런게 운영 아닙니까!",
+      "author": "쟁하러가자",
+      "created_at": "2026-05-11T09:29:40+09:00",
+      "view_count": 170,
+      "comment_count": 3,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7649166",
+      "comments": [
+        {
+          "comment_id": "26264474",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "부드러운 마법사 7117",
+          "text": "내가운영자면 저층은 해줄필요가없지 ㅋㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26265596",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요 용사님.\n\n소중한 시간을 내어 의견을 남겨주신 용사님께 진심으로 감사드립니다.\n\n말씀해주신 의견에 대해서는 신중하게 검토하여\n모든 용사님께 이로운 방향으로 개선될 수 있도록 노력하겠습니다.\n\n다만, 이러한 과정에서 원하시는 방향으로 진행되지 않을 수 있는 점,\n용사님께서 부디 너른 마음으로 이해해 주시길 부탁드리겠습니다.\n\n언제나 용사님의 의견을 소중히 생각하고 수렴하여 \n더욱 만족스러운 게임이 될 수 있도록 최선을 다하겠습니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26266735",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "폭주하는 모범생 9074",
+          "text": "우리인터는 쟁 재미지게 하고 있는데 농사가 아님 나드까지 털림",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7648862",
+      "board_id": 9,
+      "board_name": "건의 게시판",
+      "title": "제발 층수 랭킹수정좀해주세요",
+      "body": "아니 대체 층수는 랭킹에 층수는 왜 아직 1단계씩내려놓는거에요?? 말안하고 계속있는데 고쳐질생각을안하네 마지막까지 깻으니까 이거 수정좀 해주세요",
+      "author": "바위처럼단단하지",
+      "created_at": "2026-05-11T04:52:12+09:00",
+      "view_count": 82,
+      "comment_count": 2,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7648862",
+      "comments": [
+        {
+          "comment_id": "26254879",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "바위처럼단단하지",
+          "text": "발트탑 ,트리시움 ,락시움 3개 수정좀해주세요 제발",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26254882",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "바위처럼단단하지",
+          "text": "비밀 댓글입니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7650769",
+      "board_id": 7,
+      "board_name": "버그 제보",
+      "title": "접속이안돼요",
+      "body": "해외에 거주중인데 갑자기 거주국가에서 접속 안된다고 뜨네요 이전까지만 해도 잘만했는데요........ 해결부탁드려요",
+      "author": "치지직마술사",
+      "created_at": "2026-05-11T18:08:27+09:00",
+      "view_count": 78,
+      "comment_count": 2,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7650769",
+      "comments": [
+        {
+          "comment_id": "26264196",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요, 용사님.\n\n게임 접속이 불가능하시어 글을 남겨주셨네요.\n\n현재 DK모바일 리본은 한국/대만 서비스를 제공하고 있으며,\n접속하신 지역이 정식 서비스가 진행되고 있는 지역이 아닐 경우\n정상 접속이 어려울 수 있사오니 참고 부탁드립니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 1
+        },
+        {
+          "comment_id": "26268674",
+          "parent_id": "26264196",
+          "depth": 2,
+          "author": "치지직마술사",
+          "text": "아니 여태 쭉 dk클라로 이용하고 있었는데 이제와서 안되는 이유를 설명해주셔야지 그렇게 답변주시면 어떡합니까?  그럼 여태 비정상적인 루트로 제가 여태 접속하여 비정상적으로게임을 했던것이고 게임과 타유저들한테 해가 되었을테니 비정상적인 제 아이디 지워주세요 더이상 안하게요",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7649081",
+      "board_id": 7,
+      "board_name": "버그 제보",
+      "title": "1주년 기념 룰렛",
+      "body": "재접을해도 안대고 컴터를끄고 재접해도 안대고 어떻게 해야합니까 빠르게 수정하십쇼",
+      "author": "웅쩐사랑해",
+      "created_at": "2026-05-11T08:48:04+09:00",
+      "view_count": 90,
+      "comment_count": 1,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7649081",
+      "comments": [
+        {
+          "comment_id": "26260502",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "GM리토스",
+          "text": "안녕하세요 용사님.\n\n게임 이용 중 불편을 겪으시어 글을 작성해주셨네요.\n\n혹여, 현재에도 동일 사항으로 인해 불편을 겪고 계시다면\n관련된 스크린샷 혹은 영상, 발생일시, 문제와 관련된 상세 내용 \n등을 첨부하여 고객센터로 문의 접수해 주시길 부탁드립니다.\n\n◈ 고객센터\n- 게임 내 메뉴 → 설정 → 정보 설정 → 고객 센터 → 문의하기\n\n고객센터에 접수된 계정 정보를 토대로 상세한 확인을\n진행하기 위함이오니 너그러이 양해해 주시길 부탁드리겠습니다.\n\n감사합니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    }
+  ]
+}

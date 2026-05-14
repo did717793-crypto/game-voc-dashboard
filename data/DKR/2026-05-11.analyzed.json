@@ -1,0 +1,137 @@
+{
+  "date": "2026-05-11",
+  "major_issues": [],
+  "voc_groups": [
+    {
+      "issue_type": "서버 통합·이전 건의",
+      "category": "건의·요청",
+      "summary": "서버 통합 건의",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7649685",
+      "feed_ids": [
+        "7649685"
+      ]
+    },
+    {
+      "issue_type": "게임 개선 건의",
+      "category": "건의·요청",
+      "summary": "아니 대체 층수는 랭킹에 층수는 왜 아직 1단계씩내려놓는거에요",
+      "count": 2,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7648862",
+      "feed_ids": [
+        "7648862",
+        "7650769"
+      ]
+    },
+    {
+      "issue_type": "게임 일반",
+      "category": "게임 관련",
+      "summary": "하루에 현돌 3~40개 캐서 자기전에 마상돌리고 자는데 한달만에 이정도 벌었으면 ㅁㅌㅊ임",
+      "count": 3,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7649603",
+      "feed_ids": [
+        "7649603",
+        "7649166",
+        "7649081"
+      ]
+    }
+  ],
+  "insights": {
+    "top_issues": [
+      {
+        "category": "게임 관련",
+        "summary": "하루에 현돌 3~40개 캐서 자기전에 마상돌리고 자는데 한달만에 이정도 벌었으면 ㅁㅌㅊ임",
+        "count": 3,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7649603"
+      },
+      {
+        "category": "건의·요청",
+        "summary": "아니 대체 층수는 랭킹에 층수는 왜 아직 1단계씩내려놓는거에요",
+        "count": 2,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7648862"
+      },
+      {
+        "category": "건의·요청",
+        "summary": "서버 통합 건의",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7649685"
+      }
+    ],
+    "trend": {
+      "건의·요청": {
+        "current": 3,
+        "previous": 0,
+        "delta": 3
+      },
+      "게임 관련": {
+        "current": 3,
+        "previous": 2,
+        "delta": 1
+      }
+    },
+    "trending_keywords": [],
+    "prev_date": "2026-05-10"
+  },
+  "cs_daily": {
+    "received": 1,
+    "processed": 3
+  },
+  "cs_status_counts": {
+    "접수 완료": 3,
+    "답변 완료": 7,
+    "조회 완료": 8,
+    "삭제": 1
+  },
+  "cs_inquiries": [
+    {
+      "category": "이벤트",
+      "count": 1,
+      "pending": 0,
+      "representative": [
+        {
+          "title": "이벤트컬렉션",
+          "body": "이벤트명 : 이벤트컬렉션 100일이벤트나 크리스마스이벤트같은 컬렉션용 아이템 재판매는 어떤가해서 문의합니다 늦게시작한사람은 방법이 없어서요.",
+          "status": "조회 완료",
+          "date": "2026-05-11"
+        }
+      ]
+    }
+  ],
+  "cs_week_trend": [
+    {
+      "date": "2026-05-05",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-05-06",
+      "received": 6,
+      "processed": 3
+    },
+    {
+      "date": "2026-05-07",
+      "received": 4,
+      "processed": 5
+    },
+    {
+      "date": "2026-05-08",
+      "received": 1,
+      "processed": 2
+    },
+    {
+      "date": "2026-05-09",
+      "received": 1,
+      "processed": 0
+    },
+    {
+      "date": "2026-05-10",
+      "received": 1,
+      "processed": 0
+    },
+    {
+      "date": "2026-05-11",
+      "received": 1,
+      "processed": 3
+    }
+  ]
+}

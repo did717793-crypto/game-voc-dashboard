@@ -1,0 +1,125 @@
+{
+  "date": "2026-05-13",
+  "major_issues": [
+    {
+      "title": "5월 14일(목) 정기 점검 안내",
+      "summary": "5월 14일(목) 정기 점검 안내",
+      "board_name": "공지사항",
+      "board": "공지사항",
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7660744",
+      "feed_id": "7660744",
+      "date": "2026-05-13",
+      "count": 1
+    },
+    {
+      "title": "5월 14일(목) 업데이트 내용 안내",
+      "summary": "5월 14일(목) 업데이트 내용 안내",
+      "board_name": "업데이트",
+      "board": "업데이트",
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7660762",
+      "feed_id": "7660762",
+      "date": "2026-05-13",
+      "count": 2
+    }
+  ],
+  "voc_groups": [
+    {
+      "issue_type": "게임 일반",
+      "category": "게임 관련",
+      "summary": "쟁하고싶고 능력되는써버는 실컷쟁하게해주고 짜투리썹끼리묶어서 2달정도는 농사줘야 결제도하고 따라가고 재미지게하",
+      "count": 3,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7657951",
+      "feed_ids": [
+        "7660926",
+        "7657951",
+        "7661877"
+      ]
+    }
+  ],
+  "insights": {
+    "top_issues": [
+      {
+        "category": "게임 관련",
+        "summary": "쟁하고싶고 능력되는써버는 실컷쟁하게해주고 짜투리썹끼리묶어서 2달정도는 농사줘야 결제도하고 따라가고 재미지게하",
+        "count": 3,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7657951"
+      }
+    ],
+    "trend": {
+      "버그·오류": {
+        "current": 0,
+        "previous": 2,
+        "delta": -2
+      },
+      "게임 관련": {
+        "current": 3,
+        "previous": 4,
+        "delta": -1
+      }
+    },
+    "trending_keywords": [],
+    "prev_date": "2026-05-12"
+  },
+  "cs_daily": {
+    "received": 1,
+    "processed": 1
+  },
+  "cs_status_counts": {
+    "접수 완료": 3,
+    "답변 완료": 7,
+    "조회 완료": 8,
+    "삭제": 1
+  },
+  "cs_inquiries": [
+    {
+      "category": "이벤트",
+      "count": 1,
+      "pending": 1,
+      "representative": [
+        {
+          "title": "재문의:재문의:재문의:1주년기념 미션이벤트",
+          "body": "제발요 균열보스 딱 한마리를 못잡아서 1주년이벤트 보상 못 받게 생겼어요 ㅠ  회사에서는 아예 게임을 못하는데 대체 어떻게 보상받으라고 1시 6시로 만들어 두신거에요 ㅠㅠ",
+          "status": "접수 완료",
+          "date": "2026-05-13"
+        }
+      ]
+    }
+  ],
+  "cs_week_trend": [
+    {
+      "date": "2026-05-07",
+      "received": 4,
+      "processed": 5
+    },
+    {
+      "date": "2026-05-08",
+      "received": 1,
+      "processed": 2
+    },
+    {
+      "date": "2026-05-09",
+      "received": 1,
+      "processed": 0
+    },
+    {
+      "date": "2026-05-10",
+      "received": 1,
+      "processed": 0
+    },
+    {
+      "date": "2026-05-11",
+      "received": 1,
+      "processed": 3
+    },
+    {
+      "date": "2026-05-12",
+      "received": 4,
+      "processed": 2
+    },
+    {
+      "date": "2026-05-13",
+      "received": 1,
+      "processed": 1
+    }
+  ]
+}
