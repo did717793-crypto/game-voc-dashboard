@@ -3,9 +3,10 @@
   "major_issues": [],
   "voc_groups": [
     {
+      "semantic_topic": "기타",
       "issue_type": "게임 일반",
-      "category": "게임 관련",
-      "summary": "피통 160만인데",
+      "category": "기타",
+      "summary": "진심 궁금해서 물어보는데 피통 160만인데",
       "count": 2,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7646167",
       "feed_ids": [
@@ -17,22 +18,17 @@
   "insights": {
     "top_issues": [
       {
-        "category": "게임 관련",
-        "summary": "피통 160만인데",
+        "category": "기타",
+        "summary": "진심 궁금해서 물어보는데 피통 160만인데",
         "count": 2,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7646167"
       }
     ],
     "trend": {
-      "버그·오류": {
-        "current": 0,
-        "previous": 1,
-        "delta": -1
-      },
-      "게임 관련": {
+      "기타": {
         "current": 2,
-        "previous": 0,
-        "delta": 2
+        "previous": 1,
+        "delta": 1
       }
     },
     "trending_keywords": [],

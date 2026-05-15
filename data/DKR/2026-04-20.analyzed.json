@@ -14,16 +14,7 @@
   ],
   "voc_groups": [
     {
-      "issue_type": "기능·스킬 오류",
-      "category": "버그·오류",
-      "summary": "에러떠서 안받아지는데 어찌합니까",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7557698",
-      "feed_ids": [
-        "7557698"
-      ]
-    },
-    {
+      "semantic_topic": "서비스종료우려",
       "issue_type": "서비스 종료 우려",
       "category": "기타",
       "summary": "서비스 종료 우려 및 게임 비판",
@@ -34,15 +25,17 @@
       ]
     },
     {
+      "semantic_topic": "기타",
       "issue_type": "게임 일반",
-      "category": "게임 관련",
-      "summary": "전설 4개 모아서 한번씩 합성도전하고있는 중이였는데 인형 4트째 에 똭하고 탈로스가 뜨고 // 이번에 이벤으",
-      "count": 4,
+      "category": "기타",
+      "summary": "접속 PC 접속 안됩니다",
+      "count": 5,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7558377",
       "feed_ids": [
         "7559120",
         "7558377",
         "7558321",
+        "7557698",
         "7557726"
       ]
     }
@@ -50,16 +43,10 @@
   "insights": {
     "top_issues": [
       {
-        "category": "게임 관련",
-        "summary": "전설 4개 모아서 한번씩 합성도전하고있는 중이였는데 인형 4트째 에 똭하고 탈로스가 뜨고 // 이번에 이벤으",
-        "count": 4,
+        "category": "기타",
+        "summary": "접속 PC 접속 안됩니다",
+        "count": 5,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7558377"
-      },
-      {
-        "category": "버그·오류",
-        "summary": "에러떠서 안받아지는데 어찌합니까",
-        "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7557698"
       },
       {
         "category": "기타",
@@ -69,25 +56,10 @@
       }
     ],
     "trend": {
-      "건의·요청": {
-        "current": 0,
-        "previous": 2,
-        "delta": -2
-      },
-      "게임 관련": {
-        "current": 4,
-        "previous": 1,
-        "delta": 3
-      },
       "기타": {
-        "current": 1,
-        "previous": 0,
-        "delta": 1
-      },
-      "버그·오류": {
-        "current": 1,
-        "previous": 1,
-        "delta": 0
+        "current": 6,
+        "previous": 4,
+        "delta": 2
       }
     },
     "trending_keywords": [],

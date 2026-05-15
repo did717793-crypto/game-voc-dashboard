@@ -3,31 +3,58 @@
   "major_issues": [],
   "voc_groups": [
     {
-      "issue_type": "게임 일반",
-      "category": "게임 관련",
-      "summary": "강협이 지가 먼저 말걸고 막말 해놓고 싸우다 베르 했길래 귓했더니",
-      "count": 2,
+      "semantic_topic": "아이템기능오류",
+      "issue_type": "기능·스킬 오류",
+      "category": "버그·오류",
+      "summary": "아이템 분해·삭제·거래 불가 현상",
+      "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7665449",
       "feed_ids": [
-        "7666682",
         "7665449"
+      ]
+    },
+    {
+      "semantic_topic": "채팅분쟁",
+      "issue_type": "게임 개선 건의",
+      "category": "게임 관련",
+      "summary": "유저 간 채팅 분쟁 신고 및 처리 요청",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7666682",
+      "feed_ids": [
+        "7666682"
       ]
     }
   ],
   "insights": {
     "top_issues": [
       {
-        "category": "게임 관련",
-        "summary": "강협이 지가 먼저 말걸고 막말 해놓고 싸우다 베르 했길래 귓했더니",
-        "count": 2,
+        "category": "버그·오류",
+        "summary": "아이템 분해·삭제·거래 불가 현상",
+        "count": 1,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7665449"
+      },
+      {
+        "category": "게임 관련",
+        "summary": "유저 간 채팅 분쟁 신고 및 처리 요청",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7666682"
       }
     ],
     "trend": {
+      "건의·요청": {
+        "current": 0,
+        "previous": 2,
+        "delta": -2
+      },
       "게임 관련": {
-        "current": 2,
-        "previous": 3,
-        "delta": -1
+        "current": 1,
+        "previous": 0,
+        "delta": 1
+      },
+      "버그·오류": {
+        "current": 1,
+        "previous": 1,
+        "delta": 0
       }
     },
     "trending_keywords": [],

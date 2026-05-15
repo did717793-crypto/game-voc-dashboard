@@ -3,57 +3,44 @@
   "major_issues": [],
   "voc_groups": [
     {
-      "issue_type": "기능·스킬 오류",
-      "category": "버그·오류",
-      "summary": "구매 스킬 효과 미적용 현상",
-      "count": 2,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7560969",
-      "feed_ids": [
-        "7560881",
-        "7560969"
-      ]
-    },
-    {
-      "issue_type": "게임 개선 건의",
+      "semantic_topic": "서버통합건의",
+      "issue_type": "서버 통합·이전 건의",
       "category": "건의·요청",
-      "summary": "현재 현자의 돌 드랍량이 절반 이하로 떨어지면서 획득 확률이 눈에 띄게 낮아졌습니다",
+      "summary": "서버 통합 건의",
       "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7562690",
-      "feed_ids": [
-        "7562690"
-      ]
-    },
-    {
-      "issue_type": "게임 일반",
-      "category": "게임 관련",
-      "summary": "아니 중립이 게임을 못하는게 말이되냐",
-      "count": 2,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7560651",
       "feed_ids": [
-        "7562563",
         "7560651"
+      ]
+    },
+    {
+      "semantic_topic": "기타",
+      "issue_type": "게임 일반",
+      "category": "기타",
+      "summary": "구매오류 구매했는데 활성화가 안돼요 그리구 휴대폰으로 결제하면 자꾸 오류떠서 컴퓨터로 바코드 찍어서 구매하는",
+      "count": 4,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7560969",
+      "feed_ids": [
+        "7562690",
+        "7562563",
+        "7560881",
+        "7560969"
       ]
     }
   ],
   "insights": {
     "top_issues": [
       {
-        "category": "버그·오류",
-        "summary": "구매 스킬 효과 미적용 현상",
-        "count": 2,
+        "category": "기타",
+        "summary": "구매오류 구매했는데 활성화가 안돼요 그리구 휴대폰으로 결제하면 자꾸 오류떠서 컴퓨터로 바코드 찍어서 구매하는",
+        "count": 4,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7560969"
       },
       {
-        "category": "게임 관련",
-        "summary": "아니 중립이 게임을 못하는게 말이되냐",
-        "count": 2,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7560651"
-      },
-      {
         "category": "건의·요청",
-        "summary": "현재 현자의 돌 드랍량이 절반 이하로 떨어지면서 획득 확률이 눈에 띄게 낮아졌습니다",
+        "summary": "서버 통합 건의",
         "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7562690"
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7560651"
       }
     ],
     "trend": {
@@ -62,20 +49,10 @@
         "previous": 0,
         "delta": 1
       },
-      "게임 관련": {
-        "current": 2,
-        "previous": 4,
-        "delta": -2
-      },
       "기타": {
-        "current": 0,
-        "previous": 1,
-        "delta": -1
-      },
-      "버그·오류": {
-        "current": 2,
-        "previous": 1,
-        "delta": 1
+        "current": 4,
+        "previous": 6,
+        "delta": -2
       }
     },
     "trending_keywords": [

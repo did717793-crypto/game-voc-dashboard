@@ -3,44 +3,30 @@
   "major_issues": [],
   "voc_groups": [
     {
-      "issue_type": "가격·거래 문의",
-      "category": "게임 관련",
-      "summary": "게임 내 아이템 거래·시세 관련 문의",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7622884",
-      "feed_ids": [
-        "7622884"
-      ]
-    },
-    {
+      "semantic_topic": "기타",
       "issue_type": "게임 일반",
-      "category": "게임 관련",
-      "summary": "게임 끝물된건 기정사실 거의 끝났네 ㅋ 돈 덜쓰고 케릭 키우라는데 이제 진또배기로 빼먹을텐데",
-      "count": 2,
+      "category": "기타",
+      "summary": "누가 얼핏던진 말인거 같은데 제대로다 모든 유저가 똑같지 않고 서로 게임의 추구하는 방향이 다르다는걸 안다면",
+      "count": 3,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7621372",
       "feed_ids": [
         "7621977",
-        "7621372"
+        "7621372",
+        "7622884"
       ]
     }
   ],
   "insights": {
     "top_issues": [
       {
-        "category": "게임 관련",
-        "summary": "게임 끝물된건 기정사실 거의 끝났네 ㅋ 돈 덜쓰고 케릭 키우라는데 이제 진또배기로 빼먹을텐데",
-        "count": 2,
+        "category": "기타",
+        "summary": "누가 얼핏던진 말인거 같은데 제대로다 모든 유저가 똑같지 않고 서로 게임의 추구하는 방향이 다르다는걸 안다면",
+        "count": 3,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7621372"
-      },
-      {
-        "category": "게임 관련",
-        "summary": "게임 내 아이템 거래·시세 관련 문의",
-        "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7622884"
       }
     ],
     "trend": {
-      "게임 관련": {
+      "기타": {
         "current": 3,
         "previous": 7,
         "delta": -4

@@ -24,14 +24,35 @@
   ],
   "voc_groups": [
     {
-      "issue_type": "게임 일반",
-      "category": "게임 관련",
-      "summary": "쟁하고싶고 능력되는써버는 실컷쟁하게해주고 짜투리썹끼리묶어서 2달정도는 농사줘야 결제도하고 따라가고 재미지게하",
-      "count": 3,
+      "semantic_topic": "아이템기능오류",
+      "issue_type": "기능·스킬 오류",
+      "category": "버그·오류",
+      "summary": "강화 기능 오류 현상",
+      "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7657951",
       "feed_ids": [
-        "7660926",
-        "7657951",
+        "7657951"
+      ]
+    },
+    {
+      "semantic_topic": "서버통합건의",
+      "issue_type": "서버 통합·이전 건의",
+      "category": "건의·요청",
+      "summary": "서버 통합 건의",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7660926",
+      "feed_ids": [
+        "7660926"
+      ]
+    },
+    {
+      "semantic_topic": "콘텐츠건의",
+      "issue_type": "게임 개선 건의",
+      "category": "건의·요청",
+      "summary": "1주년 이벤트 기간 연장 건의",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7661877",
+      "feed_ids": [
         "7661877"
       ]
     }
@@ -39,22 +60,39 @@
   "insights": {
     "top_issues": [
       {
-        "category": "게임 관련",
-        "summary": "쟁하고싶고 능력되는써버는 실컷쟁하게해주고 짜투리썹끼리묶어서 2달정도는 농사줘야 결제도하고 따라가고 재미지게하",
-        "count": 3,
+        "category": "버그·오류",
+        "summary": "강화 기능 오류 현상",
+        "count": 1,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7657951"
+      },
+      {
+        "category": "건의·요청",
+        "summary": "서버 통합 건의",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7660926"
+      },
+      {
+        "category": "건의·요청",
+        "summary": "1주년 이벤트 기간 연장 건의",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7661877"
       }
     ],
     "trend": {
-      "버그·오류": {
-        "current": 0,
-        "previous": 2,
-        "delta": -2
-      },
       "게임 관련": {
-        "current": 3,
-        "previous": 4,
-        "delta": -1
+        "current": 0,
+        "previous": 5,
+        "delta": -5
+      },
+      "건의·요청": {
+        "current": 2,
+        "previous": 1,
+        "delta": 1
+      },
+      "버그·오류": {
+        "current": 1,
+        "previous": 0,
+        "delta": 1
       }
     },
     "trending_keywords": [],

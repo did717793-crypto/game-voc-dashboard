@@ -5,25 +5,20 @@
   "insights": {
     "top_issues": [],
     "trend": {
-      "건의·요청": {
-        "current": 0,
-        "previous": 2,
-        "delta": -2
-      },
       "게임 관련": {
         "current": 0,
         "previous": 3,
         "delta": -3
       },
-      "기타": {
-        "current": 0,
-        "previous": 1,
-        "delta": -1
-      },
       "버그·오류": {
         "current": 0,
-        "previous": 12,
-        "delta": -12
+        "previous": 5,
+        "delta": -5
+      },
+      "기타": {
+        "current": 0,
+        "previous": 10,
+        "delta": -10
       }
     },
     "trending_keywords": [],

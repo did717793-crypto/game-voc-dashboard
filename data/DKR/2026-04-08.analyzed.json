@@ -24,17 +24,7 @@
   ],
   "voc_groups": [
     {
-      "issue_type": "접속·서버 장애",
-      "category": "버그·오류",
-      "summary": "서버 접속·게임 지연 장애 보고",
-      "count": 2,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7515222",
-      "feed_ids": [
-        "7517219",
-        "7515222"
-      ]
-    },
-    {
+      "semantic_topic": "서비스종료우려",
       "issue_type": "서비스 종료 우려",
       "category": "기타",
       "summary": "서비스 종료 우려 및 게임 비판",
@@ -45,32 +35,29 @@
       ]
     },
     {
+      "semantic_topic": "기타",
       "issue_type": "게임 일반",
-      "category": "게임 관련",
-      "summary": "카라바죠는 왜 농사안주는교",
-      "count": 4,
+      "category": "기타",
+      "summary": "케릭터 아니고 캐릭터다 대부분 케릭이라 하는데 보기 짜증난다 캐릭터다 캐릭 캐릭 캐릭 캐릭 캐릭 캐릭 진심 ",
+      "count": 6,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7515650",
       "feed_ids": [
         "7518191",
+        "7517219",
         "7517023",
         "7515650",
-        "7515635"
+        "7515635",
+        "7515222"
       ]
     }
   ],
   "insights": {
     "top_issues": [
       {
-        "category": "게임 관련",
-        "summary": "카라바죠는 왜 농사안주는교",
-        "count": 4,
+        "category": "기타",
+        "summary": "케릭터 아니고 캐릭터다 대부분 케릭이라 하는데 보기 짜증난다 캐릭터다 캐릭 캐릭 캐릭 캐릭 캐릭 캐릭 진심 ",
+        "count": 6,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7515650"
-      },
-      {
-        "category": "버그·오류",
-        "summary": "서버 접속·게임 지연 장애 보고",
-        "count": 2,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7515222"
       },
       {
         "category": "기타",
@@ -80,20 +67,10 @@
       }
     ],
     "trend": {
-      "게임 관련": {
-        "current": 4,
-        "previous": 1,
-        "delta": 3
-      },
       "기타": {
-        "current": 1,
-        "previous": 0,
-        "delta": 1
-      },
-      "버그·오류": {
-        "current": 2,
-        "previous": 1,
-        "delta": 1
+        "current": 7,
+        "previous": 2,
+        "delta": 5
       }
     },
     "trending_keywords": [],

@@ -3,55 +3,31 @@
   "major_issues": [],
   "voc_groups": [
     {
-      "issue_type": "기능·스킬 오류",
-      "category": "버그·오류",
-      "summary": "소서러 블레스 오브 엘리멘탈 스킬 효과 미적용 현상",
-      "count": 1,
+      "semantic_topic": "기타",
+      "issue_type": "게임 일반",
+      "category": "기타",
+      "summary": "소서러 블레스 오브 엘리멘탈 십힘현상 블레스 오브 엘리멘탈 쓰고 임페리얼 가드 같이쓰다보면 블레스 오브 엘리",
+      "count": 2,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7511948",
       "feed_ids": [
+        "7513260",
         "7511948"
-      ]
-    },
-    {
-      "issue_type": "가격·거래 문의",
-      "category": "게임 관련",
-      "summary": "게임 내 아이템 거래·시세 관련 문의",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7513260",
-      "feed_ids": [
-        "7513260"
       ]
     }
   ],
   "insights": {
     "top_issues": [
       {
-        "category": "버그·오류",
-        "summary": "소서러 블레스 오브 엘리멘탈 스킬 효과 미적용 현상",
-        "count": 1,
+        "category": "기타",
+        "summary": "소서러 블레스 오브 엘리멘탈 십힘현상 블레스 오브 엘리멘탈 쓰고 임페리얼 가드 같이쓰다보면 블레스 오브 엘리",
+        "count": 2,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7511948"
-      },
-      {
-        "category": "게임 관련",
-        "summary": "게임 내 아이템 거래·시세 관련 문의",
-        "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7513260"
       }
     ],
     "trend": {
-      "건의·요청": {
-        "current": 0,
+      "기타": {
+        "current": 2,
         "previous": 1,
-        "delta": -1
-      },
-      "게임 관련": {
-        "current": 1,
-        "previous": 0,
-        "delta": 1
-      },
-      "버그·오류": {
-        "current": 1,
-        "previous": 0,
         "delta": 1
       }
     },

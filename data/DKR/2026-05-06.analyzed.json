@@ -24,24 +24,16 @@
   ],
   "voc_groups": [
     {
-      "issue_type": "기능·스킬 오류",
-      "category": "버그·오류",
-      "summary": "아니 엠통이 스킬 효과 미적용 현상",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7630695",
-      "feed_ids": [
-        "7630695"
-      ]
-    },
-    {
+      "semantic_topic": "기타",
       "issue_type": "게임 일반",
-      "category": "게임 관련",
-      "summary": "이번주 패치 후에 인터 서버 그대로 가나요",
-      "count": 3,
+      "category": "기타",
+      "summary": "인터 서버 변경 이번주 패치 후에 인터 서버 그대로 가나요",
+      "count": 4,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7631799",
       "feed_ids": [
         "7631799",
         "7631318",
+        "7630695",
         "7631779"
       ]
     }
@@ -49,27 +41,16 @@
   "insights": {
     "top_issues": [
       {
-        "category": "게임 관련",
-        "summary": "이번주 패치 후에 인터 서버 그대로 가나요",
-        "count": 3,
+        "category": "기타",
+        "summary": "인터 서버 변경 이번주 패치 후에 인터 서버 그대로 가나요",
+        "count": 4,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7631799"
-      },
-      {
-        "category": "버그·오류",
-        "summary": "아니 엠통이 스킬 효과 미적용 현상",
-        "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7630695"
       }
     ],
     "trend": {
-      "버그·오류": {
-        "current": 1,
-        "previous": 1,
-        "delta": 0
-      },
-      "게임 관련": {
-        "current": 3,
-        "previous": 2,
+      "기타": {
+        "current": 4,
+        "previous": 3,
         "delta": 1
       }
     },

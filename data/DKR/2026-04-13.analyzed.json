@@ -3,73 +3,34 @@
   "major_issues": [],
   "voc_groups": [
     {
-      "issue_type": "기능·스킬 오류",
-      "category": "버그·오류",
-      "summary": "지금 스킬 효과 미적용 현상",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7534473",
-      "feed_ids": [
-        "7534473"
-      ]
-    },
-    {
-      "issue_type": "게임 개선 건의",
-      "category": "건의·요청",
-      "summary": "귀속 전스도 팔수있게 해주세요 제작확률도낮은데 나온거 쓰지도못하고 있어요",
-      "count": 1,
+      "semantic_topic": "기타",
+      "issue_type": "게임 일반",
+      "category": "기타",
+      "summary": "귀속전스 팔수있게 해주세요 귀속 전스도 팔수있게 해주세요 제작확률도낮은데 나온거 쓰지도못하고 있어요",
+      "count": 4,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7532880",
       "feed_ids": [
-        "7532880"
-      ]
-    },
-    {
-      "issue_type": "게임 일반",
-      "category": "게임 관련",
-      "summary": "서버이전 내줘라",
-      "count": 2,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7532705",
-      "feed_ids": [
+        "7532880",
         "7532705",
-        "7535137"
+        "7535137",
+        "7534473"
       ]
     }
   ],
   "insights": {
     "top_issues": [
       {
-        "category": "게임 관련",
-        "summary": "서버이전 내줘라",
-        "count": 2,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7532705"
-      },
-      {
-        "category": "버그·오류",
-        "summary": "지금 스킬 효과 미적용 현상",
-        "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7534473"
-      },
-      {
-        "category": "건의·요청",
-        "summary": "귀속 전스도 팔수있게 해주세요 제작확률도낮은데 나온거 쓰지도못하고 있어요",
-        "count": 1,
+        "category": "기타",
+        "summary": "귀속전스 팔수있게 해주세요 귀속 전스도 팔수있게 해주세요 제작확률도낮은데 나온거 쓰지도못하고 있어요",
+        "count": 4,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7532880"
       }
     ],
     "trend": {
-      "건의·요청": {
-        "current": 1,
-        "previous": 0,
-        "delta": 1
-      },
-      "게임 관련": {
-        "current": 2,
-        "previous": 0,
-        "delta": 2
-      },
-      "버그·오류": {
-        "current": 1,
+      "기타": {
+        "current": 4,
         "previous": 2,
-        "delta": -1
+        "delta": 2
       }
     },
     "trending_keywords": [],

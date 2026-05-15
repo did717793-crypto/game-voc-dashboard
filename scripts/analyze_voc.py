@@ -603,13 +603,353 @@ def build_major_issues(official_posts: list, date_label: str = "") -> list:
 
 
 # ════════════════════════════════════════════════════════════════════════════
-#  ▶ v6.0 이슈 타입 기반 병합 시스템
-#  [설계 원칙]
-#    · 그룹핑 기준: issue_type (board_id 완전 제외)
-#    · 같은 이슈 타입 + 같은 날짜 → 1개 그룹 (게시판 무관)
-#    · 요약: 실제 내용 기반, fallback 표현("게임 관련 유저 의견" 등) 절대 금지
-#    · 욕설: _PROFANITY_PATTERN으로 정제 후 요약
+#  ▶ v7.0 normalize → semantic_topic 기반 요약 시스템 (1차)
+#
+#  데이터 흐름:
+#    원문 → normalize_post_text() → classify_semantic_topic()
+#    → build_voc_groups()        → generate_group_summary()
+#
+#  [v6.0 호환]
+#    · voc_groups에 issue_type 유지 (dashboard 호환)
+#    · semantic_topic 필드 추가
+#    · generate_dashboard.py 수정 없음
 # ════════════════════════════════════════════════════════════════════════════
+
+# ── NORMALIZE_TABLE ──────────────────────────────────────────────────────────
+# 유저 슬랭 / 감정 표현 → 운영용 표준 표현
+# 규칙: 긴 표현을 먼저 배치 (짧은 패턴의 오탐 방지)
+NORMALIZE_TABLE: list[tuple[str, str]] = [
+    # 서버/접속 장애
+    ("서버가 터",       "서버 접속 장애"),
+    ("서버 터진",       "서버 접속 장애"),
+    ("섭이 터",         "서버 접속 장애"),
+    ("섭터졌",          "서버 접속 장애"),
+    ("섭터",            "서버 접속 장애"),
+    ("서버터",          "서버 접속 장애"),
+    ("서버 죽",         "서버 접속 장애"),
+    ("접속이 안",       "접속 불가"),
+    ("접속 안됨",       "접속 불가"),
+    ("접속불가",        "접속 불가"),
+    ("접속안됨",        "접속 불가"),
+    ("로그인 안",       "로그인 불가"),
+    ("로그인안됨",      "로그인 불가"),
+    ("로그인안",        "로그인 불가"),
+    ("렉이 심",         "게임 지연"),
+    ("랙이 심",         "게임 지연"),
+    ("렉 때문",         "게임 지연"),
+    ("랙 때문",         "게임 지연"),
+    ("렉걸",            "게임 지연"),
+    ("랙걸",            "게임 지연"),
+    ("튕김",            "접속 종료"),
+    ("팅김",            "접속 종료"),
+    ("튕겨",            "접속 종료"),
+    ("팅겨",            "접속 종료"),
+    ("튕긴",            "접속 종료"),
+    ("끊김",            "접속 종료"),
+    ("끊겨",            "접속 종료"),
+    # 매크로/불법
+    ("매크로 안잡",     "매크로 제재 요청"),
+    ("메크로 안잡",     "매크로 제재 요청"),
+    ("매크로 제재",     "매크로 제재 요청"),
+    ("메크로 제재",     "매크로 제재 요청"),
+    ("매크로",          "매크로 신고"),
+    ("메크로",          "매크로 신고"),
+    ("작업장 많",       "작업장 제재 요청"),
+    ("작업장 왜",       "작업장 제재 요청"),
+    ("작업장",          "작업장 신고"),
+    ("자동사냥",        "자동사냥 신고"),
+    ("불법프로그램",    "불법 프로그램 신고"),
+    ("불법 프로그램",   "불법 프로그램 신고"),
+    # 유저 간 분쟁
+    ("말걸고 막말",     "유저 간 채팅 분쟁"),
+    ("말 걸고 막말",    "유저 간 채팅 분쟁"),
+    ("채팅으로 욕",     "채팅 욕설 신고"),
+    ("채팅 욕설",       "채팅 욕설 신고"),
+    ("채팅 신고",       "채팅 신고 요청"),
+    ("욕설 신고",       "채팅 욕설 신고"),
+    ("귓말 신고",       "채팅 신고 요청"),
+    # 운영 불만
+    ("운영 뭐함",       "운영 대응 불만"),
+    ("운영뭐함",        "운영 대응 불만"),
+    ("운영 뭐해",       "운영 대응 불만"),
+    ("운영진 뭐",       "운영 대응 불만"),
+    ("뭐하냐고",        "운영 대응 불만"),
+    ("뭐하냐",          "운영 대응 불만"),
+    ("망겜",            "게임 운영 불만"),
+    ("폐겜",            "서비스 종료 우려"),
+    ("섭종",            "서비스 종료 우려"),
+    ("탈게",            "게임 이탈 의향"),
+    ("접겠",            "게임 이탈 의향"),
+    ("환불",            "환불 요청"),
+    # 과금/강화
+    ("현질유도",        "과금 구조 불만"),
+    ("현질 유도",       "과금 구조 불만"),
+    ("현질 강요",       "과금 구조 불만"),
+    ("현질",            "과금 구조 불만"),
+    ("과금유도",        "과금 구조 불만"),
+    ("강화 확률",       "강화 시스템 불만"),
+    ("강화확률",        "강화 시스템 불만"),
+    ("강화 터",         "강화 실패 불만"),
+    ("강화터",          "강화 실패 불만"),
+    # 보상/이벤트
+    ("보상 안들어",     "보상 미지급"),
+    ("보상이 안",       "보상 미지급"),
+    ("보상 누락",       "보상 미지급"),
+    ("보상 못",         "보상 미지급"),
+    ("보상안됨",        "보상 미지급"),
+    ("카운트 안",       "카운트 미적용"),
+    ("카운팅 안",       "카운트 미적용"),
+    ("카운터 안",       "카운트 미적용"),
+    ("횟수 초기화",     "구매 횟수 오류"),
+    ("구매횟수",        "구매 횟수 오류"),
+    ("구매 횟수",       "구매 횟수 오류"),
+    # 기능 오류 — "도 안" 조사 포함 패턴 우선
+    ("분해도 안",       "아이템 기능 오류"),
+    ("삭제도 안",       "아이템 기능 오류"),
+    ("거래도 안",       "거래 기능 오류"),
+    ("귓말도 안",       "귓말 기능 오류"),
+    ("강화 할수가 없",  "아이템 기능 오류"),   # "전설문장강화 할수가 없습니다"
+    ("강화할수가없",    "아이템 기능 오류"),
+    ("분해 안",         "아이템 기능 오류"),
+    ("삭제 안",         "아이템 기능 오류"),
+    ("거래 안",         "거래 기능 오류"),
+    ("거래소 안",       "거래 기능 오류"),
+    ("귓말 안",         "귓말 기능 오류"),
+    ("모두 불가",       "아이템 기능 오류"),   # "분해삭제거래 모두 불가" 커버
+    # 건의 — 서버 통합 (다양한 슬랭 커버)
+    ("서버 합쳐",       "서버 통합 건의"),
+    ("서버 통합",       "서버 통합 건의"),
+    ("섭통합",          "서버 통합 건의"),
+    ("섭합",            "서버 통합 건의"),
+    ("합쳐줘",          "서버 통합 건의"),
+    ("썹끼리 묶",       "서버 통합 건의"),   # "짜투리썹끼리묶어서"
+    ("써버끼리 묶",     "서버 통합 건의"),
+    ("썹끼리묶",        "서버 통합 건의"),
+    ("써버끼리묶",      "서버 통합 건의"),
+    ("인터섭",          "서버 통합 건의"),
+    ("이전권",          "서버 이전권 건의"),
+    ("현돌 초기화",     "현돌 초기화 건의"),
+    # 건의 — 이벤트/기간 연장
+    ("이벤트 연장",     "이벤트 기간 연장 건의"),
+    ("이벤트기간",      "이벤트 기간 연장 건의"),
+    ("기간 늘려",       "이벤트 기간 연장 건의"),
+    ("기간좀더",        "이벤트 기간 연장 건의"),
+    # 직업 밸런스
+    ("버리는 케릭",     "직업 성능 저하 우려"),   # "팔라딘은 이제 버리는 케릭인가요"
+    ("버리는 캐릭",     "직업 성능 저하 우려"),
+    ("직업 약",         "직업 밸런스 불만"),
+    ("밸런스 안",       "직업 밸런스 불만"),
+    # 콘텐츠 통제 — 긴 표현 우선
+    ("죽이는건 통제",   "사냥터 통제 문의"),       # "루멘탑에서 죽이는건 통제인가요"
+    ("사냥터 통제",     "사냥터 통제 문의"),
+    ("던전 통제",       "콘텐츠 통제 문의"),
+    # 길드 분쟁 — 구체적 행위 표현 우선
+    ("팽쳐버리",        "길드 강제 탈퇴 분쟁"),   # "바로팽쳐버리고" — 길드 강제 추방
+    ("팽시키",          "길드 강제 탈퇴 분쟁"),   # "팽시키는"
+    ("길드 분쟁",       "길드 간 분쟁"),
+    ("빡 길드",         "특정 길드 분쟁"),
+    ("강협",            "특정 길드 분쟁"),
+    ("막말",            "유저 간 채팅 분쟁"),
+    # 이벤트 초기화/재진행 건의
+    ("이벤트 초기화",   "이벤트 초기화 건의"),
+    ("초기화좀해줘",    "이벤트 초기화 건의"),    # "초기화좀해줘요" 커버
+    ("초기화 한번",     "이벤트 초기화 건의"),
+    ("이벤트 재진행",   "이벤트 재진행 건의"),
+    # 전투/쟁 콘텐츠 재개 의견 (쟁=서버 간 전투 콘텐츠)
+    ("쟁합시다",        "전투 콘텐츠 재개 의견"),   # "2주 잘쉬었으니 쟁합시다"
+    ("쟁하러",          "전투 콘텐츠 재개 의견"),   # "구섭 쟁하러 가즈아"
+    ("쟁 콘텐츠",       "전투 콘텐츠 재개 의견"),
+    # 재화 수급 효율 문의 (다야=다이아, 벌이=수익)
+    ("다야벌이",        "다이아 수급 관련 문의"),   # "구섭 다야벌이 이정도면"
+    ("다야 벌이",       "다이아 수급 관련 문의"),
+    ("다야 팔아",       "다이아 수급 관련 문의"),   # "만다야 팔아먹은거"
+    # 인터서버 통합 반대 건의 (긴 표현 우선)
+    ("인터합치지말고",  "서버 통합 반대 건의"),  # "인터합치지말고 각써버당 농사시즌"
+    ("인터합치지",      "서버 통합 반대 건의"),
+    ("인터합치는",      "서버 통합 건의"),        # "인터합치는거에요"
+    # 인터서버 일정 문의
+    ("인터 서버별",     "인터 서버 일정 문의"),
+    ("인터서버별",      "인터 서버 일정 문의"),
+    ("인터 바뀌",       "인터 서버 일정 문의"),
+    ("인터 언제",       "인터 서버 일정 문의"),
+    # 접속 장애 변형 표현 (조사 포함 패턴)
+    ("튕기더니",        "접속 종료"),             # "갑자기 튕기더니 접 안되요"
+    ("접 안되요",       "접속 불가"),
+    ("접안돼",          "접속 불가"),
+    ("접이 안",         "접속 불가"),
+    # 렉/랙 — 단독 사용 금지 (케렉/캐릭 등 오탐 방지)
+    # 렉걸, 렉이 심, 렉 때문 등 긴 표현만 위에서 처리
+]
+
+
+def normalize_post_text(title: str, body: str = "") -> str:
+    """유저 원문 → 운영용 정제 텍스트.
+
+    처리 순서:
+      1. 캐릭터명/서버명 헤더 제거
+      2. 욕설 제거
+      3. NORMALIZE_TABLE 치환 (긴 표현 우선)
+      4. 감정 부사/이모지 제거
+    반환: 운영용 정제 텍스트 (요약·분류에 사용)
+    """
+    text = f"{title} {body or ''}".strip()
+
+    # 1. 헤더 제거
+    text = re.sub(r'캐릭터명\s*:\s*\S+\s*', '', text)
+    text = re.sub(r'서버명\s*:\s*\S+\s*', '', text)
+
+    # 2. 욕설 제거
+    text = _PROFANITY_PATTERN.sub(' ', text)
+
+    # 3. 다중 공백 정규화 (NORMALIZE_TABLE 스캔 전 필수)
+    # body에 연속 공백이 있으면 "죽이는건  통제" ≠ "죽이는건 통제" 로 미매칭
+    text = re.sub(r'\s{2,}', ' ', text).strip()
+
+    text_lower = text.lower()
+    result_parts = []
+    replaced_spans: list[tuple[int, int]] = []
+
+    # 긴 표현부터 매칭 (NORMALIZE_TABLE 순서가 이미 긴 것 우선)
+    for slang, formal in NORMALIZE_TABLE:
+        idx = text_lower.find(slang)
+        while idx != -1:
+            end = idx + len(slang)
+            # 이미 치환된 범위와 겹치면 스킵
+            if not any(s <= idx < e or s < end <= e for s, e in replaced_spans):
+                replaced_spans.append((idx, end))
+                result_parts.append(formal)
+            idx = text_lower.find(slang, end)
+
+    # 치환된 운영용 표현 + 미치환 텍스트 합산
+    # 미치환 부분은 원문에서 의미 있는 명사 추출 시도
+    if result_parts:
+        # 연속 중복 제거 (같은 패턴이 여러 번 매칭된 경우)
+        deduped = [result_parts[0]]
+        for part in result_parts[1:]:
+            if part != deduped[-1]:
+                deduped.append(part)
+        normalized = " ".join(deduped)
+    else:
+        # 치환 없음 → 원문 정제본 그대로 사용
+        normalized = re.sub(r'\s+', ' ', text).strip()
+
+    # 4. 감정 부사 제거 (요약 노출 방지)
+    _EMOT = re.compile(r'(진짜|정말|ㅋㅋ+|ㅠㅠ+|ㅎㅎ+|ㄷㄷ+|ㅜㅜ+|헐+|대박|미쳤|미쳐|개웃|개쩐)')
+    normalized = _EMOT.sub('', normalized)
+    normalized = re.sub(r'\s+', ' ', normalized).strip()
+
+    return normalized
+
+
+# ── TOPIC_RULES ──────────────────────────────────────────────────────────────
+# (topic_key, [normalized 텍스트에서 탐색할 운영 표현 목록], 매핑 카테고리)
+# 순서 = 우선순위 (구체적인 것 먼저)
+TOPIC_RULES: list[tuple[str, list[str], str]] = [
+    ("매크로신고",       ["매크로 신고", "매크로 제재 요청", "작업장 신고",
+                         "작업장 제재 요청", "자동사냥 신고", "불법 프로그램 신고"],    "게임 관련"),
+    ("콘텐츠진행불가",   ["소탕 불가", "입장 불가", "클리어 불가", "던전 소탕",
+                         "던전 진행 불가", "소탕이 안"],                                "버그·오류"),
+    ("보상오류",         ["보상 미지급", "카운트 미적용", "구매 횟수 오류",
+                         "이벤트 보상 오류"],                                           "버그·오류"),
+    ("서버접속장애",     ["서버 접속 장애", "접속 불가", "로그인 불가",
+                         "게임 지연", "접속 종료", "서버 다운"],                        "버그·오류"),
+    ("아이템기능오류",   ["아이템 기능 오류", "거래 기능 오류", "귓말 기능 오류",
+                         "기능 오류", "기능 오작동"],                                   "버그·오류"),
+    ("채팅분쟁",         ["유저 간 채팅 분쟁", "채팅 욕설 신고", "채팅 신고 요청"],    "게임 관련"),
+    ("거래시세",         ["거래 가격", "시세"],                                         "게임 관련"),
+    ("서버통합건의",     ["서버 통합 건의", "서버 이전권 건의"],                        "건의·요청"),
+    ("콘텐츠건의",       ["현돌 초기화 건의", "콘텐츠 추가", "개선 요청",
+                         "이벤트 기간 연장 건의"],                                    "건의·요청"),
+    ("과금불만",         ["과금 구조 불만", "환불 요청"],                               "기타"),
+    ("강화불만",         ["강화 시스템 불만", "강화 실패 불만"],                       "기타"),
+    ("서비스종료우려",   ["서비스 종료 우려", "게임 이탈 의향"],                       "기타"),
+    ("운영불만",         ["운영 대응 불만", "게임 운영 불만"],                         "기타"),
+    # ── v7.1 신규 topic ──────────────────────────────────────────────────────
+    ("직업밸런스",       ["직업 성능 저하 우려", "직업 밸런스 불만"],                  "게임 관련"),
+    ("콘텐츠통제",       ["사냥터 통제 문의", "콘텐츠 통제 문의"],                     "게임 관련"),
+    ("길드분쟁",         ["길드 강제 탈퇴 분쟁", "특정 길드 분쟁", "길드 간 분쟁"],   "게임 관련"),
+    ("이벤트초기화건의", ["이벤트 초기화 건의", "이벤트 재진행 건의"],                "건의·요청"),
+    ("인터서버문의",     ["인터 서버 일정 문의"],                                       "게임 관련"),
+    ("재화수급문의",     ["다이아 수급 관련 문의"],                                      "게임 관련"),
+    ("전투콘텐츠의견",   ["전투 콘텐츠 재개 의견"],                                      "게임 관련"),
+    ("기타",             [],                                                            "기타"),
+]
+
+# topic → 대시보드 표시용 카테고리 매핑
+TOPIC_CATEGORY: dict[str, str] = {t: cat for t, _, cat in TOPIC_RULES}
+
+# topic → 이슈 타입 역매핑 (dashboard 호환용 issue_type 유지)
+TOPIC_TO_ISSUE_TYPE: dict[str, str] = {
+    "서버접속장애":    "접속·서버 장애",
+    "콘텐츠진행불가":  "던전·콘텐츠 진행 불가",
+    "보상오류":        "아이템·보상 오류",
+    "아이템기능오류":  "기능·스킬 오류",
+    "매크로신고":      "매크로·불법 행위 제보",
+    "채팅분쟁":        "게임 개선 건의",
+    "거래시세":        "가격·거래 문의",
+    "서버통합건의":    "서버 통합·이전 건의",
+    "콘텐츠건의":      "게임 개선 건의",
+    "과금불만":        "운영·정책 불만",
+    "강화불만":        "운영·정책 불만",
+    "서비스종료우려":  "서비스 종료 우려",
+    "운영불만":        "운영·정책 불만",
+    "직업밸런스":        "게임 일반",
+    "콘텐츠통제":        "게임 일반",
+    "길드분쟁":          "게임 일반",
+    "이벤트초기화건의":  "게임 개선 건의",
+    "인터서버문의":      "게임 일반",
+    "재화수급문의":      "게임 일반",
+    "전투콘텐츠의견":    "게임 일반",
+    "기타":              "게임 일반",
+}
+
+
+def classify_semantic_topic(normalized_text: str) -> str:
+    """normalize 된 텍스트 → semantic topic.
+
+    TOPIC_RULES의 운영용 표현 포함 여부로 판단.
+    (raw 원문이 아닌 normalized 결과에서 탐색 → 오탐 방지)
+    """
+    for topic, expressions, _ in TOPIC_RULES[:-1]:   # 마지막 "기타" 제외
+        if expressions and any(expr in normalized_text for expr in expressions):
+            return topic
+    return "기타"
+
+
+def extract_dominant_phenomena(posts_normalized: list[str], topic: str) -> list[str]:
+    """그룹 내 normalized 텍스트들에서 등장 빈도 상위 현상 추출.
+
+    반환: 빈도 내림차순 현상 목록 (최대 2개)
+    """
+    if not posts_normalized:
+        return []
+
+    # topic별 현상 어휘 풀
+    topic_vocab: dict[str, list[str]] = {
+        "서버접속장애":   ["서버 접속 장애", "접속 불가", "로그인 불가",
+                           "게임 지연", "접속 종료"],
+        "보상오류":       ["보상 미지급", "카운트 미적용", "구매 횟수 오류"],
+        "매크로신고":     ["매크로 신고", "매크로 제재 요청",
+                           "작업장 신고", "작업장 제재 요청",
+                           "자동사냥 신고", "불법 프로그램 신고"],
+        "콘텐츠진행불가": ["소탕 불가", "입장 불가", "클리어 불가"],
+        "아이템기능오류": ["아이템 기능 오류", "거래 기능 오류",
+                           "귓말 기능 오류"],
+        "채팅분쟁":       ["유저 간 채팅 분쟁", "채팅 욕설 신고",
+                           "채팅 신고 요청"],
+        "과금불만":       ["과금 구조 불만", "환불 요청"],
+        "강화불만":       ["강화 시스템 불만", "강화 실패 불만"],
+        "운영불만":       ["운영 대응 불만", "게임 운영 불만"],
+    }
+
+    vocab = topic_vocab.get(topic, [])
+    if not vocab:
+        return []
+
+    combined = " ".join(posts_normalized)
+    freq = [(v, combined.count(v)) for v in vocab if v in combined]
+    freq.sort(key=lambda x: -x[1])
+    return [v for v, _ in freq[:2]]
 
 # 이슈 타입 정의 — 순서가 우선순위 (구체적인 타입이 앞에 와야 함)
 # (이슈타입명, [매칭 키워드], 매핑 카테고리)
@@ -701,7 +1041,7 @@ _ISSUE_TYPE_FALLBACK: dict[str, str] = {
     "서비스 종료 우려":      "서비스 종료 우려 및 게임 비판",
     "운영·정책 불만":        "운영 정책에 대한 유저 불만",
     "가격·거래 문의":        "게임 내 거래·시세 관련 문의",
-    "게임 일반":             "게임 플레이 관련 유저 의견",
+    "게임 일반":             "게임 이용 관련 기타 문의",
 }
 
 
@@ -774,149 +1114,286 @@ def classify_issue_type(post: dict) -> str:
     return "게임 일반"
 
 
-def generate_group_summary(issue_type: str, posts: list) -> str:
-    """이슈 타입 + 게시글 목록 → 보고용 요약.
+def generate_group_summary(topic: str, posts: list,
+                           posts_normalized: list[str] | None = None) -> str:
+    """semantic_topic + 게시글 목록 → 보고용 요약 (v7.0).
 
     [원칙]
-      · fallback 표현 절대 금지 ("게임 관련 유저 의견", "서버 운영 관련 의견" 등)
-      · 반드시 실제 내용 기반
-      · 형식: [대상/콘텐츠] + [현상/행위]
+      · 고정 문장 반환 금지 — 반드시 현상/내용 기반
+      · normalized 텍스트에서 지배적 현상 추출 후 문장 조합
+      · 원문(raw) 그대로 summary에 넣지 않음
     """
+    if posts_normalized is None:
+        posts_normalized = [
+            normalize_post_text(p.get("title", ""), p.get("body", "") or "")
+            for p in posts
+        ]
+
     combined_title = " ".join(p.get("title", "") for p in posts)
     combined_body  = " ".join(p.get("body", "") or "" for p in posts)
-    combined_all   = f"{combined_title} {combined_body}".lower()
+    combined_raw   = f"{combined_title} {combined_body}"
+    combined_norm  = " ".join(posts_normalized)
 
-    if issue_type == "접속·서버 장애":
-        server_m = re.search(r'(\d+)\s*섭', combined_title)
-        if server_m:
-            return f"{server_m.group(1)}서버 접속·게임 지연 장애 보고"
-        return "서버 접속·게임 지연 장애 보고"
+    # ── 고유 정보 추출 (원문에서) ────────────────────────────────
+    server_m = re.search(r'(\d+)\s*섭', combined_title)
+    server_s = f"{server_m.group(1)}서버 " if server_m else ""
 
-    if issue_type == "매크로·불법 행위 제보":
-        server_m = re.search(r'(\d+)\s*섭', combined_title)
-        server_s = f"{server_m.group(1)}서버 " if server_m else ""
+    # ── topic별 현상 빈도 기반 문장 조합 ────────────────────────
+
+    if topic == "서버접속장애":
+        phenomena = extract_dominant_phenomena(posts_normalized, topic)
+        if phenomena:
+            p1 = phenomena[0]
+            p2 = phenomena[1] if len(phenomena) > 1 and phenomena[1] != p1 else None
+            if p2:
+                return f"{server_s}{p1} 및 {p2} 현상 보고"
+            return f"{server_s}{p1} 현상 보고"
+        return f"{server_s}서버 접속 오류 현상 보고"
+
+    if topic == "매크로신고":
+        phenomena = extract_dominant_phenomena(posts_normalized, topic)
         guild = ""
-        if "좀비" in combined_all:
+        if "좀비" in combined_raw.lower():
             guild = "좀비 길드 "
         else:
-            en_m = re.search(r'[A-Z][A-Z]+', combined_title + " " + combined_body)
+            en_m = re.search(r'[A-Z][A-Z]+', combined_raw)
             if en_m:
                 guild = en_m.group(0) + " 길드 "
-        return f"{server_s}{guild}매크로 사용 의심 제재 요청"
+        main_phen = phenomena[0] if phenomena else "매크로 신고"
+        return f"{server_s}{guild}{main_phen} 관련 제재 요청"
 
-    if issue_type == "던전·콘텐츠 진행 불가":
+    if topic == "콘텐츠진행불가":
         dungeon_m = re.search(
             r'(시련의\s*던전|파이썬의\s*요람|[가-힣]+\s*던전)',
-            combined_title + " " + combined_body
+            combined_raw
         )
         dungeon = dungeon_m.group(0).strip() if dungeon_m else "던전"
-        floor_m = re.search(r'(\d+)\s*층', combined_title + " " + combined_body)
+        floor_m = re.search(r'(\d+)\s*층', combined_raw)
         floor_s = f" {floor_m.group(1)}층" if floor_m else ""
-        return f"{dungeon}{floor_s} 권장 전투력 충족 상태에서 소탕 불가 현상"
+        phenomena = extract_dominant_phenomena(posts_normalized, topic)
+        phen = phenomena[0] if phenomena else "소탕 불가"
+        return f"{dungeon}{floor_s} {phen} 현상"
 
-    if issue_type == "아이템·보상 오류":
-        if "파이썬" in combined_all or "요람" in combined_all:
-            return "1주년 미션 이벤트 파이썬의 요람 카운트 미적용 현상"
-        if "잊혀진탑" in combined_all or "잊탑" in combined_all:
+    if topic == "보상오류":
+        # 구체적 이벤트/보상명 추출
+        if "파이썬" in combined_raw or "요람" in combined_raw:
+            return "미션 이벤트 파이썬의 요람 카운트 미적용 현상"
+        if "잊혀진탑" in combined_raw or "잊탑" in combined_raw:
             return "잊혀진탑 보상 미지급 현상"
-        if ("구매" in combined_all and "횟수" in combined_all) or "미초기화" in combined_all:
-            return "상품 구매 횟수 미초기화 오류 현상"
+        phenomena = extract_dominant_phenomena(posts_normalized, topic)
         event_m = re.search(r'([가-힣a-zA-Z]+\s*이벤트)', combined_title)
-        if event_m:
-            return f"{event_m.group(0)} 보상·카운트 오류 현상"
-        return "이벤트·보상 오류 현상"
+        event_s = event_m.group(0) + " " if event_m else ""
+        phen = phenomena[0] if phenomena else "보상 오류"
+        return f"{event_s}{phen} 현상"
 
-    if issue_type == "기능·스킬 오류":
-        skill = _extract_skill_from_normalized(_normalize_terms(combined_title))
-        if skill:
-            return f"{skill} 스킬 효과 미적용 현상"
+    if topic == "아이템기능오류":
+        # 분해/삭제/거래 "불가" 서브케이스 — 우선 처리
+        BUGA_FEATS = ["분해", "삭제", "거래"]
+        found_feats = [f for f in BUGA_FEATS if f in combined_raw]
+        is_buga = any(kw in combined_raw for kw in
+                      ["불가", "안됩니다", "안되고", "안돼요", "안됨", "안돼"])
+        if found_feats and is_buga:
+            feat_str = "·".join(found_feats)
+            return f"아이템 {feat_str} 불가 현상"
+
+        # 귓말 기능 오류
+        if "귓말" in combined_raw and is_buga:
+            return "귓말 기능 오류 현상"
+
+        # 일반 기능 오류 — 기능명 추출 후 현상 조합
         feat_m = re.search(
-            r'(귓말|거래소|인형|강화|길드|파티|스킬|소환)\s*(안됨|작동|오류|버그|불가)',
-            combined_all
+            r'(귓말|거래소|분해|삭제|인형|강화|스킬|소환|구매|거래)',
+            combined_raw
         )
         if feat_m:
-            return f"{feat_m.group(1)} 기능 오작동 현상"
-        body_sent = _extract_meaningful_sentence(combined_body)
-        if body_sent:
-            return body_sent
-        return _extract_meaningful_sentence(combined_title) or "게임 내 기능 오류 현상"
+            # "강화 기능 오류" 처럼 기능명 + "기능 오류"로 조합 (중복 방지)
+            return f"{feat_m.group(1)} 기능 오류 현상"
+        phenomena = extract_dominant_phenomena(posts_normalized, topic)
+        phen = phenomena[0] if phenomena else "기능 오류"
+        return f"{phen} 현상"
 
-    if issue_type == "서버 통합·이전 건의":
+    if topic == "채팅분쟁":
+        phenomena = extract_dominant_phenomena(posts_normalized, topic)
+        phen = phenomena[0] if phenomena else "유저 간 채팅 분쟁"
+        return f"{phen} 신고 및 처리 요청"
+
+    if topic == "서버통합건의":
+        if "이전권" in combined_raw:
+            return "서버 이전권 아이템 출시 건의"
         return "서버 통합 건의"
 
-    if issue_type == "게임 개선 건의":
-        if "현돌" in combined_all and "초기화" in combined_all:
+    if topic == "콘텐츠건의":
+        if "현돌" in combined_raw and "초기화" in combined_raw:
             return "현돌 초기화 콘텐츠 출시 건의"
-        body_sent = _extract_meaningful_sentence(combined_body)
-        if body_sent:
-            return body_sent
-        title_sent = _extract_meaningful_sentence(combined_title)
-        if title_sent:
-            return title_sent
-        return "게임 개선·콘텐츠 추가 건의"
+        # normalize 결과에서 건의 내용 우선 사용 (raw body 노출 방지)
+        if posts_normalized:
+            norm_combined = " ".join(posts_normalized)
+            if "이벤트 기간 연장 건의" in norm_combined:
+                # 이벤트명 추출 시도 (원문에서)
+                event_m = re.search(
+                    r'(\d+주년\s*이벤트|[가-힣a-zA-Z]+\s*이벤트)', combined_raw
+                )
+                prefix = event_m.group(0) + " " if event_m else ""
+                return f"{prefix}기간 연장 건의"
+        # 의미 있는 건의 내용 추출 (원문 title 우선 — body보다 간결)
+        sent = _extract_meaningful_sentence(combined_title)
+        if sent and len(sent) >= 6:
+            return sent[:60]
+        sent = _extract_meaningful_sentence(combined_body)
+        if sent and len(sent) >= 10:
+            return sent[:60]
+        return "게임 콘텐츠 개선 건의"
 
-    if issue_type == "서비스 종료 우려":
+    if topic == "과금불만":
+        phenomena = extract_dominant_phenomena(posts_normalized, topic)
+        phen = phenomena[0] if phenomena else "과금 구조 불만"
+        return f"{phen} 관련 유저 의견"
+
+    if topic == "강화불만":
+        phenomena = extract_dominant_phenomena(posts_normalized, topic)
+        phen = phenomena[0] if phenomena else "강화 시스템 불만"
+        return f"{phen} 관련 유저 의견"
+
+    if topic == "서비스종료우려":
         return "서비스 종료 우려 및 게임 비판"
 
-    if issue_type == "운영·정책 불만":
-        body_sent = _extract_meaningful_sentence(combined_body)
-        if body_sent:
-            return body_sent
-        return "운영 정책에 대한 유저 불만"
+    if topic == "운영불만":
+        phenomena = extract_dominant_phenomena(posts_normalized, topic)
+        phen = phenomena[0] if phenomena else "운영 대응 불만"
+        return f"{phen} 관련 유저 의견"
 
-    if issue_type == "가격·거래 문의":
-        return "게임 내 아이템 거래·시세 관련 문의"
+    if topic == "거래시세":
+        return "게임 내 아이템 거래·시세 관련 의견"
 
-    # 게임 일반 — 반드시 실제 내용 기반
-    body_sent = _extract_meaningful_sentence(combined_body)
-    if body_sent:
-        return body_sent
-    title_sent = _extract_meaningful_sentence(combined_title)
-    if title_sent:
-        return title_sent
-    # 최후: 첫 번째 포스트 제목 정제 (욕설 제거 후)
-    first = (posts[0].get("title") or "").strip()
-    cleaned = _remove_profanity(first)
-    if len(cleaned) >= 5:
-        return cleaned[:60]
-    return "기타 게임 관련 의견"
+    if topic == "직업밸런스":
+        # 직업명 추출 (원문 title에서)
+        job_m = re.search(
+            r'(팔라딘|소서리스|소서|워리어|워로크|버서커|아처|나이트|메이지|검사|마법사)',
+            combined_raw
+        )
+        if job_m:
+            return f"{job_m.group(1)} 직업 성능 저하 우려"
+        return "직업 밸런스 관련 유저 불만"
+
+    if topic == "콘텐츠통제":
+        # 콘텐츠명/장소 추출
+        content_m = re.search(r'(루멘탑|루멘|던전|사냥터|필드)', combined_raw)
+        if content_m:
+            loc = content_m.group(1)
+            # 루멘탑·루멘·필드는 "사냥터" 명시
+            suffix = " 사냥터" if loc in ("루멘탑", "루멘", "필드") else ""
+            return f"{loc}{suffix} 통제 관련 유저 문의"
+        return "콘텐츠/사냥터 통제 관련 유저 문의"
+
+    if topic == "길드분쟁":
+        combined_norm_str = " ".join(posts_normalized) if posts_normalized else ""
+        if "길드 강제 탈퇴 분쟁" in combined_norm_str:
+            return "길드 강제 탈퇴 관련 분쟁 유저 불만"
+        if "특정 길드 분쟁" in combined_norm_str:
+            # 구체 길드명/캐릭명 추출 시도 (원문 title에서)
+            guild_m = re.search(r'빡\s*길드|강협', combined_raw)
+            if guild_m:
+                return f"특정 길드({guild_m.group(0).strip()}) 분쟁 관련 유저 의견"
+        return "길드 간 분쟁 관련 유저 의견"
+
+    if topic == "인터서버문의":
+        return "인터 서버 로테이션 일정 관련 문의"
+
+    if topic == "전투콘텐츠의견":
+        # "연휴" 키워드 있으면 연휴 맥락 명시
+        if "연휴" in combined_raw:
+            return "연휴 이후 쟁 콘텐츠 재개 관련 유저 의견"
+        return "게임 내 전투 콘텐츠 재개 관련 유저 의견"
+
+    if topic == "재화수급문의":
+        # "구섭" 유무에 따라 접두어 구분
+        server_prefix = "구 서버 " if any(kw in combined_raw for kw in ["구섭", "구 서버"]) else ""
+        return f"{server_prefix}다이아 수급 효율 관련 유저 문의"
+
+    if topic == "이벤트초기화건의":
+        # 이벤트명 추출 시도
+        event_m = re.search(
+            r'(\d+주년\s*이벤트|[가-힣a-zA-Z]+\s*이벤트|스페셜\s*\S+)', combined_raw
+        )
+        if event_m:
+            return f"{event_m.group(0)} 초기화 및 재진행 건의"
+        return "이벤트 초기화 및 재진행 건의"
+
+    # ── 기타 topic (분류 불가) — 실제 내용 기반 ────────────────
+    # 단일 post면 그 글에서 직접 추출, 복수면 engagement 최고 post 우선
+    if len(posts) == 1:
+        rep_post = posts[0]
+        rep_norm = posts_normalized[0] if posts_normalized else ""
+    else:
+        # engagement 가중치 기준 대표 post 선정
+        rep_idx  = max(range(len(posts)),
+                       key=lambda i: posts[i].get("comment_count", 0) * 2
+                                     + posts[i].get("like_count", 0))
+        rep_post = posts[rep_idx]
+        rep_norm = posts_normalized[rep_idx] if posts_normalized else ""
+
+    # normalize 결과가 운영용 표현이면 바로 사용
+    if rep_norm and len(rep_norm) >= 8 and rep_norm != normalize_post_text(
+            rep_post.get("title", ""), ""):   # 원문과 다르면 normalize 성공
+        norm_sent = _extract_meaningful_sentence(rep_norm)
+        if norm_sent and len(norm_sent) >= 8:
+            return norm_sent[:60]
+
+    # 대표 post의 body → title 순으로 추출
+    rep_body  = _remove_profanity((rep_post.get("body") or "").strip())
+    rep_title = _remove_profanity((rep_post.get("title") or "").strip())
+    body_sent = _extract_meaningful_sentence(rep_body)
+    if body_sent and len(body_sent) >= 8:
+        return body_sent[:60]
+    title_sent = _extract_meaningful_sentence(rep_title)
+    if title_sent and len(title_sent) >= 6:
+        return title_sent[:60]
+    return rep_title[:60] if len(rep_title) >= 5 else "기타 유저 의견"
 
 
 def build_voc_groups(user_posts: list) -> list:
-    """v6.0: 이슈 타입 기반 의미 병합 시스템
+    """v7.0: normalize → semantic_topic 기반 그룹핑 + 요약
 
-    변경 (v5.0->v6.0):
-      - 그룹핑 기준: issue_type (board_id 완전 제외)
-      - generate_group_summary()로 fallback 표현 제거
-      - voc_groups 출력에 issue_type 필드 추가 (dashboard 크로스 링크용)
+    변경 (v6.0->v7.0):
+      - normalize_post_text() 레이어 추가
+      - classify_semantic_topic() 으로 분류 (TOPIC_RULES 기반)
+      - generate_group_summary() 고정 문장 제거, 현상 빈도 기반 조합
+      - voc_groups에 semantic_topic 추가 (issue_type 병행 유지 — dashboard 호환)
     """
     # 1. feed_id 중복 제거
     posts = dedup_by_feed_id(user_posts)
 
-    # 2. 노이즈 처리 (짧은 글도 issue_type 분류에서 처리하므로 제외는 하지 않음)
+    # 2. 노이즈 처리
     if FILTER_NOISE:
         posts = [p for p in posts if not is_noise(p)]
 
-    # 3. 이슈 타입 분류 (board_id 무관)
-    typed: list[tuple[str, dict]] = []
+    # 3. normalize + semantic_topic 분류
+    typed: list[tuple[str, str, dict, str]] = []   # (topic, issue_type, post, normalized)
     for p in posts:
-        issue_type = classify_issue_type(p)
-        typed.append((issue_type, p))
+        norm = normalize_post_text(p.get("title", ""), p.get("body", "") or "")
+        topic = classify_semantic_topic(norm)
+        # dashboard 호환용 issue_type 유지 (v6.0 classify_issue_type 재사용)
+        issue_type = TOPIC_TO_ISSUE_TYPE.get(topic, classify_issue_type(p))
+        typed.append((topic, issue_type, p, norm))
 
-    # 4. issue_type 기준 그룹핑
-    group_map: dict[str, list] = defaultdict(list)
-    for issue_type, p in typed:
-        group_map[issue_type].append(p)
+    # 4. semantic_topic 기준 그룹핑
+    topic_groups: dict[str, list[tuple]] = defaultdict(list)
+    for row in typed:
+        topic_groups[row[0]].append(row)
 
-    # 5. ISSUE_TYPES 순서로 결과 생성 (같은 이슈 타입 내 count DESC)
+    # 5. TOPIC_RULES 순서로 결과 생성
     result = []
-    for issue_type, _, category in ISSUE_TYPES:
-        group_posts = group_map.get(issue_type, [])
-        if not group_posts:
+    for topic, _, category in TOPIC_RULES:
+        rows = topic_groups.get(topic, [])
+        if not rows:
             continue
 
-        # 요약 생성 + 품질 검증
-        summary = generate_group_summary(issue_type, group_posts)
+        group_posts      = [r[2] for r in rows]
+        posts_normalized = [r[3] for r in rows]
+        issue_type       = rows[0][1]   # 그룹 내 첫 번째 issue_type (대표)
+
+        # 요약 생성 (v7.0 — 현상 기반)
+        summary = generate_group_summary(topic, group_posts, posts_normalized)
         if not _validate_summary(summary):
             summary = _ISSUE_TYPE_FALLBACK.get(issue_type, "게임 관련 이슈 보고")
 
@@ -928,7 +1405,8 @@ def build_voc_groups(user_posts: list) -> list:
         feed_ids = [str(p.get("feed_id", "")) for p in group_posts]
 
         result.append({
-            "issue_type":         issue_type,          # v6.0 추가 (크로스 링크용)
+            "semantic_topic":     topic,       # v7.0 신규
+            "issue_type":         issue_type,  # v6.0 유지 (dashboard 호환)
             "category":           category,
             "summary":            summary,
             "count":              len(group_posts),

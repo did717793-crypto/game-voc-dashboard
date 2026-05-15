@@ -3,9 +3,10 @@
   "major_issues": [],
   "voc_groups": [
     {
-      "issue_type": "게임 개선 건의",
-      "category": "건의·요청",
-      "summary": "상점 상품란에서 플로린으로 구매할수 있는 에오스 디오네 변신",
+      "semantic_topic": "기타",
+      "issue_type": "게임 일반",
+      "category": "기타",
+      "summary": "상점 관련해서 건의드려요 상점 상품란에서 플로린으로 구매할수 있는 에오스 디오네 변신",
       "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7640060",
       "feed_ids": [
@@ -16,27 +17,22 @@
   "insights": {
     "top_issues": [
       {
-        "category": "건의·요청",
-        "summary": "상점 상품란에서 플로린으로 구매할수 있는 에오스 디오네 변신",
+        "category": "기타",
+        "summary": "상점 관련해서 건의드려요 상점 상품란에서 플로린으로 구매할수 있는 에오스 디오네 변신",
         "count": 1,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7640060"
       }
     ],
     "trend": {
-      "기타": {
+      "게임 관련": {
         "current": 0,
         "previous": 1,
         "delta": -1
       },
-      "게임 관련": {
-        "current": 0,
-        "previous": 5,
-        "delta": -5
-      },
-      "건의·요청": {
+      "기타": {
         "current": 1,
-        "previous": 1,
-        "delta": 0
+        "previous": 6,
+        "delta": -5
       }
     },
     "trending_keywords": [],

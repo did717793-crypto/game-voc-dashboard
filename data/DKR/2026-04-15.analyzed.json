@@ -24,22 +24,14 @@
   ],
   "voc_groups": [
     {
-      "issue_type": "기능·스킬 오류",
-      "category": "버그·오류",
-      "summary": "좀비길드 금촌1동 스킬 효과 미적용 현상",
-      "count": 1,
+      "semantic_topic": "기타",
+      "issue_type": "게임 일반",
+      "category": "기타",
+      "summary": "좀비길드 금촌1동 버그1회사용 시 마다 닉변중 버그사용 모든스킬이 선더폴 수준이다 왜방치합니까 돈만 빨아가고",
+      "count": 2,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7540961",
       "feed_ids": [
-        "7540961"
-      ]
-    },
-    {
-      "issue_type": "게임 일반",
-      "category": "게임 관련",
-      "summary": "이모티콘 기능이 생각과 다르게 이상하게 동작을 하는 것 같습니다",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7538766",
-      "feed_ids": [
+        "7540961",
         "7538766"
       ]
     }
@@ -47,32 +39,16 @@
   "insights": {
     "top_issues": [
       {
-        "category": "버그·오류",
-        "summary": "좀비길드 금촌1동 스킬 효과 미적용 현상",
-        "count": 1,
+        "category": "기타",
+        "summary": "좀비길드 금촌1동 버그1회사용 시 마다 닉변중 버그사용 모든스킬이 선더폴 수준이다 왜방치합니까 돈만 빨아가고",
+        "count": 2,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7540961"
-      },
-      {
-        "category": "게임 관련",
-        "summary": "이모티콘 기능이 생각과 다르게 이상하게 동작을 하는 것 같습니다",
-        "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7538766"
       }
     ],
     "trend": {
-      "건의·요청": {
-        "current": 0,
-        "previous": 1,
-        "delta": -1
-      },
-      "게임 관련": {
-        "current": 1,
-        "previous": 0,
-        "delta": 1
-      },
-      "버그·오류": {
-        "current": 1,
-        "previous": 1,
+      "기타": {
+        "current": 2,
+        "previous": 2,
         "delta": 0
       }
     },

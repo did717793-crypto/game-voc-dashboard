@@ -24,13 +24,13 @@
   ],
   "voc_groups": [
     {
+      "semantic_topic": "서버통합건의",
       "issue_type": "서버 통합·이전 건의",
       "category": "건의·요청",
-      "summary": "서버 통합 건의",
-      "count": 6,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460",
+      "summary": "서버 이전권 아이템 출시 건의",
+      "count": 5,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490333",
       "feed_ids": [
-        "7492460",
         "7492345",
         "7490333",
         "7490284",
@@ -39,62 +39,40 @@
       ]
     },
     {
-      "issue_type": "게임 개선 건의",
-      "category": "건의·요청",
-      "summary": "개인으로 들어가게해주세요~ 라인이아니여도 보스치면 아이템먹을수있게요~ 신화스킬 재료가 전설스킬이던데",
-      "count": 2,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423",
-      "feed_ids": [
-        "7490312",
-        "7492423"
-      ]
-    },
-    {
-      "issue_type": "서비스 종료 우려",
-      "category": "기타",
-      "summary": "서비스 종료 우려 및 게임 비판",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491784",
-      "feed_ids": [
-        "7491784"
-      ]
-    },
-    {
+      "semantic_topic": "기타",
       "issue_type": "게임 일반",
-      "category": "게임 관련",
-      "summary": "유저들 소리 아예 쌩까버리는 겜서 첨본다 이제야 탈출하는군 빠빠이 노잼 접을란다 ~ 퉤 게임이든 현생이든 없",
-      "count": 7,
+      "category": "기타",
+      "summary": "32서버 상황 마지막 게임이든 현생이든 없는소리 하고 안하고 살아야하는데",
+      "count": 11,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850",
       "feed_ids": [
         "7494737",
         "7493307",
         "7492521",
+        "7492460",
         "7491850",
+        "7491784",
         "7491783",
+        "7490312",
         "7490286",
-        "7490014"
+        "7490014",
+        "7492423"
       ]
     }
   ],
   "insights": {
     "top_issues": [
       {
-        "category": "게임 관련",
-        "summary": "유저들 소리 아예 쌩까버리는 겜서 첨본다 이제야 탈출하는군 빠빠이 노잼 접을란다 ~ 퉤 게임이든 현생이든 없",
-        "count": 7,
+        "category": "기타",
+        "summary": "32서버 상황 마지막 게임이든 현생이든 없는소리 하고 안하고 살아야하는데",
+        "count": 11,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7491850"
       },
       {
         "category": "건의·요청",
-        "summary": "서버 통합 건의",
-        "count": 6,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492460"
-      },
-      {
-        "category": "건의·요청",
-        "summary": "개인으로 들어가게해주세요~ 라인이아니여도 보스치면 아이템먹을수있게요~ 신화스킬 재료가 전설스킬이던데",
-        "count": 2,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492423"
+        "summary": "서버 이전권 아이템 출시 건의",
+        "count": 5,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7490333"
       }
     ],
     "trend": {},

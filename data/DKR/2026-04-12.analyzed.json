@@ -3,9 +3,10 @@
   "major_issues": [],
   "voc_groups": [
     {
-      "issue_type": "기능·스킬 오류",
-      "category": "버그·오류",
-      "summary": "일해라 운영자... 스킬 효과 미적용 현상",
+      "semantic_topic": "기타",
+      "issue_type": "게임 일반",
+      "category": "기타",
+      "summary": "입벌구 영베리 버그왕",
       "count": 2,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7531259",
       "feed_ids": [
@@ -17,14 +18,14 @@
   "insights": {
     "top_issues": [
       {
-        "category": "버그·오류",
-        "summary": "일해라 운영자... 스킬 효과 미적용 현상",
+        "category": "기타",
+        "summary": "입벌구 영베리 버그왕",
         "count": 2,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7531259"
       }
     ],
     "trend": {
-      "버그·오류": {
+      "기타": {
         "current": 2,
         "previous": 0,
         "delta": 2

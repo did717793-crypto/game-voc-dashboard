@@ -3,23 +3,15 @@
   "major_issues": [],
   "voc_groups": [
     {
-      "issue_type": "접속·서버 장애",
-      "category": "버그·오류",
-      "summary": "서버 접속·게임 지연 장애 보고",
-      "count": 1,
+      "semantic_topic": "기타",
+      "issue_type": "게임 일반",
+      "category": "기타",
+      "summary": "허허 인터페이스 노출 [ 피통보이게 ] 거래소나 템컬렉 장비러쉬 등등 하다보면 피통안보여서 누가와서 치면 모",
+      "count": 3,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7627712",
       "feed_ids": [
-        "7627712"
-      ]
-    },
-    {
-      "issue_type": "게임 일반",
-      "category": "게임 관련",
-      "summary": "8층은 자기네건데 좀비 나라때문에 사냥 못한다고 징징징 9층에서 사냥 해야 되는데 좀비 때문에 사냥 못한다고",
-      "count": 2,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7626080",
-      "feed_ids": [
         "7626080",
+        "7627712",
         "7626562"
       ]
     }
@@ -27,28 +19,17 @@
   "insights": {
     "top_issues": [
       {
-        "category": "게임 관련",
-        "summary": "8층은 자기네건데 좀비 나라때문에 사냥 못한다고 징징징 9층에서 사냥 해야 되는데 좀비 때문에 사냥 못한다고",
-        "count": 2,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7626080"
-      },
-      {
-        "category": "버그·오류",
-        "summary": "서버 접속·게임 지연 장애 보고",
-        "count": 1,
+        "category": "기타",
+        "summary": "허허 인터페이스 노출 [ 피통보이게 ] 거래소나 템컬렉 장비러쉬 등등 하다보면 피통안보여서 누가와서 치면 모",
+        "count": 3,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7627712"
       }
     ],
     "trend": {
-      "버그·오류": {
-        "current": 1,
-        "previous": 0,
-        "delta": 1
-      },
-      "게임 관련": {
-        "current": 2,
+      "기타": {
+        "current": 3,
         "previous": 3,
-        "delta": -1
+        "delta": 0
       }
     },
     "trending_keywords": [

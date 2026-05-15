@@ -3,9 +3,10 @@
   "major_issues": [],
   "voc_groups": [
     {
+      "semantic_topic": "매크로신고",
       "issue_type": "매크로·불법 행위 제보",
       "category": "게임 관련",
-      "summary": "매크로 사용 의심 제재 요청",
+      "summary": "작업장 신고 관련 제재 요청",
       "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7635225",
       "feed_ids": [
@@ -13,80 +14,47 @@
       ]
     },
     {
-      "issue_type": "게임 개선 건의",
-      "category": "건의·요청",
-      "summary": "투력400만이넘는데 락시움 단계560뜨고 클리어는559 랭킹도 559로집계 보상도 559로나오고 바람의정령탑",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7632385",
-      "feed_ids": [
-        "7632385"
-      ]
-    },
-    {
-      "issue_type": "운영·정책 불만",
-      "category": "기타",
-      "summary": "그나마 괜찮았던 운영진들이 나가고 지금 다 무과금 쌀먹 운영진들만 남아서 쌀먹 마인드 장착으로 길드 와르르 ",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7632814",
-      "feed_ids": [
-        "7632814"
-      ]
-    },
-    {
+      "semantic_topic": "기타",
       "issue_type": "게임 일반",
-      "category": "게임 관련",
-      "summary": "영혼결속 하면 그 변신 안껴도 추가효과 받는거임",
-      "count": 4,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7635040",
+      "category": "기타",
+      "summary": "레드x빌 현상태 그나마 괜찮았던 운영진들이 나가고 지금 다 무과금 쌀먹 운영진들만 남아서 쌀먹 마인드 장착으",
+      "count": 6,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7632814",
       "feed_ids": [
         "7635040",
         "7634479",
         "7633358",
-        "7632656"
+        "7632814",
+        "7632656",
+        "7632385"
       ]
     }
   ],
   "insights": {
     "top_issues": [
       {
-        "category": "게임 관련",
-        "summary": "영혼결속 하면 그 변신 안껴도 추가효과 받는거임",
-        "count": 4,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7635040"
+        "category": "기타",
+        "summary": "레드x빌 현상태 그나마 괜찮았던 운영진들이 나가고 지금 다 무과금 쌀먹 운영진들만 남아서 쌀먹 마인드 장착으",
+        "count": 6,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7632814"
       },
       {
         "category": "게임 관련",
-        "summary": "매크로 사용 의심 제재 요청",
+        "summary": "작업장 신고 관련 제재 요청",
         "count": 1,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7635225"
-      },
-      {
-        "category": "건의·요청",
-        "summary": "투력400만이넘는데 락시움 단계560뜨고 클리어는559 랭킹도 559로집계 보상도 559로나오고 바람의정령탑",
-        "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7632385"
       }
     ],
     "trend": {
-      "버그·오류": {
-        "current": 0,
-        "previous": 1,
-        "delta": -1
+      "게임 관련": {
+        "current": 1,
+        "previous": 0,
+        "delta": 1
       },
       "기타": {
-        "current": 1,
-        "previous": 0,
-        "delta": 1
-      },
-      "게임 관련": {
-        "current": 5,
-        "previous": 3,
+        "current": 6,
+        "previous": 4,
         "delta": 2
-      },
-      "건의·요청": {
-        "current": 1,
-        "previous": 0,
-        "delta": 1
       }
     },
     "trending_keywords": [],

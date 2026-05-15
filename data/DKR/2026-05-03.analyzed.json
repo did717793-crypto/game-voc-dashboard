@@ -3,9 +3,10 @@
   "major_issues": [],
   "voc_groups": [
     {
+      "semantic_topic": "기타",
       "issue_type": "게임 일반",
-      "category": "게임 관련",
-      "summary": "누가 2천만원 주고 삼ㅋㅋㅋㅋㅋㅋ ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ PVP겜에 ㅋㅋㅋ농사 주라고 찡찡ㅋㅋㅋ",
+      "category": "기타",
+      "summary": "쿠순신2천 추잡스럽게ㅣ 길드에 싸게넘겨라ㅋ",
       "count": 7,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7617348",
       "feed_ids": [
@@ -22,14 +23,14 @@
   "insights": {
     "top_issues": [
       {
-        "category": "게임 관련",
-        "summary": "누가 2천만원 주고 삼ㅋㅋㅋㅋㅋㅋ ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ PVP겜에 ㅋㅋㅋ농사 주라고 찡찡ㅋㅋㅋ",
+        "category": "기타",
+        "summary": "쿠순신2천 추잡스럽게ㅣ 길드에 싸게넘겨라ㅋ",
         "count": 7,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7617348"
       }
     ],
     "trend": {
-      "게임 관련": {
+      "기타": {
         "current": 7,
         "previous": 1,
         "delta": 6

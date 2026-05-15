@@ -3,34 +3,27 @@
   "major_issues": [],
   "voc_groups": [
     {
-      "issue_type": "게임 개선 건의",
-      "category": "건의·요청",
-      "summary": "안녕하세요 이동증표 관련해서 건의드릴께 있는데요 각 층 보스를 잡으면 랜덤으로 봉인된 루멘탑 이동증표가 나옵",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499126",
-      "feed_ids": [
-        "7499126"
-      ]
-    },
-    {
+      "semantic_topic": "서비스종료우려",
       "issue_type": "서비스 종료 우려",
       "category": "기타",
       "summary": "서비스 종료 우려 및 게임 비판",
-      "count": 2,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499032",
       "feed_ids": [
-        "7499032",
-        "7497337"
+        "7499032"
       ]
     },
     {
+      "semantic_topic": "기타",
       "issue_type": "게임 일반",
-      "category": "게임 관련",
-      "summary": "보스시간 안바꾸냐",
-      "count": 1,
-      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7496011",
+      "category": "기타",
+      "summary": "조만간 서비스종료다 이글은성지가됨 조만간이다 탈출은지능순 얘네 서버 유지할돈없어서 하나하나 서비스종료중",
+      "count": 3,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337",
       "feed_ids": [
-        "7496011"
+        "7497337",
+        "7496011",
+        "7499126"
       ]
     }
   ],
@@ -38,37 +31,21 @@
     "top_issues": [
       {
         "category": "기타",
-        "summary": "서비스 종료 우려 및 게임 비판",
-        "count": 2,
+        "summary": "조만간 서비스종료다 이글은성지가됨 조만간이다 탈출은지능순 얘네 서버 유지할돈없어서 하나하나 서비스종료중",
+        "count": 3,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7497337"
       },
       {
-        "category": "건의·요청",
-        "summary": "안녕하세요 이동증표 관련해서 건의드릴께 있는데요 각 층 보스를 잡으면 랜덤으로 봉인된 루멘탑 이동증표가 나옵",
+        "category": "기타",
+        "summary": "서비스 종료 우려 및 게임 비판",
         "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499126"
-      },
-      {
-        "category": "게임 관련",
-        "summary": "보스시간 안바꾸냐",
-        "count": 1,
-        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7496011"
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7499032"
       }
     ],
     "trend": {
-      "건의·요청": {
-        "current": 1,
-        "previous": 1,
-        "delta": 0
-      },
-      "게임 관련": {
-        "current": 1,
-        "previous": 1,
-        "delta": 0
-      },
       "기타": {
-        "current": 2,
-        "previous": 2,
+        "current": 4,
+        "previous": 4,
         "delta": 0
       }
     },
