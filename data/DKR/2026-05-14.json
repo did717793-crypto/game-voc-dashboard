@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "date": "2026-05-14",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-05-14T00:00:00+09:00",
+    "window_end": "2026-05-14T23:59:59+09:00",
+    "crawled_at": "2026-05-15T10:49:17.325438+09:00",
+    "total_posts": 2,
+    "total_comments": 5,
+    "boards": {
+      "4": {
+        "name": "자유 게시판",
+        "count": 1
+      },
+      "5": {
+        "name": "질문과 답변",
+        "count": 1
+      }
+    }
+  },
+  "official_posts": [],
+  "posts": [
+    {
+      "feed_id": "7666682",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "빡 길드 강협",
+      "body": "강협이 지가 먼저 말걸고 막말 해놓고 싸우다 베르 했길래 귓했더니... 이런걸 적반하장 이라고 하는건가...",
+      "author": "반짝이는 사과 6632100",
+      "created_at": "2026-05-14T23:04:44+09:00",
+      "view_count": 54,
+      "comment_count": 1,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7666682",
+      "comments": [
+        {
+          "comment_id": "26323997",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "천하통일 킬러 2204",
+          "text": "별것도아닌거에 굳이 굳이??ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ\n\n게시판에 올리는 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ\n\n쪼르미세기 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7665449",
+      "board_id": 5,
+      "board_name": "질문과 답변",
+      "title": "분해삭제거래 모두 불가!!",
+      "body": "유물이나 장비가 귀속템이 아닌데도 삭제도 안되고 분해도 안됩니다!! 왜그런거에요??",
+      "author": "낚시왕 레전드 6566",
+      "created_at": "2026-05-14T18:10:54+09:00",
+      "view_count": 81,
+      "comment_count": 4,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7665449",
+      "comments": [
+        {
+          "comment_id": "26315637",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "바보 탐지기",
+          "text": "장비 아이콘 밑에 점 3개 보이져 그거 다 빼야되요 프리셋에 끼고계셔서 안되는거에요 ㅋㅋㅋ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26315646",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "바코드11",
+          "text": "프리셋 1,2,3확인해보세요 장착중이면 안되요 짐보니 1번프리셋에 끼고있네요",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26315717",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "낚시왕 레전드 6566",
+          "text": "진작 카페에 물어볼껄요!! 장비삭제도 안되서 질러서 날렸는데 ㅜㅜ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26319902",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "네이버최강 휴먼 9613",
+          "text": "바보",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    }
+  ]
+}
