@@ -1545,6 +1545,8 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
 // ── 전역 상태 ────────────────────────────────────────────────────
 var _section='voc', _sub='revenue', _date='{latest}', _period='D';
 var _charts={{}};
+// 패키지 기간 타입 전역 상수 (onclick 내 quote 충돌 방지)
+var MGP_TODAY='today', MGP_PERIOD='period';
 
 // ════════════════════════════════════════════════════════════════
 //  ▶ 신규 지표 탭 — 서버 그룹 선택형
@@ -1835,8 +1837,8 @@ function mgRenderPackages(selIds) {{
           + '<div class="pkg-top10-hd">'
           + '<span>'+sg.lbl+'</span>'
           + '<div class="pkg-tab-bar">'
-          + '<button class="pkg-tab '+(periodKey==='today'?'active':'')+'" onclick="mgPkgPeriod(\'today\')">오늘</button>'
-          + '<button class="pkg-tab '+(periodKey==='period'?'active':'')+'" onclick="mgPkgPeriod(\'period\')">전체기간</button>'
+          + '<button class="pkg-tab '+(periodKey===MGP_TODAY?'active':'')+'" onclick="mgPkgPeriod(MGP_TODAY)">오늘</button>'
+          + '<button class="pkg-tab '+(periodKey===MGP_PERIOD?'active':'')+'" onclick="mgPkgPeriod(MGP_PERIOD)">전체기간</button>'
           + '</div></div>';
     if(!items.length) {{
       html += '<div class="pkg-empty">데이터 없음</div>';
