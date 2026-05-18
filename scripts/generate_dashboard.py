@@ -1555,20 +1555,19 @@ var _pkgPeriodType = 'today'; // 패키지 조회 기간
 
 // ── 서버 그룹 정의 ──────────────────────────────────────────────
 var SG_DEF = {{
-  all:   {{label:'전체',    groups:['old','hyper','sea'], range:'1~65번 서버'}},
-  old:   {{label:'구서버',  groups:['old'],               range:'1~45번 서버'}},
-  hyper: {{label:'하이퍼',  groups:['hyper'],             range:'46~55번 서버'}},
-  sea:   {{label:'동남아',  groups:['sea'],               range:'56~65번 서버'}},
+  all:   {{label:'전체',    range:[1,65],  groups:['old','hyper','sea']}},
+  old:   {{label:'구서버',  range:[1,45],  groups:['old']}},
+  hyper: {{label:'하이퍼',  range:[46,55], groups:['hyper']}},
+  sea:   {{label:'동남아',  range:[56,65], groups:['sea']}},
 }};
-
 var SG_LABELS = {{old:'구서버', hyper:'하이퍼서버', sea:'동남아서버'}};
 var SG_COLORS = {{old:'#1a73e8', hyper:'#34a853', sea:'#ea4335'}};
 
-// ── 현재 선택된 서버 목록 얻기 ──────────────────────────────────
-function getSelectedGroups() {{
+// ── 현재 선택된 serverid 목록 ──────────────────────────────────
+function getSelectedServerIds() {{
   var checks = document.querySelectorAll('.sg-chk:checked');
   if(!checks.length) return [];
-  return Array.from(checks).map(function(c){{return c.value;}});
+  return Array.from(checks).map(function(c){{return parseInt(c.value);}});
 }}
 
 // ── 서버 그룹 탭 전환 ──────────────────────────────────────────
@@ -1581,18 +1580,28 @@ function sgSwitch(grp) {{
   mgRender();
 }}
 
-// ── 체크박스 영역 빌드 ──────────────────────────────────────────
+// ── 체크박스 영역 빌드 (serverid 1~65 기준) ─────────────────────
 function sgBuildChecks(grp) {{
   var bar = document.getElementById('srv-checks');
   var def = SG_DEF[grp];
   if(!def) return;
-  // 공통 버튼
   var html = '<button class="srv-check-all-btn" onclick="sgCheckAll()">전체 선택</button>'
            + '<button class="srv-check-all-btn" onclick="sgCheckNone()">전체 해제</button>';
-  def.groups.forEach(function(g) {{
-    var nm = SG_LABELS[g] || g;
-    html += '<label><input type="checkbox" class="sg-chk" value="'+g+'" checked onchange="mgRender()">'
-          + nm + '</label>';
+
+  // NEW_METRICS.servers에서 해당 그룹 serverid 목록 추출
+  var nm = NEW_METRICS;
+  var servers = nm && nm.servers ? nm.servers : [];
+  var filtered = servers.filter(function(s) {{
+    return def.groups.indexOf(s.server_group) >= 0;
+  }}).sort(function(a,b){{return a.serverid - b.serverid;}});
+
+  // serverid 체크박스 + 그룹 컬러 배지
+  filtered.forEach(function(s) {{
+    var color = SG_COLORS[s.server_group] || '#9aa0a6';
+    html += '<label style="display:flex;align-items:center;gap:3px">'
+          + '<input type="checkbox" class="sg-chk" value="'+s.serverid+'" checked onchange="mgRender()">'
+          + '<span style="font-size:10.5px;font-weight:700;color:'+color+'">'
+          + s.serverid + '</span></label>';
   }});
   bar.innerHTML = html;
 }}
@@ -1606,13 +1615,13 @@ function sgCheckNone() {{
   mgRender();
 }}
 
-// ── NEW_METRICS에서 선택된 서버들 집계 ─────────────────────────
-function mgAggregate(selGroups) {{
+// ── NEW_METRICS에서 선택된 serverid 기준 집계 ─────────────────
+function mgAggregate(selIds) {{
   var nm = NEW_METRICS;
   if(!nm || !nm.servers) return null;
   var agg = {{dau:0,nu:0,pu:0,npu:0,total_revenue:0,user_revenue:0}};
   nm.servers.forEach(function(s) {{
-    if(selGroups.indexOf(s.server_group) < 0) return;
+    if(selIds.indexOf(s.serverid) < 0) return;
     agg.dau           += s.dau           || 0;
     agg.nu            += s.nu            || 0;
     agg.pu            += s.pu            || 0;
@@ -1620,21 +1629,21 @@ function mgAggregate(selGroups) {{
     agg.total_revenue += s.total_revenue || 0;
     agg.user_revenue  += s.user_revenue  || 0;
   }});
-  // 재계산 (단순 평균 아닌 합산 기준)
-  agg.pur   = agg.dau > 0 ? (agg.pu / agg.dau * 100).toFixed(2) + '%' : '-';
+  // 재계산 — 합산값 기준 (단순 평균 아님)
+  agg.pur   = agg.dau > 0 ? (agg.pu / agg.dau * 100).toFixed(2) + '%' : '—';
   agg.arpu  = agg.dau > 0 ? Math.round(agg.user_revenue / agg.dau) : 0;
   agg.arppu = agg.pu  > 0 ? Math.round(agg.user_revenue / agg.pu)  : 0;
   return agg;
 }}
 
-// ── trend_7d 집계 ───────────────────────────────────────────────
-function mgAggregateTrend(selGroups) {{
+// ── trend_7d 집계 (serverid 기준) ──────────────────────────────
+function mgAggregateTrend(selIds) {{
   var nm = NEW_METRICS;
   if(!nm || !nm.trend_7d) return [];
   return nm.trend_7d.map(function(day) {{
     var a = {{date:day.date,dau:0,nu:0,pu:0,npu:0,total_revenue:0,user_revenue:0}};
     (day.servers||[]).forEach(function(s) {{
-      if(selGroups.indexOf(s.server_group) < 0) return;
+      if(selIds.indexOf(s.serverid) < 0) return;
       a.dau           += s.dau           || 0;
       a.nu            += s.nu            || 0;
       a.pu            += s.pu            || 0;
@@ -1751,12 +1760,12 @@ function mgRenderCharts(trend, selGroups) {{
   }}]);
 }}
 
-// ── 서버별 상세 테이블 ─────────────────────────────────────────
-function mgRenderTable(selGroups) {{
+// ── 서버별 상세 테이블 (serverid 기준) ────────────────────────
+function mgRenderTable(selIds) {{
   var nm = NEW_METRICS;
   var tbody = document.getElementById('mg-srv-tbody');
   if(!nm || !nm.servers || !tbody) return;
-  var rows = nm.servers.filter(function(s){{return selGroups.indexOf(s.server_group)>=0;}});
+  var rows = nm.servers.filter(function(s){{return selIds.indexOf(s.serverid)>=0;}});
   if(!rows.length) {{ tbody.innerHTML='<tr><td colspan="11" class="m-na">선택된 서버 없음</td></tr>'; return; }}
   var html = '';
   var tots = {{dau:0,nu:0,pu:0,npu:0,total_revenue:0,user_revenue:0}};
@@ -1765,9 +1774,8 @@ function mgRenderTable(selGroups) {{
     var arpu_s  = s.dau>0 ? mgFmtK(Math.round(s.user_revenue/s.dau)) : '—';
     var arppu_s = s.pu >0 ? mgFmtK(Math.round(s.user_revenue/s.pu))  : '—';
     ['dau','nu','pu','npu','total_revenue','user_revenue'].forEach(function(k){{tots[k]+=(s[k]||0);}});
-    var bg_cls = SG_DEF[s.server_group] ? s.server_group : 'old';
     html += '<tr>'
-      + '<td>'+s.server_name+'</td>'
+      + '<td>server '+s.serverid+'</td>'
       + '<td><span class="srv-grp-badge '+s.server_group+'">'+SG_LABELS[s.server_group]+'</span></td>'
       + '<td>'+(s.dau||0).toLocaleString()+'</td>'
       + '<td>'+(s.nu||0).toLocaleString()+'</td>'
@@ -1800,20 +1808,25 @@ function mgRenderTable(selGroups) {{
 }}
 
 // ── 패키지 TOP10 렌더 ───────────────────────────────────────────
-function mgRenderPackages(selGroups) {{
+function mgRenderPackages(selIds) {{
   var nm = NEW_METRICS;
   var wrap = document.getElementById('mg-pkg-wrap');
   if(!nm || !nm.package_sales || !wrap) return;
 
-  var periodKey = _pkgPeriodType;  // 'today' or 'period'
+  var periodKey = _pkgPeriodType;
   var pkgData   = nm.package_sales[periodKey] || {{}};
 
-  // 선택된 그룹 기준 표시 (total 포함)
+  // 선택된 serverid 기반 그룹 판정 → 대응 서버 그룹 표시
+  var selGroups = [];
+  (nm.servers||[]).forEach(function(s) {{
+    if(selIds.indexOf(s.serverid)>=0 && selGroups.indexOf(s.server_group)<0)
+      selGroups.push(s.server_group);
+  }});
   var showGroups = [{{key:'total',lbl:'전체'}}];
   selGroups.forEach(function(g) {{
     if(g!=='sea') showGroups.push({{key:g, lbl:SG_LABELS[g]}});
   }});
-  if(!selGroups.length) {{ wrap.innerHTML='<p class="empty-s" style="padding:30px">선택된 서버 없음</p>'; return; }}
+  if(!selIds.length) {{ wrap.innerHTML='<p class="empty-s" style="padding:30px">선택된 서버 없음</p>'; return; }}
 
   var html = '';
   showGroups.slice(0,4).forEach(function(sg) {{
@@ -1847,15 +1860,15 @@ function mgPkgPeriod(type) {{
   mgRenderPackages(getSelectedGroups());
 }}
 
-// ── 전체 렌더 (메인 엔트리) ─────────────────────────────────────
+// ── 전체 렌더 (serverid 기준) ────────────────────────────────────
 function mgRender() {{
-  var selGroups = getSelectedGroups();
-  var agg   = mgAggregate(selGroups);
-  var trend = mgAggregateTrend(selGroups);
+  var selIds = getSelectedServerIds();
+  var agg   = mgAggregate(selIds);
+  var trend = mgAggregateTrend(selIds);
   mgRenderKPI(agg);
-  mgRenderCharts(trend, selGroups);
-  mgRenderTable(selGroups);
-  mgRenderPackages(selGroups);
+  mgRenderCharts(trend, selIds);
+  mgRenderTable(selIds);
+  mgRenderPackages(selIds);
 }}
 
 // ── 초기화 (지표 탭 열 때) ──────────────────────────────────────
