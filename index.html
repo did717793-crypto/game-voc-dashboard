@@ -53,6 +53,73 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
        color:#5f6368;transition:all .15px}
 .mnav.active{color:#1a73e8;border-bottom-color:#1a73e8}
 
+/* ── 신규 지표 탭 ── */
+.mg-header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;
+            padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.mg-title{font-size:14px;font-weight:700}
+.mg-date-badge{background:rgba(255,255,255,.15);padding:3px 10px;border-radius:4px;font-size:11.5px}
+/* 서버 그룹 탭 */
+.sg-bar{display:flex;gap:0;background:#f1f3f4;border-bottom:2px solid #e8eaed;padding:0 20px}
+.sg-btn{padding:9px 22px;border:none;background:none;font-size:12.5px;font-weight:700;
+         color:#5f6368;cursor:pointer;border-bottom:2.5px solid transparent;
+         margin-bottom:-2px;transition:all .15s}
+.sg-btn.active{color:#1a73e8;border-bottom-color:#1a73e8;background:#fff}
+/* 체크박스 영역 */
+.srv-check-bar{padding:10px 20px;background:#fafafa;border-bottom:1px solid #e8eaed;
+                display:flex;align-items:center;gap:16px;flex-wrap:wrap;min-height:44px}
+.srv-check-bar label{display:flex;align-items:center;gap:5px;font-size:12px;
+                      color:#3c4043;cursor:pointer;font-weight:600}
+.srv-check-bar input[type=checkbox]{width:14px;height:14px;cursor:pointer;accent-color:#1a73e8}
+.srv-check-all-btn{padding:4px 10px;border:1px solid #dadce0;border-radius:4px;
+                    font-size:11px;background:#fff;cursor:pointer;color:#3c4043}
+.srv-check-all-btn:hover{background:#f1f3f4}
+/* 9개 KPI 카드 */
+.kpi-grid9{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px 20px}
+@media(max-width:700px){.kpi-grid9{grid-template-columns:repeat(2,1fr)}}
+.kpi9{background:#f8f9fa;border:1px solid #e8eaed;border-radius:8px;padding:14px 16px}
+.kpi9-lbl{font-size:10.5px;color:#5f6368;font-weight:700;margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px}
+.kpi9-val{font-size:20px;font-weight:800;color:#1a1a2e;line-height:1.2}
+.kpi9-sub{font-size:10.5px;color:#9aa0a6;margin-top:3px}
+.kpi9.accent{border-left:3px solid #1a73e8}
+.kpi9.accent2{border-left:3px solid #34a853}
+/* 차트 섹션 */
+.mg-chart-section{padding:0 20px 16px}
+.mg-section-title{font-size:12px;font-weight:700;color:#5f6368;padding:12px 0 8px;
+                   text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid #f0f2f5;margin-bottom:10px}
+.mg-chart-2col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.mg-chart-2col{grid-template-columns:1fr}}
+.mg-chart-box{background:#f8f9fa;border:1px solid #e8eaed;border-radius:8px;padding:12px}
+.mg-chart-lbl{font-size:11px;font-weight:700;color:#3c4043;margin-bottom:8px}
+.mg-chart-wrap{position:relative;height:140px}
+/* 서버별 상세 테이블 */
+.srv-tbl-wrap{overflow-x:auto;padding:0 20px 16px}
+.srv-tbl{width:100%;border-collapse:collapse;font-size:12px;min-width:800px}
+.srv-tbl th{background:#f1f3f4;padding:8px 10px;text-align:center;font-size:10.5px;
+             color:#5f6368;border-bottom:1.5px solid #e8eaed;font-weight:700;white-space:nowrap}
+.srv-tbl td{padding:8px 10px;border-bottom:1px solid #f0f2f5;text-align:center;white-space:nowrap}
+.srv-tbl tr:last-child td{font-weight:700;background:#f8f9fa}
+.srv-tbl td:first-child,.srv-tbl td:nth-child(2){text-align:left}
+.srv-grp-badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:700}
+.srv-grp-badge.old{background:#e8f0fe;color:#1a73e8}
+.srv-grp-badge.hyper{background:#e6f4ea;color:#188038}
+.srv-grp-badge.sea{background:#fce8e6;color:#c5221f}
+/* 패키지 TOP10 */
+.pkg-top10-wrap{padding:0 20px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.pkg-top10-wrap{grid-template-columns:1fr}}
+.pkg-top10-box{background:#f8f9fa;border:1px solid #e8eaed;border-radius:8px;overflow:hidden}
+.pkg-top10-hd{background:#f1f3f4;padding:10px 14px;font-size:12px;font-weight:700;
+               color:#3c4043;border-bottom:1px solid #e8eaed;display:flex;justify-content:space-between}
+.pkg-top10-row{display:flex;align-items:center;padding:6px 12px;border-bottom:1px solid #f9f9f9;font-size:11.5px;gap:8px}
+.pkg-top10-rank{font-size:10px;font-weight:800;color:#fff;background:#9aa0a6;
+                border-radius:3px;padding:1px 5px;min-width:20px;text-align:center}
+.pkg-top10-rank.r1{background:#f9a825}.pkg-top10-rank.r2{background:#bdbdbd}.pkg-top10-rank.r3{background:#a1887f}
+.pkg-top10-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#3c4043}
+.pkg-top10-qty{font-weight:700;color:#1a73e8;white-space:nowrap}
+.pkg-tab-bar{display:flex;gap:0;padding:0 12px;background:#fafafa;border-bottom:1px solid #e8eaed}
+.pkg-tab{padding:5px 12px;border:none;background:none;font-size:11px;font-weight:700;
+          color:#5f6368;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.pkg-tab.active{color:#1a73e8;border-bottom-color:#1a73e8}
+
 /* ── 지표 KPI 카드 ── */
 .kpi-row{display:flex;gap:12px;flex-wrap:wrap;padding:16px 20px 0}
 .kpi-card{flex:1;min-width:200px;background:#f8f9fa;border:1px solid #e8eaed;
@@ -239,7 +306,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     <span class="brand">NTRANCE</span>
     <span class="brand-sub">게임 대시보드</span>
   </div>
-  <span style="font-size:11px;color:#8892b0">생성: 2026-05-18 11:01 KST</span>
+  <span style="font-size:11px;color:#8892b0">생성: 2026-05-18 20:36 KST</span>
 </div>
 
 <!-- ── 게임 탭 + VOC/지표 섹션 탭 ── -->
@@ -319,7 +386,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
   <div class="rpt-card">
     
         <div id="panel-2026-05-17" class="date-panel" style="display:block">
-          <div id="D-2026-05-17" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-17 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-05-17" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-17 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -962,7 +1029,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-05-16" class="date-panel" style="display:none">
-          <div id="D-2026-05-16" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-16 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-05-16" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-16 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -1581,7 +1648,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-05-15" class="date-panel" style="display:none">
-          <div id="D-2026-05-15" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-15 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-05-15" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-15 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -2200,7 +2267,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-05-14" class="date-panel" style="display:none">
-          <div id="D-2026-05-14" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-14 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-05-14" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-14 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -2846,7 +2913,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-05-13" class="date-panel" style="display:none">
-          <div id="D-2026-05-13" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-13 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-05-13" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-13 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7660744" target="_blank" class="iss-link">5월 14일(목) 정기 점검 안내</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7660762" target="_blank" class="iss-link">5월 14일(목) 업데이트 내용 안내</a></li></ul></div>
@@ -3509,7 +3576,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-05-12" class="date-panel" style="display:none">
-          <div id="D-2026-05-12" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-12 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-05-12" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-12 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -4189,7 +4256,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-05-11" class="date-panel" style="display:none">
-          <div id="D-2026-05-11" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-11 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-05-11" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-11 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -4773,7 +4840,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-05-10" class="date-panel" style="display:none">
-          <div id="D-2026-05-10" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-10 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-05-10" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-10 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -5309,7 +5376,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-05-09" class="date-panel" style="display:none">
-          <div id="D-2026-05-09" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-09 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-05-09" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-09 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -5845,7 +5912,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-05-08" class="date-panel" style="display:none">
-          <div id="D-2026-05-08" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-08 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-05-08" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-08 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -6381,7 +6448,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-05-07" class="date-panel" style="display:none">
-          <div id="D-2026-05-07" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-07 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-05-07" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-07 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -6939,7 +7006,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-05-06" class="date-panel" style="display:none">
-          <div id="D-2026-05-06" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-06 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-05-06" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-06 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7631241" target="_blank" class="iss-link">5월 7일(목) 정기 점검 안내 (점검 완료)</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7631246" target="_blank" class="iss-link">5월 7일(목) 업데이트 내용 안내</a></li></ul></div>
@@ -7478,7 +7545,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-05-05" class="date-panel" style="display:none">
-          <div id="D-2026-05-05" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-05 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-05-05" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-05 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -7984,7 +8051,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-05-04" class="date-panel" style="display:none">
-          <div id="D-2026-05-04" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-04 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-05-04" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-04 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -8490,7 +8557,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-05-03" class="date-panel" style="display:none">
-          <div id="D-2026-05-03" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-03 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-05-03" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-03 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -9008,7 +9075,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-05-02" class="date-panel" style="display:none">
-          <div id="D-2026-05-02" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-02 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-05-02" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-02 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -9531,7 +9598,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-05-01" class="date-panel" style="display:none">
-          <div id="D-2026-05-01" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-01 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-05-01" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-05-01 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -10067,7 +10134,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-30" class="date-panel" style="display:none">
-          <div id="D-2026-04-30" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-30 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-30" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-30 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -10673,7 +10740,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-29" class="date-panel" style="display:none">
-          <div id="D-2026-04-29" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-29 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-29" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-29 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7598434" target="_blank" class="iss-link">4월 30일(목) 정기 점검 안내</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7598442" target="_blank" class="iss-link">4월 30일(목) 업데이트 내용 안내</a></li></ul></div>
@@ -11303,7 +11370,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-28" class="date-panel" style="display:none">
-          <div id="D-2026-04-28" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-28 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-28" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-28 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -11911,7 +11978,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-27" class="date-panel" style="display:none">
-          <div id="D-2026-04-27" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-27 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-27" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-27 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -12543,7 +12610,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-26" class="date-panel" style="display:none">
-          <div id="D-2026-04-26" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-26 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-26" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-26 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -13183,7 +13250,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-25" class="date-panel" style="display:none">
-          <div id="D-2026-04-25" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-25 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-25" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-25 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -13796,7 +13863,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-24" class="date-panel" style="display:none">
-          <div id="D-2026-04-24" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-24 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-24" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-24 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7574855" target="_blank" class="iss-link">4월 24일(금) 임시 점검 안내 (점검 완료)</a></li></ul></div>
@@ -14518,7 +14585,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-23" class="date-panel" style="display:none">
-          <div id="D-2026-04-23" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-23 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-23" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-23 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7570279" target="_blank" class="iss-link">4월 23일(목) 확인된 이슈 안내 (4/23 14:25 내용 수정)</a></li></ul></div>
@@ -15129,7 +15196,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-22" class="date-panel" style="display:none">
-          <div id="D-2026-04-22" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-22 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-22" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-22 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7567173" target="_blank" class="iss-link">4월 23일(목) 정기 점검 안내 (점검 완료)</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7567177" target="_blank" class="iss-link">4월 23일(목) 업데이트 내용 안내</a></li></ul></div>
@@ -15723,7 +15790,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-21" class="date-panel" style="display:none">
-          <div id="D-2026-04-21" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-21 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-21" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-21 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-cs">CS</span> 사냥좀 하자 시발럼들아 <span class="cnt-s">(14건)</span></li></ul></div>
@@ -16315,7 +16382,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-20" class="date-panel" style="display:none">
-          <div id="D-2026-04-20" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-20 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-20" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-20 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7558359" target="_blank" class="iss-link">4월 20일(월) 임시 점검 안내 (점검 완료)</a></li></ul></div>
@@ -16885,7 +16952,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-19" class="date-panel" style="display:none">
-          <div id="D-2026-04-19" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-19 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-19" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-19 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -17426,7 +17493,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-18" class="date-panel" style="display:none">
-          <div id="D-2026-04-18" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-18 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-18" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-18 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -17947,7 +18014,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-17" class="date-panel" style="display:none">
-          <div id="D-2026-04-17" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-17 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-17" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-17 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -18488,7 +18555,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-16" class="date-panel" style="display:none">
-          <div id="D-2026-04-16" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-16 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-16" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-16 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7544250" target="_blank" class="iss-link">4월 16일(목) 확인된 이슈 안내 (4/17 10:45 내용 수정)</a></li></ul></div>
@@ -19010,7 +19077,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-15" class="date-panel" style="display:none">
-          <div id="D-2026-04-15" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-15 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-15" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-15 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7540541" target="_blank" class="iss-link">4월 16일(목) 정기 점검 안내 (점검 연장)</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7540554" target="_blank" class="iss-link">4월 16일(목) 업데이트 내용 안내</a></li></ul></div>
@@ -19551,7 +19618,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-14" class="date-panel" style="display:none">
-          <div id="D-2026-04-14" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-14 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-14" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-14 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -20104,7 +20171,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-13" class="date-panel" style="display:none">
-          <div id="D-2026-04-13" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-13 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-13" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-13 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -20672,7 +20739,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-12" class="date-panel" style="display:none">
-          <div id="D-2026-04-12" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-12 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-12" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-12 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -21240,7 +21307,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-11" class="date-panel" style="display:none">
-          <div id="D-2026-04-11" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-11 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-11" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-11 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -21764,7 +21831,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-10" class="date-panel" style="display:none">
-          <div id="D-2026-04-10" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-10 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-10" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-10 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -22327,7 +22394,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-09" class="date-panel" style="display:none">
-          <div id="D-2026-04-09" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-09 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-09" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-09 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -22921,7 +22988,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-08" class="date-panel" style="display:none">
-          <div id="D-2026-04-08" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-08 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-08" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-08 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7517139" target="_blank" class="iss-link">4월 9일(목) 정기 점검 안내 (점검 완료)</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7517142" target="_blank" class="iss-link">4월 9일(목) 업데이트 내용 안내</a></li></ul></div>
@@ -23491,7 +23558,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-07" class="date-panel" style="display:none">
-          <div id="D-2026-04-07" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-07 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-07" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-07 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -24054,7 +24121,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-06" class="date-panel" style="display:none">
-          <div id="D-2026-04-06" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-06 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-06" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-06 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -24600,7 +24667,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-05" class="date-panel" style="display:none">
-          <div id="D-2026-04-05" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-05 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-05" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-05 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -25107,7 +25174,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-04" class="date-panel" style="display:none">
-          <div id="D-2026-04-04" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-04 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-04" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-04 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -25641,7 +25708,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-03" class="date-panel" style="display:none">
-          <div id="D-2026-04-03" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-03 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-03" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-03 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -26160,7 +26227,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-02" class="date-panel" style="display:none">
-          <div id="D-2026-04-02" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-02 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-02" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-02 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><p class='empty-s'>수집된 주요 이슈 없음</p></div>
@@ -26615,7 +26682,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     </div></div>
         </div>
         <div id="panel-2026-04-01" class="date-panel" style="display:none">
-          <div id="D-2026-04-01" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-01 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 11:01</span></div>
+          <div id="D-2026-04-01" class="period-panel" style="display:block"><div class="rpt-header"><span class="rpt-game">DK모바일:리본</span><span class="rpt-title">2026-04-01 일일 서비스 현황</span><span class="rpt-ts">조회: 2026-05-18 20:36</span></div>
     <div class="rpt-section">
       <div class="rpt-sec-hd"><span class="sec-num">01</span>주요 이슈</div>
       <div class="rpt-sec-body"><ul class="iss-list"><li><span class="tg tg-notice">공지</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492431" target="_blank" class="iss-link">4월 2일(목) 정기 점검 안내 (점검 완료)</a></li><li><span class="tg tg-update">업데이트</span> <a href="https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7492433" target="_blank" class="iss-link">4월 2일(목) 업데이트 내용 안내</a></li></ul></div>
@@ -27045,16 +27112,115 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
       <div class="rpt-sec-body"><p class='empty-s' style='color:#888;font-size:12px'>당일 DKR 문의 없음</p></div>
     </div></div>
         </div>
-    <div class="updated">마지막 업데이트: 2026-05-18 11:01 KST</div>
+    <div class="updated">마지막 업데이트: 2026-05-18 20:36 KST</div>
   </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     지표 섹션
+     지표 섹션 (v2 — 서버 그룹 선택형)
 ══════════════════════════════════════════════════════ -->
 <div id="sect-metrics" class="main" style="display:none">
   <div class="rpt-card">
-    <!-- 지표 서브탭 -->
+
+    <!-- 헤더 -->
+    <div class="mg-header">
+      <span class="mg-title">DK모바일:리본 운영 지표</span>
+      <span class="mg-date-badge" id="mg-date-label">기준일: 2026-04-29</span>
+    </div>
+
+    <!-- 서버 그룹 탭 -->
+    <div class="sg-bar">
+      <button class="sg-btn active" id="sgb-all"   onclick="sgSwitch('all')">전체</button>
+      <button class="sg-btn"        id="sgb-old"   onclick="sgSwitch('old')">구서버</button>
+      <button class="sg-btn"        id="sgb-hyper" onclick="sgSwitch('hyper')">하이퍼</button>
+      <button class="sg-btn"        id="sgb-sea"   onclick="sgSwitch('sea')">동남아</button>
+    </div>
+
+    <!-- 서버 체크박스 -->
+    <div class="srv-check-bar" id="srv-checks">
+      <button class="srv-check-all-btn" onclick="sgCheckAll()">전체 선택</button>
+      <button class="srv-check-all-btn" onclick="sgCheckNone()">전체 해제</button>
+      <!-- JS로 동적 생성 -->
+    </div>
+
+    <!-- KPI 카드 9개 -->
+    <div class="kpi-grid9" id="mg-kpi-grid"></div>
+
+    <!-- 차트 섹션 1: 매출 -->
+    <div class="mg-chart-section">
+      <div class="mg-section-title">매출 추이 (최근 7일)</div>
+      <div class="mg-chart-2col">
+        <div class="mg-chart-box">
+          <div class="mg-chart-lbl">총 매출</div>
+          <div class="mg-chart-wrap"><canvas id="mg-c-rev-total"></canvas></div>
+        </div>
+        <div class="mg-chart-box">
+          <div class="mg-chart-lbl">유저 매출</div>
+          <div class="mg-chart-wrap"><canvas id="mg-c-rev-user"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 차트 섹션 2: 유저 지표 -->
+    <div class="mg-chart-section">
+      <div class="mg-section-title">유저 지표 추이 (최근 7일)</div>
+      <div class="mg-chart-2col">
+        <div class="mg-chart-box">
+          <div class="mg-chart-lbl">DAU / PU</div>
+          <div class="mg-chart-wrap"><canvas id="mg-c-dau-pu"></canvas></div>
+        </div>
+        <div class="mg-chart-box">
+          <div class="mg-chart-lbl">NU / NPU</div>
+          <div class="mg-chart-wrap"><canvas id="mg-c-nu-npu"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 차트 섹션 3: 효율 지표 -->
+    <div class="mg-chart-section">
+      <div class="mg-section-title">효율 지표 추이 (최근 7일)</div>
+      <div class="mg-chart-2col">
+        <div class="mg-chart-box">
+          <div class="mg-chart-lbl">ARPU / ARPPU</div>
+          <div class="mg-chart-wrap"><canvas id="mg-c-arpu"></canvas></div>
+        </div>
+        <div class="mg-chart-box">
+          <div class="mg-chart-lbl">PUR (%)</div>
+          <div class="mg-chart-wrap"><canvas id="mg-c-pur"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 서버별 상세 테이블 -->
+    <div class="mg-chart-section">
+      <div class="mg-section-title">서버 그룹별 상세 지표</div>
+      <div class="srv-tbl-wrap" style="padding:0 0 16px">
+        <table class="srv-tbl" id="mg-srv-tbl">
+          <thead>
+            <tr>
+              <th>서버</th><th>그룹</th>
+              <th>DAU</th><th>NU</th><th>PU</th><th>NPU</th><th>PUR</th>
+              <th>총 매출</th><th>유저 매출</th><th>ARPU</th><th>ARPPU</th>
+            </tr>
+          </thead>
+          <tbody id="mg-srv-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 패키지 TOP10 -->
+    <div class="mg-chart-section">
+      <div class="mg-section-title">패키지 판매량 TOP10</div>
+    </div>
+    <div class="pkg-top10-wrap" id="mg-pkg-wrap">
+      <!-- JS로 동적 생성 -->
+    </div>
+
+    <div class="updated" style="padding:0 20px 16px">마지막 업데이트: 2026-05-18 20:36 KST</div>
+  </div>
+
+  <!-- 기존 지표 (하위 호환) -->
+  <div class="rpt-card" style="margin-top:16px;display:none" id="sect-metrics-legacy">
     <div class="mnav-bar">
       <button class="mnav active" id="mnav-revenue"  onclick="switchMetricsSub('revenue')">매출</button>
       <button class="mnav"        id="mnav-packages"  onclick="switchMetricsSub('packages')">패키지</button>
@@ -27063,7 +27229,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
     <div id="m-content" style="padding-bottom:20px">
       <p class="empty-s" style="padding:40px">날짜를 선택하거나 지표 데이터를 업데이트하세요.</p>
     </div>
-    <div class="updated">마지막 업데이트: 2026-05-18 11:01 KST</div>
   </div>
 </div>
 
@@ -27075,10 +27240,331 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Goth
 const METRICS_DATA={"2026-04-01": {"date": "2026-04-01", "is_week_start": false, "is_month_start": true, "old": {"rev_total": 12249288, "rev_pure": 9714354, "platform": {}, "dau": 0, "nu": 0, "pu": 59, "npu": 0, "pur": 0.0, "arpu": 0, "arppu": 207615}, "hyper": {"rev_total": 10568458, "rev_pure": 6443458, "platform": {}, "dau": 0, "nu": 0, "pu": 71, "npu": 0, "pur": 0.0, "arpu": 0, "arppu": 148851}, "global": null, "week": null, "month": null, "pkg_old": [{"name": "신령의 보옥 패키지", "qty": 68}, {"name": "바람 정령탑 패키지I", "qty": 33}, {"name": "대지 정령탑 패키지 I", "qty": 28}, {"name": "바람 정령탑 패키지II", "qty": 23}, {"name": "전설 스킬 PLUS 스텝업 패키지I", "qty": 20}, {"name": "전설 스킬 PLUS 스텝업 패키지II", "qty": 18}, {"name": "대지 정령탑 패키지 II", "qty": 14}, {"name": "새턴의 특권", "qty": 11}, {"name": "탈리스만 패키지I", "qty": 10}, {"name": "거래소 특권", "qty": 6}, {"name": "탈리스만 패키지II", "qty": 6}, {"name": "4000 다이아 패키지", "qty": 5}, {"name": "120 다이아 패키지", "qty": 3}, {"name": "병오년 변신 소환 상자 랭킹 패키지I", "qty": 3}, {"name": "유물 강화 스텝업 패키지III", "qty": 3}, {"name": "유물 강화 스텝업 패키지I", "qty": 3}, {"name": "유물 강화 스텝업 패키지II", "qty": 3}, {"name": "200 다이아 패키지", "qty": 2}, {"name": "400 다이아 패키지", "qty": 2}, {"name": "변신 영혼 결속 오픈 기념 출석", "qty": 1}], "pkg_hyper": [{"name": "신령의 보옥 패키지 H", "qty": 41}, {"name": "거래소 특권H(30일)", "qty": 35}, {"name": "바람 정령탑 선물 상자", "qty": 23}, {"name": "전설 스킬 PLUS 스텝업 패키지II H", "qty": 20}, {"name": "전설 스킬 PLUS 스텝업 패키지I H", "qty": 20}, {"name": "불 정령탑 선물 상자", "qty": 18}, {"name": "대지 정령탑 선물 상자", "qty": 13}, {"name": "하이퍼 무한 축복 패스II", "qty": 10}, {"name": "락시움 성전 선물 상자", "qty": 9}, {"name": "전설 스킬 PLUS 스텝업 패키지III H", "qty": 9}, {"name": "광고 스킵 및 새턴의 보상 특권H(30일)", "qty": 7}, {"name": "전설 유물 선택 패키지 H", "qty": 4}, {"name": "성장 지원S 패키지VII", "qty": 3}, {"name": "오프라인 모드 특권H(30일)", "qty": 3}, {"name": "큐트 래빗 선물 상자 랭킹 패키지I", "qty": 3}, {"name": "병오년 변신 소환 상자 랭킹 패키지I", "qty": 3}, {"name": "미궁의 유물 강화 선물 상자", "qty": 2}, {"name": "주얼 패키지II", "qty": 2}, {"name": "주얼 패키지I", "qty": 2}, {"name": "전설 문장 선택 패키지 H", "qty": 2}], "pkg_global": null}, "2026-04-02": {"date": "2026-04-02", "is_week_start": true, "is_month_start": false, "old": {"rev_total": 12223029, "rev_pure": 8167603, "platform": {}, "dau": 0, "nu": 0, "pu": 46, "npu": 0, "pur": 0.0, "arpu": 0, "arppu": 265718}, "hyper": {"rev_total": 11013029, "rev_pure": 7328488, "platform": {}, "dau": 0, "nu": 0, "pu": 48, "npu": 0, "pur": 0.0, "arpu": 0, "arppu": 229438}, "global": null, "week": null, "month": null, "pkg_old": [{"name": "시즌 3 고대 탈리스만 룰렛 패키지 III", "qty": 35}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 II", "qty": 26}, {"name": "신령의 보옥 패키지", "qty": 22}, {"name": "대지 정령탑 패키지 I", "qty": 21}, {"name": "새턴의 특권", "qty": 14}, {"name": "바람 정령탑 패키지I", "qty": 9}, {"name": "전설 스킬 PLUS 스텝업 패키지I", "qty": 6}, {"name": "탈리스만 패키지I", "qty": 6}, {"name": "대지 정령탑 패키지 II", "qty": 6}, {"name": "오프라인 전투 특권", "qty": 4}, {"name": "바람 정령탑 패키지II", "qty": 3}, {"name": "전설 유물 선택 패키지", "qty": 2}, {"name": "시련 던전 특권I", "qty": 2}, {"name": "거래소 특권", "qty": 2}, {"name": "루안나 특권", "qty": 2}, {"name": "시련 던전 특권 II", "qty": 2}, {"name": "시련 던전 도전 패키지I", "qty": 1}, {"name": "200 다이아 패키지", "qty": 1}, {"name": "1200 다이아 패키지", "qty": 1}, {"name": "시련 던전 도전 패키지III", "qty": 1}], "pkg_hyper": [{"name": "시즌 3 고대 탈리스만 룰렛 패키지 III H", "qty": 34}, {"name": "신령의 보옥 패키지 H", "qty": 17}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 II H", "qty": 16}, {"name": "거래소 특권H(30일)", "qty": 15}, {"name": "전설 스킬 PLUS 스텝업 패키지II H", "qty": 14}, {"name": "전설 스킬 PLUS 스텝업 패키지I H", "qty": 13}, {"name": "광고 스킵 및 새턴의 보상 특권H(30일)", "qty": 10}, {"name": "하이퍼 무한 축복 패스II", "qty": 9}, {"name": "불 정령탑 선물 상자", "qty": 8}, {"name": "바람 정령탑 선물 상자", "qty": 8}, {"name": "대지 정령탑 선물 상자", "qty": 6}, {"name": "락시움 성전 선물 상자", "qty": 4}, {"name": "큐트 래빗 선물 상자 랭킹 패키지I", "qty": 3}, {"name": "미궁의 유물 강화 선물 상자", "qty": 2}, {"name": "전설 유물 선택 패키지 H", "qty": 2}, {"name": "오프라인 모드 특권H(30일)", "qty": 1}, {"name": "주얼 패키지I", "qty": 1}, {"name": "전설 문장 선택 패키지 H", "qty": 1}], "pkg_global": null}, "2026-04-03": {"date": "2026-04-03", "is_week_start": false, "is_month_start": false, "old": {"rev_total": 11824759, "rev_pure": 7773541, "platform": {}, "dau": 0, "nu": 0, "pu": 30, "npu": 0, "pur": 0.0, "arpu": 0, "arppu": 394158}, "hyper": {"rev_total": 2960519, "rev_pure": 2135519, "platform": {}, "dau": 0, "nu": 0, "pu": 49, "npu": 0, "pur": 0.0, "arpu": 0, "arppu": 60418}, "global": null, "week": null, "month": null, "pkg_old": [{"name": "전설 스킬 PLUS 스텝업 패키지III", "qty": 30}, {"name": "전설 스킬 PLUS 스텝업 패키지I", "qty": 20}, {"name": "전설 스킬 PLUS 스텝업 패키지II", "qty": 17}, {"name": "새턴의 특권", "qty": 13}, {"name": "신령의 보옥 패키지", "qty": 13}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 II", "qty": 11}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 III", "qty": 6}, {"name": "바람 정령탑 패키지I", "qty": 6}, {"name": "바람 정령탑 패키지II", "qty": 3}, {"name": "대지 정령탑 패키지 I", "qty": 3}, {"name": "전설 문장 선택 패키지", "qty": 2}, {"name": "전설 스킬 PLUS 스텝업 패키지IV", "qty": 2}, {"name": "시련 던전 특권 II", "qty": 2}, {"name": "오프라인 전투 특권", "qty": 2}, {"name": "시련 던전 특권I", "qty": 2}, {"name": "대지 정령탑 패키지 II", "qty": 1}, {"name": "초보자 성장 지원 패키지", "qty": 1}, {"name": "400 다이아 패키지", "qty": 1}], "pkg_hyper": [{"name": "거래소 특권H(30일)", "qty": 25}, {"name": "하이퍼 무한 축복 패스II", "qty": 10}, {"name": "불 정령탑 선물 상자", "qty": 9}, {"name": "광고 스킵 및 새턴의 보상 특권H(30일)", "qty": 8}, {"name": "바람 정령탑 선물 상자", "qty": 7}, {"name": "신령의 보옥 패키지 H", "qty": 6}, {"name": "대지 정령탑 선물 상자", "qty": 6}, {"name": "전설 스킬 PLUS 스텝업 패키지I H", "qty": 5}, {"name": "큐트 래빗 선물 상자 랭킹 패키지I", "qty": 4}, {"name": "물 정령탑 선물 상자", "qty": 3}, {"name": "오프라인 모드 특권H(30일)", "qty": 3}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 III H", "qty": 2}, {"name": "락시움 성전 선물 상자", "qty": 2}, {"name": "성장 지원S 패키지V", "qty": 2}, {"name": "전설 유물 선택 패키지 H", "qty": 1}, {"name": "헬렌 안식처 선물 상자", "qty": 1}], "pkg_global": null}, "2026-04-04": {"date": "2026-04-04", "is_week_start": false, "is_month_start": false, "old": {"rev_total": 13385556, "rev_pure": 9050912, "platform": {}, "dau": 0, "nu": 0, "pu": 26, "npu": 0, "pur": 0.0, "arpu": 0, "arppu": 514829}, "hyper": {"rev_total": 3468438, "rev_pure": 3431490, "platform": {}, "dau": 0, "nu": 0, "pu": 60, "npu": 0, "pur": 0.0, "arpu": 0, "arppu": 57807}, "global": null, "week": null, "month": null, "pkg_old": [{"name": "전설 스킬 PLUS 스텝업 패키지III", "qty": 35}, {"name": "전설 스킬 PLUS 스텝업 패키지II", "qty": 30}, {"name": "전설 스킬 PLUS 스텝업 패키지I", "qty": 19}, {"name": "바람 정령탑 패키지I", "qty": 13}, {"name": "신령의 보옥 패키지", "qty": 13}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 III", "qty": 9}, {"name": "새턴의 특권", "qty": 7}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 II", "qty": 5}, {"name": "병오년 변신 소환 상자 랭킹 패키지I", "qty": 3}, {"name": "바람 정령탑 패키지II", "qty": 3}, {"name": "4000 다이아 패키지", "qty": 2}, {"name": "대지 정령탑 패키지 II", "qty": 2}, {"name": "오프라인 전투 특권", "qty": 2}, {"name": "전설 스킬 PLUS 스텝업 패키지IV", "qty": 2}, {"name": "디오네의 변신 픽업 소환 스텝업 패키지I", "qty": 1}, {"name": "2000 다이아 패키지", "qty": 1}, {"name": "탈리스만 패키지II", "qty": 1}], "pkg_hyper": [{"name": "거래소 특권H(30일)", "qty": 32}, {"name": "광고 스킵 및 새턴의 보상 특권H(30일)", "qty": 11}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 III H", "qty": 10}, {"name": "하이퍼 무한 축복 패스II", "qty": 9}, {"name": "신령의 보옥 패키지 H", "qty": 6}, {"name": "대지 정령탑 선물 상자", "qty": 6}, {"name": "전설 스킬 PLUS 스텝업 패키지I H", "qty": 6}, {"name": "락시움 성전 선물 상자", "qty": 4}, {"name": "바람 정령탑 선물 상자", "qty": 4}, {"name": "전설 스킬 PLUS 스텝업 패키지II H", "qty": 3}, {"name": "병오년 변신 소환 상자 랭킹 패키지I", "qty": 3}, {"name": "오프라인 모드 특권H(30일)", "qty": 3}, {"name": "미궁의 유물 강화 선물 상자", "qty": 2}, {"name": "불 정령탑 선물 상자", "qty": 2}, {"name": "병오년 인형 소환 상자 랭킹 패키지III", "qty": 2}, {"name": "큐트 래빗 선물 상자 랭킹 패키지I", "qty": 2}, {"name": "파이썬의 요람 선물 상자", "qty": 2}, {"name": "트리시움 성전 선물 상자", "qty": 1}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 II H", "qty": 1}, {"name": "헬렌 안식처 선물 상자", "qty": 1}], "pkg_global": null}, "2026-04-05": {"date": "2026-04-05", "is_week_start": false, "is_month_start": false, "old": {"rev_total": 9722521, "rev_pure": 3582088, "platform": {}, "dau": 0, "nu": 0, "pu": 31, "npu": 0, "pur": 0.0, "arpu": 0, "arppu": 313629}, "hyper": {"rev_total": 3547863, "rev_pure": 3547863, "platform": {}, "dau": 0, "nu": 0, "pu": 42, "npu": 0, "pur": 0.0, "arpu": 0, "arppu": 84472}, "global": null, "week": null, "month": null, "pkg_old": [{"name": "새턴의 특권", "qty": 14}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 III", "qty": 10}, {"name": "전설 스킬 PLUS 스텝업 패키지II", "qty": 9}, {"name": "신령의 보옥 패키지", "qty": 9}, {"name": "전설 스킬 PLUS 스텝업 패키지III", "qty": 8}, {"name": "거래소 특권", "qty": 4}, {"name": "바람 정령탑 패키지I", "qty": 3}, {"name": "병오년 인형 소환 상자 랭킹 패키지III", "qty": 2}, {"name": "오프라인 전투 특권", "qty": 2}, {"name": "바람 정령탑 패키지II", "qty": 2}, {"name": "4000 다이아 패키지", "qty": 1}, {"name": "전설 문장 선택 패키지", "qty": 1}, {"name": "2000 다이아 패키지", "qty": 1}, {"name": "전설 유물 선택 패키지", "qty": 1}], "pkg_hyper": [{"name": "광고 스킵 및 새턴의 보상 특권H(30일)", "qty": 16}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 II H", "qty": 15}, {"name": "거래소 특권H(30일)", "qty": 15}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 III H", "qty": 13}, {"name": "하이퍼 무한 축복 패스II", "qty": 6}, {"name": "병오년 변신 소환 상자 랭킹 패키지I", "qty": 3}, {"name": "오프라인 모드 특권H(30일)", "qty": 3}, {"name": "미궁의 유물 선물 상자", "qty": 2}, {"name": "바람 정령탑 선물 상자", "qty": 2}, {"name": "미궁의 유물 강화 선물 상자", "qty": 2}, {"name": "불 정령탑 선물 상자", "qty": 2}, {"name": "전설 스킬 PLUS 스텝업 패키지I H", "qty": 2}, {"name": "모르모트 안식처 선물 상자", "qty": 2}, {"name": "성장 지원S 패키지IV", "qty": 2}, {"name": "미궁의 문장 선물 상자", "qty": 2}, {"name": "큐트 래빗 선물 상자 랭킹 패키지I", "qty": 1}, {"name": "대지 정령탑 선물 상자", "qty": 1}, {"name": "물 정령탑 선물 상자", "qty": 1}, {"name": "주얼 패키지I", "qty": 1}, {"name": "성장 지원S 패키지I", "qty": 1}], "pkg_global": null}, "2026-04-06": {"date": "2026-04-06", "is_week_start": false, "is_month_start": false, "old": {"rev_total": 7435115, "rev_pure": 5003075, "platform": {}, "dau": 0, "nu": 0, "pu": 30, "npu": 0, "pur": 0.0, "arpu": 0, "arppu": 247837}, "hyper": {"rev_total": 2164348, "rev_pure": 2164348, "platform": {}, "dau": 0, "nu": 0, "pu": 35, "npu": 0, "pur": 0.0, "arpu": 0, "arppu": 61838}, "global": null, "week": null, "month": null, "pkg_old": [{"name": "전설 스킬 PLUS 스텝업 패키지III", "qty": 22}, {"name": "바람 정령탑 패키지I", "qty": 17}, {"name": "새턴의 특권", "qty": 14}, {"name": "신령의 보옥 패키지", "qty": 14}, {"name": "전설 스킬 PLUS 스텝업 패키지II", "qty": 10}, {"name": "전설 스킬 PLUS 스텝업 패키지I", "qty": 5}, {"name": "대지 정령탑 패키지 I", "qty": 5}, {"name": "오프라인 전투 특권", "qty": 3}, {"name": "바람 정령탑 패키지II", "qty": 2}, {"name": "4000 다이아 패키지", "qty": 2}, {"name": "전설 스킬 PLUS 스텝업 패키지IV", "qty": 2}, {"name": "대지 정령탑 패키지 II", "qty": 2}, {"name": "루안나 특권", "qty": 2}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 III", "qty": 1}, {"name": "2000 다이아 패키지", "qty": 1}, {"name": "거래소 특권", "qty": 1}, {"name": "전설 유물 선택 패키지", "qty": 1}, {"name": "유물 강화 스텝업 패키지I", "qty": 1}], "pkg_hyper": [{"name": "거래소 특권H(30일)", "qty": 15}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 III H", "qty": 8}, {"name": "하이퍼 무한 축복 패스II", "qty": 7}, {"name": "광고 스킵 및 새턴의 보상 특권H(30일)", "qty": 6}, {"name": "전설 스킬 PLUS 스텝업 패키지I H", "qty": 4}, {"name": "바람 정령탑 선물 상자", "qty": 3}, {"name": "오프라인 모드 특권H(30일)", "qty": 3}, {"name": "성장 지원S 패키지V", "qty": 2}, {"name": "신령의 보옥 패키지 H", "qty": 2}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 II H", "qty": 2}, {"name": "큐트 래빗 선물 상자 랭킹 패키지I", "qty": 1}, {"name": "주얼 패키지I", "qty": 1}, {"name": "성장 지원S 패키지IV", "qty": 1}, {"name": "락시움 성전 선물 상자", "qty": 1}, {"name": "헬렌 안식처 선물 상자", "qty": 1}], "pkg_global": null}, "2026-04-07": {"date": "2026-04-07", "is_week_start": false, "is_month_start": false, "old": {"rev_total": 7776290, "rev_pure": 2367807, "platform": {}, "dau": 0, "nu": 0, "pu": 43, "npu": 0, "pur": 0.0, "arpu": 0, "arppu": 180843}, "hyper": {"rev_total": 979098, "rev_pure": 979098, "platform": {}, "dau": 0, "nu": 0, "pu": 23, "npu": 0, "pur": 0.0, "arpu": 0, "arppu": 42569}, "global": null, "week": null, "month": null, "pkg_old": [{"name": "새턴의 특권", "qty": 28}, {"name": "대지 정령탑 패키지 I", "qty": 11}, {"name": "신령의 보옥 패키지", "qty": 9}, {"name": "바람 정령탑 패키지I", "qty": 6}, {"name": "병오년 변신 소환 상자 랭킹 패키지I", "qty": 3}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 III", "qty": 3}, {"name": "바람 정령탑 패키지II", "qty": 3}, {"name": "4000 다이아 패키지", "qty": 2}, {"name": "대지 정령탑 패키지 II", "qty": 2}, {"name": "오프라인 전투 특권", "qty": 2}, {"name": "루안나 특권", "qty": 2}, {"name": "전설 스킬 PLUS 스텝업 패키지I", "qty": 2}, {"name": "시련 던전 특권I", "qty": 2}, {"name": "마법 인형 소환 랭킹 패키지I", "qty": 1}, {"name": "마법 인형 소환 랭킹 패키지III H", "qty": 1}, {"name": "시련 던전 특권 II", "qty": 1}, {"name": "200 다이아 패키지", "qty": 1}, {"name": "1200 다이아 패키지", "qty": 1}, {"name": "400 다이아 패키지", "qty": 1}, {"name": "디오네의 변신 픽업 소환 스텝업 패키지I", "qty": 1}], "pkg_hyper": [{"name": "거래소 특권H(30일)", "qty": 7}, {"name": "신령의 보옥 패키지 H", "qty": 6}, {"name": "바람 정령탑 선물 상자", "qty": 6}, {"name": "전설 스킬 PLUS 스텝업 패키지I H", "qty": 6}, {"name": "광고 스킵 및 새턴의 보상 특권H(30일)", "qty": 6}, {"name": "큐트 래빗 선물 상자 랭킹 패키지I", "qty": 4}, {"name": "하이퍼 무한 축복 패스II", "qty": 3}, {"name": "대지 정령탑 선물 상자", "qty": 2}, {"name": "오프라인 모드 특권H(30일)", "qty": 2}, {"name": "락시움 성전 선물 상자", "qty": 2}, {"name": "주얼 패키지III", "qty": 1}, {"name": "성장 지원S 패키지II", "qty": 1}, {"name": "성장 지원S 패키지V", "qty": 1}], "pkg_global": null}};
 const PKG_TOTALS={"old": [{"name": "신령의 보옥 패키지", "qty": 148}, {"name": "새턴의 특권", "qty": 101}, {"name": "전설 스킬 PLUS 스텝업 패키지III", "qty": 95}, {"name": "바람 정령탑 패키지I", "qty": 87}, {"name": "전설 스킬 PLUS 스텝업 패키지II", "qty": 84}, {"name": "전설 스킬 PLUS 스텝업 패키지I", "qty": 72}, {"name": "대지 정령탑 패키지 I", "qty": 68}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 III", "qty": 64}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 II", "qty": 42}, {"name": "바람 정령탑 패키지II", "qty": 39}], "hyper": [{"name": "거래소 특권H(30일)", "qty": 144}, {"name": "신령의 보옥 패키지 H", "qty": 78}, {"name": "시즌 3 고대 탈리스만 룰렛 패키지 III H", "qty": 67}, {"name": "광고 스킵 및 새턴의 보상 특권H(30일)", "qty": 64}, {"name": "전설 스킬 PLUS 스텝업 패키지I H", "qty": 56}, {"name": "하이퍼 무한 축복 패스II", "qty": 54}, {"name": "바람 정령탑 선물 상자", "qty": 53}, {"name": "불 정령탑 선물 상자", "qty": 39}, {"name": "전설 스킬 PLUS 스텝업 패키지II H", "qty": 37}, {"name": "대지 정령탑 선물 상자", "qty": 34}], "global": []};
 
+const NEW_METRICS={"date": "2026-04-29", "servers": [{"serverid": 23, "server_name": "구서버 (1~45번 서버 합산)", "server_group": "old", "dau": 0, "nu": 0, "pu": 65, "npu": 0, "total_revenue": 7864996, "user_revenue": 5319305, "pur": 0, "arpu": 0, "arppu": 81835}, {"serverid": 50, "server_name": "하이퍼서버 (46~55번 서버 합산)", "server_group": "hyper", "dau": 0, "nu": 0, "pu": 35, "npu": 0, "total_revenue": 2350031, "user_revenue": 2350031, "pur": 0, "arpu": 0, "arppu": 67144}, {"serverid": 60, "server_name": "동남아서버 (56~65번 서버 합산)", "server_group": "sea", "dau": 0, "nu": 0, "pu": 0, "npu": 0, "total_revenue": 0, "user_revenue": 0, "pur": 0, "arpu": 0, "arppu": 0}], "trend_7d": [{"date": "2026-04-23", "servers": [{"serverid": 23, "server_group": "old", "dau": 0, "nu": 0, "pu": 65, "npu": 0, "total_revenue": 26058030, "user_revenue": 25123566}, {"serverid": 50, "server_group": "hyper", "dau": 0, "nu": 0, "pu": 57, "npu": 0, "total_revenue": 6124155, "user_revenue": 5974958}, {"serverid": 60, "server_group": "sea", "dau": 0, "nu": 0, "pu": 0, "npu": 0, "total_revenue": 0, "user_revenue": 0}]}, {"date": "2026-04-24", "servers": [{"serverid": 23, "server_group": "old", "dau": 0, "nu": 0, "pu": 30, "npu": 0, "total_revenue": 9250024, "user_revenue": 3703102}, {"serverid": 50, "server_group": "hyper", "dau": 0, "nu": 0, "pu": 32, "npu": 0, "total_revenue": 1690940, "user_revenue": 1690940}, {"serverid": 60, "server_group": "sea", "dau": 0, "nu": 0, "pu": 0, "npu": 0, "total_revenue": 0, "user_revenue": 0}]}, {"date": "2026-04-25", "servers": [{"serverid": 23, "server_group": "old", "dau": 0, "nu": 0, "pu": 36, "npu": 0, "total_revenue": 11528967, "user_revenue": 6637760}, {"serverid": 50, "server_group": "hyper", "dau": 0, "nu": 0, "pu": 42, "npu": 0, "total_revenue": 2258594, "user_revenue": 2258594}, {"serverid": 60, "server_group": "sea", "dau": 0, "nu": 0, "pu": 0, "npu": 0, "total_revenue": 0, "user_revenue": 0}]}, {"date": "2026-04-26", "servers": [{"serverid": 23, "server_group": "old", "dau": 0, "nu": 0, "pu": 39, "npu": 0, "total_revenue": 4069104, "user_revenue": 3603274}, {"serverid": 50, "server_group": "hyper", "dau": 0, "nu": 0, "pu": 46, "npu": 0, "total_revenue": 6039889, "user_revenue": 1760889}, {"serverid": 60, "server_group": "sea", "dau": 0, "nu": 0, "pu": 0, "npu": 0, "total_revenue": 0, "user_revenue": 0}]}, {"date": "2026-04-27", "servers": [{"serverid": 23, "server_group": "old", "dau": 0, "nu": 0, "pu": 45, "npu": 0, "total_revenue": 6399009, "user_revenue": 4069863}, {"serverid": 50, "server_group": "hyper", "dau": 0, "nu": 0, "pu": 21, "npu": 0, "total_revenue": 1301948, "user_revenue": 1301948}, {"serverid": 60, "server_group": "sea", "dau": 0, "nu": 0, "pu": 0, "npu": 0, "total_revenue": 0, "user_revenue": 0}]}, {"date": "2026-04-28", "servers": [{"serverid": 23, "server_group": "old", "dau": 0, "nu": 0, "pu": 33, "npu": 0, "total_revenue": 2279478, "user_revenue": 2279478}, {"serverid": 50, "server_group": "hyper", "dau": 0, "nu": 0, "pu": 38, "npu": 0, "total_revenue": 1598147, "user_revenue": 1598147}, {"serverid": 60, "server_group": "sea", "dau": 0, "nu": 0, "pu": 0, "npu": 0, "total_revenue": 0, "user_revenue": 0}]}, {"date": "2026-04-29", "servers": [{"serverid": 23, "server_group": "old", "dau": 0, "nu": 0, "pu": 65, "npu": 0, "total_revenue": 7864996, "user_revenue": 5319305}, {"serverid": 50, "server_group": "hyper", "dau": 0, "nu": 0, "pu": 35, "npu": 0, "total_revenue": 2350031, "user_revenue": 2350031}, {"serverid": 60, "server_group": "sea", "dau": 0, "nu": 0, "pu": 0, "npu": 0, "total_revenue": 0, "user_revenue": 0}]}], "package_sales": {"today": {"old": [{"rank_no": 1, "productname": "신령의 보옥 패키지", "sales_quantity": 80, "pu": 28, "revenue_krw": 880000}, {"rank_no": 2, "productname": "바람 정령탑 패키지I", "sales_quantity": 48, "pu": 16, "revenue_krw": 528000}, {"rank_no": 3, "productname": "대지 정령탑 패키지 I", "sales_quantity": 30, "pu": 7, "revenue_krw": 330000}, {"rank_no": 4, "productname": "새턴의 특권", "sales_quantity": 27, "pu": 27, "revenue_krw": 297000}, {"rank_no": 5, "productname": "1주년 기념 특별 패키지V", "sales_quantity": 12, "pu": 5, "revenue_krw": 1320000}, {"rank_no": 6, "productname": "탈리스만 패키지I", "sales_quantity": 6, "pu": 2, "revenue_krw": 66000}, {"rank_no": 7, "productname": "대천사 코스튬 번들", "sales_quantity": 4, "pu": 4, "revenue_krw": 440000}, {"rank_no": 8, "productname": "병오년 변신 소환 상자 랭킹 패키지I", "sales_quantity": 3, "pu": 1, "revenue_krw": 33000}, {"rank_no": 9, "productname": "시즌 3 고대 탈리스만 룰렛 패키지 III", "sales_quantity": 3, "pu": 2, "revenue_krw": 330000}, {"rank_no": 10, "productname": "오프라인 전투 특권", "sales_quantity": 3, "pu": 3, "revenue_krw": 99000}], "hyper": [{"rank_no": 1, "productname": "신령의 보옥 패키지 H", "sales_quantity": 30, "pu": 10, "revenue_krw": 330000}, {"rank_no": 2, "productname": "바람 정령탑 선물 상자", "sales_quantity": 14, "pu": 6, "revenue_krw": 154000}, {"rank_no": 3, "productname": "광고 스킵 및 새턴의 보상 특권H(30일)", "sales_quantity": 12, "pu": 12, "revenue_krw": 132000}, {"rank_no": 4, "productname": "대지 정령탑 선물 상자", "sales_quantity": 8, "pu": 4, "revenue_krw": 88000}, {"rank_no": 5, "productname": "불 정령탑 선물 상자", "sales_quantity": 8, "pu": 4, "revenue_krw": 88000}, {"rank_no": 6, "productname": "물 정령탑 선물 상자", "sales_quantity": 4, "pu": 2, "revenue_krw": 44000}, {"rank_no": 7, "productname": "거래소 특권H(30일)", "sales_quantity": 4, "pu": 4, "revenue_krw": 132000}, {"rank_no": 8, "productname": "병오년 변신 소환 상자 랭킹 패키지I", "sales_quantity": 3, "pu": 1, "revenue_krw": 33000}, {"rank_no": 9, "productname": "시즌 3 고대 탈리스만 룰렛 패키지 III H", "sales_quantity": 3, "pu": 1, "revenue_krw": 330000}, {"rank_no": 10, "productname": "대천사 코스튬 번들 H", "sales_quantity": 3, "pu": 3, "revenue_krw": 330000}], "sea": [], "total": [{"rank_no": 1, "productname": "신령의 보옥 패키지", "sales_quantity": 80, "pu": 28, "revenue_krw": 880000}, {"rank_no": 2, "productname": "바람 정령탑 패키지I", "sales_quantity": 48, "pu": 16, "revenue_krw": 528000}, {"rank_no": 3, "productname": "대지 정령탑 패키지 I", "sales_quantity": 30, "pu": 7, "revenue_krw": 330000}, {"rank_no": 4, "productname": "신령의 보옥 패키지 H", "sales_quantity": 30, "pu": 10, "revenue_krw": 330000}, {"rank_no": 5, "productname": "새턴의 특권", "sales_quantity": 27, "pu": 27, "revenue_krw": 297000}, {"rank_no": 6, "productname": "바람 정령탑 선물 상자", "sales_quantity": 14, "pu": 6, "revenue_krw": 154000}, {"rank_no": 7, "productname": "1주년 기념 특별 패키지V", "sales_quantity": 12, "pu": 5, "revenue_krw": 1320000}, {"rank_no": 8, "productname": "광고 스킵 및 새턴의 보상 특권H(30일)", "sales_quantity": 12, "pu": 12, "revenue_krw": 132000}, {"rank_no": 9, "productname": "대지 정령탑 선물 상자", "sales_quantity": 8, "pu": 4, "revenue_krw": 88000}, {"rank_no": 10, "productname": "불 정령탑 선물 상자", "sales_quantity": 8, "pu": 4, "revenue_krw": 88000}]}, "period": {"old": [{"rank_no": 1, "productname": "1주년 기념 특별 패키지V", "sales_quantity": 479, "pu": 88, "revenue_krw": 52690000}, {"rank_no": 2, "productname": "신령의 보옥 패키지", "sales_quantity": 286, "pu": 106, "revenue_krw": 3146000}, {"rank_no": 3, "productname": "새턴의 특권", "sales_quantity": 208, "pu": 208, "revenue_krw": 2288000}, {"rank_no": 4, "productname": "바람 정령탑 패키지I", "sales_quantity": 190, "pu": 68, "revenue_krw": 2090000}, {"rank_no": 5, "productname": "대지 정령탑 패키지 I", "sales_quantity": 179, "pu": 49, "revenue_krw": 1969000}, {"rank_no": 6, "productname": "대천사 코스튬 번들", "sales_quantity": 40, "pu": 39, "revenue_krw": 4400000}, {"rank_no": 7, "productname": "성천사 코스튬 번들", "sales_quantity": 36, "pu": 36, "revenue_krw": 3960000}, {"rank_no": 8, "productname": "병오년 변신 소환 상자 랭킹 패키지I", "sales_quantity": 33, "pu": 11, "revenue_krw": 363000}, {"rank_no": 9, "productname": "오프라인 전투 특권", "sales_quantity": 33, "pu": 33, "revenue_krw": 1089000}, {"rank_no": 10, "productname": "시즌 3 고대 탈리스만 룰렛 패키지 III", "sales_quantity": 29, "pu": 10, "revenue_krw": 3190000}], "hyper": [{"rank_no": 1, "productname": "거래소 특권H(30일)", "sales_quantity": 460, "pu": 460, "revenue_krw": 15180000}, {"rank_no": 2, "productname": "신령의 보옥 패키지 H", "sales_quantity": 125, "pu": 44, "revenue_krw": 1375000}, {"rank_no": 3, "productname": "광고 스킵 및 새턴의 보상 특권H(30일)", "sales_quantity": 122, "pu": 121, "revenue_krw": 1342000}, {"rank_no": 4, "productname": "1주년 기념 특별 패키지V H", "sales_quantity": 73, "pu": 41, "revenue_krw": 8030000}, {"rank_no": 5, "productname": "바람 정령탑 선물 상자", "sales_quantity": 72, "pu": 36, "revenue_krw": 792000}, {"rank_no": 6, "productname": "불 정령탑 선물 상자", "sales_quantity": 46, "pu": 23, "revenue_krw": 506000}, {"rank_no": 7, "productname": "대지 정령탑 선물 상자", "sales_quantity": 39, "pu": 20, "revenue_krw": 429000}, {"rank_no": 8, "productname": "대천사 코스튬 번들 H", "sales_quantity": 33, "pu": 33, "revenue_krw": 3630000}, {"rank_no": 9, "productname": "성천사 코스튬 번들 H", "sales_quantity": 28, "pu": 28, "revenue_krw": 3080000}], "sea": [], "total": [{"rank_no": 1, "productname": "1주년 기념 특별 패키지V", "sales_quantity": 479, "pu": 88, "revenue_krw": 52690000}, {"rank_no": 2, "productname": "거래소 특권H(30일)", "sales_quantity": 460, "pu": 460, "revenue_krw": 15180000}, {"rank_no": 3, "productname": "신령의 보옥 패키지", "sales_quantity": 286, "pu": 106, "revenue_krw": 3146000}, {"rank_no": 4, "productname": "새턴의 특권", "sales_quantity": 208, "pu": 208, "revenue_krw": 2288000}, {"rank_no": 5, "productname": "바람 정령탑 패키지I", "sales_quantity": 190, "pu": 68, "revenue_krw": 2090000}, {"rank_no": 6, "productname": "대지 정령탑 패키지 I", "sales_quantity": 179, "pu": 49, "revenue_krw": 1969000}, {"rank_no": 7, "productname": "신령의 보옥 패키지 H", "sales_quantity": 125, "pu": 44, "revenue_krw": 1375000}, {"rank_no": 8, "productname": "광고 스킵 및 새턴의 보상 특권H(30일)", "sales_quantity": 122, "pu": 121, "revenue_krw": 1342000}, {"rank_no": 9, "productname": "1주년 기념 특별 패키지V H", "sales_quantity": 73, "pu": 41, "revenue_krw": 8030000}, {"rank_no": 10, "productname": "바람 정령탑 선물 상자", "sales_quantity": 72, "pu": 36, "revenue_krw": 792000}]}}};
+
 
 // ── 전역 상태 ────────────────────────────────────────────────────
 var _section='voc', _sub='revenue', _date='2026-05-17', _period='D';
 var _charts={};
+
+// ════════════════════════════════════════════════════════════════
+//  ▶ 신규 지표 탭 — 서버 그룹 선택형
+// ════════════════════════════════════════════════════════════════
+var _sgGroup = 'all';      // 현재 서버 그룹 탭
+var _mgCharts = {};       // 지표 차트 인스턴스
+var _pkgPeriodType = 'today'; // 패키지 조회 기간
+
+// ── 서버 그룹 정의 ──────────────────────────────────────────────
+var SG_DEF = {
+  all:   {label:'전체',    groups:['old','hyper','sea'], range:'1~65번 서버'},
+  old:   {label:'구서버',  groups:['old'],               range:'1~45번 서버'},
+  hyper: {label:'하이퍼',  groups:['hyper'],             range:'46~55번 서버'},
+  sea:   {label:'동남아',  groups:['sea'],               range:'56~65번 서버'},
+};
+
+var SG_LABELS = {old:'구서버', hyper:'하이퍼서버', sea:'동남아서버'};
+var SG_COLORS = {old:'#1a73e8', hyper:'#34a853', sea:'#ea4335'};
+
+// ── 현재 선택된 서버 목록 얻기 ──────────────────────────────────
+function getSelectedGroups() {
+  var checks = document.querySelectorAll('.sg-chk:checked');
+  if(!checks.length) return [];
+  return Array.from(checks).map(function(c){return c.value;});
+}
+
+// ── 서버 그룹 탭 전환 ──────────────────────────────────────────
+function sgSwitch(grp) {
+  _sgGroup = grp;
+  document.querySelectorAll('.sg-btn').forEach(function(b){b.classList.remove('active');});
+  var btn = document.getElementById('sgb-'+grp);
+  if(btn) btn.classList.add('active');
+  sgBuildChecks(grp);
+  mgRender();
+}
+
+// ── 체크박스 영역 빌드 ──────────────────────────────────────────
+function sgBuildChecks(grp) {
+  var bar = document.getElementById('srv-checks');
+  var def = SG_DEF[grp];
+  if(!def) return;
+  // 공통 버튼
+  var html = '<button class="srv-check-all-btn" onclick="sgCheckAll()">전체 선택</button>'
+           + '<button class="srv-check-all-btn" onclick="sgCheckNone()">전체 해제</button>';
+  def.groups.forEach(function(g) {
+    var nm = SG_LABELS[g] || g;
+    html += '<label><input type="checkbox" class="sg-chk" value="'+g+'" checked onchange="mgRender()">'
+          + nm + '</label>';
+  });
+  bar.innerHTML = html;
+}
+
+function sgCheckAll() {
+  document.querySelectorAll('.sg-chk').forEach(function(c){c.checked=true;});
+  mgRender();
+}
+function sgCheckNone() {
+  document.querySelectorAll('.sg-chk').forEach(function(c){c.checked=false;});
+  mgRender();
+}
+
+// ── NEW_METRICS에서 선택된 서버들 집계 ─────────────────────────
+function mgAggregate(selGroups) {
+  var nm = NEW_METRICS;
+  if(!nm || !nm.servers) return null;
+  var agg = {dau:0,nu:0,pu:0,npu:0,total_revenue:0,user_revenue:0};
+  nm.servers.forEach(function(s) {
+    if(selGroups.indexOf(s.server_group) < 0) return;
+    agg.dau           += s.dau           || 0;
+    agg.nu            += s.nu            || 0;
+    agg.pu            += s.pu            || 0;
+    agg.npu           += s.npu           || 0;
+    agg.total_revenue += s.total_revenue || 0;
+    agg.user_revenue  += s.user_revenue  || 0;
+  });
+  // 재계산 (단순 평균 아닌 합산 기준)
+  agg.pur   = agg.dau > 0 ? (agg.pu / agg.dau * 100).toFixed(2) + '%' : '-';
+  agg.arpu  = agg.dau > 0 ? Math.round(agg.user_revenue / agg.dau) : 0;
+  agg.arppu = agg.pu  > 0 ? Math.round(agg.user_revenue / agg.pu)  : 0;
+  return agg;
+}
+
+// ── trend_7d 집계 ───────────────────────────────────────────────
+function mgAggregateTrend(selGroups) {
+  var nm = NEW_METRICS;
+  if(!nm || !nm.trend_7d) return [];
+  return nm.trend_7d.map(function(day) {
+    var a = {date:day.date,dau:0,nu:0,pu:0,npu:0,total_revenue:0,user_revenue:0};
+    (day.servers||[]).forEach(function(s) {
+      if(selGroups.indexOf(s.server_group) < 0) return;
+      a.dau           += s.dau           || 0;
+      a.nu            += s.nu            || 0;
+      a.pu            += s.pu            || 0;
+      a.npu           += s.npu           || 0;
+      a.total_revenue += s.total_revenue || 0;
+      a.user_revenue  += s.user_revenue  || 0;
+    });
+    return a;
+  });
+}
+
+// ── 숫자 포맷 ───────────────────────────────────────────────────
+function mgFmtNum(n) {
+  if(!n) return '0';
+  if(n >= 1e8) return (n/1e8).toFixed(1)+'억';
+  if(n >= 1e4) return (n/1e4).toFixed(0)+'만';
+  return n.toLocaleString();
+}
+function mgFmtRev(n) {
+  if(!n) return '—';
+  if(n >= 1e8) return (n/1e8).toFixed(2)+'억원';
+  if(n >= 1e4) return (n/1e4).toFixed(0)+'만원';
+  return n.toLocaleString()+'원';
+}
+function mgFmtK(n) {
+  if(!n) return '—';
+  if(n >= 1e4) return (n/1e4).toFixed(0)+'만원';
+  return n.toLocaleString()+'원';
+}
+
+// ── KPI 카드 렌더 ───────────────────────────────────────────────
+function mgRenderKPI(agg) {
+  if(!agg) { document.getElementById('mg-kpi-grid').innerHTML='<p class="empty-s" style="padding:30px;grid-column:1/-1">데이터 없음</p>'; return; }
+  var cards = [
+    {lbl:'DAU',       val:mgFmtNum(agg.dau),           sub:'일 활성 유저', cls:''},
+    {lbl:'NU',        val:mgFmtNum(agg.nu),            sub:'신규 유저',    cls:''},
+    {lbl:'PU',        val:mgFmtNum(agg.pu),            sub:'결제 유저',    cls:'accent'},
+    {lbl:'NPU',       val:mgFmtNum(agg.npu),           sub:'신규 결제 유저',cls:''},
+    {lbl:'PUR',       val:agg.pur,                    sub:'결제 전환율',   cls:'accent'},
+    {lbl:'총 매출',   val:mgFmtRev(agg.total_revenue), sub:'',             cls:'accent2'},
+    {lbl:'유저 매출', val:mgFmtRev(agg.user_revenue),  sub:'',             cls:'accent2'},
+    {lbl:'ARPU',      val:mgFmtK(agg.arpu),           sub:'1인당 유저매출',cls:''},
+    {lbl:'ARPPU',     val:mgFmtK(agg.arppu),          sub:'결제자당 매출', cls:''},
+  ];
+  var html = cards.map(function(c) {
+    return '<div class="kpi9 '+c.cls+'">'
+         + '<div class="kpi9-lbl">'+c.lbl+'</div>'
+         + '<div class="kpi9-val">'+c.val+'</div>'
+         + (c.sub ? '<div class="kpi9-sub">'+c.sub+'</div>' : '')
+         + '</div>';
+  }).join('');
+  document.getElementById('mg-kpi-grid').innerHTML = html;
+}
+
+// ── 차트 공통 ───────────────────────────────────────────────────
+function mgDestroyCharts() {
+  Object.keys(_mgCharts).forEach(function(id) {
+    if(_mgCharts[id]) { _mgCharts[id].destroy(); delete _mgCharts[id]; }
+  });
+}
+function mgMakeLineChart(id, labels, datasets) {
+  var ctx = document.getElementById(id);
+  if(!ctx) return;
+  _mgCharts[id] = new Chart(ctx, {
+    type: 'line',
+    data: {labels:labels, datasets:datasets},
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:6}}},
+      scales:{
+        x:{ticks:{font:{size:10}},grid:{display:false}},
+        y:{ticks:{font:{size:10}},grid:{color:'#eee'},beginAtZero:true}
+      }
+    }
+  });
+}
+
+// ── 차트 렌더 ───────────────────────────────────────────────────
+function mgRenderCharts(trend, selGroups) {
+  mgDestroyCharts();
+  if(!trend || !trend.length) return;
+  var labels = trend.map(function(t){return t.date.slice(5);});
+  // 총 매출
+  mgMakeLineChart('mg-c-rev-total', labels, [{
+    label:'총 매출', data:trend.map(function(t){return t.total_revenue||0;}),
+    borderColor:'#1a73e8', backgroundColor:'rgba(26,115,232,.1)', tension:.3, fill:true
+  }]);
+  // 유저 매출
+  mgMakeLineChart('mg-c-rev-user', labels, [{
+    label:'유저 매출', data:trend.map(function(t){return t.user_revenue||0;}),
+    borderColor:'#34a853', backgroundColor:'rgba(52,168,83,.1)', tension:.3, fill:true
+  }]);
+  // DAU / PU
+  mgMakeLineChart('mg-c-dau-pu', labels, [
+    {label:'DAU',data:trend.map(function(t){return t.dau||0;}),borderColor:'#4285f4',tension:.3},
+    {label:'PU', data:trend.map(function(t){return t.pu||0;}), borderColor:'#ea4335',tension:.3},
+  ]);
+  // NU / NPU
+  mgMakeLineChart('mg-c-nu-npu', labels, [
+    {label:'NU', data:trend.map(function(t){return t.nu||0;}), borderColor:'#fbbc04',tension:.3},
+    {label:'NPU',data:trend.map(function(t){return t.npu||0;}),borderColor:'#9aa0a6',tension:.3},
+  ]);
+  // ARPU / ARPPU
+  mgMakeLineChart('mg-c-arpu', labels, [
+    {label:'ARPU', data:trend.map(function(t){return t.dau>0?Math.round(t.user_revenue/t.dau):0;}),
+      borderColor:'#4285f4',tension:.3},
+    {label:'ARPPU',data:trend.map(function(t){return t.pu>0 ?Math.round(t.user_revenue/t.pu):0;}),
+      borderColor:'#ea4335',tension:.3},
+  ]);
+  // PUR
+  mgMakeLineChart('mg-c-pur', labels, [{
+    label:'PUR(%)',data:trend.map(function(t){return t.dau>0?(t.pu/t.dau*100):0;}),
+    borderColor:'#34a853',backgroundColor:'rgba(52,168,83,.1)',tension:.3,fill:true
+  }]);
+}
+
+// ── 서버별 상세 테이블 ─────────────────────────────────────────
+function mgRenderTable(selGroups) {
+  var nm = NEW_METRICS;
+  var tbody = document.getElementById('mg-srv-tbody');
+  if(!nm || !nm.servers || !tbody) return;
+  var rows = nm.servers.filter(function(s){return selGroups.indexOf(s.server_group)>=0;});
+  if(!rows.length) { tbody.innerHTML='<tr><td colspan="11" class="m-na">선택된 서버 없음</td></tr>'; return; }
+  var html = '';
+  var tots = {dau:0,nu:0,pu:0,npu:0,total_revenue:0,user_revenue:0};
+  rows.forEach(function(s) {
+    var pur_s   = s.dau>0 ? (s.pu/s.dau*100).toFixed(1)+'%' : '—';
+    var arpu_s  = s.dau>0 ? mgFmtK(Math.round(s.user_revenue/s.dau)) : '—';
+    var arppu_s = s.pu >0 ? mgFmtK(Math.round(s.user_revenue/s.pu))  : '—';
+    ['dau','nu','pu','npu','total_revenue','user_revenue'].forEach(function(k){tots[k]+=(s[k]||0);});
+    var bg_cls = SG_DEF[s.server_group] ? s.server_group : 'old';
+    html += '<tr>'
+      + '<td>'+s.server_name+'</td>'
+      + '<td><span class="srv-grp-badge '+s.server_group+'">'+SG_LABELS[s.server_group]+'</span></td>'
+      + '<td>'+(s.dau||0).toLocaleString()+'</td>'
+      + '<td>'+(s.nu||0).toLocaleString()+'</td>'
+      + '<td>'+(s.pu||0).toLocaleString()+'</td>'
+      + '<td>'+(s.npu||0).toLocaleString()+'</td>'
+      + '<td>'+pur_s+'</td>'
+      + '<td>'+mgFmtRev(s.total_revenue)+'</td>'
+      + '<td>'+mgFmtRev(s.user_revenue)+'</td>'
+      + '<td>'+arpu_s+'</td>'
+      + '<td>'+arppu_s+'</td>'
+      + '</tr>';
+  });
+  // 합계 행
+  var t_pur   = tots.dau>0 ? (tots.pu/tots.dau*100).toFixed(1)+'%' : '—';
+  var t_arpu  = tots.dau>0 ? mgFmtK(Math.round(tots.user_revenue/tots.dau)) : '—';
+  var t_arppu = tots.pu >0 ? mgFmtK(Math.round(tots.user_revenue/tots.pu))  : '—';
+  html += '<tr>'
+    + '<td colspan="2">합계</td>'
+    + '<td>'+tots.dau.toLocaleString()+'</td>'
+    + '<td>'+tots.nu.toLocaleString()+'</td>'
+    + '<td>'+tots.pu.toLocaleString()+'</td>'
+    + '<td>'+tots.npu.toLocaleString()+'</td>'
+    + '<td>'+t_pur+'</td>'
+    + '<td>'+mgFmtRev(tots.total_revenue)+'</td>'
+    + '<td>'+mgFmtRev(tots.user_revenue)+'</td>'
+    + '<td>'+t_arpu+'</td>'
+    + '<td>'+t_arppu+'</td>'
+    + '</tr>';
+  tbody.innerHTML = html;
+}
+
+// ── 패키지 TOP10 렌더 ───────────────────────────────────────────
+function mgRenderPackages(selGroups) {
+  var nm = NEW_METRICS;
+  var wrap = document.getElementById('mg-pkg-wrap');
+  if(!nm || !nm.package_sales || !wrap) return;
+
+  var periodKey = _pkgPeriodType;  // 'today' or 'period'
+  var pkgData   = nm.package_sales[periodKey] || {};
+
+  // 선택된 그룹 기준 표시 (total 포함)
+  var showGroups = [{key:'total',lbl:'전체'}];
+  selGroups.forEach(function(g) {
+    if(g!=='sea') showGroups.push({key:g, lbl:SG_LABELS[g]});
+  });
+  if(!selGroups.length) { wrap.innerHTML='<p class="empty-s" style="padding:30px">선택된 서버 없음</p>'; return; }
+
+  var html = '';
+  showGroups.slice(0,4).forEach(function(sg) {
+    var items = pkgData[sg.key] || [];
+    html += '<div class="pkg-top10-box">'
+          + '<div class="pkg-top10-hd">'
+          + '<span>'+sg.lbl+'</span>'
+          + '<div class="pkg-tab-bar">'
+          + '<button class="pkg-tab '+(periodKey==='today'?'active':'')+'" onclick="mgPkgPeriod('today')">오늘</button>'
+          + '<button class="pkg-tab '+(periodKey==='period'?'active':'')+'" onclick="mgPkgPeriod('period')">전체기간</button>'
+          + '</div></div>';
+    if(!items.length) {
+      html += '<div class="pkg-empty">데이터 없음</div>';
+    } else {
+      items.forEach(function(p) {
+        var rc = p.rank_no<=3 ? 'r'+p.rank_no : '';
+        html += '<div class="pkg-top10-row">'
+              + '<span class="pkg-top10-rank '+rc+'">'+p.rank_no+'</span>'
+              + '<span class="pkg-top10-name">'+p.productname+'</span>'
+              + '<span class="pkg-top10-qty">'+p.sales_quantity+'개</span>'
+              + '</div>';
+      });
+    }
+    html += '</div>';
+  });
+  wrap.innerHTML = html;
+}
+
+function mgPkgPeriod(type) {
+  _pkgPeriodType = type;
+  mgRenderPackages(getSelectedGroups());
+}
+
+// ── 전체 렌더 (메인 엔트리) ─────────────────────────────────────
+function mgRender() {
+  var selGroups = getSelectedGroups();
+  var agg   = mgAggregate(selGroups);
+  var trend = mgAggregateTrend(selGroups);
+  mgRenderKPI(agg);
+  mgRenderCharts(trend, selGroups);
+  mgRenderTable(selGroups);
+  mgRenderPackages(selGroups);
+}
+
+// ── 초기화 (지표 탭 열 때) ──────────────────────────────────────
+function initMetricsTab() {
+  if(!NEW_METRICS || !NEW_METRICS.servers) return;
+  sgBuildChecks(_sgGroup);  // 체크박스 초기화
+  mgRender();
+}
 
 // ── 섹션 전환 (VOC ↔ 지표) ──────────────────────────────────────
 function switchSection(sec){
@@ -27094,7 +27580,10 @@ function switchSection(sec){
     btnM.style.display='none';
     if(_period==='M'){switchPeriod('D',document.getElementById('btn-D'));return;}
   }
-  if(sec==='metrics') renderCurrentMetrics();
+  if(sec==='metrics') {
+    initMetricsTab();
+    renderCurrentMetrics();
+  }
 }
 
 // ── 날짜 변경 ─────────────────────────────────────────────────

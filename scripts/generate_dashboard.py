@@ -22,7 +22,8 @@ from pathlib import Path
 KST         = timezone(timedelta(hours=9))
 GIT_DIR     = Path(__file__).parent.parent
 DATA_DIR    = GIT_DIR / "data" / "DKR"
-METRICS_DIR = GIT_DIR / "data" / "metrics"
+METRICS_DIR     = GIT_DIR / "data" / "metrics"
+NEW_METRICS_DIR = GIT_DIR / "data" / "DKR" / "metrics"
 OUTPUT      = GIT_DIR / "index.html"
 
 
@@ -88,7 +89,7 @@ def all_dates_union() -> list[str]:
     return sorted(s, reverse=True)
 
 def build_metrics_js_data() -> str:
-    """모든 metrics JSON → JavaScript 객체 문자열"""
+    """기존 metrics JSON (data/metrics/) → JavaScript 객체 문자열 (하위 호환용)"""
     import sys
     sys.path.insert(0, str(Path(__file__).parent))
     try:
@@ -112,6 +113,24 @@ def build_metrics_js_data() -> str:
         f"const METRICS_DATA={json.dumps(all_m, ensure_ascii=False)};\n"
         f"const PKG_TOTALS={json.dumps(pkg_totals, ensure_ascii=False)};\n"
     )
+
+
+def load_new_metrics() -> tuple[dict, str]:
+    """data/DKR/metrics/*.metrics.json 중 최신 1건 로드.
+
+    반환: (metrics_dict, date_str)
+    """
+    if not NEW_METRICS_DIR.exists():
+        return {}, ""
+    files = sorted(NEW_METRICS_DIR.glob("*.metrics.json"), reverse=True)
+    if not files:
+        return {}, ""
+    f = files[0]
+    try:
+        data = json.loads(f.read_text(encoding="utf-8"))
+        return data, data.get("date", f.stem.replace(".metrics", ""))
+    except Exception:
+        return {}, ""
 
 
 # ── 01 주요 이슈 ──────────────────────────────────────────────
@@ -1051,7 +1070,9 @@ def generate():
     if not panels_html:
         panels_html = "<p class='empty-s'>VOC 데이터 없음</p>"
 
-    metrics_js = build_metrics_js_data()
+    metrics_js       = build_metrics_js_data()
+    new_metrics, new_metrics_date = load_new_metrics()
+    new_metrics_js   = f"const NEW_METRICS={json.dumps(new_metrics, ensure_ascii=False)};\n"
 
     html = f"""<!DOCTYPE html>
 <html lang="ko">
@@ -1107,6 +1128,73 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
        background:none;cursor:pointer;font-size:12.5px;font-weight:700;
        color:#5f6368;transition:all .15px}}
 .mnav.active{{color:#1a73e8;border-bottom-color:#1a73e8}}
+
+/* ── 신규 지표 탭 ── */
+.mg-header{{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;
+            padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}}
+.mg-title{{font-size:14px;font-weight:700}}
+.mg-date-badge{{background:rgba(255,255,255,.15);padding:3px 10px;border-radius:4px;font-size:11.5px}}
+/* 서버 그룹 탭 */
+.sg-bar{{display:flex;gap:0;background:#f1f3f4;border-bottom:2px solid #e8eaed;padding:0 20px}}
+.sg-btn{{padding:9px 22px;border:none;background:none;font-size:12.5px;font-weight:700;
+         color:#5f6368;cursor:pointer;border-bottom:2.5px solid transparent;
+         margin-bottom:-2px;transition:all .15s}}
+.sg-btn.active{{color:#1a73e8;border-bottom-color:#1a73e8;background:#fff}}
+/* 체크박스 영역 */
+.srv-check-bar{{padding:10px 20px;background:#fafafa;border-bottom:1px solid #e8eaed;
+                display:flex;align-items:center;gap:16px;flex-wrap:wrap;min-height:44px}}
+.srv-check-bar label{{display:flex;align-items:center;gap:5px;font-size:12px;
+                      color:#3c4043;cursor:pointer;font-weight:600}}
+.srv-check-bar input[type=checkbox]{{width:14px;height:14px;cursor:pointer;accent-color:#1a73e8}}
+.srv-check-all-btn{{padding:4px 10px;border:1px solid #dadce0;border-radius:4px;
+                    font-size:11px;background:#fff;cursor:pointer;color:#3c4043}}
+.srv-check-all-btn:hover{{background:#f1f3f4}}
+/* 9개 KPI 카드 */
+.kpi-grid9{{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px 20px}}
+@media(max-width:700px){{.kpi-grid9{{grid-template-columns:repeat(2,1fr)}}}}
+.kpi9{{background:#f8f9fa;border:1px solid #e8eaed;border-radius:8px;padding:14px 16px}}
+.kpi9-lbl{{font-size:10.5px;color:#5f6368;font-weight:700;margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px}}
+.kpi9-val{{font-size:20px;font-weight:800;color:#1a1a2e;line-height:1.2}}
+.kpi9-sub{{font-size:10.5px;color:#9aa0a6;margin-top:3px}}
+.kpi9.accent{{border-left:3px solid #1a73e8}}
+.kpi9.accent2{{border-left:3px solid #34a853}}
+/* 차트 섹션 */
+.mg-chart-section{{padding:0 20px 16px}}
+.mg-section-title{{font-size:12px;font-weight:700;color:#5f6368;padding:12px 0 8px;
+                   text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid #f0f2f5;margin-bottom:10px}}
+.mg-chart-2col{{display:grid;grid-template-columns:1fr 1fr;gap:12px}}
+@media(max-width:700px){{.mg-chart-2col{{grid-template-columns:1fr}}}}
+.mg-chart-box{{background:#f8f9fa;border:1px solid #e8eaed;border-radius:8px;padding:12px}}
+.mg-chart-lbl{{font-size:11px;font-weight:700;color:#3c4043;margin-bottom:8px}}
+.mg-chart-wrap{{position:relative;height:140px}}
+/* 서버별 상세 테이블 */
+.srv-tbl-wrap{{overflow-x:auto;padding:0 20px 16px}}
+.srv-tbl{{width:100%;border-collapse:collapse;font-size:12px;min-width:800px}}
+.srv-tbl th{{background:#f1f3f4;padding:8px 10px;text-align:center;font-size:10.5px;
+             color:#5f6368;border-bottom:1.5px solid #e8eaed;font-weight:700;white-space:nowrap}}
+.srv-tbl td{{padding:8px 10px;border-bottom:1px solid #f0f2f5;text-align:center;white-space:nowrap}}
+.srv-tbl tr:last-child td{{font-weight:700;background:#f8f9fa}}
+.srv-tbl td:first-child,.srv-tbl td:nth-child(2){{text-align:left}}
+.srv-grp-badge{{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:700}}
+.srv-grp-badge.old{{background:#e8f0fe;color:#1a73e8}}
+.srv-grp-badge.hyper{{background:#e6f4ea;color:#188038}}
+.srv-grp-badge.sea{{background:#fce8e6;color:#c5221f}}
+/* 패키지 TOP10 */
+.pkg-top10-wrap{{padding:0 20px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px}}
+@media(max-width:700px){{.pkg-top10-wrap{{grid-template-columns:1fr}}}}
+.pkg-top10-box{{background:#f8f9fa;border:1px solid #e8eaed;border-radius:8px;overflow:hidden}}
+.pkg-top10-hd{{background:#f1f3f4;padding:10px 14px;font-size:12px;font-weight:700;
+               color:#3c4043;border-bottom:1px solid #e8eaed;display:flex;justify-content:space-between}}
+.pkg-top10-row{{display:flex;align-items:center;padding:6px 12px;border-bottom:1px solid #f9f9f9;font-size:11.5px;gap:8px}}
+.pkg-top10-rank{{font-size:10px;font-weight:800;color:#fff;background:#9aa0a6;
+                border-radius:3px;padding:1px 5px;min-width:20px;text-align:center}}
+.pkg-top10-rank.r1{{background:#f9a825}}.pkg-top10-rank.r2{{background:#bdbdbd}}.pkg-top10-rank.r3{{background:#a1887f}}
+.pkg-top10-name{{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#3c4043}}
+.pkg-top10-qty{{font-weight:700;color:#1a73e8;white-space:nowrap}}
+.pkg-tab-bar{{display:flex;gap:0;padding:0 12px;background:#fafafa;border-bottom:1px solid #e8eaed}}
+.pkg-tab{{padding:5px 12px;border:none;background:none;font-size:11px;font-weight:700;
+          color:#5f6368;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}}
+.pkg-tab.active{{color:#1a73e8;border-bottom-color:#1a73e8}}
 
 /* ── 지표 KPI 카드 ── */
 .kpi-row{{display:flex;gap:12px;flex-wrap:wrap;padding:16px 20px 0}}
@@ -1331,11 +1419,110 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     지표 섹션
+     지표 섹션 (v2 — 서버 그룹 선택형)
 ══════════════════════════════════════════════════════ -->
 <div id="sect-metrics" class="main" style="display:none">
   <div class="rpt-card">
-    <!-- 지표 서브탭 -->
+
+    <!-- 헤더 -->
+    <div class="mg-header">
+      <span class="mg-title">DK모바일:리본 운영 지표</span>
+      <span class="mg-date-badge" id="mg-date-label">기준일: {new_metrics_date or '—'}</span>
+    </div>
+
+    <!-- 서버 그룹 탭 -->
+    <div class="sg-bar">
+      <button class="sg-btn active" id="sgb-all"   onclick="sgSwitch('all')">전체</button>
+      <button class="sg-btn"        id="sgb-old"   onclick="sgSwitch('old')">구서버</button>
+      <button class="sg-btn"        id="sgb-hyper" onclick="sgSwitch('hyper')">하이퍼</button>
+      <button class="sg-btn"        id="sgb-sea"   onclick="sgSwitch('sea')">동남아</button>
+    </div>
+
+    <!-- 서버 체크박스 -->
+    <div class="srv-check-bar" id="srv-checks">
+      <button class="srv-check-all-btn" onclick="sgCheckAll()">전체 선택</button>
+      <button class="srv-check-all-btn" onclick="sgCheckNone()">전체 해제</button>
+      <!-- JS로 동적 생성 -->
+    </div>
+
+    <!-- KPI 카드 9개 -->
+    <div class="kpi-grid9" id="mg-kpi-grid"></div>
+
+    <!-- 차트 섹션 1: 매출 -->
+    <div class="mg-chart-section">
+      <div class="mg-section-title">매출 추이 (최근 7일)</div>
+      <div class="mg-chart-2col">
+        <div class="mg-chart-box">
+          <div class="mg-chart-lbl">총 매출</div>
+          <div class="mg-chart-wrap"><canvas id="mg-c-rev-total"></canvas></div>
+        </div>
+        <div class="mg-chart-box">
+          <div class="mg-chart-lbl">유저 매출</div>
+          <div class="mg-chart-wrap"><canvas id="mg-c-rev-user"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 차트 섹션 2: 유저 지표 -->
+    <div class="mg-chart-section">
+      <div class="mg-section-title">유저 지표 추이 (최근 7일)</div>
+      <div class="mg-chart-2col">
+        <div class="mg-chart-box">
+          <div class="mg-chart-lbl">DAU / PU</div>
+          <div class="mg-chart-wrap"><canvas id="mg-c-dau-pu"></canvas></div>
+        </div>
+        <div class="mg-chart-box">
+          <div class="mg-chart-lbl">NU / NPU</div>
+          <div class="mg-chart-wrap"><canvas id="mg-c-nu-npu"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 차트 섹션 3: 효율 지표 -->
+    <div class="mg-chart-section">
+      <div class="mg-section-title">효율 지표 추이 (최근 7일)</div>
+      <div class="mg-chart-2col">
+        <div class="mg-chart-box">
+          <div class="mg-chart-lbl">ARPU / ARPPU</div>
+          <div class="mg-chart-wrap"><canvas id="mg-c-arpu"></canvas></div>
+        </div>
+        <div class="mg-chart-box">
+          <div class="mg-chart-lbl">PUR (%)</div>
+          <div class="mg-chart-wrap"><canvas id="mg-c-pur"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 서버별 상세 테이블 -->
+    <div class="mg-chart-section">
+      <div class="mg-section-title">서버 그룹별 상세 지표</div>
+      <div class="srv-tbl-wrap" style="padding:0 0 16px">
+        <table class="srv-tbl" id="mg-srv-tbl">
+          <thead>
+            <tr>
+              <th>서버</th><th>그룹</th>
+              <th>DAU</th><th>NU</th><th>PU</th><th>NPU</th><th>PUR</th>
+              <th>총 매출</th><th>유저 매출</th><th>ARPU</th><th>ARPPU</th>
+            </tr>
+          </thead>
+          <tbody id="mg-srv-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 패키지 TOP10 -->
+    <div class="mg-chart-section">
+      <div class="mg-section-title">패키지 판매량 TOP10</div>
+    </div>
+    <div class="pkg-top10-wrap" id="mg-pkg-wrap">
+      <!-- JS로 동적 생성 -->
+    </div>
+
+    <div class="updated" style="padding:0 20px 16px">마지막 업데이트: {now}</div>
+  </div>
+
+  <!-- 기존 지표 (하위 호환) -->
+  <div class="rpt-card" style="margin-top:16px;display:none" id="sect-metrics-legacy">
     <div class="mnav-bar">
       <button class="mnav active" id="mnav-revenue"  onclick="switchMetricsSub('revenue')">매출</button>
       <button class="mnav"        id="mnav-packages"  onclick="switchMetricsSub('packages')">패키지</button>
@@ -1344,7 +1531,6 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
     <div id="m-content" style="padding-bottom:20px">
       <p class="empty-s" style="padding:40px">날짜를 선택하거나 지표 데이터를 업데이트하세요.</p>
     </div>
-    <div class="updated">마지막 업데이트: {now}</div>
   </div>
 </div>
 
@@ -1354,10 +1540,330 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
 <script>
 // ── 지표 데이터 (Python 임베드) ──────────────────────────────────
 {metrics_js}
+{new_metrics_js}
 
 // ── 전역 상태 ────────────────────────────────────────────────────
 var _section='voc', _sub='revenue', _date='{latest}', _period='D';
 var _charts={{}};
+
+// ════════════════════════════════════════════════════════════════
+//  ▶ 신규 지표 탭 — 서버 그룹 선택형
+// ════════════════════════════════════════════════════════════════
+var _sgGroup = 'all';      // 현재 서버 그룹 탭
+var _mgCharts = {{}};       // 지표 차트 인스턴스
+var _pkgPeriodType = 'today'; // 패키지 조회 기간
+
+// ── 서버 그룹 정의 ──────────────────────────────────────────────
+var SG_DEF = {{
+  all:   {{label:'전체',    groups:['old','hyper','sea'], range:'1~65번 서버'}},
+  old:   {{label:'구서버',  groups:['old'],               range:'1~45번 서버'}},
+  hyper: {{label:'하이퍼',  groups:['hyper'],             range:'46~55번 서버'}},
+  sea:   {{label:'동남아',  groups:['sea'],               range:'56~65번 서버'}},
+}};
+
+var SG_LABELS = {{old:'구서버', hyper:'하이퍼서버', sea:'동남아서버'}};
+var SG_COLORS = {{old:'#1a73e8', hyper:'#34a853', sea:'#ea4335'}};
+
+// ── 현재 선택된 서버 목록 얻기 ──────────────────────────────────
+function getSelectedGroups() {{
+  var checks = document.querySelectorAll('.sg-chk:checked');
+  if(!checks.length) return [];
+  return Array.from(checks).map(function(c){{return c.value;}});
+}}
+
+// ── 서버 그룹 탭 전환 ──────────────────────────────────────────
+function sgSwitch(grp) {{
+  _sgGroup = grp;
+  document.querySelectorAll('.sg-btn').forEach(function(b){{b.classList.remove('active');}});
+  var btn = document.getElementById('sgb-'+grp);
+  if(btn) btn.classList.add('active');
+  sgBuildChecks(grp);
+  mgRender();
+}}
+
+// ── 체크박스 영역 빌드 ──────────────────────────────────────────
+function sgBuildChecks(grp) {{
+  var bar = document.getElementById('srv-checks');
+  var def = SG_DEF[grp];
+  if(!def) return;
+  // 공통 버튼
+  var html = '<button class="srv-check-all-btn" onclick="sgCheckAll()">전체 선택</button>'
+           + '<button class="srv-check-all-btn" onclick="sgCheckNone()">전체 해제</button>';
+  def.groups.forEach(function(g) {{
+    var nm = SG_LABELS[g] || g;
+    html += '<label><input type="checkbox" class="sg-chk" value="'+g+'" checked onchange="mgRender()">'
+          + nm + '</label>';
+  }});
+  bar.innerHTML = html;
+}}
+
+function sgCheckAll() {{
+  document.querySelectorAll('.sg-chk').forEach(function(c){{c.checked=true;}});
+  mgRender();
+}}
+function sgCheckNone() {{
+  document.querySelectorAll('.sg-chk').forEach(function(c){{c.checked=false;}});
+  mgRender();
+}}
+
+// ── NEW_METRICS에서 선택된 서버들 집계 ─────────────────────────
+function mgAggregate(selGroups) {{
+  var nm = NEW_METRICS;
+  if(!nm || !nm.servers) return null;
+  var agg = {{dau:0,nu:0,pu:0,npu:0,total_revenue:0,user_revenue:0}};
+  nm.servers.forEach(function(s) {{
+    if(selGroups.indexOf(s.server_group) < 0) return;
+    agg.dau           += s.dau           || 0;
+    agg.nu            += s.nu            || 0;
+    agg.pu            += s.pu            || 0;
+    agg.npu           += s.npu           || 0;
+    agg.total_revenue += s.total_revenue || 0;
+    agg.user_revenue  += s.user_revenue  || 0;
+  }});
+  // 재계산 (단순 평균 아닌 합산 기준)
+  agg.pur   = agg.dau > 0 ? (agg.pu / agg.dau * 100).toFixed(2) + '%' : '-';
+  agg.arpu  = agg.dau > 0 ? Math.round(agg.user_revenue / agg.dau) : 0;
+  agg.arppu = agg.pu  > 0 ? Math.round(agg.user_revenue / agg.pu)  : 0;
+  return agg;
+}}
+
+// ── trend_7d 집계 ───────────────────────────────────────────────
+function mgAggregateTrend(selGroups) {{
+  var nm = NEW_METRICS;
+  if(!nm || !nm.trend_7d) return [];
+  return nm.trend_7d.map(function(day) {{
+    var a = {{date:day.date,dau:0,nu:0,pu:0,npu:0,total_revenue:0,user_revenue:0}};
+    (day.servers||[]).forEach(function(s) {{
+      if(selGroups.indexOf(s.server_group) < 0) return;
+      a.dau           += s.dau           || 0;
+      a.nu            += s.nu            || 0;
+      a.pu            += s.pu            || 0;
+      a.npu           += s.npu           || 0;
+      a.total_revenue += s.total_revenue || 0;
+      a.user_revenue  += s.user_revenue  || 0;
+    }});
+    return a;
+  }});
+}}
+
+// ── 숫자 포맷 ───────────────────────────────────────────────────
+function mgFmtNum(n) {{
+  if(!n) return '0';
+  if(n >= 1e8) return (n/1e8).toFixed(1)+'억';
+  if(n >= 1e4) return (n/1e4).toFixed(0)+'만';
+  return n.toLocaleString();
+}}
+function mgFmtRev(n) {{
+  if(!n) return '—';
+  if(n >= 1e8) return (n/1e8).toFixed(2)+'억원';
+  if(n >= 1e4) return (n/1e4).toFixed(0)+'만원';
+  return n.toLocaleString()+'원';
+}}
+function mgFmtK(n) {{
+  if(!n) return '—';
+  if(n >= 1e4) return (n/1e4).toFixed(0)+'만원';
+  return n.toLocaleString()+'원';
+}}
+
+// ── KPI 카드 렌더 ───────────────────────────────────────────────
+function mgRenderKPI(agg) {{
+  if(!agg) {{ document.getElementById('mg-kpi-grid').innerHTML='<p class="empty-s" style="padding:30px;grid-column:1/-1">데이터 없음</p>'; return; }}
+  var cards = [
+    {{lbl:'DAU',       val:mgFmtNum(agg.dau),           sub:'일 활성 유저', cls:''}},
+    {{lbl:'NU',        val:mgFmtNum(agg.nu),            sub:'신규 유저',    cls:''}},
+    {{lbl:'PU',        val:mgFmtNum(agg.pu),            sub:'결제 유저',    cls:'accent'}},
+    {{lbl:'NPU',       val:mgFmtNum(agg.npu),           sub:'신규 결제 유저',cls:''}},
+    {{lbl:'PUR',       val:agg.pur,                    sub:'결제 전환율',   cls:'accent'}},
+    {{lbl:'총 매출',   val:mgFmtRev(agg.total_revenue), sub:'',             cls:'accent2'}},
+    {{lbl:'유저 매출', val:mgFmtRev(agg.user_revenue),  sub:'',             cls:'accent2'}},
+    {{lbl:'ARPU',      val:mgFmtK(agg.arpu),           sub:'1인당 유저매출',cls:''}},
+    {{lbl:'ARPPU',     val:mgFmtK(agg.arppu),          sub:'결제자당 매출', cls:''}},
+  ];
+  var html = cards.map(function(c) {{
+    return '<div class="kpi9 '+c.cls+'">'
+         + '<div class="kpi9-lbl">'+c.lbl+'</div>'
+         + '<div class="kpi9-val">'+c.val+'</div>'
+         + (c.sub ? '<div class="kpi9-sub">'+c.sub+'</div>' : '')
+         + '</div>';
+  }}).join('');
+  document.getElementById('mg-kpi-grid').innerHTML = html;
+}}
+
+// ── 차트 공통 ───────────────────────────────────────────────────
+function mgDestroyCharts() {{
+  Object.keys(_mgCharts).forEach(function(id) {{
+    if(_mgCharts[id]) {{ _mgCharts[id].destroy(); delete _mgCharts[id]; }}
+  }});
+}}
+function mgMakeLineChart(id, labels, datasets) {{
+  var ctx = document.getElementById(id);
+  if(!ctx) return;
+  _mgCharts[id] = new Chart(ctx, {{
+    type: 'line',
+    data: {{labels:labels, datasets:datasets}},
+    options: {{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{{legend:{{position:'bottom',labels:{{font:{{size:10}},boxWidth:10,padding:6}}}}}},
+      scales:{{
+        x:{{ticks:{{font:{{size:10}}}},grid:{{display:false}}}},
+        y:{{ticks:{{font:{{size:10}}}},grid:{{color:'#eee'}},beginAtZero:true}}
+      }}
+    }}
+  }});
+}}
+
+// ── 차트 렌더 ───────────────────────────────────────────────────
+function mgRenderCharts(trend, selGroups) {{
+  mgDestroyCharts();
+  if(!trend || !trend.length) return;
+  var labels = trend.map(function(t){{return t.date.slice(5);}});
+  // 총 매출
+  mgMakeLineChart('mg-c-rev-total', labels, [{{
+    label:'총 매출', data:trend.map(function(t){{return t.total_revenue||0;}}),
+    borderColor:'#1a73e8', backgroundColor:'rgba(26,115,232,.1)', tension:.3, fill:true
+  }}]);
+  // 유저 매출
+  mgMakeLineChart('mg-c-rev-user', labels, [{{
+    label:'유저 매출', data:trend.map(function(t){{return t.user_revenue||0;}}),
+    borderColor:'#34a853', backgroundColor:'rgba(52,168,83,.1)', tension:.3, fill:true
+  }}]);
+  // DAU / PU
+  mgMakeLineChart('mg-c-dau-pu', labels, [
+    {{label:'DAU',data:trend.map(function(t){{return t.dau||0;}}),borderColor:'#4285f4',tension:.3}},
+    {{label:'PU', data:trend.map(function(t){{return t.pu||0;}}), borderColor:'#ea4335',tension:.3}},
+  ]);
+  // NU / NPU
+  mgMakeLineChart('mg-c-nu-npu', labels, [
+    {{label:'NU', data:trend.map(function(t){{return t.nu||0;}}), borderColor:'#fbbc04',tension:.3}},
+    {{label:'NPU',data:trend.map(function(t){{return t.npu||0;}}),borderColor:'#9aa0a6',tension:.3}},
+  ]);
+  // ARPU / ARPPU
+  mgMakeLineChart('mg-c-arpu', labels, [
+    {{label:'ARPU', data:trend.map(function(t){{return t.dau>0?Math.round(t.user_revenue/t.dau):0;}}),
+      borderColor:'#4285f4',tension:.3}},
+    {{label:'ARPPU',data:trend.map(function(t){{return t.pu>0 ?Math.round(t.user_revenue/t.pu):0;}}),
+      borderColor:'#ea4335',tension:.3}},
+  ]);
+  // PUR
+  mgMakeLineChart('mg-c-pur', labels, [{{
+    label:'PUR(%)',data:trend.map(function(t){{return t.dau>0?(t.pu/t.dau*100):0;}}),
+    borderColor:'#34a853',backgroundColor:'rgba(52,168,83,.1)',tension:.3,fill:true
+  }}]);
+}}
+
+// ── 서버별 상세 테이블 ─────────────────────────────────────────
+function mgRenderTable(selGroups) {{
+  var nm = NEW_METRICS;
+  var tbody = document.getElementById('mg-srv-tbody');
+  if(!nm || !nm.servers || !tbody) return;
+  var rows = nm.servers.filter(function(s){{return selGroups.indexOf(s.server_group)>=0;}});
+  if(!rows.length) {{ tbody.innerHTML='<tr><td colspan="11" class="m-na">선택된 서버 없음</td></tr>'; return; }}
+  var html = '';
+  var tots = {{dau:0,nu:0,pu:0,npu:0,total_revenue:0,user_revenue:0}};
+  rows.forEach(function(s) {{
+    var pur_s   = s.dau>0 ? (s.pu/s.dau*100).toFixed(1)+'%' : '—';
+    var arpu_s  = s.dau>0 ? mgFmtK(Math.round(s.user_revenue/s.dau)) : '—';
+    var arppu_s = s.pu >0 ? mgFmtK(Math.round(s.user_revenue/s.pu))  : '—';
+    ['dau','nu','pu','npu','total_revenue','user_revenue'].forEach(function(k){{tots[k]+=(s[k]||0);}});
+    var bg_cls = SG_DEF[s.server_group] ? s.server_group : 'old';
+    html += '<tr>'
+      + '<td>'+s.server_name+'</td>'
+      + '<td><span class="srv-grp-badge '+s.server_group+'">'+SG_LABELS[s.server_group]+'</span></td>'
+      + '<td>'+(s.dau||0).toLocaleString()+'</td>'
+      + '<td>'+(s.nu||0).toLocaleString()+'</td>'
+      + '<td>'+(s.pu||0).toLocaleString()+'</td>'
+      + '<td>'+(s.npu||0).toLocaleString()+'</td>'
+      + '<td>'+pur_s+'</td>'
+      + '<td>'+mgFmtRev(s.total_revenue)+'</td>'
+      + '<td>'+mgFmtRev(s.user_revenue)+'</td>'
+      + '<td>'+arpu_s+'</td>'
+      + '<td>'+arppu_s+'</td>'
+      + '</tr>';
+  }});
+  // 합계 행
+  var t_pur   = tots.dau>0 ? (tots.pu/tots.dau*100).toFixed(1)+'%' : '—';
+  var t_arpu  = tots.dau>0 ? mgFmtK(Math.round(tots.user_revenue/tots.dau)) : '—';
+  var t_arppu = tots.pu >0 ? mgFmtK(Math.round(tots.user_revenue/tots.pu))  : '—';
+  html += '<tr>'
+    + '<td colspan="2">합계</td>'
+    + '<td>'+tots.dau.toLocaleString()+'</td>'
+    + '<td>'+tots.nu.toLocaleString()+'</td>'
+    + '<td>'+tots.pu.toLocaleString()+'</td>'
+    + '<td>'+tots.npu.toLocaleString()+'</td>'
+    + '<td>'+t_pur+'</td>'
+    + '<td>'+mgFmtRev(tots.total_revenue)+'</td>'
+    + '<td>'+mgFmtRev(tots.user_revenue)+'</td>'
+    + '<td>'+t_arpu+'</td>'
+    + '<td>'+t_arppu+'</td>'
+    + '</tr>';
+  tbody.innerHTML = html;
+}}
+
+// ── 패키지 TOP10 렌더 ───────────────────────────────────────────
+function mgRenderPackages(selGroups) {{
+  var nm = NEW_METRICS;
+  var wrap = document.getElementById('mg-pkg-wrap');
+  if(!nm || !nm.package_sales || !wrap) return;
+
+  var periodKey = _pkgPeriodType;  // 'today' or 'period'
+  var pkgData   = nm.package_sales[periodKey] || {{}};
+
+  // 선택된 그룹 기준 표시 (total 포함)
+  var showGroups = [{{key:'total',lbl:'전체'}}];
+  selGroups.forEach(function(g) {{
+    if(g!=='sea') showGroups.push({{key:g, lbl:SG_LABELS[g]}});
+  }});
+  if(!selGroups.length) {{ wrap.innerHTML='<p class="empty-s" style="padding:30px">선택된 서버 없음</p>'; return; }}
+
+  var html = '';
+  showGroups.slice(0,4).forEach(function(sg) {{
+    var items = pkgData[sg.key] || [];
+    html += '<div class="pkg-top10-box">'
+          + '<div class="pkg-top10-hd">'
+          + '<span>'+sg.lbl+'</span>'
+          + '<div class="pkg-tab-bar">'
+          + '<button class="pkg-tab '+(periodKey==='today'?'active':'')+'" onclick="mgPkgPeriod(\'today\')">오늘</button>'
+          + '<button class="pkg-tab '+(periodKey==='period'?'active':'')+'" onclick="mgPkgPeriod(\'period\')">전체기간</button>'
+          + '</div></div>';
+    if(!items.length) {{
+      html += '<div class="pkg-empty">데이터 없음</div>';
+    }} else {{
+      items.forEach(function(p) {{
+        var rc = p.rank_no<=3 ? 'r'+p.rank_no : '';
+        html += '<div class="pkg-top10-row">'
+              + '<span class="pkg-top10-rank '+rc+'">'+p.rank_no+'</span>'
+              + '<span class="pkg-top10-name">'+p.productname+'</span>'
+              + '<span class="pkg-top10-qty">'+p.sales_quantity+'개</span>'
+              + '</div>';
+      }});
+    }}
+    html += '</div>';
+  }});
+  wrap.innerHTML = html;
+}}
+
+function mgPkgPeriod(type) {{
+  _pkgPeriodType = type;
+  mgRenderPackages(getSelectedGroups());
+}}
+
+// ── 전체 렌더 (메인 엔트리) ─────────────────────────────────────
+function mgRender() {{
+  var selGroups = getSelectedGroups();
+  var agg   = mgAggregate(selGroups);
+  var trend = mgAggregateTrend(selGroups);
+  mgRenderKPI(agg);
+  mgRenderCharts(trend, selGroups);
+  mgRenderTable(selGroups);
+  mgRenderPackages(selGroups);
+}}
+
+// ── 초기화 (지표 탭 열 때) ──────────────────────────────────────
+function initMetricsTab() {{
+  if(!NEW_METRICS || !NEW_METRICS.servers) return;
+  sgBuildChecks(_sgGroup);  // 체크박스 초기화
+  mgRender();
+}}
 
 // ── 섹션 전환 (VOC ↔ 지표) ──────────────────────────────────────
 function switchSection(sec){{
@@ -1373,7 +1879,10 @@ function switchSection(sec){{
     btnM.style.display='none';
     if(_period==='M'){{switchPeriod('D',document.getElementById('btn-D'));return;}}
   }}
-  if(sec==='metrics') renderCurrentMetrics();
+  if(sec==='metrics') {{
+    initMetricsTab();
+    renderCurrentMetrics();
+  }}
 }}
 
 // ── 날짜 변경 ─────────────────────────────────────────────────
