@@ -1,0 +1,93 @@
+{
+  "date": "2026-05-15",
+  "major_issues": [],
+  "voc_groups": [
+    {
+      "semantic_topic": "기타",
+      "issue_type": "게임 일반",
+      "category": "기타",
+      "summary": "영자님 나드카스탑에 모래시계 있는데 드랍안된다 수정좀해라 시계없어 사샹 못간다",
+      "count": 2,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7667826",
+      "feed_ids": [
+        "7667826",
+        "7667770"
+      ]
+    }
+  ],
+  "insights": {
+    "top_issues": [
+      {
+        "category": "기타",
+        "summary": "영자님 나드카스탑에 모래시계 있는데 드랍안된다 수정좀해라 시계없어 사샹 못간다",
+        "count": 2,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7667826"
+      }
+    ],
+    "trend": {
+      "버그·오류": {
+        "current": 0,
+        "previous": 1,
+        "delta": -1
+      },
+      "게임 관련": {
+        "current": 0,
+        "previous": 1,
+        "delta": -1
+      },
+      "기타": {
+        "current": 2,
+        "previous": 0,
+        "delta": 2
+      }
+    },
+    "trending_keywords": [],
+    "prev_date": "2026-05-14"
+  },
+  "cs_daily": {
+    "received": 0,
+    "processed": 0
+  },
+  "cs_status_counts": {
+    "조회 완료": 3,
+    "답변 완료": 5
+  },
+  "cs_inquiries": [],
+  "cs_week_trend": [
+    {
+      "date": "2026-05-09",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-05-10",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-05-11",
+      "received": 0,
+      "processed": 0
+    },
+    {
+      "date": "2026-05-12",
+      "received": 4,
+      "processed": 2
+    },
+    {
+      "date": "2026-05-13",
+      "received": 1,
+      "processed": 1
+    },
+    {
+      "date": "2026-05-14",
+      "received": 3,
+      "processed": 5
+    },
+    {
+      "date": "2026-05-15",
+      "received": 0,
+      "processed": 0
+    }
+  ]
+}

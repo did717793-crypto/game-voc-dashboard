@@ -65,7 +65,7 @@
     "processed": 5
   },
   "cs_status_counts": {
-    "조회 완료": 5,
+    "조회 완료": 3,
     "답변 완료": 5
   },
   "cs_inquiries": [
@@ -108,13 +108,13 @@
     },
     {
       "date": "2026-05-10",
-      "received": 1,
+      "received": 0,
       "processed": 0
     },
     {
       "date": "2026-05-11",
-      "received": 1,
-      "processed": 2
+      "received": 0,
+      "processed": 0
     },
     {
       "date": "2026-05-12",

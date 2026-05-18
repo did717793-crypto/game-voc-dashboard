@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "date": "2026-05-17",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-05-17T00:00:00+09:00",
+    "window_end": "2026-05-17T23:59:59+09:00",
+    "crawled_at": "2026-05-18T10:59:21.201196+09:00",
+    "total_posts": 2,
+    "total_comments": 2,
+    "boards": {
+      "4": {
+        "name": "자유 게시판",
+        "count": 2
+      }
+    }
+  },
+  "official_posts": [],
+  "posts": [
+    {
+      "feed_id": "7676950",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "전쟁의 지휘자 에델 모션",
+      "body": "전쟁의 지휘자 에델 워리어 스킬모션 않보여요.",
+      "author": "워리어",
+      "created_at": "2026-05-17T14:48:47+09:00",
+      "view_count": 63,
+      "comment_count": 0,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7676950",
+      "comments": []
+    },
+    {
+      "feed_id": "7675919",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "DK가 ㅈ망겜인 이유",
+      "body": "1) 재화 똥값 2) 캐릭에 얼마를 썼든 메인캐도 시세 200 - 300. 이 마저도 안사가는게 웃음벨 3) 바람의나라 프리서버보다 유저없음. 작업장+ 몇 안되는 고인물끼리 북치고 장구치는 개똥망 그자체 결론 섭종",
+      "author": "부산돌려차기",
+      "created_at": "2026-05-17T05:54:36+09:00",
+      "view_count": 142,
+      "comment_count": 2,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7675919",
+      "comments": [
+        {
+          "comment_id": "26357748",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "Hhshdhhx",
+          "text": "지금 너무재밌는데",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26359256",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "럭키가이 겜돌이 6255",
+          "text": "알았어 그만가",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    }
+  ]
+}

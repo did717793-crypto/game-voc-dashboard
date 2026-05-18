@@ -1,0 +1,34 @@
+{
+  "meta": {
+    "date": "2026-05-16",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-05-16T00:00:00+09:00",
+    "window_end": "2026-05-16T23:59:59+09:00",
+    "crawled_at": "2026-05-18T10:59:15.671477+09:00",
+    "total_posts": 1,
+    "total_comments": 0,
+    "boards": {
+      "4": {
+        "name": "자유 게시판",
+        "count": 1
+      }
+    }
+  },
+  "official_posts": [],
+  "posts": [
+    {
+      "feed_id": "7673740",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "약한서버도 이제사냥할수있으니 결제도하고",
+      "body": "재밌네요!!  어느정도 급이맞아야 재밌는것같습니다~~ 앞으로결제많이할게요!!  평균 급이맞을때까지 인터안바꾸는것도 디케이를살리는길같습니다~~ 쌘써버들은 농사싫어하고 쟁을좋아하니 계속쟁만주는게 답인듯 !! 그래야 쟁하면서약하면 결제하고하니 지금은 모든써버가 만족하는것같습니다. 건승하세요!!",
+      "author": "Hhshdhhx",
+      "created_at": "2026-05-16T18:30:57+09:00",
+      "view_count": 117,
+      "comment_count": 0,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7673740",
+      "comments": []
+    }
+  ]
+}
