@@ -1493,6 +1493,14 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
       </div>
     </div>
 
+    <!-- 패키지 TOP10 (서버 상세 테이블보다 먼저) -->
+    <div class="mg-chart-section">
+      <div class="mg-section-title">패키지 판매량 TOP10</div>
+    </div>
+    <div class="pkg-top10-wrap" id="mg-pkg-wrap">
+      <!-- JS로 동적 생성 -->
+    </div>
+
     <!-- 서버별 상세 테이블 -->
     <div class="mg-chart-section">
       <div class="mg-section-title">서버 그룹별 상세 지표</div>
@@ -1508,14 +1516,6 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
           <tbody id="mg-srv-tbody"></tbody>
         </table>
       </div>
-    </div>
-
-    <!-- 패키지 TOP10 -->
-    <div class="mg-chart-section">
-      <div class="mg-section-title">패키지 판매량 TOP10</div>
-    </div>
-    <div class="pkg-top10-wrap" id="mg-pkg-wrap">
-      <!-- JS로 동적 생성 -->
     </div>
 
     <div class="updated" style="padding:0 20px 16px">마지막 업데이트: {now}</div>
@@ -1660,20 +1660,19 @@ function mgAggregateTrend(selIds) {{
 // ── 숫자 포맷 ───────────────────────────────────────────────────
 function mgFmtNum(n) {{
   if(!n) return '0';
-  if(n >= 1e8) return (n/1e8).toFixed(1)+'억';
-  if(n >= 1e4) return (n/1e4).toFixed(0)+'만';
-  return n.toLocaleString();
+  return Math.round(n).toLocaleString();
 }}
 function mgFmtRev(n) {{
-  if(!n) return '—';
-  if(n >= 1e8) return (n/1e8).toFixed(2)+'억원';
-  if(n >= 1e4) return (n/1e4).toFixed(0)+'만원';
-  return n.toLocaleString()+'원';
+  // 금액: 축약 없이 천 단위 콤마 + 원 (예: 5,841,101원)
+  if(n === null || n === undefined) return '—';
+  if(n === 0) return '0원';
+  return Math.round(n).toLocaleString()+'원';
 }}
 function mgFmtK(n) {{
-  if(!n) return '—';
-  if(n >= 1e4) return (n/1e4).toFixed(0)+'만원';
-  return n.toLocaleString()+'원';
+  // ARPU/ARPPU: 축약 없이 천 단위 콤마 + 원 (예: 44,250원)
+  if(n === null || n === undefined) return '—';
+  if(n === 0) return '0원';
+  return Math.round(n).toLocaleString()+'원';
 }}
 
 // ── KPI 카드 렌더 ───────────────────────────────────────────────
@@ -1706,18 +1705,33 @@ function mgDestroyCharts() {{
     if(_mgCharts[id]) {{ _mgCharts[id].destroy(); delete _mgCharts[id]; }}
   }});
 }}
-function mgMakeLineChart(id, labels, datasets) {{
+function mgMakeLineChart(id, labels, datasets, isRevenue) {{
   var ctx = document.getElementById(id);
   if(!ctx) return;
+  var yTickCb = isRevenue
+    ? function(v){{ return Math.round(v).toLocaleString()+'원'; }}
+    : undefined;
   _mgCharts[id] = new Chart(ctx, {{
     type: 'line',
     data: {{labels:labels, datasets:datasets}},
     options: {{
       responsive:true, maintainAspectRatio:false,
-      plugins:{{legend:{{position:'bottom',labels:{{font:{{size:10}},boxWidth:10,padding:6}}}}}},
+      plugins:{{
+        legend:{{position:'bottom',labels:{{font:{{size:10}},boxWidth:10,padding:6}}}},
+        tooltip:{{
+          callbacks:{{
+            label: isRevenue
+              ? function(ctx){{ return ctx.dataset.label+': '+Math.round(ctx.raw).toLocaleString()+'원'; }}
+              : undefined
+          }}
+        }}
+      }},
       scales:{{
         x:{{ticks:{{font:{{size:10}}}},grid:{{display:false}}}},
-        y:{{ticks:{{font:{{size:10}}}},grid:{{color:'#eee'}},beginAtZero:true}}
+        y:{{
+          ticks:{{font:{{size:10}}, callback: yTickCb}},
+          grid:{{color:'#eee'}},beginAtZero:true
+        }}
       }}
     }}
   }});
@@ -1728,16 +1742,16 @@ function mgRenderCharts(trend, selGroups) {{
   mgDestroyCharts();
   if(!trend || !trend.length) return;
   var labels = trend.map(function(t){{return t.date.slice(5);}});
-  // 총 매출
+  // 총 매출 (isRevenue=true → 금액 포맷)
   mgMakeLineChart('mg-c-rev-total', labels, [{{
     label:'총 매출', data:trend.map(function(t){{return t.total_revenue||0;}}),
     borderColor:'#1a73e8', backgroundColor:'rgba(26,115,232,.1)', tension:.3, fill:true
-  }}]);
-  // 유저 매출
+  }}], true);
+  // 유저 매출 (isRevenue=true)
   mgMakeLineChart('mg-c-rev-user', labels, [{{
     label:'유저 매출', data:trend.map(function(t){{return t.user_revenue||0;}}),
     borderColor:'#34a853', backgroundColor:'rgba(52,168,83,.1)', tension:.3, fill:true
-  }}]);
+  }}], true);
   // DAU / PU
   mgMakeLineChart('mg-c-dau-pu', labels, [
     {{label:'DAU',data:trend.map(function(t){{return t.dau||0;}}),borderColor:'#4285f4',tension:.3}},
@@ -1748,13 +1762,13 @@ function mgRenderCharts(trend, selGroups) {{
     {{label:'NU', data:trend.map(function(t){{return t.nu||0;}}), borderColor:'#fbbc04',tension:.3}},
     {{label:'NPU',data:trend.map(function(t){{return t.npu||0;}}),borderColor:'#9aa0a6',tension:.3}},
   ]);
-  // ARPU / ARPPU
+  // ARPU / ARPPU (isRevenue=true → 원화 포맷)
   mgMakeLineChart('mg-c-arpu', labels, [
     {{label:'ARPU', data:trend.map(function(t){{return t.dau>0?Math.round(t.user_revenue/t.dau):0;}}),
       borderColor:'#4285f4',tension:.3}},
     {{label:'ARPPU',data:trend.map(function(t){{return t.pu>0 ?Math.round(t.user_revenue/t.pu):0;}}),
       borderColor:'#ea4335',tension:.3}},
-  ]);
+  ], true);
   // PUR
   mgMakeLineChart('mg-c-pur', labels, [{{
     label:'PUR(%)',data:trend.map(function(t){{return t.dau>0?(t.pu/t.dau*100):0;}}),
