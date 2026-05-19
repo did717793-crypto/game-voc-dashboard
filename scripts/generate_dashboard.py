@@ -115,22 +115,23 @@ def build_metrics_js_data() -> str:
     )
 
 
-def load_new_metrics() -> tuple[dict, str]:
-    """data/DKR/metrics/*.metrics.json 중 최신 1건 로드.
+def load_all_metrics() -> tuple[dict, str]:
+    """data/DKR/metrics/*.metrics.json 전체 로드 → {date: metrics_dict}.
 
-    반환: (metrics_dict, date_str)
+    반환: (all_metrics_dict, latest_date_str)
     """
     if not NEW_METRICS_DIR.exists():
         return {}, ""
-    files = sorted(NEW_METRICS_DIR.glob("*.metrics.json"), reverse=True)
-    if not files:
-        return {}, ""
-    f = files[0]
-    try:
-        data = json.loads(f.read_text(encoding="utf-8"))
-        return data, data.get("date", f.stem.replace(".metrics", ""))
-    except Exception:
-        return {}, ""
+    all_data: dict = {}
+    for f in sorted(NEW_METRICS_DIR.glob("*.metrics.json")):
+        try:
+            d = json.loads(f.read_text(encoding="utf-8"))
+            date_key = d.get("date", f.stem.replace(".metrics", ""))
+            all_data[date_key] = d
+        except Exception:
+            pass
+    latest = max(all_data.keys()) if all_data else ""
+    return all_data, latest
 
 
 # ── 01 주요 이슈 ──────────────────────────────────────────────
@@ -1071,8 +1072,12 @@ def generate():
         panels_html = "<p class='empty-s'>VOC 데이터 없음</p>"
 
     metrics_js       = build_metrics_js_data()
-    new_metrics, new_metrics_date = load_new_metrics()
-    new_metrics_js   = f"const NEW_METRICS={json.dumps(new_metrics, ensure_ascii=False)};\n"
+    all_new_metrics, new_metrics_date = load_all_metrics()
+    # ALL_METRICS_DATA: {날짜 → metrics}, NEW_METRICS: 최신 날짜 기본값 (JS에서 날짜별 동적 교체)
+    new_metrics_js   = (
+        f"const ALL_METRICS_DATA={json.dumps(all_new_metrics, ensure_ascii=False)};\n"
+        f"var NEW_METRICS=ALL_METRICS_DATA['{new_metrics_date}']||{{}};\n"
+    )
 
     html = f"""<!DOCTYPE html>
 <html lang="ko">
@@ -1663,16 +1668,16 @@ function mgFmtNum(n) {{
   return Math.round(n).toLocaleString();
 }}
 function mgFmtRev(n) {{
-  // 금액: 축약 없이 천 단위 콤마 + 원 (예: 5,841,101원)
+  // 금액: ₩ 접두 + 천 단위 콤마 (예: ₩5,841,101)
   if(n === null || n === undefined) return '—';
-  if(n === 0) return '0원';
-  return Math.round(n).toLocaleString()+'원';
+  if(n === 0) return '₩0';
+  return '₩'+Math.round(n).toLocaleString();
 }}
 function mgFmtK(n) {{
-  // ARPU/ARPPU: 축약 없이 천 단위 콤마 + 원 (예: 44,250원)
+  // ARPU/ARPPU: ₩ 접두 + 천 단위 콤마 (예: ₩44,250)
   if(n === null || n === undefined) return '—';
-  if(n === 0) return '0원';
-  return Math.round(n).toLocaleString()+'원';
+  if(n === 0) return '₩0';
+  return '₩'+Math.round(n).toLocaleString();
 }}
 
 // ── KPI 카드 렌더 ───────────────────────────────────────────────
@@ -1709,7 +1714,7 @@ function mgMakeLineChart(id, labels, datasets, isRevenue) {{
   var ctx = document.getElementById(id);
   if(!ctx) return;
   var yTickCb = isRevenue
-    ? function(v){{ return Math.round(v).toLocaleString()+'원'; }}
+    ? function(v){{ return '₩'+Math.round(v).toLocaleString(); }}
     : undefined;
   _mgCharts[id] = new Chart(ctx, {{
     type: 'line',
@@ -1721,7 +1726,7 @@ function mgMakeLineChart(id, labels, datasets, isRevenue) {{
         tooltip:{{
           callbacks:{{
             label: isRevenue
-              ? function(ctx){{ return ctx.dataset.label+': '+Math.round(ctx.raw).toLocaleString()+'원'; }}
+              ? function(ctx){{ return ctx.dataset.label+': ₩'+Math.round(ctx.raw).toLocaleString(); }}
               : undefined
           }}
         }}
@@ -1859,10 +1864,11 @@ function mgRenderPackages(selIds) {{
     }} else {{
       items.forEach(function(p) {{
         var rc = p.rank_no<=3 ? 'r'+p.rank_no : '';
+        var revStr = p.revenue_krw ? ' <span style="font-size:10px;color:#9aa0a6">₩'+Math.round(p.revenue_krw).toLocaleString()+'</span>' : '';
         html += '<div class="pkg-top10-row">'
               + '<span class="pkg-top10-rank '+rc+'">'+p.rank_no+'</span>'
               + '<span class="pkg-top10-name">'+p.productname+'</span>'
-              + '<span class="pkg-top10-qty">'+p.sales_quantity+'개</span>'
+              + '<span class="pkg-top10-qty">'+p.sales_quantity+'개'+revStr+'</span>'
               + '</div>';
       }});
     }}
@@ -1873,11 +1879,27 @@ function mgRenderPackages(selIds) {{
 
 function mgPkgPeriod(type) {{
   _pkgPeriodType = type;
-  mgRenderPackages(getSelectedGroups());
+  mgRenderPackages(getSelectedServerIds());
 }}
 
-// ── 전체 렌더 (serverid 기준) ────────────────────────────────────
+// ── 전체 렌더 (serverid 기준, 날짜별 데이터 교체 지원) ──────────
 function mgRender() {{
+  // 날짜 배지 업데이트
+  var lbl = document.getElementById('mg-date-label');
+  if(lbl) lbl.textContent = '기준일: '+(_date||'—');
+
+  // 해당 날짜 데이터 없으면 안내 표시
+  if(!NEW_METRICS || !NEW_METRICS.servers) {{
+    var no_data = '<p class="empty-s" style="padding:40px;grid-column:1/-1">해당 날짜('+_date+') 지표 데이터 없음</p>';
+    var grid = document.getElementById('mg-kpi-grid');
+    if(grid) grid.innerHTML = no_data;
+    var tbody = document.getElementById('mg-srv-tbody');
+    if(tbody) tbody.innerHTML = '';
+    var pkg = document.getElementById('mg-pkg-wrap');
+    if(pkg) pkg.innerHTML = '<p class="empty-s" style="padding:30px">패키지 데이터 없음</p>';
+    return;
+  }}
+
   var selIds = getSelectedServerIds();
   var agg   = mgAggregate(selIds);
   var trend = mgAggregateTrend(selIds);
@@ -1887,10 +1909,11 @@ function mgRender() {{
   mgRenderPackages(selIds);
 }}
 
-// ── 초기화 (지표 탭 열 때) ──────────────────────────────────────
+// ── 초기화 (지표 탭 열 때 또는 날짜 변경 시) ─────────────────────
 function initMetricsTab() {{
-  if(!NEW_METRICS || !NEW_METRICS.servers) return;
-  sgBuildChecks(_sgGroup);  // 체크박스 초기화
+  // 현재 날짜의 metrics 데이터 교체
+  NEW_METRICS = ALL_METRICS_DATA[_date] || null;
+  sgBuildChecks(_sgGroup);  // 체크박스 초기화 (데이터 없어도 구조는 생성)
   mgRender();
 }}
 
@@ -1922,7 +1945,10 @@ function onDateChange(d){{
     vocSwitchDate(d);   // vocSwitchDate 안에서 _date=d 처리
   }}else{{
     _date=d;
-    renderCurrentMetrics();
+    // 지표 탭: 선택 날짜의 metrics 데이터로 교체
+    NEW_METRICS = ALL_METRICS_DATA[d] || null;
+    mgRender();
+    renderCurrentMetrics();  // 하위호환 (숨겨진 legacy 섹션)
   }}
 }}
 
@@ -2026,7 +2052,7 @@ function fmtKRW(n){{
 }}
 function fmtKRWFull(n){{
   if(n===null||n===undefined||isNaN(n))return '-';
-  return n.toLocaleString()+'원';
+  return '₩'+n.toLocaleString();
 }}
 function fmtNum(n){{
   if(n===null||n===undefined||isNaN(n))return '-';
