@@ -1161,21 +1161,24 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
 .kpi-grid7{{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;padding:12px 20px}}
 @media(max-width:900px){{.kpi-grid7{{grid-template-columns:repeat(4,1fr)}}}}
 @media(max-width:600px){{.kpi-grid7{{grid-template-columns:repeat(2,1fr)}}}}
-.kpi7{{background:#f8f9fa;border:1px solid #e8eaed;border-radius:6px;padding:9px 10px;text-align:center}}
-.kpi7-lbl{{font-size:10px;color:#5f6368;font-weight:700;margin-bottom:3px;text-transform:uppercase;letter-spacing:.3px}}
-.kpi7-val{{font-size:15px;font-weight:800;color:#1a1a2e;line-height:1.2}}
-.kpi7-sub{{font-size:9.5px;color:#9aa0a6;margin-top:2px}}
-.kpi7.accent{{border-top:2.5px solid #1a73e8}}
+.kpi7{{background:#fff;border:1px solid #e8eaed;border-radius:8px;padding:11px 10px 9px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}}
+.kpi7-lbl{{font-size:10px;color:#5f6368;font-weight:700;margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px}}
+.kpi7-val{{font-size:19px;font-weight:800;color:#1a1a2e;line-height:1.1}}
+.kpi7-sub{{font-size:9.5px;color:#9aa0a6;margin-top:3px}}
+.kpi7.cat-user{{border-top:3px solid #1a73e8}}
+.kpi7.cat-eff{{border-top:3px solid #8a4cf6}}
 /* 매출 서버 그룹별 breakdown */
 .mg-rev-row{{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px 12px}}
 @media(max-width:600px){{.mg-rev-row{{grid-template-columns:1fr}}}}
-.mg-rev-card{{background:#f8f9fa;border:1px solid #e8eaed;border-radius:8px;padding:10px 14px}}
-.mg-rev-card-title{{font-size:10.5px;font-weight:700;color:#5f6368;text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px}}
-.mg-rev-groups{{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}}
-.mg-rev-group{{text-align:center}}
-.mg-rev-group-lbl{{font-size:9px;color:#9aa0a6;font-weight:600;margin-bottom:2px}}
-.mg-rev-group-val{{font-size:12.5px;font-weight:800;color:#1a1a2e;white-space:nowrap}}
-.mg-rev-group-val.total{{color:#1a73e8}}
+.mg-rev-card{{background:#fff;border:1px solid #e8eaed;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}}
+.mg-rev-card-header{{padding:10px 14px 8px;border-bottom:1px solid #f1f3f4}}
+.mg-rev-card-title{{font-size:10px;font-weight:700;color:#5f6368;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px}}
+.mg-rev-card-total{{font-size:22px;font-weight:800;color:#1a73e8;line-height:1.1}}
+.mg-rev-card-body{{display:grid;grid-template-columns:repeat(3,1fr);gap:0;padding:0}}
+.mg-rev-group{{text-align:center;padding:8px 6px;border-right:1px solid #f1f3f4}}
+.mg-rev-group:last-child{{border-right:none}}
+.mg-rev-group-lbl{{font-size:9px;color:#9aa0a6;font-weight:600;margin-bottom:3px}}
+.mg-rev-group-val{{font-size:12px;font-weight:700;color:#3c4043;white-space:nowrap}}
 /* 기간 선택 */
 .mg-period-sel{{display:flex;align-items:center;gap:6px;font-size:11.5px}}
 .mg-period-sel input[type=date]{{padding:3px 8px;border:1px solid rgba(255,255,255,.4);
@@ -1864,13 +1867,13 @@ function mgRenderKPI(agg) {{
   if(!agg) {{ grid.innerHTML='<p class="empty-s" style="padding:20px;grid-column:1/-1">데이터 없음</p>'; return; }}
   var dauLbl = agg.dau_is_avg ? 'DAU <span title="기간 일 평균 DAU" style="color:#9aa0a6;font-size:9px">avg</span>' : 'DAU';
   var cards = [
-    {{lbl:dauLbl,  val:mgFmtNum(agg.dau),  sub:'일 활성 유저',  cls:''}},
-    {{lbl:'NU',    val:mgFmtNum(agg.nu),   sub:'신규 유저',     cls:''}},
-    {{lbl:'PU',    val:mgFmtNum(agg.pu),   sub:'결제 유저',     cls:'accent'}},
-    {{lbl:'NPU',   val:mgFmtNum(agg.npu),  sub:'신규 결제',     cls:''}},
-    {{lbl:'PUR',   val:agg.pur,            sub:'결제 전환율',   cls:'accent'}},
-    {{lbl:'ARPU',  val:mgFmtK(agg.arpu),  sub:'1인당 유저매출', cls:''}},
-    {{lbl:'ARPPU', val:mgFmtK(agg.arppu), sub:'결제자당 매출',  cls:''}},
+    {{lbl:dauLbl,  val:mgFmtNum(agg.dau),  sub:'일 활성 유저',   cls:'cat-user'}},
+    {{lbl:'NU',    val:mgFmtNum(agg.nu),   sub:'신규 유저',      cls:'cat-user'}},
+    {{lbl:'PU',    val:mgFmtNum(agg.pu),   sub:'결제 유저',      cls:'cat-user'}},
+    {{lbl:'NPU',   val:mgFmtNum(agg.npu),  sub:'신규 결제',      cls:'cat-user'}},
+    {{lbl:'PUR',   val:agg.pur,            sub:'결제 전환율',    cls:'cat-eff'}},
+    {{lbl:'ARPU',  val:mgFmtK(agg.arpu),  sub:'1인당 유저매출', cls:'cat-eff'}},
+    {{lbl:'ARPPU', val:mgFmtK(agg.arppu), sub:'결제자당 매출',  cls:'cat-eff'}},
   ];
   grid.innerHTML = cards.map(function(c) {{
     return '<div class="kpi7 '+c.cls+'">'
@@ -1886,21 +1889,25 @@ function mgRenderRevBreakdown(startDate, endDate) {{
   var wrap = document.getElementById('mg-rev-grid');
   if(!wrap) return;
   var bd = mgAggregateRevBreakdown(startDate, endDate);
-  var groups = [
-    {{key:'total',lbl:'전체'}},
+  var subGroups = [
     {{key:'old',  lbl:'구서버'}},
     {{key:'hyper',lbl:'하이퍼'}},
     {{key:'sea',  lbl:'동남아'}},
   ];
   function mkCard(title, field) {{
-    var gHtml = groups.map(function(g) {{
+    var subHtml = subGroups.map(function(g) {{
       return '<div class="mg-rev-group">'
            + '<div class="mg-rev-group-lbl">'+g.lbl+'</div>'
-           + '<div class="mg-rev-group-val '+(g.key==='total'?'total':'')+'">'+mgFmtRev(bd[g.key][field])+'</div>'
+           + '<div class="mg-rev-group-val">'+mgFmtRev(bd[g.key][field])+'</div>'
            + '</div>';
     }}).join('');
-    return '<div class="mg-rev-card"><div class="mg-rev-card-title">'+title+'</div>'
-         + '<div class="mg-rev-groups">'+gHtml+'</div></div>';
+    return '<div class="mg-rev-card">'
+         + '<div class="mg-rev-card-header">'
+         +   '<div class="mg-rev-card-title">'+title+'</div>'
+         +   '<div class="mg-rev-card-total">'+mgFmtRev(bd.total[field])+'</div>'
+         + '</div>'
+         + '<div class="mg-rev-card-body">'+subHtml+'</div>'
+         + '</div>';
   }}
   wrap.innerHTML = mkCard('총 매출', 'total_revenue') + mkCard('유저 매출', 'user_revenue');
 }}
