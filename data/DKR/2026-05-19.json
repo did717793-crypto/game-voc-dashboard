@@ -1,0 +1,142 @@
+{
+  "meta": {
+    "date": "2026-05-19",
+    "lounge": "DK_Mobile_REBORN",
+    "window_start": "2026-05-19T00:00:00+09:00",
+    "window_end": "2026-05-19T23:59:59+09:00",
+    "crawled_at": "2026-05-20T10:20:11.344246+09:00",
+    "total_posts": 4,
+    "total_comments": 6,
+    "boards": {
+      "4": {
+        "name": "자유 게시판",
+        "count": 3
+      },
+      "9": {
+        "name": "건의 게시판",
+        "count": 1
+      }
+    }
+  },
+  "official_posts": [],
+  "posts": [
+    {
+      "feed_id": "7686617",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "동기화기(동기화 툴) 사용할 수 있는 건가요?",
+      "body": "매크로/싱크로 및 핵 유저에 대한 단속이 전혀 이루어지지 않고 있습니다. 불법 프로그램 사용자를 방치하면 일반 유저들이 떠나게 됩니다. 불법 프로그램 쓰면서 이기니까 재미있냐? 실력 없어서 매크로 돌리는 수준. 좀비 혈맹들(작업장) 싱크로 키고 기어 나오는 거 극혐이네. 싱크로 매크로 돌리는 좀비들, 실력은 없고 프로그램만 돌리네. zombie... 한국인으로서 진짜 나라 망신이다 .",
+      "author": "졸린 호빵 2059225",
+      "created_at": "2026-05-19T22:53:07+09:00",
+      "view_count": 95,
+      "comment_count": 0,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7686617",
+      "comments": []
+    },
+    {
+      "feed_id": "7684472",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "Dk리본 글로벌 오피셜떴네",
+      "body": "ㅋㅋ",
+      "author": "전설속 모험가 4521",
+      "created_at": "2026-05-19T14:17:31+09:00",
+      "view_count": 260,
+      "comment_count": 5,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7684472",
+      "comments": [
+        {
+          "comment_id": "26396643",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "Hororo",
+          "text": "어디서 볼수있나요?",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26396765",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "전국제패 검사 4987",
+          "text": "언재오픈인가요",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26401674",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "천하통일 킬러 2204",
+          "text": "ㄷㄷㄷㄷ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26401678",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "천하통일 킬러 2204",
+          "text": "ㄷㄷㄷㄷㄷㄷㄷㄷ",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        },
+        {
+          "comment_id": "26401682",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "천하통일 킬러 2204",
+          "text": "ㄷㄷㄷㄷ``",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7683743",
+      "board_id": 4,
+      "board_name": "자유 게시판",
+      "title": "편의성 패치 부탁드립니다(프리셋등)",
+      "body": "1. 디케이 모바일 특성 자체가 무기 스왑만으로 빠른 클래스 전환으로 전투의 재미를 더하는것인데 프리셋 3개 만으로는 너무 부족합니다. (룬은 존재하지도 않음) 디케이 리본의 장점이 퇴색되고 있습니다. 프리셋 최소 5개로좀 늘려주세요. 2. 문장 강화석 이벤트 전설문장이 이제 어느정도  풀린 시점인데 강화할수가 없습니다. 매주 사는 강화석 갯수좀 늘려주세요(초승달주화로 구매하는것) 3. 쟁구도를 위해 대만bj분들 프모좀 주세요 대만형들 쟁을 거이 보스탐만 하는데 3자구도 활발해지게 부탁드립니다 (프모 끝나도 꾸준한 과금을 하고 있음. 인정.) 4. 플로린섭과 공성or 이벤트 보스 플로린섭  구도 망가진거로 들었는데 주당 1회정도 구섭과 전투하면 좋을것 같습니다.",
+      "author": "쟁하러가자",
+      "created_at": "2026-05-19T10:55:30+09:00",
+      "view_count": 90,
+      "comment_count": 1,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7683743",
+      "comments": [
+        {
+          "comment_id": "26395469",
+          "parent_id": "0",
+          "depth": 1,
+          "author": "똥손팔라912",
+          "text": "불편을드려죄송합니다 전사님. 다만 금년안 서버종료가 예정되어있어 돈좀더쓰시다그냥 공지올라오면 접으시면 되겠습니다.",
+          "created_at": "",
+          "likes": 0,
+          "reply_count": 0
+        }
+      ]
+    },
+    {
+      "feed_id": "7683178",
+      "board_id": 9,
+      "board_name": "건의 게시판",
+      "title": "플로린신서버",
+      "body": "21일날 신서버 나온다던데 외국쪽에는 사전예약 홍보하면서 왜 국내는 사전예약이랑 홍보 안하나요?",
+      "author": "91829272",
+      "created_at": "2026-05-19T04:03:51+09:00",
+      "view_count": 118,
+      "comment_count": 0,
+      "like_count": 0,
+      "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7683178",
+      "comments": []
+    }
+  ]
+}
