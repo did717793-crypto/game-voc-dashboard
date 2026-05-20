@@ -14,25 +14,35 @@
       ]
     },
     {
-      "semantic_topic": "기타",
+      "semantic_topic": "글로벌신서버",
       "issue_type": "게임 일반",
-      "category": "기타",
-      "summary": "Dk리본 글로벌 오피셜떴네",
-      "count": 3,
+      "category": "게임 관련",
+      "summary": "신서버/글로벌 서버 사전예약 관련 문의",
+      "count": 2,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7684472",
       "feed_ids": [
         "7684472",
-        "7683743",
         "7683178"
+      ]
+    },
+    {
+      "semantic_topic": "편의성건의",
+      "issue_type": "게임 개선 건의",
+      "category": "건의·요청",
+      "summary": "프리셋 기능 확장 및 편의성 개선 건의",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7683743",
+      "feed_ids": [
+        "7683743"
       ]
     }
   ],
   "insights": {
     "top_issues": [
       {
-        "category": "기타",
-        "summary": "Dk리본 글로벌 오피셜떴네",
-        "count": 3,
+        "category": "게임 관련",
+        "summary": "신서버/글로벌 서버 사전예약 관련 문의",
+        "count": 2,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7684472"
       },
       {
@@ -40,18 +50,29 @@
         "summary": "좀비 길드 매크로 신고 관련 제재 요청",
         "count": 1,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7686617"
+      },
+      {
+        "category": "건의·요청",
+        "summary": "프리셋 기능 확장 및 편의성 개선 건의",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7683743"
       }
     ],
     "trend": {
-      "기타": {
-        "current": 3,
-        "previous": 1,
-        "delta": 2
-      },
       "게임 관련": {
+        "current": 3,
+        "previous": 0,
+        "delta": 3
+      },
+      "건의·요청": {
         "current": 1,
         "previous": 0,
         "delta": 1
+      },
+      "기타": {
+        "current": 0,
+        "previous": 1,
+        "delta": -1
       }
     },
     "trending_keywords": [],

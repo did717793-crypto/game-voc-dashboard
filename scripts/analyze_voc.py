@@ -483,6 +483,12 @@ def is_noise(post: dict) -> bool:
         return not has_valid_body    # 본문 있으면 노이즈 아님
     if _NOISE_PATTERN.match(title):
         return not has_valid_body
+
+    # ㅋ/ㅎ 계열 반응성 게시글 필터 (제목의 50% 이상이 ㅋ/ㅎ → 의미 없는 반응글)
+    laugh_chars = sum(1 for c in title if c in 'ㅋㅎ')
+    if laugh_chars >= 1 and (laugh_chars / max(len(title.replace(' ', '')), 1)) >= 0.5:
+        return not has_valid_body
+
     return False
 
 
@@ -779,6 +785,38 @@ NORMALIZE_TABLE: list[tuple[str, str]] = [
     ("접이 안",         "접속 불가"),
     # 렉/랙 — 단독 사용 금지 (케렉/캐릭 등 오탐 방지)
     # 렉걸, 렉이 심, 렉 때문 등 긴 표현만 위에서 처리
+    # ── v7.2 신규: 글로벌/신서버 ─────────────────────────────────────────────
+    ("글로벌 오피셜",     "글로벌 서버 공식 발표"),   # "글로벌 오피셜 떴네"
+    ("글로벌 출시",       "글로벌 서버 공식 발표"),
+    ("글로벌 사전예약",   "글로벌 서버 사전예약"),
+    ("글로벌 서버",       "글로벌 서버 정보"),
+    ("글로벌",            "글로벌 서버 정보"),         # broad — 비특정 언급
+    ("신서버 오픈",       "신서버 정보"),
+    ("신서버",            "신서버 정보"),
+    ("새서버",            "신서버 정보"),
+    ("오피셜",            "공식 발표"),                # "오피셜떴네" 슬랭 처리
+    # ── v7.2 신규: 편의성/프리셋 건의 ──────────────────────────────────────────
+    ("프리셋 추가",       "프리셋 기능 확장 건의"),
+    ("프리셋",            "프리셋 기능 건의"),
+    ("편의 패치",         "편의성 개선 건의"),
+    ("편의성 패치",       "편의성 개선 건의"),
+    ("편의 기능",         "편의성 개선 건의"),
+    ("편의성 개선",       "편의성 개선 건의"),
+    # ── v7.2 신규: 스킬 모션/표시 오류 ─────────────────────────────────────────
+    ("스킬모션 않보",     "스킬 모션 표시 오류"),      # "스킬모션 않보여요"
+    ("스킬모션 안보",     "스킬 모션 표시 오류"),
+    ("스킬 모션 않보",    "스킬 모션 표시 오류"),
+    ("스킬 모션 안보",    "스킬 모션 표시 오류"),
+    ("모션 않보여",       "스킬 모션 표시 오류"),
+    ("모션 안보여",       "스킬 모션 표시 오류"),
+    ("않보여요",          "표시 오류"),                # 범용 표시 오류 fallback
+    ("안보여요",          "표시 오류"),
+    # ── v7.2 신규: 드랍 오류 ────────────────────────────────────────────────────
+    ("드랍안된다",        "아이템 드랍 오류"),         # "드랍안된다 수정좀해라"
+    ("드랍 안됨",         "아이템 드랍 오류"),
+    ("드랍이 안",         "아이템 드랍 오류"),
+    ("드랍 안되",         "아이템 드랍 오류"),
+    ("드랍안됨",          "아이템 드랍 오류"),
 ]
 
 
@@ -854,12 +892,18 @@ TOPIC_RULES: list[tuple[str, list[str], str]] = [
     ("서버접속장애",     ["서버 접속 장애", "접속 불가", "로그인 불가",
                          "게임 지연", "접속 종료", "서버 다운"],                        "버그·오류"),
     ("아이템기능오류",   ["아이템 기능 오류", "거래 기능 오류", "귓말 기능 오류",
-                         "기능 오류", "기능 오작동"],                                   "버그·오류"),
+                         "기능 오류", "기능 오작동",
+                         "스킬 모션 표시 오류", "표시 오류", "아이템 드랍 오류"],      "버그·오류"),
     ("채팅분쟁",         ["유저 간 채팅 분쟁", "채팅 욕설 신고", "채팅 신고 요청"],    "게임 관련"),
     ("거래시세",         ["거래 가격", "시세"],                                         "게임 관련"),
     ("서버통합건의",     ["서버 통합 건의", "서버 이전권 건의"],                        "건의·요청"),
     ("콘텐츠건의",       ["현돌 초기화 건의", "콘텐츠 추가", "개선 요청",
                          "이벤트 기간 연장 건의"],                                    "건의·요청"),
+    # ── v7.2 신규 topics ─────────────────────────────────────────────────────
+    ("글로벌신서버",     ["글로벌 서버 공식 발표", "글로벌 서버 사전예약",
+                         "글로벌 서버 정보", "신서버 정보"],                          "게임 관련"),
+    ("편의성건의",       ["프리셋 기능 확장 건의", "프리셋 기능 건의",
+                         "편의성 개선 건의"],                                         "건의·요청"),
     ("과금불만",         ["과금 구조 불만", "환불 요청"],                               "기타"),
     ("강화불만",         ["강화 시스템 불만", "강화 실패 불만"],                       "기타"),
     ("서비스종료우려",   ["서비스 종료 우려", "게임 이탈 의향"],                       "기타"),
@@ -900,6 +944,8 @@ TOPIC_TO_ISSUE_TYPE: dict[str, str] = {
     "인터서버문의":      "게임 일반",
     "재화수급문의":      "게임 일반",
     "전투콘텐츠의견":    "게임 일반",
+    "글로벌신서버":      "게임 일반",
+    "편의성건의":        "게임 개선 건의",
     "기타":              "게임 일반",
 }
 
@@ -1042,6 +1088,8 @@ _ISSUE_TYPE_FALLBACK: dict[str, str] = {
     "운영·정책 불만":        "운영 정책에 대한 유저 불만",
     "가격·거래 문의":        "게임 내 거래·시세 관련 문의",
     "게임 일반":             "게임 이용 관련 기타 문의",
+    "글로벌신서버":          "신서버/글로벌 서버 정보 및 사전예약 관련 문의",
+    "편의성건의":            "프리셋 기능 확장 및 편의성 개선 건의",
 }
 
 
@@ -1319,36 +1367,52 @@ def generate_group_summary(topic: str, posts: list,
             return f"{event_m.group(0)} 초기화 및 재진행 건의"
         return "이벤트 초기화 및 재진행 건의"
 
-    # ── 기타 topic (분류 불가) — 실제 내용 기반 ────────────────
-    # 단일 post면 그 글에서 직접 추출, 복수면 engagement 최고 post 우선
-    if len(posts) == 1:
-        rep_post = posts[0]
-        rep_norm = posts_normalized[0] if posts_normalized else ""
-    else:
-        # engagement 가중치 기준 대표 post 선정
-        rep_idx  = max(range(len(posts)),
-                       key=lambda i: posts[i].get("comment_count", 0) * 2
-                                     + posts[i].get("like_count", 0))
-        rep_post = posts[rep_idx]
-        rep_norm = posts_normalized[rep_idx] if posts_normalized else ""
+    if topic == "글로벌신서버":
+        if "사전예약" in combined_raw:
+            return "신서버/글로벌 서버 사전예약 관련 문의"
+        if "글로벌" in combined_raw:
+            return "신서버/글로벌 서버 정보 및 사전예약 관련 문의"
+        return "신서버 정보 및 일정 관련 문의"
 
-    # normalize 결과가 운영용 표현이면 바로 사용
-    if rep_norm and len(rep_norm) >= 8 and rep_norm != normalize_post_text(
-            rep_post.get("title", ""), ""):   # 원문과 다르면 normalize 성공
-        norm_sent = _extract_meaningful_sentence(rep_norm)
-        if norm_sent and len(norm_sent) >= 8:
-            return norm_sent[:60]
+    if topic == "편의성건의":
+        if "프리셋" in combined_raw:
+            return "프리셋 기능 확장 및 편의성 개선 건의"
+        return "게임 편의성 개선 건의"
 
-    # 대표 post의 body → title 순으로 추출
-    rep_body  = _remove_profanity((rep_post.get("body") or "").strip())
-    rep_title = _remove_profanity((rep_post.get("title") or "").strip())
-    body_sent = _extract_meaningful_sentence(rep_body)
-    if body_sent and len(body_sent) >= 8:
-        return body_sent[:60]
-    title_sent = _extract_meaningful_sentence(rep_title)
-    if title_sent and len(title_sent) >= 6:
-        return title_sent[:60]
-    return rep_title[:60] if len(rep_title) >= 5 else "기타 유저 의견"
+    # ── 기타 topic (분류 불가) — 원문 직접 노출 금지, 키워드 기반 분류 ──────
+    combined_lower = combined_raw.lower()
+
+    # 긍정 피드백/감상
+    if any(kw in combined_lower for kw in
+           ["재밌", "재미있", "좋아요", "감사합니", "기대돼", "기대됩", "재밌네"]):
+        return "게임 긍정 피드백 및 일반 의견"
+
+    # 스킬/캐릭터 관련 표시/기능 오류 (아이템기능오류로 분류 못된 잔류분)
+    if any(kw in combined_lower for kw in ["스킬", "모션", "워리어", "소서", "팔라", "마법"]):
+        if any(kw in combined_lower for kw in ["안보", "않보", "오류", "버그", "이상", "않됨"]):
+            return "스킬·콘텐츠 표시 오류 관련 유저 의견"
+        if any(kw in combined_lower for kw in ["수정", "고쳐", "바꿔", "패치"]):
+            return "스킬·콘텐츠 개선 관련 건의"
+
+    # 드랍/아이템 관련
+    if any(kw in combined_lower for kw in ["드랍", "드롭", "아이템 수급"]):
+        return "아이템 드랍·수급 관련 유저 의견"
+
+    # 이벤트/일정 문의
+    if any(kw in combined_lower for kw in ["언제", "일정", "공지", "업데이트 언제"]):
+        return "게임 일정·업데이트 관련 문의"
+
+    # 건의/개선 감지 (건의 게시판 미분류 잔류)
+    if any(kw in combined_lower for kw in
+           ["해주세요", "해줘요", "넣어주", "추가해", "개선해", "수정해", "부탁"]):
+        return "게임 개선·기능 추가 관련 건의"
+
+    # 서버/타 서버 이전 문의
+    if any(kw in combined_lower for kw in ["서버 이전", "이전권", "서버 합", "섭 합"]):
+        return "서버 이전·통합 관련 문의"
+
+    # fallback — 고정 문장 (원문 노출 완전 차단)
+    return "기타 유저 의견"
 
 
 def build_voc_groups(user_posts: list) -> list:

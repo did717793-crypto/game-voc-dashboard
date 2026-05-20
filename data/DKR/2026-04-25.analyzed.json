@@ -7,8 +7,8 @@
     "trend": {
       "게임 관련": {
         "current": 0,
-        "previous": 3,
-        "delta": -3
+        "previous": 4,
+        "delta": -4
       },
       "버그·오류": {
         "current": 0,
@@ -17,8 +17,8 @@
       },
       "기타": {
         "current": 0,
-        "previous": 10,
-        "delta": -10
+        "previous": 9,
+        "delta": -9
       }
     },
     "trending_keywords": [],

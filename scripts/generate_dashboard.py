@@ -1073,10 +1073,13 @@ def generate():
 
     metrics_js       = build_metrics_js_data()
     all_new_metrics, new_metrics_date = load_all_metrics()
+    first_metrics_date = min(all_new_metrics.keys()) if all_new_metrics else new_metrics_date
     # ALL_METRICS_DATA: {날짜 → metrics}, NEW_METRICS: 최신 날짜 기본값 (JS에서 날짜별 동적 교체)
     new_metrics_js   = (
         f"const ALL_METRICS_DATA={json.dumps(all_new_metrics, ensure_ascii=False)};\n"
         f"var NEW_METRICS=ALL_METRICS_DATA['{new_metrics_date}']||{{}};\n"
+        f"var _mgStartDate='{new_metrics_date}';\n"
+        f"var _mgEndDate='{new_metrics_date}';\n"
     )
 
     html = f"""<!DOCTYPE html>
@@ -1154,15 +1157,35 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
 .srv-check-all-btn{{padding:4px 10px;border:1px solid #dadce0;border-radius:4px;
                     font-size:11px;background:#fff;cursor:pointer;color:#3c4043}}
 .srv-check-all-btn:hover{{background:#f1f3f4}}
-/* 9개 KPI 카드 */
-.kpi-grid9{{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px 20px}}
-@media(max-width:700px){{.kpi-grid9{{grid-template-columns:repeat(2,1fr)}}}}
-.kpi9{{background:#f8f9fa;border:1px solid #e8eaed;border-radius:8px;padding:14px 16px}}
-.kpi9-lbl{{font-size:10.5px;color:#5f6368;font-weight:700;margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px}}
-.kpi9-val{{font-size:20px;font-weight:800;color:#1a1a2e;line-height:1.2}}
-.kpi9-sub{{font-size:10.5px;color:#9aa0a6;margin-top:3px}}
-.kpi9.accent{{border-left:3px solid #1a73e8}}
-.kpi9.accent2{{border-left:3px solid #34a853}}
+/* 7개 KPI 카드 (한 줄) */
+.kpi-grid7{{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;padding:12px 20px}}
+@media(max-width:900px){{.kpi-grid7{{grid-template-columns:repeat(4,1fr)}}}}
+@media(max-width:600px){{.kpi-grid7{{grid-template-columns:repeat(2,1fr)}}}}
+.kpi7{{background:#f8f9fa;border:1px solid #e8eaed;border-radius:6px;padding:9px 10px;text-align:center}}
+.kpi7-lbl{{font-size:10px;color:#5f6368;font-weight:700;margin-bottom:3px;text-transform:uppercase;letter-spacing:.3px}}
+.kpi7-val{{font-size:15px;font-weight:800;color:#1a1a2e;line-height:1.2}}
+.kpi7-sub{{font-size:9.5px;color:#9aa0a6;margin-top:2px}}
+.kpi7.accent{{border-top:2.5px solid #1a73e8}}
+/* 매출 서버 그룹별 breakdown */
+.mg-rev-row{{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px 12px}}
+@media(max-width:600px){{.mg-rev-row{{grid-template-columns:1fr}}}}
+.mg-rev-card{{background:#f8f9fa;border:1px solid #e8eaed;border-radius:8px;padding:10px 14px}}
+.mg-rev-card-title{{font-size:10.5px;font-weight:700;color:#5f6368;text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px}}
+.mg-rev-groups{{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}}
+.mg-rev-group{{text-align:center}}
+.mg-rev-group-lbl{{font-size:9px;color:#9aa0a6;font-weight:600;margin-bottom:2px}}
+.mg-rev-group-val{{font-size:12.5px;font-weight:800;color:#1a1a2e;white-space:nowrap}}
+.mg-rev-group-val.total{{color:#1a73e8}}
+/* 기간 선택 */
+.mg-period-sel{{display:flex;align-items:center;gap:6px;font-size:11.5px}}
+.mg-period-sel input[type=date]{{padding:3px 8px;border:1px solid rgba(255,255,255,.4);
+  border-radius:4px;background:rgba(255,255,255,.15);color:#fff;font-size:11px;cursor:pointer;outline:none}}
+.mg-period-sel input[type=date]::-webkit-calendar-picker-indicator{{filter:invert(1);opacity:.8}}
+.mg-period-sep{{color:rgba(255,255,255,.7)}}
+/* 테이블 정렬 */
+.srv-tbl th.sortable{{cursor:pointer;user-select:none}}
+.srv-tbl th.sortable:hover{{background:#e8eaed}}
+.sort-arrow{{margin-left:2px;font-size:9px;opacity:.8}}
 /* 차트 섹션 */
 .mg-chart-section{{padding:0 20px 16px}}
 .mg-section-title{{font-size:12px;font-weight:700;color:#5f6368;padding:12px 0 8px;
@@ -1432,7 +1455,19 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
     <!-- 헤더 -->
     <div class="mg-header">
       <span class="mg-title">DK모바일:리본 운영 지표</span>
-      <span class="mg-date-badge" id="mg-date-label">기준일: {new_metrics_date or '—'}</span>
+      <div class="mg-period-sel">
+        <input type="date" id="mg-start-date"
+               value="{new_metrics_date or ''}"
+               min="{first_metrics_date or ''}"
+               max="{new_metrics_date or ''}"
+               onchange="mgPeriodChange()">
+        <span class="mg-period-sep">~</span>
+        <input type="date" id="mg-end-date"
+               value="{new_metrics_date or ''}"
+               min="{first_metrics_date or ''}"
+               max="{new_metrics_date or ''}"
+               onchange="mgPeriodChange()">
+      </div>
     </div>
 
     <!-- 서버 그룹 탭 -->
@@ -1450,8 +1485,12 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
       <!-- JS로 동적 생성 -->
     </div>
 
-    <!-- KPI 카드 9개 -->
-    <div class="kpi-grid9" id="mg-kpi-grid"></div>
+    <!-- KPI 카드 7개 (한 줄: DAU/NU/PU/NPU/PUR/ARPU/ARPPU) -->
+    <div class="kpi-grid7" id="mg-kpi-grid"></div>
+    <!-- 매출 서버 그룹 breakdown (총매출/유저매출 × 전체/구서버/하이퍼/동남아) -->
+    <div class="mg-rev-row" id="mg-rev-grid">
+      <!-- JS로 동적 생성 -->
+    </div>
 
     <!-- 차트 섹션 1: 매출 -->
     <div class="mg-chart-section">
@@ -1513,9 +1552,17 @@ body{{font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Got
         <table class="srv-tbl" id="mg-srv-tbl">
           <thead>
             <tr>
-              <th>서버</th><th>그룹</th>
-              <th>DAU</th><th>NU</th><th>PU</th><th>NPU</th><th>PUR</th>
-              <th>총 매출</th><th>유저 매출</th><th>ARPU</th><th>ARPPU</th>
+              <th class="sortable" onclick="mgSortTable('serverid')">서버<span class="sort-arrow" id="sa-serverid"></span></th>
+              <th>그룹</th>
+              <th class="sortable" onclick="mgSortTable('dau')">DAU<span class="sort-arrow" id="sa-dau"></span></th>
+              <th class="sortable" onclick="mgSortTable('nu')">NU<span class="sort-arrow" id="sa-nu"></span></th>
+              <th class="sortable" onclick="mgSortTable('pu')">PU<span class="sort-arrow" id="sa-pu"></span></th>
+              <th class="sortable" onclick="mgSortTable('npu')">NPU<span class="sort-arrow" id="sa-npu"></span></th>
+              <th class="sortable" onclick="mgSortTable('pur')">PUR<span class="sort-arrow" id="sa-pur"></span></th>
+              <th class="sortable" onclick="mgSortTable('total_revenue')">총 매출<span class="sort-arrow" id="sa-total_revenue"></span></th>
+              <th class="sortable" onclick="mgSortTable('user_revenue')">유저 매출<span class="sort-arrow" id="sa-user_revenue"></span></th>
+              <th class="sortable" onclick="mgSortTable('arpu')">ARPU<span class="sort-arrow" id="sa-arpu"></span></th>
+              <th class="sortable" onclick="mgSortTable('arppu')">ARPPU<span class="sort-arrow" id="sa-arppu"></span></th>
             </tr>
           </thead>
           <tbody id="mg-srv-tbody"></tbody>
@@ -1559,6 +1606,8 @@ var MGP_TODAY='today', MGP_PERIOD='period';
 var _sgGroup = 'all';      // 현재 서버 그룹 탭
 var _mgCharts = {{}};       // 지표 차트 인스턴스
 var _pkgPeriodType = 'today'; // 패키지 조회 기간
+var _mgSortCol = null;      // 테이블 정렬 컬럼 (null=정렬없음)
+var _mgSortAsc = false;     // false=내림차순(기본)
 
 // ── 서버 그룹 정의 ──────────────────────────────────────────────
 var SG_DEF = {{
@@ -1595,8 +1644,8 @@ function sgBuildChecks(grp) {{
   var html = '<button class="srv-check-all-btn" onclick="sgCheckAll()">전체 선택</button>'
            + '<button class="srv-check-all-btn" onclick="sgCheckNone()">전체 해제</button>';
 
-  // NEW_METRICS.servers에서 해당 그룹 serverid 목록 추출
-  var nm = NEW_METRICS;
+  // End date 기준 서버 목록 (기간 선택 모드 호환)
+  var nm = ALL_METRICS_DATA[_mgEndDate] || NEW_METRICS;
   var servers = nm && nm.servers ? nm.servers : [];
   var filtered = servers.filter(function(s) {{
     return def.groups.indexOf(s.server_group) >= 0;
@@ -1662,6 +1711,134 @@ function mgAggregateTrend(selIds) {{
   }});
 }}
 
+// ── 기간 범위 KPI 집계 ─────────────────────────────────────────
+function mgAggregateRange(startDate, endDate, selIds) {{
+  var dates = Object.keys(ALL_METRICS_DATA)
+    .filter(function(d){{ return d >= startDate && d <= endDate; }})
+    .sort();
+  if(!dates.length) return null;
+  var total_revenue=0, user_revenue=0, nu=0, pu=0, npu=0, dau_sum=0;
+  var days = dates.length;
+  dates.forEach(function(d) {{
+    var nm = ALL_METRICS_DATA[d];
+    if(!nm || !nm.servers) return;
+    nm.servers.forEach(function(s) {{
+      if(selIds.indexOf(s.serverid) < 0) return;
+      total_revenue += (s.total_revenue||0);
+      user_revenue  += (s.user_revenue ||0);
+      nu   += (s.nu  ||0); pu   += (s.pu  ||0);
+      npu  += (s.npu ||0); dau_sum += (s.dau||0);
+    }});
+  }});
+  var dau   = days > 1 ? Math.round(dau_sum / days) : dau_sum;
+  var pur   = dau_sum > 0 ? (pu / dau_sum * 100).toFixed(2) + '%' : '—';
+  var arpu  = dau_sum > 0 ? Math.round(user_revenue / dau_sum) : 0;
+  var arppu = pu      > 0 ? Math.round(user_revenue / pu)      : 0;
+  return {{
+    dau: dau, dau_is_avg: days > 1,
+    nu: nu, pu: pu, npu: npu,
+    total_revenue: total_revenue, user_revenue: user_revenue,
+    pur: pur, arpu: arpu, arppu: arppu,
+  }};
+}}
+
+// ── 기간 범위 추이 집계 (차트용) ──────────────────────────────
+function mgAggregateRangeTrend(startDate, endDate, selIds) {{
+  var dates = Object.keys(ALL_METRICS_DATA)
+    .filter(function(d){{ return d >= startDate && d <= endDate; }})
+    .sort();
+  // 단일 날짜 → trend_7d 사용
+  if(dates.length === 1) {{
+    var nm = ALL_METRICS_DATA[dates[0]];
+    if(!nm || !nm.trend_7d) return [];
+    return nm.trend_7d.map(function(day) {{
+      var a = {{date:day.date,dau:0,nu:0,pu:0,npu:0,total_revenue:0,user_revenue:0}};
+      (day.servers||[]).forEach(function(s) {{
+        if(selIds.indexOf(s.serverid)<0) return;
+        a.dau+=s.dau||0; a.nu+=s.nu||0; a.pu+=s.pu||0; a.npu+=s.npu||0;
+        a.total_revenue+=s.total_revenue||0; a.user_revenue+=s.user_revenue||0;
+      }});
+      return a;
+    }});
+  }}
+  // 복수 날짜 → 각 날짜 집계
+  if(!dates.length) return [];
+  return dates.map(function(d) {{
+    var nm = ALL_METRICS_DATA[d];
+    var a = {{date:d,dau:0,nu:0,pu:0,npu:0,total_revenue:0,user_revenue:0}};
+    if(nm && nm.servers) {{
+      nm.servers.forEach(function(s) {{
+        if(selIds.indexOf(s.serverid)<0) return;
+        a.dau+=s.dau||0; a.nu+=s.nu||0; a.pu+=s.pu||0; a.npu+=s.npu||0;
+        a.total_revenue+=s.total_revenue||0; a.user_revenue+=s.user_revenue||0;
+      }});
+    }}
+    return a;
+  }});
+}}
+
+// ── 기간 범위 서버별 집계 (테이블용) ──────────────────────────
+function mgAggregateRangeTable(startDate, endDate, selIds) {{
+  var dates = Object.keys(ALL_METRICS_DATA)
+    .filter(function(d){{ return d >= startDate && d <= endDate; }})
+    .sort();
+  if(!dates.length) return [];
+  var numDays = dates.length;
+  var serverAgg = {{}};
+  dates.forEach(function(d) {{
+    var nm = ALL_METRICS_DATA[d];
+    if(!nm || !nm.servers) return;
+    nm.servers.forEach(function(s) {{
+      if(selIds.indexOf(s.serverid) < 0) return;
+      if(!serverAgg[s.serverid]) {{
+        serverAgg[s.serverid] = {{
+          serverid:s.serverid, server_group:s.server_group,
+          dau_sum:0, nu:0, pu:0, npu:0, total_revenue:0, user_revenue:0
+        }};
+      }}
+      var a = serverAgg[s.serverid];
+      a.dau_sum += (s.dau||0); a.nu += (s.nu||0); a.pu += (s.pu||0);
+      a.npu += (s.npu||0); a.total_revenue += (s.total_revenue||0);
+      a.user_revenue += (s.user_revenue||0);
+    }});
+  }});
+  return Object.values(serverAgg).map(function(a) {{
+    return {{
+      serverid: a.serverid, server_group: a.server_group,
+      dau: numDays>1 ? Math.round(a.dau_sum/numDays) : a.dau_sum,
+      dau_sum: a.dau_sum, nu:a.nu, pu:a.pu, npu:a.npu,
+      total_revenue:a.total_revenue, user_revenue:a.user_revenue,
+    }};
+  }});
+}}
+
+// ── 매출 그룹별 breakdown (checkbox 무관, 기간 적용) ───────────
+function mgAggregateRevBreakdown(startDate, endDate) {{
+  var dates = Object.keys(ALL_METRICS_DATA)
+    .filter(function(d){{ return d >= startDate && d <= endDate; }})
+    .sort();
+  var result = {{
+    total:{{total_revenue:0,user_revenue:0}},
+    old:  {{total_revenue:0,user_revenue:0}},
+    hyper:{{total_revenue:0,user_revenue:0}},
+    sea:  {{total_revenue:0,user_revenue:0}},
+  }};
+  dates.forEach(function(d) {{
+    var nm = ALL_METRICS_DATA[d];
+    if(!nm || !nm.servers) return;
+    nm.servers.forEach(function(s) {{
+      var sg = s.server_group;
+      if(result[sg]) {{
+        result[sg].total_revenue += (s.total_revenue||0);
+        result[sg].user_revenue  += (s.user_revenue ||0);
+      }}
+      result.total.total_revenue += (s.total_revenue||0);
+      result.total.user_revenue  += (s.user_revenue ||0);
+    }});
+  }});
+  return result;
+}}
+
 // ── 숫자 포맷 ───────────────────────────────────────────────────
 function mgFmtNum(n) {{
   if(!n) return '0';
@@ -1680,28 +1857,52 @@ function mgFmtK(n) {{
   return '₩'+Math.round(n).toLocaleString();
 }}
 
-// ── KPI 카드 렌더 ───────────────────────────────────────────────
+// ── KPI 카드 렌더 (7개 한 줄: DAU/NU/PU/NPU/PUR/ARPU/ARPPU) ──
 function mgRenderKPI(agg) {{
-  if(!agg) {{ document.getElementById('mg-kpi-grid').innerHTML='<p class="empty-s" style="padding:30px;grid-column:1/-1">데이터 없음</p>'; return; }}
+  var grid = document.getElementById('mg-kpi-grid');
+  if(!grid) return;
+  if(!agg) {{ grid.innerHTML='<p class="empty-s" style="padding:20px;grid-column:1/-1">데이터 없음</p>'; return; }}
+  var dauLbl = agg.dau_is_avg ? 'DAU <span title="기간 일 평균 DAU" style="color:#9aa0a6;font-size:9px">avg</span>' : 'DAU';
   var cards = [
-    {{lbl:'DAU',       val:mgFmtNum(agg.dau),           sub:'일 활성 유저', cls:''}},
-    {{lbl:'NU',        val:mgFmtNum(agg.nu),            sub:'신규 유저',    cls:''}},
-    {{lbl:'PU',        val:mgFmtNum(agg.pu),            sub:'결제 유저',    cls:'accent'}},
-    {{lbl:'NPU',       val:mgFmtNum(agg.npu),           sub:'신규 결제 유저',cls:''}},
-    {{lbl:'PUR',       val:agg.pur,                    sub:'결제 전환율',   cls:'accent'}},
-    {{lbl:'총 매출',   val:mgFmtRev(agg.total_revenue), sub:'',             cls:'accent2'}},
-    {{lbl:'유저 매출', val:mgFmtRev(agg.user_revenue),  sub:'',             cls:'accent2'}},
-    {{lbl:'ARPU',      val:mgFmtK(agg.arpu),           sub:'1인당 유저매출',cls:''}},
-    {{lbl:'ARPPU',     val:mgFmtK(agg.arppu),          sub:'결제자당 매출', cls:''}},
+    {{lbl:dauLbl,  val:mgFmtNum(agg.dau),  sub:'일 활성 유저',  cls:''}},
+    {{lbl:'NU',    val:mgFmtNum(agg.nu),   sub:'신규 유저',     cls:''}},
+    {{lbl:'PU',    val:mgFmtNum(agg.pu),   sub:'결제 유저',     cls:'accent'}},
+    {{lbl:'NPU',   val:mgFmtNum(agg.npu),  sub:'신규 결제',     cls:''}},
+    {{lbl:'PUR',   val:agg.pur,            sub:'결제 전환율',   cls:'accent'}},
+    {{lbl:'ARPU',  val:mgFmtK(agg.arpu),  sub:'1인당 유저매출', cls:''}},
+    {{lbl:'ARPPU', val:mgFmtK(agg.arppu), sub:'결제자당 매출',  cls:''}},
   ];
-  var html = cards.map(function(c) {{
-    return '<div class="kpi9 '+c.cls+'">'
-         + '<div class="kpi9-lbl">'+c.lbl+'</div>'
-         + '<div class="kpi9-val">'+c.val+'</div>'
-         + (c.sub ? '<div class="kpi9-sub">'+c.sub+'</div>' : '')
+  grid.innerHTML = cards.map(function(c) {{
+    return '<div class="kpi7 '+c.cls+'">'
+         + '<div class="kpi7-lbl">'+c.lbl+'</div>'
+         + '<div class="kpi7-val">'+c.val+'</div>'
+         + (c.sub ? '<div class="kpi7-sub">'+c.sub+'</div>' : '')
          + '</div>';
   }}).join('');
-  document.getElementById('mg-kpi-grid').innerHTML = html;
+}}
+
+// ── 매출 그룹 breakdown 렌더 ─────────────────────────────────────
+function mgRenderRevBreakdown(startDate, endDate) {{
+  var wrap = document.getElementById('mg-rev-grid');
+  if(!wrap) return;
+  var bd = mgAggregateRevBreakdown(startDate, endDate);
+  var groups = [
+    {{key:'total',lbl:'전체'}},
+    {{key:'old',  lbl:'구서버'}},
+    {{key:'hyper',lbl:'하이퍼'}},
+    {{key:'sea',  lbl:'동남아'}},
+  ];
+  function mkCard(title, field) {{
+    var gHtml = groups.map(function(g) {{
+      return '<div class="mg-rev-group">'
+           + '<div class="mg-rev-group-lbl">'+g.lbl+'</div>'
+           + '<div class="mg-rev-group-val '+(g.key==='total'?'total':'')+'">'+mgFmtRev(bd[g.key][field])+'</div>'
+           + '</div>';
+    }}).join('');
+    return '<div class="mg-rev-card"><div class="mg-rev-card-title">'+title+'</div>'
+         + '<div class="mg-rev-groups">'+gHtml+'</div></div>';
+  }}
+  wrap.innerHTML = mkCard('총 매출', 'total_revenue') + mkCard('유저 매출', 'user_revenue');
 }}
 
 // ── 차트 공통 ───────────────────────────────────────────────────
@@ -1781,13 +1982,26 @@ function mgRenderCharts(trend, selGroups) {{
   }}]);
 }}
 
-// ── 서버별 상세 테이블 (serverid 기준) ────────────────────────
+// ── 서버별 상세 테이블 (기간 집계 + 정렬 지원) ───────────────
 function mgRenderTable(selIds) {{
-  var nm = NEW_METRICS;
   var tbody = document.getElementById('mg-srv-tbody');
-  if(!nm || !nm.servers || !tbody) return;
-  var rows = nm.servers.filter(function(s){{return selIds.indexOf(s.serverid)>=0;}});
+  if(!tbody) return;
+  var rows = mgAggregateRangeTable(_mgStartDate, _mgEndDate, selIds);
   if(!rows.length) {{ tbody.innerHTML='<tr><td colspan="11" class="m-na">선택된 서버 없음</td></tr>'; return; }}
+
+  // 정렬 적용
+  if(_mgSortCol) {{
+    rows.sort(function(a, b) {{
+      var va, vb;
+      if(_mgSortCol==='serverid')    {{ va=a.serverid; vb=b.serverid; }}
+      else if(_mgSortCol==='pur')    {{ va=a.dau>0?a.pu/a.dau:0; vb=b.dau>0?b.pu/b.dau:0; }}
+      else if(_mgSortCol==='arpu')   {{ va=a.dau>0?a.user_revenue/a.dau:0; vb=b.dau>0?b.user_revenue/b.dau:0; }}
+      else if(_mgSortCol==='arppu')  {{ va=a.pu>0?a.user_revenue/a.pu:0; vb=b.pu>0?b.user_revenue/b.pu:0; }}
+      else {{ va=a[_mgSortCol]||0; vb=b[_mgSortCol]||0; }}
+      return _mgSortAsc ? (va-vb) : (vb-va);
+    }});
+  }}
+
   var html = '';
   var tots = {{dau:0,nu:0,pu:0,npu:0,total_revenue:0,user_revenue:0}};
   rows.forEach(function(s) {{
@@ -1809,7 +2023,7 @@ function mgRenderTable(selIds) {{
       + '<td>'+arppu_s+'</td>'
       + '</tr>';
   }});
-  // 합계 행
+  // 합계 행 (집계 기반)
   var t_pur   = tots.dau>0 ? (tots.pu/tots.dau*100).toFixed(1)+'%' : '—';
   var t_arpu  = tots.dau>0 ? mgFmtK(Math.round(tots.user_revenue/tots.dau)) : '—';
   var t_arppu = tots.pu >0 ? mgFmtK(Math.round(tots.user_revenue/tots.pu))  : '—';
@@ -1826,6 +2040,21 @@ function mgRenderTable(selIds) {{
     + '<td>'+t_arppu+'</td>'
     + '</tr>';
   tbody.innerHTML = html;
+}}
+
+// ── 테이블 컬럼 정렬 ─────────────────────────────────────────────
+function mgSortTable(col) {{
+  if(_mgSortCol === col) {{
+    _mgSortAsc = !_mgSortAsc;
+  }} else {{
+    _mgSortCol = col;
+    _mgSortAsc = false;  // 첫 클릭 = 내림차순
+  }}
+  // 화살표 업데이트
+  document.querySelectorAll('.sort-arrow').forEach(function(el){{ el.textContent=''; }});
+  var arrow = document.getElementById('sa-'+col);
+  if(arrow) arrow.textContent = _mgSortAsc ? ' ↑' : ' ↓';
+  mgRenderTable(getSelectedServerIds());
 }}
 
 // ── 패키지 TOP10 렌더 ───────────────────────────────────────────
@@ -1882,17 +2111,20 @@ function mgPkgPeriod(type) {{
   mgRenderPackages(getSelectedServerIds());
 }}
 
-// ── 전체 렌더 (serverid 기준, 날짜별 데이터 교체 지원) ──────────
+// ── 전체 렌더 (기간 기반, 서버 그룹 선택 연동) ──────────────────
 function mgRender() {{
-  // 날짜 배지 업데이트
-  var lbl = document.getElementById('mg-date-label');
-  if(lbl) lbl.textContent = '기준일: '+(_date||'—');
+  // 범위 내 데이터 존재 여부 확인
+  var datesInRange = Object.keys(ALL_METRICS_DATA).filter(function(d) {{
+    return d >= _mgStartDate && d <= _mgEndDate;
+  }});
 
-  // 해당 날짜 데이터 없으면 안내 표시
-  if(!NEW_METRICS || !NEW_METRICS.servers) {{
-    var no_data = '<p class="empty-s" style="padding:40px;grid-column:1/-1">해당 날짜('+_date+') 지표 데이터 없음</p>';
+  if(!datesInRange.length) {{
+    var rangeStr = _mgStartDate===_mgEndDate ? _mgStartDate : (_mgStartDate+'~'+_mgEndDate);
+    var no_data = '<p class="empty-s" style="padding:30px;grid-column:1/-1">선택 기간('+rangeStr+') 지표 데이터 없음</p>';
     var grid = document.getElementById('mg-kpi-grid');
     if(grid) grid.innerHTML = no_data;
+    var rev = document.getElementById('mg-rev-grid');
+    if(rev) rev.innerHTML = '';
     var tbody = document.getElementById('mg-srv-tbody');
     if(tbody) tbody.innerHTML = '';
     var pkg = document.getElementById('mg-pkg-wrap');
@@ -1900,20 +2132,43 @@ function mgRender() {{
     return;
   }}
 
+  // END date 기준 NEW_METRICS 교체 (패키지/체크박스 서버 목록용)
+  var endKey = _mgEndDate;
+  if(!ALL_METRICS_DATA[endKey]) endKey = datesInRange[datesInRange.length-1];
+  NEW_METRICS = ALL_METRICS_DATA[endKey] || null;
+
+  sgBuildChecks(_sgGroup);
   var selIds = getSelectedServerIds();
-  var agg   = mgAggregate(selIds);
-  var trend = mgAggregateTrend(selIds);
+  var agg    = mgAggregateRange(_mgStartDate, _mgEndDate, selIds);
+  var trend  = mgAggregateRangeTrend(_mgStartDate, _mgEndDate, selIds);
+
   mgRenderKPI(agg);
+  mgRenderRevBreakdown(_mgStartDate, _mgEndDate);
   mgRenderCharts(trend, selIds);
   mgRenderTable(selIds);
   mgRenderPackages(selIds);
 }}
 
-// ── 초기화 (지표 탭 열 때 또는 날짜 변경 시) ─────────────────────
+// ── 초기화 (지표 탭 열 때) ───────────────────────────────────────
 function initMetricsTab() {{
-  // 현재 날짜의 metrics 데이터 교체
-  NEW_METRICS = ALL_METRICS_DATA[_date] || null;
-  sgBuildChecks(_sgGroup);  // 체크박스 초기화 (데이터 없어도 구조는 생성)
+  // 기본: 현재 선택 날짜 단일일 뷰
+  _mgStartDate = _date || '{new_metrics_date}';
+  _mgEndDate   = _date || '{new_metrics_date}';
+  var s = document.getElementById('mg-start-date');
+  var e = document.getElementById('mg-end-date');
+  if(s) s.value = _mgStartDate;
+  if(e) e.value = _mgEndDate;
+  mgRender();
+}}
+
+// ── 기간 선택 변경 핸들러 ──────────────────────────────────────
+function mgPeriodChange() {{
+  var s = document.getElementById('mg-start-date');
+  var e = document.getElementById('mg-end-date');
+  if(!s || !e) return;
+  if(s.value > e.value) {{ e.value = s.value; }}
+  _mgStartDate = s.value;
+  _mgEndDate   = e.value;
   mgRender();
 }}
 
@@ -1945,10 +2200,14 @@ function onDateChange(d){{
     vocSwitchDate(d);   // vocSwitchDate 안에서 _date=d 처리
   }}else{{
     _date=d;
-    // 지표 탭: 선택 날짜의 metrics 데이터로 교체
-    NEW_METRICS = ALL_METRICS_DATA[d] || null;
+    // 지표 탭: 전역 날짜 변경 시 단일일 모드로 초기화
+    _mgStartDate=d; _mgEndDate=d;
+    var s=document.getElementById('mg-start-date');
+    var e=document.getElementById('mg-end-date');
+    if(s) s.value=d;
+    if(e) e.value=d;
     mgRender();
-    renderCurrentMetrics();  // 하위호환 (숨겨진 legacy 섹션)
+    renderCurrentMetrics();
   }}
 }}
 

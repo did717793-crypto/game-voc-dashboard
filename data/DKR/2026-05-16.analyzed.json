@@ -6,7 +6,7 @@
       "semantic_topic": "기타",
       "issue_type": "게임 일반",
       "category": "기타",
-      "summary": "약한서버도 이제사냥할수있으니 결제도하고 재밌네요",
+      "summary": "게임 긍정 피드백 및 일반 의견",
       "count": 1,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7673740",
       "feed_ids": [
@@ -18,16 +18,21 @@
     "top_issues": [
       {
         "category": "기타",
-        "summary": "약한서버도 이제사냥할수있으니 결제도하고 재밌네요",
+        "summary": "게임 긍정 피드백 및 일반 의견",
         "count": 1,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7673740"
       }
     ],
     "trend": {
+      "버그·오류": {
+        "current": 0,
+        "previous": 1,
+        "delta": -1
+      },
       "기타": {
         "current": 1,
-        "previous": 2,
-        "delta": -1
+        "previous": 1,
+        "delta": 0
       }
     },
     "trending_keywords": [],

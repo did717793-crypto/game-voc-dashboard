@@ -3,14 +3,24 @@
   "major_issues": [],
   "voc_groups": [
     {
+      "semantic_topic": "편의성건의",
+      "issue_type": "게임 개선 건의",
+      "category": "건의·요청",
+      "summary": "프리셋 기능 확장 및 편의성 개선 건의",
+      "count": 1,
+      "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7610796",
+      "feed_ids": [
+        "7610796"
+      ]
+    },
+    {
       "semantic_topic": "기타",
       "issue_type": "게임 일반",
       "category": "기타",
-      "summary": "아 빨리좀 해결해줘요 하",
-      "count": 9,
+      "summary": "게임 일정·업데이트 관련 문의",
+      "count": 8,
       "representative_url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7608796",
       "feed_ids": [
-        "7610796",
         "7608113",
         "7607382",
         "7606632",
@@ -26,21 +36,32 @@
     "top_issues": [
       {
         "category": "기타",
-        "summary": "아 빨리좀 해결해줘요 하",
-        "count": 9,
+        "summary": "게임 일정·업데이트 관련 문의",
+        "count": 8,
         "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7608796"
+      },
+      {
+        "category": "건의·요청",
+        "summary": "프리셋 기능 확장 및 편의성 개선 건의",
+        "count": 1,
+        "url": "https://game.naver.com/lounge/DK_Mobile_REBORN/board/detail/7610796"
       }
     ],
     "trend": {
+      "건의·요청": {
+        "current": 1,
+        "previous": 0,
+        "delta": 1
+      },
       "버그·오류": {
         "current": 0,
         "previous": 1,
         "delta": -1
       },
       "기타": {
-        "current": 9,
+        "current": 8,
         "previous": 0,
-        "delta": 9
+        "delta": 8
       }
     },
     "trending_keywords": [

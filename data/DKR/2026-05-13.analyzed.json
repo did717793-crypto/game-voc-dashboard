@@ -79,11 +79,6 @@
       }
     ],
     "trend": {
-      "게임 관련": {
-        "current": 0,
-        "previous": 5,
-        "delta": -5
-      },
       "건의·요청": {
         "current": 2,
         "previous": 1,
@@ -93,6 +88,11 @@
         "current": 1,
         "previous": 0,
         "delta": 1
+      },
+      "게임 관련": {
+        "current": 0,
+        "previous": 5,
+        "delta": -5
       }
     },
     "trending_keywords": [],
