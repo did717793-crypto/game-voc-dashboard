@@ -1,0 +1,3565 @@
+{
+  "date": "2026-05-04",
+  "data_source": "call-of-chaos.dkr_analysis.metrics_preset / call-of-chaos.dkr_analysis.package_sales_preset",
+  "servers": [
+    {
+      "serverid": 1,
+      "server_group": "old",
+      "dau": 33,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 2,
+      "server_group": "old",
+      "dau": 13,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 3,
+      "server_group": "old",
+      "dau": 11,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 4,
+      "server_group": "old",
+      "dau": 15,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 5,
+      "server_group": "old",
+      "dau": 90,
+      "nu": 1,
+      "pu": 10,
+      "npu": 2,
+      "total_revenue": 4763878,
+      "user_revenue": 3594574
+    },
+    {
+      "serverid": 6,
+      "server_group": "old",
+      "dau": 7,
+      "nu": 0,
+      "pu": 1,
+      "npu": 0,
+      "total_revenue": 11000,
+      "user_revenue": 11000
+    },
+    {
+      "serverid": 7,
+      "server_group": "old",
+      "dau": 16,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 8,
+      "server_group": "old",
+      "dau": 31,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 9,
+      "server_group": "old",
+      "dau": 44,
+      "nu": 0,
+      "pu": 1,
+      "npu": 0,
+      "total_revenue": 11000,
+      "user_revenue": 11000
+    },
+    {
+      "serverid": 10,
+      "server_group": "old",
+      "dau": 27,
+      "nu": 0,
+      "pu": 1,
+      "npu": 0,
+      "total_revenue": 11000,
+      "user_revenue": 11000
+    },
+    {
+      "serverid": 11,
+      "server_group": "old",
+      "dau": 15,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 12,
+      "server_group": "old",
+      "dau": 14,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 13,
+      "server_group": "old",
+      "dau": 63,
+      "nu": 0,
+      "pu": 1,
+      "npu": 0,
+      "total_revenue": 33000,
+      "user_revenue": 33000
+    },
+    {
+      "serverid": 14,
+      "server_group": "old",
+      "dau": 18,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 15,
+      "server_group": "old",
+      "dau": 12,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 16,
+      "server_group": "old",
+      "dau": 2,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 17,
+      "server_group": "old",
+      "dau": 7,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 18,
+      "server_group": "old",
+      "dau": 8,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 19,
+      "server_group": "old",
+      "dau": 21,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 20,
+      "server_group": "old",
+      "dau": 34,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 21,
+      "server_group": "old",
+      "dau": 44,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 22,
+      "server_group": "old",
+      "dau": 93,
+      "nu": 1,
+      "pu": 3,
+      "npu": 0,
+      "total_revenue": 55000,
+      "user_revenue": 55000
+    },
+    {
+      "serverid": 23,
+      "server_group": "old",
+      "dau": 67,
+      "nu": 1,
+      "pu": 11,
+      "npu": 3,
+      "total_revenue": 1144000,
+      "user_revenue": 1144000
+    },
+    {
+      "serverid": 24,
+      "server_group": "old",
+      "dau": 112,
+      "nu": 2,
+      "pu": 11,
+      "npu": 4,
+      "total_revenue": 484000,
+      "user_revenue": 484000
+    },
+    {
+      "serverid": 25,
+      "server_group": "old",
+      "dau": 17,
+      "nu": 0,
+      "pu": 1,
+      "npu": 1,
+      "total_revenue": 11000,
+      "user_revenue": 11000
+    },
+    {
+      "serverid": 26,
+      "server_group": "old",
+      "dau": 58,
+      "nu": 2,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 27,
+      "server_group": "old",
+      "dau": 22,
+      "nu": 0,
+      "pu": 1,
+      "npu": 0,
+      "total_revenue": 33000,
+      "user_revenue": 33000
+    },
+    {
+      "serverid": 28,
+      "server_group": "old",
+      "dau": 13,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 29,
+      "server_group": "old",
+      "dau": 17,
+      "nu": 0,
+      "pu": 1,
+      "npu": 0,
+      "total_revenue": 11000,
+      "user_revenue": 11000
+    },
+    {
+      "serverid": 30,
+      "server_group": "old",
+      "dau": 6,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 31,
+      "server_group": "old",
+      "dau": 9,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 32,
+      "server_group": "old",
+      "dau": 59,
+      "nu": 0,
+      "pu": 6,
+      "npu": 1,
+      "total_revenue": 946000,
+      "user_revenue": 946000
+    },
+    {
+      "serverid": 33,
+      "server_group": "old",
+      "dau": 20,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 34,
+      "server_group": "old",
+      "dau": 13,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 35,
+      "server_group": "old",
+      "dau": 95,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 36,
+      "server_group": "old",
+      "dau": 9,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 37,
+      "server_group": "old",
+      "dau": 12,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 38,
+      "server_group": "old",
+      "dau": 14,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 39,
+      "server_group": "old",
+      "dau": 55,
+      "nu": 0,
+      "pu": 1,
+      "npu": 0,
+      "total_revenue": 116930,
+      "user_revenue": 116930
+    },
+    {
+      "serverid": 40,
+      "server_group": "old",
+      "dau": 43,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 41,
+      "server_group": "old",
+      "dau": 34,
+      "nu": 0,
+      "pu": 1,
+      "npu": 0,
+      "total_revenue": 13618,
+      "user_revenue": 13618
+    },
+    {
+      "serverid": 42,
+      "server_group": "old",
+      "dau": 73,
+      "nu": 0,
+      "pu": 3,
+      "npu": 0,
+      "total_revenue": 115052,
+      "user_revenue": 115052
+    },
+    {
+      "serverid": 43,
+      "server_group": "old",
+      "dau": 32,
+      "nu": 1,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 44,
+      "server_group": "old",
+      "dau": 30,
+      "nu": 3,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 45,
+      "server_group": "old",
+      "dau": 40,
+      "nu": 0,
+      "pu": 1,
+      "npu": 0,
+      "total_revenue": 13618,
+      "user_revenue": 13618
+    },
+    {
+      "serverid": 46,
+      "server_group": "hyper",
+      "dau": 225,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 47,
+      "server_group": "hyper",
+      "dau": 274,
+      "nu": 0,
+      "pu": 10,
+      "npu": 1,
+      "total_revenue": 660000,
+      "user_revenue": 660000
+    },
+    {
+      "serverid": 48,
+      "server_group": "hyper",
+      "dau": 274,
+      "nu": 0,
+      "pu": 4,
+      "npu": 0,
+      "total_revenue": 682000,
+      "user_revenue": 682000
+    },
+    {
+      "serverid": 49,
+      "server_group": "hyper",
+      "dau": 306,
+      "nu": 0,
+      "pu": 4,
+      "npu": 0,
+      "total_revenue": 149717,
+      "user_revenue": 149717
+    },
+    {
+      "serverid": 50,
+      "server_group": "hyper",
+      "dau": 87,
+      "nu": 0,
+      "pu": 2,
+      "npu": 0,
+      "total_revenue": 191127,
+      "user_revenue": 191127
+    },
+    {
+      "serverid": 51,
+      "server_group": "hyper",
+      "dau": 168,
+      "nu": 0,
+      "pu": 9,
+      "npu": 1,
+      "total_revenue": 481810,
+      "user_revenue": 481810
+    },
+    {
+      "serverid": 52,
+      "server_group": "hyper",
+      "dau": 117,
+      "nu": 0,
+      "pu": 2,
+      "npu": 0,
+      "total_revenue": 77000,
+      "user_revenue": 77000
+    },
+    {
+      "serverid": 53,
+      "server_group": "hyper",
+      "dau": 195,
+      "nu": 0,
+      "pu": 6,
+      "npu": 2,
+      "total_revenue": 825000,
+      "user_revenue": 825000
+    },
+    {
+      "serverid": 54,
+      "server_group": "hyper",
+      "dau": 111,
+      "nu": 0,
+      "pu": 1,
+      "npu": 0,
+      "total_revenue": 44000,
+      "user_revenue": 44000
+    },
+    {
+      "serverid": 55,
+      "server_group": "hyper",
+      "dau": 115,
+      "nu": 0,
+      "pu": 4,
+      "npu": 0,
+      "total_revenue": 176000,
+      "user_revenue": 176000
+    },
+    {
+      "serverid": 56,
+      "server_group": "sea",
+      "dau": 0,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 57,
+      "server_group": "sea",
+      "dau": 0,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 58,
+      "server_group": "sea",
+      "dau": 0,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 59,
+      "server_group": "sea",
+      "dau": 0,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 60,
+      "server_group": "sea",
+      "dau": 0,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 61,
+      "server_group": "sea",
+      "dau": 0,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 62,
+      "server_group": "sea",
+      "dau": 0,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 63,
+      "server_group": "sea",
+      "dau": 0,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 64,
+      "server_group": "sea",
+      "dau": 0,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    },
+    {
+      "serverid": 65,
+      "server_group": "sea",
+      "dau": 0,
+      "nu": 0,
+      "pu": 0,
+      "npu": 0,
+      "total_revenue": 0,
+      "user_revenue": 0
+    }
+  ],
+  "trend_7d": [
+    {
+      "date": "2026-05-01",
+      "servers": [
+        {
+          "serverid": 1,
+          "server_group": "old",
+          "dau": 25,
+          "nu": 0,
+          "pu": 2,
+          "npu": 0,
+          "total_revenue": 44000,
+          "user_revenue": 44000
+        },
+        {
+          "serverid": 2,
+          "server_group": "old",
+          "dau": 7,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 110000,
+          "user_revenue": 110000
+        },
+        {
+          "serverid": 3,
+          "server_group": "old",
+          "dau": 10,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 4,
+          "server_group": "old",
+          "dau": 13,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 5,
+          "server_group": "old",
+          "dau": 93,
+          "nu": 1,
+          "pu": 20,
+          "npu": 0,
+          "total_revenue": 12879934,
+          "user_revenue": 9528398
+        },
+        {
+          "serverid": 6,
+          "server_group": "old",
+          "dau": 9,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 7,
+          "server_group": "old",
+          "dau": 18,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 220000,
+          "user_revenue": 220000
+        },
+        {
+          "serverid": 8,
+          "server_group": "old",
+          "dau": 79,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 9,
+          "server_group": "old",
+          "dau": 47,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 10,
+          "server_group": "old",
+          "dau": 45,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 11,
+          "server_group": "old",
+          "dau": 14,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 12,
+          "server_group": "old",
+          "dau": 13,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 13,
+          "server_group": "old",
+          "dau": 85,
+          "nu": 0,
+          "pu": 11,
+          "npu": 0,
+          "total_revenue": 1188000,
+          "user_revenue": 1188000
+        },
+        {
+          "serverid": 14,
+          "server_group": "old",
+          "dau": 21,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 15,
+          "server_group": "old",
+          "dau": 26,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 16,
+          "server_group": "old",
+          "dau": 2,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 17,
+          "server_group": "old",
+          "dau": 10,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 18,
+          "server_group": "old",
+          "dau": 19,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 19,
+          "server_group": "old",
+          "dau": 51,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 20,
+          "server_group": "old",
+          "dau": 59,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 21,
+          "server_group": "old",
+          "dau": 83,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 22,
+          "server_group": "old",
+          "dau": 100,
+          "nu": 1,
+          "pu": 5,
+          "npu": 0,
+          "total_revenue": 1243000,
+          "user_revenue": 1243000
+        },
+        {
+          "serverid": 23,
+          "server_group": "old",
+          "dau": 71,
+          "nu": 0,
+          "pu": 8,
+          "npu": 0,
+          "total_revenue": 2244000,
+          "user_revenue": 2244000
+        },
+        {
+          "serverid": 24,
+          "server_group": "old",
+          "dau": 92,
+          "nu": 1,
+          "pu": 26,
+          "npu": 2,
+          "total_revenue": 4092000,
+          "user_revenue": 4092000
+        },
+        {
+          "serverid": 25,
+          "server_group": "old",
+          "dau": 14,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 26,
+          "server_group": "old",
+          "dau": 52,
+          "nu": 2,
+          "pu": 3,
+          "npu": 0,
+          "total_revenue": 132000,
+          "user_revenue": 132000
+        },
+        {
+          "serverid": 27,
+          "server_group": "old",
+          "dau": 38,
+          "nu": 0,
+          "pu": 5,
+          "npu": 1,
+          "total_revenue": 77000,
+          "user_revenue": 77000
+        },
+        {
+          "serverid": 28,
+          "server_group": "old",
+          "dau": 16,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 29,
+          "server_group": "old",
+          "dau": 22,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 30,
+          "server_group": "old",
+          "dau": 9,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 31,
+          "server_group": "old",
+          "dau": 17,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 220000,
+          "user_revenue": 220000
+        },
+        {
+          "serverid": 32,
+          "server_group": "old",
+          "dau": 60,
+          "nu": 1,
+          "pu": 15,
+          "npu": 0,
+          "total_revenue": 6438264,
+          "user_revenue": 4048000
+        },
+        {
+          "serverid": 33,
+          "server_group": "old",
+          "dau": 32,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 34,
+          "server_group": "old",
+          "dau": 25,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 35,
+          "server_group": "old",
+          "dau": 83,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 36,
+          "server_group": "old",
+          "dau": 17,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 37,
+          "server_group": "old",
+          "dau": 22,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 38,
+          "server_group": "old",
+          "dau": 27,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 13618,
+          "user_revenue": 13618
+        },
+        {
+          "serverid": 39,
+          "server_group": "old",
+          "dau": 86,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 40,
+          "server_group": "old",
+          "dau": 64,
+          "nu": 3,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 37098,
+          "user_revenue": 37098
+        },
+        {
+          "serverid": 41,
+          "server_group": "old",
+          "dau": 47,
+          "nu": 0,
+          "pu": 2,
+          "npu": 0,
+          "total_revenue": 101434,
+          "user_revenue": 101434
+        },
+        {
+          "serverid": 42,
+          "server_group": "old",
+          "dau": 101,
+          "nu": 1,
+          "pu": 2,
+          "npu": 0,
+          "total_revenue": 64335,
+          "user_revenue": 64335
+        },
+        {
+          "serverid": 43,
+          "server_group": "old",
+          "dau": 40,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 44,
+          "server_group": "old",
+          "dau": 34,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 45,
+          "server_group": "old",
+          "dau": 61,
+          "nu": 0,
+          "pu": 4,
+          "npu": 3,
+          "total_revenue": 231982,
+          "user_revenue": 231982
+        },
+        {
+          "serverid": 46,
+          "server_group": "hyper",
+          "dau": 255,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 47,
+          "server_group": "hyper",
+          "dau": 356,
+          "nu": 0,
+          "pu": 37,
+          "npu": 0,
+          "total_revenue": 4224000,
+          "user_revenue": 4224000
+        },
+        {
+          "serverid": 48,
+          "server_group": "hyper",
+          "dau": 363,
+          "nu": 0,
+          "pu": 19,
+          "npu": 3,
+          "total_revenue": 3245000,
+          "user_revenue": 3245000
+        },
+        {
+          "serverid": 49,
+          "server_group": "hyper",
+          "dau": 386,
+          "nu": 0,
+          "pu": 3,
+          "npu": 1,
+          "total_revenue": 110000,
+          "user_revenue": 110000
+        },
+        {
+          "serverid": 50,
+          "server_group": "hyper",
+          "dau": 152,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 50717,
+          "user_revenue": 50717
+        },
+        {
+          "serverid": 51,
+          "server_group": "hyper",
+          "dau": 245,
+          "nu": 0,
+          "pu": 15,
+          "npu": 1,
+          "total_revenue": 1573461,
+          "user_revenue": 1573461
+        },
+        {
+          "serverid": 52,
+          "server_group": "hyper",
+          "dau": 217,
+          "nu": 0,
+          "pu": 5,
+          "npu": 0,
+          "total_revenue": 407000,
+          "user_revenue": 407000
+        },
+        {
+          "serverid": 53,
+          "server_group": "hyper",
+          "dau": 626,
+          "nu": 1,
+          "pu": 3,
+          "npu": 0,
+          "total_revenue": 462000,
+          "user_revenue": 462000
+        },
+        {
+          "serverid": 54,
+          "server_group": "hyper",
+          "dau": 230,
+          "nu": 0,
+          "pu": 4,
+          "npu": 0,
+          "total_revenue": 517000,
+          "user_revenue": 517000
+        },
+        {
+          "serverid": 55,
+          "server_group": "hyper",
+          "dau": 218,
+          "nu": 1,
+          "pu": 2,
+          "npu": 0,
+          "total_revenue": 44000,
+          "user_revenue": 44000
+        },
+        {
+          "serverid": 56,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 57,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 58,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 59,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 60,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 61,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 62,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 63,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 64,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 65,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        }
+      ]
+    },
+    {
+      "date": "2026-05-02",
+      "servers": [
+        {
+          "serverid": 1,
+          "server_group": "old",
+          "dau": 23,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 2,
+          "server_group": "old",
+          "dau": 15,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 3,
+          "server_group": "old",
+          "dau": 8,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 4,
+          "server_group": "old",
+          "dau": 10,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 5,
+          "server_group": "old",
+          "dau": 99,
+          "nu": 3,
+          "pu": 12,
+          "npu": 0,
+          "total_revenue": 5685915,
+          "user_revenue": 1191843
+        },
+        {
+          "serverid": 6,
+          "server_group": "old",
+          "dau": 7,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 110000,
+          "user_revenue": 110000
+        },
+        {
+          "serverid": 7,
+          "server_group": "old",
+          "dau": 19,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 8,
+          "server_group": "old",
+          "dau": 49,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 9,
+          "server_group": "old",
+          "dau": 36,
+          "nu": 0,
+          "pu": 3,
+          "npu": 0,
+          "total_revenue": 55000,
+          "user_revenue": 55000
+        },
+        {
+          "serverid": 10,
+          "server_group": "old",
+          "dau": 25,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 11,
+          "server_group": "old",
+          "dau": 17,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 12,
+          "server_group": "old",
+          "dau": 11,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 13,
+          "server_group": "old",
+          "dau": 67,
+          "nu": 0,
+          "pu": 7,
+          "npu": 0,
+          "total_revenue": 429000,
+          "user_revenue": 429000
+        },
+        {
+          "serverid": 14,
+          "server_group": "old",
+          "dau": 20,
+          "nu": 0,
+          "pu": 2,
+          "npu": 0,
+          "total_revenue": 44000,
+          "user_revenue": 44000
+        },
+        {
+          "serverid": 15,
+          "server_group": "old",
+          "dau": 18,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 16,
+          "server_group": "old",
+          "dau": 2,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 17,
+          "server_group": "old",
+          "dau": 11,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 18,
+          "server_group": "old",
+          "dau": 12,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 19,
+          "server_group": "old",
+          "dau": 29,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 20,
+          "server_group": "old",
+          "dau": 40,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 21,
+          "server_group": "old",
+          "dau": 54,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 22,
+          "server_group": "old",
+          "dau": 79,
+          "nu": 2,
+          "pu": 4,
+          "npu": 0,
+          "total_revenue": 715000,
+          "user_revenue": 715000
+        },
+        {
+          "serverid": 23,
+          "server_group": "old",
+          "dau": 60,
+          "nu": 0,
+          "pu": 8,
+          "npu": 0,
+          "total_revenue": 847000,
+          "user_revenue": 847000
+        },
+        {
+          "serverid": 24,
+          "server_group": "old",
+          "dau": 94,
+          "nu": 1,
+          "pu": 13,
+          "npu": 3,
+          "total_revenue": 2002000,
+          "user_revenue": 2002000
+        },
+        {
+          "serverid": 25,
+          "server_group": "old",
+          "dau": 9,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 26,
+          "server_group": "old",
+          "dau": 43,
+          "nu": 0,
+          "pu": 3,
+          "npu": 2,
+          "total_revenue": 110000,
+          "user_revenue": 110000
+        },
+        {
+          "serverid": 27,
+          "server_group": "old",
+          "dau": 52,
+          "nu": 0,
+          "pu": 2,
+          "npu": 0,
+          "total_revenue": 22000,
+          "user_revenue": 22000
+        },
+        {
+          "serverid": 28,
+          "server_group": "old",
+          "dau": 19,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 29,
+          "server_group": "old",
+          "dau": 19,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 33000,
+          "user_revenue": 33000
+        },
+        {
+          "serverid": 30,
+          "server_group": "old",
+          "dau": 4,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 31,
+          "server_group": "old",
+          "dau": 15,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 55000,
+          "user_revenue": 55000
+        },
+        {
+          "serverid": 32,
+          "server_group": "old",
+          "dau": 63,
+          "nu": 0,
+          "pu": 11,
+          "npu": 0,
+          "total_revenue": 6272095,
+          "user_revenue": 4752000
+        },
+        {
+          "serverid": 33,
+          "server_group": "old",
+          "dau": 19,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 34,
+          "server_group": "old",
+          "dau": 11,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 35,
+          "server_group": "old",
+          "dau": 77,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 36,
+          "server_group": "old",
+          "dau": 10,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 37,
+          "server_group": "old",
+          "dau": 13,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 38,
+          "server_group": "old",
+          "dau": 16,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 39,
+          "server_group": "old",
+          "dau": 69,
+          "nu": 0,
+          "pu": 2,
+          "npu": 0,
+          "total_revenue": 64335,
+          "user_revenue": 64335
+        },
+        {
+          "serverid": 40,
+          "server_group": "old",
+          "dau": 36,
+          "nu": 0,
+          "pu": 2,
+          "npu": 0,
+          "total_revenue": 87815,
+          "user_revenue": 87815
+        },
+        {
+          "serverid": 41,
+          "server_group": "old",
+          "dau": 30,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 42,
+          "server_group": "old",
+          "dau": 86,
+          "nu": 0,
+          "pu": 3,
+          "npu": 0,
+          "total_revenue": 167647,
+          "user_revenue": 167647
+        },
+        {
+          "serverid": 43,
+          "server_group": "old",
+          "dau": 29,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 44,
+          "server_group": "old",
+          "dau": 21,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 45,
+          "server_group": "old",
+          "dau": 43,
+          "nu": 0,
+          "pu": 5,
+          "npu": 0,
+          "total_revenue": 803647,
+          "user_revenue": 803647
+        },
+        {
+          "serverid": 46,
+          "server_group": "hyper",
+          "dau": 162,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 33000,
+          "user_revenue": 33000
+        },
+        {
+          "serverid": 47,
+          "server_group": "hyper",
+          "dau": 289,
+          "nu": 0,
+          "pu": 45,
+          "npu": 1,
+          "total_revenue": 3333000,
+          "user_revenue": 3333000
+        },
+        {
+          "serverid": 48,
+          "server_group": "hyper",
+          "dau": 289,
+          "nu": 0,
+          "pu": 11,
+          "npu": 0,
+          "total_revenue": 561000,
+          "user_revenue": 561000
+        },
+        {
+          "serverid": 49,
+          "server_group": "hyper",
+          "dau": 312,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 50,
+          "server_group": "hyper",
+          "dau": 110,
+          "nu": 0,
+          "pu": 3,
+          "npu": 0,
+          "total_revenue": 111295,
+          "user_revenue": 111295
+        },
+        {
+          "serverid": 51,
+          "server_group": "hyper",
+          "dau": 188,
+          "nu": 0,
+          "pu": 12,
+          "npu": 0,
+          "total_revenue": 655092,
+          "user_revenue": 655092
+        },
+        {
+          "serverid": 52,
+          "server_group": "hyper",
+          "dau": 181,
+          "nu": 0,
+          "pu": 3,
+          "npu": 0,
+          "total_revenue": 55000,
+          "user_revenue": 55000
+        },
+        {
+          "serverid": 53,
+          "server_group": "hyper",
+          "dau": 239,
+          "nu": 0,
+          "pu": 2,
+          "npu": 0,
+          "total_revenue": 66000,
+          "user_revenue": 66000
+        },
+        {
+          "serverid": 54,
+          "server_group": "hyper",
+          "dau": 147,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 33000,
+          "user_revenue": 33000
+        },
+        {
+          "serverid": 55,
+          "server_group": "hyper",
+          "dau": 143,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 33000,
+          "user_revenue": 33000
+        },
+        {
+          "serverid": 56,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 57,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 58,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 59,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 60,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 61,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 62,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 63,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 64,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 65,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        }
+      ]
+    },
+    {
+      "date": "2026-05-03",
+      "servers": [
+        {
+          "serverid": 1,
+          "server_group": "old",
+          "dau": 29,
+          "nu": 0,
+          "pu": 2,
+          "npu": 0,
+          "total_revenue": 44000,
+          "user_revenue": 44000
+        },
+        {
+          "serverid": 2,
+          "server_group": "old",
+          "dau": 13,
+          "nu": 0,
+          "pu": 1,
+          "npu": 1,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 3,
+          "server_group": "old",
+          "dau": 18,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 4,
+          "server_group": "old",
+          "dau": 12,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 5,
+          "server_group": "old",
+          "dau": 94,
+          "nu": 0,
+          "pu": 12,
+          "npu": 0,
+          "total_revenue": 6954391,
+          "user_revenue": 523219
+        },
+        {
+          "serverid": 6,
+          "server_group": "old",
+          "dau": 7,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 7,
+          "server_group": "old",
+          "dau": 17,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 220000,
+          "user_revenue": 220000
+        },
+        {
+          "serverid": 8,
+          "server_group": "old",
+          "dau": 81,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 9,
+          "server_group": "old",
+          "dau": 52,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 10,
+          "server_group": "old",
+          "dau": 55,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 11,
+          "server_group": "old",
+          "dau": 13,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 12,
+          "server_group": "old",
+          "dau": 12,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 121000,
+          "user_revenue": 121000
+        },
+        {
+          "serverid": 13,
+          "server_group": "old",
+          "dau": 78,
+          "nu": 0,
+          "pu": 5,
+          "npu": 0,
+          "total_revenue": 528000,
+          "user_revenue": 528000
+        },
+        {
+          "serverid": 14,
+          "server_group": "old",
+          "dau": 18,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 15,
+          "server_group": "old",
+          "dau": 18,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 16,
+          "server_group": "old",
+          "dau": 2,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 17,
+          "server_group": "old",
+          "dau": 11,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 18,
+          "server_group": "old",
+          "dau": 19,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 19,
+          "server_group": "old",
+          "dau": 50,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 20,
+          "server_group": "old",
+          "dau": 59,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 21,
+          "server_group": "old",
+          "dau": 88,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 22,
+          "server_group": "old",
+          "dau": 92,
+          "nu": 2,
+          "pu": 4,
+          "npu": 0,
+          "total_revenue": 231000,
+          "user_revenue": 231000
+        },
+        {
+          "serverid": 23,
+          "server_group": "old",
+          "dau": 72,
+          "nu": 1,
+          "pu": 6,
+          "npu": 0,
+          "total_revenue": 913000,
+          "user_revenue": 913000
+        },
+        {
+          "serverid": 24,
+          "server_group": "old",
+          "dau": 95,
+          "nu": 0,
+          "pu": 10,
+          "npu": 1,
+          "total_revenue": 616000,
+          "user_revenue": 616000
+        },
+        {
+          "serverid": 25,
+          "server_group": "old",
+          "dau": 9,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 26,
+          "server_group": "old",
+          "dau": 48,
+          "nu": 1,
+          "pu": 5,
+          "npu": 1,
+          "total_revenue": 154000,
+          "user_revenue": 154000
+        },
+        {
+          "serverid": 27,
+          "server_group": "old",
+          "dau": 55,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 28,
+          "server_group": "old",
+          "dau": 21,
+          "nu": 1,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 29,
+          "server_group": "old",
+          "dau": 18,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 30,
+          "server_group": "old",
+          "dau": 3,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 31,
+          "server_group": "old",
+          "dau": 5,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 32,
+          "server_group": "old",
+          "dau": 56,
+          "nu": 0,
+          "pu": 10,
+          "npu": 0,
+          "total_revenue": 3223000,
+          "user_revenue": 3223000
+        },
+        {
+          "serverid": 33,
+          "server_group": "old",
+          "dau": 28,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 34,
+          "server_group": "old",
+          "dau": 24,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 35,
+          "server_group": "old",
+          "dau": 86,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 36,
+          "server_group": "old",
+          "dau": 16,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 37,
+          "server_group": "old",
+          "dau": 18,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 38,
+          "server_group": "old",
+          "dau": 23,
+          "nu": 0,
+          "pu": 2,
+          "npu": 0,
+          "total_revenue": 74197,
+          "user_revenue": 74197
+        },
+        {
+          "serverid": 39,
+          "server_group": "old",
+          "dau": 84,
+          "nu": 0,
+          "pu": 2,
+          "npu": 0,
+          "total_revenue": 154029,
+          "user_revenue": 154029
+        },
+        {
+          "serverid": 40,
+          "server_group": "old",
+          "dau": 56,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 13618,
+          "user_revenue": 13618
+        },
+        {
+          "serverid": 41,
+          "server_group": "old",
+          "dau": 49,
+          "nu": 0,
+          "pu": 3,
+          "npu": 1,
+          "total_revenue": 285716,
+          "user_revenue": 285716
+        },
+        {
+          "serverid": 42,
+          "server_group": "old",
+          "dau": 97,
+          "nu": 0,
+          "pu": 3,
+          "npu": 0,
+          "total_revenue": 128670,
+          "user_revenue": 128670
+        },
+        {
+          "serverid": 43,
+          "server_group": "old",
+          "dau": 41,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 44,
+          "server_group": "old",
+          "dau": 34,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 45,
+          "server_group": "old",
+          "dau": 57,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 46,
+          "server_group": "hyper",
+          "dau": 305,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 47,
+          "server_group": "hyper",
+          "dau": 341,
+          "nu": 0,
+          "pu": 9,
+          "npu": 1,
+          "total_revenue": 550000,
+          "user_revenue": 550000
+        },
+        {
+          "serverid": 48,
+          "server_group": "hyper",
+          "dau": 350,
+          "nu": 0,
+          "pu": 15,
+          "npu": 2,
+          "total_revenue": 385000,
+          "user_revenue": 385000
+        },
+        {
+          "serverid": 49,
+          "server_group": "hyper",
+          "dau": 366,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 50,
+          "server_group": "hyper",
+          "dau": 139,
+          "nu": 0,
+          "pu": 3,
+          "npu": 0,
+          "total_revenue": 181266,
+          "user_revenue": 181266
+        },
+        {
+          "serverid": 51,
+          "server_group": "hyper",
+          "dau": 227,
+          "nu": 0,
+          "pu": 11,
+          "npu": 1,
+          "total_revenue": 542434,
+          "user_revenue": 542434
+        },
+        {
+          "serverid": 52,
+          "server_group": "hyper",
+          "dau": 183,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 77000,
+          "user_revenue": 77000
+        },
+        {
+          "serverid": 53,
+          "server_group": "hyper",
+          "dau": 295,
+          "nu": 1,
+          "pu": 6,
+          "npu": 0,
+          "total_revenue": 187000,
+          "user_revenue": 187000
+        },
+        {
+          "serverid": 54,
+          "server_group": "hyper",
+          "dau": 178,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 55,
+          "server_group": "hyper",
+          "dau": 190,
+          "nu": 0,
+          "pu": 1,
+          "npu": 1,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 56,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 57,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 58,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 59,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 60,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 61,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 62,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 63,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 64,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 65,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        }
+      ]
+    },
+    {
+      "date": "2026-05-04",
+      "servers": [
+        {
+          "serverid": 1,
+          "server_group": "old",
+          "dau": 33,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 2,
+          "server_group": "old",
+          "dau": 13,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 3,
+          "server_group": "old",
+          "dau": 11,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 4,
+          "server_group": "old",
+          "dau": 15,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 5,
+          "server_group": "old",
+          "dau": 90,
+          "nu": 1,
+          "pu": 10,
+          "npu": 2,
+          "total_revenue": 4763878,
+          "user_revenue": 3594574
+        },
+        {
+          "serverid": 6,
+          "server_group": "old",
+          "dau": 7,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 7,
+          "server_group": "old",
+          "dau": 16,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 8,
+          "server_group": "old",
+          "dau": 31,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 9,
+          "server_group": "old",
+          "dau": 44,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 10,
+          "server_group": "old",
+          "dau": 27,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 11,
+          "server_group": "old",
+          "dau": 15,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 12,
+          "server_group": "old",
+          "dau": 14,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 13,
+          "server_group": "old",
+          "dau": 63,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 33000,
+          "user_revenue": 33000
+        },
+        {
+          "serverid": 14,
+          "server_group": "old",
+          "dau": 18,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 15,
+          "server_group": "old",
+          "dau": 12,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 16,
+          "server_group": "old",
+          "dau": 2,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 17,
+          "server_group": "old",
+          "dau": 7,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 18,
+          "server_group": "old",
+          "dau": 8,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 19,
+          "server_group": "old",
+          "dau": 21,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 20,
+          "server_group": "old",
+          "dau": 34,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 21,
+          "server_group": "old",
+          "dau": 44,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 22,
+          "server_group": "old",
+          "dau": 93,
+          "nu": 1,
+          "pu": 3,
+          "npu": 0,
+          "total_revenue": 55000,
+          "user_revenue": 55000
+        },
+        {
+          "serverid": 23,
+          "server_group": "old",
+          "dau": 67,
+          "nu": 1,
+          "pu": 11,
+          "npu": 3,
+          "total_revenue": 1144000,
+          "user_revenue": 1144000
+        },
+        {
+          "serverid": 24,
+          "server_group": "old",
+          "dau": 112,
+          "nu": 2,
+          "pu": 11,
+          "npu": 4,
+          "total_revenue": 484000,
+          "user_revenue": 484000
+        },
+        {
+          "serverid": 25,
+          "server_group": "old",
+          "dau": 17,
+          "nu": 0,
+          "pu": 1,
+          "npu": 1,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 26,
+          "server_group": "old",
+          "dau": 58,
+          "nu": 2,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 27,
+          "server_group": "old",
+          "dau": 22,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 33000,
+          "user_revenue": 33000
+        },
+        {
+          "serverid": 28,
+          "server_group": "old",
+          "dau": 13,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 29,
+          "server_group": "old",
+          "dau": 17,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 11000,
+          "user_revenue": 11000
+        },
+        {
+          "serverid": 30,
+          "server_group": "old",
+          "dau": 6,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 31,
+          "server_group": "old",
+          "dau": 9,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 32,
+          "server_group": "old",
+          "dau": 59,
+          "nu": 0,
+          "pu": 6,
+          "npu": 1,
+          "total_revenue": 946000,
+          "user_revenue": 946000
+        },
+        {
+          "serverid": 33,
+          "server_group": "old",
+          "dau": 20,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 34,
+          "server_group": "old",
+          "dau": 13,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 35,
+          "server_group": "old",
+          "dau": 95,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 36,
+          "server_group": "old",
+          "dau": 9,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 37,
+          "server_group": "old",
+          "dau": 12,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 38,
+          "server_group": "old",
+          "dau": 14,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 39,
+          "server_group": "old",
+          "dau": 55,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 116930,
+          "user_revenue": 116930
+        },
+        {
+          "serverid": 40,
+          "server_group": "old",
+          "dau": 43,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 41,
+          "server_group": "old",
+          "dau": 34,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 13618,
+          "user_revenue": 13618
+        },
+        {
+          "serverid": 42,
+          "server_group": "old",
+          "dau": 73,
+          "nu": 0,
+          "pu": 3,
+          "npu": 0,
+          "total_revenue": 115052,
+          "user_revenue": 115052
+        },
+        {
+          "serverid": 43,
+          "server_group": "old",
+          "dau": 32,
+          "nu": 1,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 44,
+          "server_group": "old",
+          "dau": 30,
+          "nu": 3,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 45,
+          "server_group": "old",
+          "dau": 40,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 13618,
+          "user_revenue": 13618
+        },
+        {
+          "serverid": 46,
+          "server_group": "hyper",
+          "dau": 225,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 47,
+          "server_group": "hyper",
+          "dau": 274,
+          "nu": 0,
+          "pu": 10,
+          "npu": 1,
+          "total_revenue": 660000,
+          "user_revenue": 660000
+        },
+        {
+          "serverid": 48,
+          "server_group": "hyper",
+          "dau": 274,
+          "nu": 0,
+          "pu": 4,
+          "npu": 0,
+          "total_revenue": 682000,
+          "user_revenue": 682000
+        },
+        {
+          "serverid": 49,
+          "server_group": "hyper",
+          "dau": 306,
+          "nu": 0,
+          "pu": 4,
+          "npu": 0,
+          "total_revenue": 149717,
+          "user_revenue": 149717
+        },
+        {
+          "serverid": 50,
+          "server_group": "hyper",
+          "dau": 87,
+          "nu": 0,
+          "pu": 2,
+          "npu": 0,
+          "total_revenue": 191127,
+          "user_revenue": 191127
+        },
+        {
+          "serverid": 51,
+          "server_group": "hyper",
+          "dau": 168,
+          "nu": 0,
+          "pu": 9,
+          "npu": 1,
+          "total_revenue": 481810,
+          "user_revenue": 481810
+        },
+        {
+          "serverid": 52,
+          "server_group": "hyper",
+          "dau": 117,
+          "nu": 0,
+          "pu": 2,
+          "npu": 0,
+          "total_revenue": 77000,
+          "user_revenue": 77000
+        },
+        {
+          "serverid": 53,
+          "server_group": "hyper",
+          "dau": 195,
+          "nu": 0,
+          "pu": 6,
+          "npu": 2,
+          "total_revenue": 825000,
+          "user_revenue": 825000
+        },
+        {
+          "serverid": 54,
+          "server_group": "hyper",
+          "dau": 111,
+          "nu": 0,
+          "pu": 1,
+          "npu": 0,
+          "total_revenue": 44000,
+          "user_revenue": 44000
+        },
+        {
+          "serverid": 55,
+          "server_group": "hyper",
+          "dau": 115,
+          "nu": 0,
+          "pu": 4,
+          "npu": 0,
+          "total_revenue": 176000,
+          "user_revenue": 176000
+        },
+        {
+          "serverid": 56,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 57,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 58,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 59,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 60,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 61,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 62,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 63,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 64,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        },
+        {
+          "serverid": 65,
+          "server_group": "sea",
+          "dau": 0,
+          "nu": 0,
+          "pu": 0,
+          "npu": 0,
+          "total_revenue": 0,
+          "user_revenue": 0
+        }
+      ]
+    }
+  ],
+  "package_sales": {
+    "today": {
+      "old": [
+        {
+          "rank_no": 1,
+          "productid": "com.ntrance.dkr.and_eviladvancerankingpackage_3",
+          "productname": "악의 진격 랭킹 패키지III",
+          "sales_quantity": 20,
+          "payment_count": 20,
+          "pu": 5,
+          "revenue_krw": 2269304
+        },
+        {
+          "rank_no": 2,
+          "productid": "com.ntrance.dkr.ios_1stanniversaryspecialpackage_5",
+          "productname": "1주년 기념 특별 패키지V",
+          "sales_quantity": 12,
+          "payment_count": 12,
+          "pu": 1,
+          "revenue_krw": 1297982
+        },
+        {
+          "rank_no": 3,
+          "productid": "com.ntrance.dkr.ios_eviladvancerankingpackage_3",
+          "productname": "악의 진격 랭킹 패키지III",
+          "sales_quantity": 11,
+          "payment_count": 11,
+          "pu": 2,
+          "revenue_krw": 1198582
+        },
+        {
+          "rank_no": 4,
+          "productid": "com.ntrance.dkr.pc_eviladvancerankingpackage_3",
+          "productname": "악의 진격 랭킹 패키지III",
+          "sales_quantity": 9,
+          "payment_count": 9,
+          "pu": 4,
+          "revenue_krw": 996930
+        },
+        {
+          "rank_no": 5,
+          "productid": "com.ntrance.dkr.pc_saturnprivilege",
+          "productname": "새턴의 특권",
+          "sales_quantity": 7,
+          "payment_count": 7,
+          "pu": 5,
+          "revenue_krw": 79618
+        },
+        {
+          "rank_no": 6,
+          "productid": "com.ntrance.dkr.ios_polymorphsynthesizerankingpackage_1",
+          "productname": "병오년 변신 소환 상자 랭킹 패키지I",
+          "sales_quantity": 6,
+          "payment_count": 6,
+          "pu": 2,
+          "revenue_krw": 73276
+        },
+        {
+          "rank_no": 7,
+          "productid": "com.ntrance.dkr.and_saturnprivilege",
+          "productname": "새턴의 특권",
+          "sales_quantity": 6,
+          "payment_count": 6,
+          "pu": 6,
+          "revenue_krw": 68618
+        },
+        {
+          "rank_no": 8,
+          "productid": "com.ntrance.dkr.and_eviladvancelaunchingpass_2",
+          "productname": "악의 진격 런칭 기념 패스II",
+          "sales_quantity": 5,
+          "payment_count": 5,
+          "pu": 5,
+          "revenue_krw": 173197
+        },
+        {
+          "rank_no": 9,
+          "productid": "com.ntrance.dkr.ios_earthtowerpackage_1",
+          "productname": "대지 정령탑 패키지 I",
+          "sales_quantity": 5,
+          "payment_count": 5,
+          "pu": 1,
+          "revenue_krw": 54034
+        },
+        {
+          "rank_no": 10,
+          "productid": "com.ntrance.dkr.ons_eviladvancelaunchingpass_1",
+          "productname": "악의 진격 런칭 기념 패스I",
+          "sales_quantity": 4,
+          "payment_count": 4,
+          "pu": 4,
+          "revenue_krw": 44000
+        }
+      ],
+      "hyper": [
+        {
+          "rank_no": 1,
+          "productid": "com.ntrance.dkr.and_hyper1stanniversaryspecialpackage_5",
+          "productname": "1주년 기념 특별 패키지V H",
+          "sales_quantity": 6,
+          "payment_count": 6,
+          "pu": 2,
+          "revenue_krw": 660000
+        },
+        {
+          "rank_no": 2,
+          "productid": "com.ntrance.dkr.pc_hyperexchangeprivilege",
+          "productname": "거래소 특권H(30일)",
+          "sales_quantity": 6,
+          "payment_count": 6,
+          "pu": 6,
+          "revenue_krw": 202098
+        },
+        {
+          "rank_no": 3,
+          "productid": "com.ntrance.dkr.ios_hyper1stanniversaryspecialpackage_5",
+          "productname": "1주년 기념 특별 패키지V H",
+          "sales_quantity": 5,
+          "payment_count": 5,
+          "pu": 1,
+          "revenue_krw": 550000
+        },
+        {
+          "rank_no": 4,
+          "productid": "com.ntrance.dkr.pc_hypersaturnprivilege",
+          "productname": "광고 스킵 및 새턴의 보상 특권H(30일)",
+          "sales_quantity": 4,
+          "payment_count": 4,
+          "pu": 4,
+          "revenue_krw": 44000
+        },
+        {
+          "rank_no": 5,
+          "productid": "com.ntrance.dkr.pc_eviladvancelaunchingpass_2",
+          "productname": "악의 진격 런칭 기념 패스II",
+          "sales_quantity": 3,
+          "payment_count": 3,
+          "pu": 3,
+          "revenue_krw": 107197
+        },
+        {
+          "rank_no": 6,
+          "productid": "com.ntrance.dkr.and_eviladvancelaunchingpass_2",
+          "productname": "악의 진격 런칭 기념 패스II",
+          "sales_quantity": 3,
+          "payment_count": 3,
+          "pu": 3,
+          "revenue_krw": 107197
+        },
+        {
+          "rank_no": 7,
+          "productid": "com.ntrance.dkr.and_hyperexchangeprivilege",
+          "productname": "거래소 특권H(30일)",
+          "sales_quantity": 3,
+          "payment_count": 3,
+          "pu": 3,
+          "revenue_krw": 99000
+        },
+        {
+          "rank_no": 8,
+          "productid": "com.ntrance.dkr.and_hypersaturnprivilege",
+          "productname": "광고 스킵 및 새턴의 보상 특권H(30일)",
+          "sales_quantity": 3,
+          "payment_count": 3,
+          "pu": 3,
+          "revenue_krw": 35618
+        },
+        {
+          "rank_no": 9,
+          "productid": "com.ntrance.dkr.ios_eviladvancelaunchingpass_1",
+          "productname": "악의 진격 런칭 기념 패스I",
+          "sales_quantity": 3,
+          "payment_count": 3,
+          "pu": 3,
+          "revenue_krw": 35618
+        },
+        {
+          "rank_no": 10,
+          "productid": "com.ntrance.dkr.pc_divinejewelpackageh",
+          "productname": "신령의 보옥 패키지 H",
+          "sales_quantity": 3,
+          "payment_count": 3,
+          "pu": 1,
+          "revenue_krw": 33000
+        }
+      ],
+      "sea": [],
+      "total": [
+        {
+          "rank_no": 1,
+          "productid": "com.ntrance.dkr.and_eviladvancerankingpackage_3",
+          "productname": "악의 진격 랭킹 패키지III",
+          "sales_quantity": 20,
+          "payment_count": 20,
+          "pu": 5,
+          "revenue_krw": 2269304
+        },
+        {
+          "rank_no": 2,
+          "productid": "com.ntrance.dkr.ios_1stanniversaryspecialpackage_5",
+          "productname": "1주년 기념 특별 패키지V",
+          "sales_quantity": 12,
+          "payment_count": 12,
+          "pu": 1,
+          "revenue_krw": 1297982
+        },
+        {
+          "rank_no": 3,
+          "productid": "com.ntrance.dkr.ios_eviladvancerankingpackage_3",
+          "productname": "악의 진격 랭킹 패키지III",
+          "sales_quantity": 11,
+          "payment_count": 11,
+          "pu": 2,
+          "revenue_krw": 1198582
+        },
+        {
+          "rank_no": 4,
+          "productid": "com.ntrance.dkr.pc_eviladvancerankingpackage_3",
+          "productname": "악의 진격 랭킹 패키지III",
+          "sales_quantity": 9,
+          "payment_count": 9,
+          "pu": 4,
+          "revenue_krw": 996930
+        },
+        {
+          "rank_no": 5,
+          "productid": "com.ntrance.dkr.and_eviladvancelaunchingpass_2",
+          "productname": "악의 진격 런칭 기념 패스II",
+          "sales_quantity": 8,
+          "payment_count": 8,
+          "pu": 8,
+          "revenue_krw": 280394
+        },
+        {
+          "rank_no": 6,
+          "productid": "com.ntrance.dkr.pc_saturnprivilege",
+          "productname": "새턴의 특권",
+          "sales_quantity": 7,
+          "payment_count": 7,
+          "pu": 5,
+          "revenue_krw": 79618
+        },
+        {
+          "rank_no": 7,
+          "productid": "com.ntrance.dkr.and_hyper1stanniversaryspecialpackage_5",
+          "productname": "1주년 기념 특별 패키지V H",
+          "sales_quantity": 6,
+          "payment_count": 6,
+          "pu": 2,
+          "revenue_krw": 660000
+        },
+        {
+          "rank_no": 8,
+          "productid": "com.ntrance.dkr.pc_eviladvancelaunchingpass_2",
+          "productname": "악의 진격 런칭 기념 패스II",
+          "sales_quantity": 6,
+          "payment_count": 6,
+          "pu": 6,
+          "revenue_krw": 210295
+        },
+        {
+          "rank_no": 9,
+          "productid": "com.ntrance.dkr.pc_hyperexchangeprivilege",
+          "productname": "거래소 특권H(30일)",
+          "sales_quantity": 6,
+          "payment_count": 6,
+          "pu": 6,
+          "revenue_krw": 202098
+        },
+        {
+          "rank_no": 10,
+          "productid": "com.ntrance.dkr.ios_polymorphsynthesizerankingpackage_1",
+          "productname": "병오년 변신 소환 상자 랭킹 패키지I",
+          "sales_quantity": 6,
+          "payment_count": 6,
+          "pu": 2,
+          "revenue_krw": 73276
+        }
+      ]
+    },
+    "period": {
+      "old": [],
+      "hyper": [],
+      "sea": [],
+      "total": []
+    }
+  }
+}
